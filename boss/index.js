@@ -1,5 +1,5 @@
-import '../shared/scss/application.scss';
-import './scss/custom.scss';
+import '../shared/scss/main.scss';
+import './scss/sub.scss';
 
 import React from 'react';
 import { render } from 'react-dom';

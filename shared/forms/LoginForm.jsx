@@ -6,10 +6,11 @@ const F = (props) => {
   const { fields:
     { email, password },
     error,
+    handleSubmit,
     submitting,
   } = props;
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <div className="flash-container">
         {error && <div className="flash-alert">{error}</div>}
       </div>
