@@ -8,10 +8,8 @@ class Boss {
 
     return rawCall('post', '/boss/', payload);
   }
-  describeTenants(ids = []) {
-    return this.call('describeTenants', {
-      tenants: ids,
-    });
+  describeTenants(filters = {}) {
+    return this.call('describeTenants', filters);
   }
   createTenant(tenant) {
     return this.call('createTenant', tenant);

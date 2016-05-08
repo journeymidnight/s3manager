@@ -13,10 +13,10 @@ class C extends React.Component {
   render() {
     const tenants = this.props.context.tenantSet && this.props.context.tenantSet.map((tenant) => {
       return (
-        <tr key={tenant.id}>
-          <td>{tenant.id}</td>
+        <tr key={tenant.tenantId}>
+          <td>{tenant.tenantId}</td>
           <td>
-            <Link to={`/tenants/${tenant.id}`}>
+            <Link to={`/tenants/${tenant.tenantId}`}>
               <strong>
                 {tenant.name}
               </strong>

@@ -72,13 +72,13 @@ export function requestCreateTenant(tenant) {
   };
 }
 
-export function requestModifyTenant(tenantId, tenant) {
+export function requestModifyTenant(tenant) {
   return (dispatch) => {
     return BOSS
-    .modifyTenant(tenantId, tenant)
+    .modifyTenant(tenant)
     .promise
     .then(() => {
-      return dispatch(requestDescribeTenant(tenantId));
+      return dispatch(requestDescribeTenant(tenant.tenantId));
     });
   };
 }
