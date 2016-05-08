@@ -12,7 +12,7 @@ const loggerMiddleware = createLogger();
 
 export const initialState = {};
 
-export function configureStore(_initialState = initialState) {
+export default function configureStore(_initialState = initialState) {
   const finalCreateStore = compose(
     applyMiddleware(thunkMiddleware, routerMiddleware, loggerMiddleware),
     DevTools.instrument(),
