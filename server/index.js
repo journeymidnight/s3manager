@@ -12,6 +12,13 @@ import webpackHotMiddleware from 'webpack-hot-middleware';
 
 const API_ENDPOINT = process.env.API_ENDPOINT || 'http://localhost:10001';
 
+const compiler = webpack(config);
+const devMiddleware = webpackDevMiddleware(compiler, {
+  noInfo: true,
+  publicPath: config.output.publicPath,
+});
+const hotMiddleware = webpackHotMiddleware(compiler);
+
 function createApp(module) {
   const app = new Express();
   app.use(logger('dev'));
@@ -22,9 +29,8 @@ function createApp(module) {
     },
   }));
 
-  const compiler = webpack(config);
-  app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: config.output.publicPath }));
-  app.use(webpackHotMiddleware(compiler));
+  app.use(devMiddleware);
+  app.use(hotMiddleware);
 
   app.use((req, res) => {
     const html = fs.readFileSync(`${__dirname}/../index.html`).toString();

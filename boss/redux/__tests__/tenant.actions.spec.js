@@ -3,46 +3,7 @@ import * as Actions from '../actions';
 import * as ActionTypes from '../constants';
 import { mockStore, mockRequest } from '../../../shared/__tests__/mock';
 
-describe('Actions', () => {
-  it('#authLogin', () => {
-    const token = {
-    };
-
-    const context = {
-    };
-
-    const expectedAction = [{
-      type: ActionTypes.AUTH_LOGIN,
-      context,
-      token,
-    }];
-
-    const store = mockStore();
-    store.dispatch(Actions.authLogin(context, token));
-
-    expect(store.getActions()).toEqual(expectedAction);
-  });
-
-  it('#requestLogout', () => {
-    const expectedActions = [
-      { type: ActionTypes.AUTH_LOGOUT },
-      {
-        payload: {
-          args: [
-            '/login',
-          ],
-          method: 'push',
-        },
-        type: '@@router/CALL_HISTORY_METHOD',
-      },
-    ];
-
-    const store = mockStore();
-    store.dispatch(Actions.requestLogout());
-
-    expect(store.getActions()).toEqual(expectedActions);
-  });
-
+describe('TenantActions', () => {
   it('#requestDescribeTenants', () => {
     const rep = {
       totalCount: 9,
@@ -135,9 +96,30 @@ describe('Actions', () => {
       message: null,
     });
 
+    const rep = {
+      totalCount: 9,
+      tenantSet: [{
+        id: 'idA',
+        name: 'nameA',
+      }],
+    };
+
+    const scope2 = mockRequest
+    .post('/api/boss/', {
+      action: 'describeTenants',
+    })
+    .reply(200, {
+      data: rep,
+      retCode: 0,
+      message: null,
+    });
+
     const expectedActions = [{
       payload: {
-        tenant: {},
+        tenant: {
+          id: 'idA',
+          name: 'nameA',
+        },
       },
       type: ActionTypes.EXTEND_CONTEXT,
     }];
@@ -151,6 +133,7 @@ describe('Actions', () => {
     }))
     .then(() => {
       scope.isDone();
+      scope2.isDone();
       expect(store.getActions()).toEqual(expectedActions);
     });
   });

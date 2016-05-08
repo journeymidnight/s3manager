@@ -41,6 +41,21 @@ export function requestDescribeTenants() {
   };
 }
 
+export function requestDescribeTenant(tenantId) {
+  return dispatch => {
+    return BOSS
+    .describeTenants({
+      tenants: [tenantId],
+    })
+    .promise
+    .then((data) => {
+      dispatch(extendContext({
+        tenant: data.tenantSet[0],
+      }));
+    });
+  };
+}
+
 export function requestCreateTenant(tenant) {
   return dispatch => {
     return BOSS
@@ -57,15 +72,13 @@ export function requestCreateTenant(tenant) {
   };
 }
 
-export function requestModifyTenant(id, tenant) {
-  return dispatch => {
+export function requestModifyTenant(tenantId, tenant) {
+  return (dispatch) => {
     return BOSS
-    .modifyTenant(id, tenant)
+    .modifyTenant(tenantId, tenant)
     .promise
-    .then((res) => {
-      dispatch(extendContext({
-        tenant: res,
-      }));
+    .then(() => {
+      return dispatch(requestDescribeTenant(tenantId));
     });
   };
 }

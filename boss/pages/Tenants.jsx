@@ -16,7 +16,7 @@ class C extends React.Component {
         <tr key={tenant.id}>
           <td>{tenant.id}</td>
           <td>
-            <Link to={`/tenants/${tenant.name}`}>
+            <Link to={`/tenants/${tenant.id}`}>
               <strong>
                 {tenant.name}
               </strong>
@@ -42,7 +42,7 @@ class C extends React.Component {
               </div>
               <div className="nav-controls">
                 <Link className="btn btn-new" to="/tenants/new">
-                  <i className="fa fa-plus"></i>添加
+                  <i className="fa fa-plus"></i>&nbsp;添加
                 </Link>
               </div>
             </div>

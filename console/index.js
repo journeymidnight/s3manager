@@ -1,4 +1,5 @@
 import '../shared/scss/application.scss';
+import './scss/custom.scss';
 
 window.$ = window.jQuery = require('jquery');
 window._ = require('lodash');

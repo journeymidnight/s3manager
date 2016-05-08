@@ -30,7 +30,7 @@ export default function configureRoutes(store) {
         <Route path="tenants" >
           <IndexRoute component={Tenants} />
           <Route path="new" component={TenantNew} />
-          <Route path=":tenantName" component={Tenant} />
+          <Route path=":tenantId" component={Tenant} />
         </Route>
         <Route path="users" component={Settings} />
       </Route>

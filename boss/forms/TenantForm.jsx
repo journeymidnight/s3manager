@@ -1,7 +1,5 @@
 import React from 'react';
 import { reduxForm } from 'redux-form';
-import { connect } from 'react-redux';
-import * as Actions from '../redux/actions';
 import * as Validations from '../../shared/utils/validations';
 
 const F = (props) => {
@@ -12,7 +10,7 @@ const F = (props) => {
     submitting,
   } = props;
   return (
-    <form className="form-horizontal" onSubmit={handleSubmit(F.submit)}>
+    <form className="form-horizontal" onSubmit={handleSubmit}>
       <div className="flash-container">
         {error && <div className="flash-alert">{error}</div>}
       </div>
@@ -50,23 +48,6 @@ F.propTypes = {
   submitting: React.PropTypes.bool.isRequired,
 };
 
-F.submit = (values, dispatch) => {
-  return new Promise((resolve, reject) => {
-    const name = values.name;
-    const description = values.description;
-
-    dispatch(Actions.requestCreateTenant({
-      name,
-      description,
-    }))
-    .then(() => {
-      resolve();
-    }).catch((error) => {
-      reject({ _error: error.message });
-    });
-  });
-};
-
 F.validate = values => {
   const errors = {};
   errors.name = Validations.required(values.name);
@@ -74,37 +55,8 @@ F.validate = values => {
   return errors;
 };
 
-export const Form = reduxForm({
+export default reduxForm({
   form: 'createTenant',
   fields: ['name', 'description'],
   validate: F.validate,
 })(F);
-
-const C = () => {
-  return (
-    <div className="container-fluid container-limited">
-      <div className="content">
-        <div className="clearfix">
-          <h3 className="page-title">
-            添加租户
-          </h3>
-          <hr />
-          <Form />
-        </div>
-      </div>
-    </div>
-  );
-};
-
-C.propTypes = {
-  dispatch: React.PropTypes.func.isRequired,
-  context: React.PropTypes.object,
-};
-
-function mapStateToProps(state) {
-  return {
-    context: state.context,
-  };
-}
-
-export default connect(mapStateToProps)(C);
