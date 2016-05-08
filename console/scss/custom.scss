@@ -1,10 +1,46 @@
 @import "./customize/pace";
 
+@import "./pages/login";
+
 body {
     font-family: Arial, "Hiragino Sans GB", "Microsoft YaHei", STHeiti, "WenQuanYi Micro Hei", SimSun, sans-serif;
     margin: 0;
     background-color: #fff;
     height: 100%;
     overflow: auto;
-    background: #000;
+    background: #f1f4f6;
+}
+
+a {
+    color: #333c48;
+
+    &:hover,
+    &:focus {
+        color: #13171b;
+    }
+}
+
+.has-error .help-block, .has-error .control-label, .has-error .radio, .has-error .checkbox, .has-error .radio-inline, .has-error .checkbox-inline, .has-error.radio label, .has-error.checkbox label, .has-error.radio-inline label, .has-error.checkbox-inline label {
+    color: inherit;
+}
+
+label.control-label {
+    padding: 0px;
+}
+
+header.navbar-empty .center-logo {
+    margin: 9px 0;
+
+    img {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+.form-actions {
+    margin: 0 -16px;
+}
+
+.has-error .form-control {
+    border-color: #a94442;
 }

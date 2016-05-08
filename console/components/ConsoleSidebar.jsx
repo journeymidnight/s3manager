@@ -52,20 +52,8 @@ class C extends React.Component {
               </span>
             </a>
           </li>
-          <NavLink to="/regions">
-            <i className="fa fa-codepen fa-fw" />
-            <span>区域</span>
-          </NavLink>
-          <NavLink to="/tenants">
-            <i className="fa fa-cube fa-fw" />
-            <span>租户</span>
-          </NavLink>
-          <NavLink to="/users">
-            <i className="fa fa-user fa-fw" />
-            <span>用户</span>
-          </NavLink>
           <li className="separate-item" />
-          <NavLink to="/admins">
+          <NavLink to="/">
             <i className="fa fa-meh-o fa-fw" />
             <span>管理员</span>
           </NavLink>
