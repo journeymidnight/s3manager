@@ -68,6 +68,15 @@ describe('TenantActions', () => {
         method: 'push',
       },
       type: '@@router/CALL_HISTORY_METHOD',
+    }, {
+      payload: {
+        notify: {
+          message: 'Created!',
+          type: 'notice',
+        },
+      },
+      type: ActionTypes.EXTEND_CONTEXT,
+
     }];
 
     const store = mockStore();
@@ -115,6 +124,14 @@ describe('TenantActions', () => {
     });
 
     const expectedActions = [{
+      payload: {
+        notify: {
+          message: 'Saved!',
+          type: 'notice',
+        },
+      },
+      type: ActionTypes.EXTEND_CONTEXT,
+    }, {
       payload: {
         tenant: {
           id: 'idA',

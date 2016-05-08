@@ -27,7 +27,8 @@ class C extends React.Component {
       .then(() => {
         resolve();
       }).catch((error) => {
-        reject({ _error: error.message });
+        dispatch(Actions.notifyAlert(error.message));
+        reject();
       });
     });
   }

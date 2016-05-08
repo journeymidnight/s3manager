@@ -5,15 +5,11 @@ import * as Validations from '../../shared/utils/validations';
 const F = (props) => {
   const { fields:
     { name, description },
-    error,
     handleSubmit,
     submitting,
   } = props;
   return (
     <form className="form-horizontal" onSubmit={handleSubmit}>
-      <div className="flash-container">
-        {error && <div className="flash-alert">{error}</div>}
-      </div>
       <div className={name.touched && name.error ? 'form-group has-error' : 'form-group'}>
         <label className="control-label" >名称</label>
         <div className="col-sm-10">

@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import ConsoleHeader from '../components/ConsoleHeader.jsx';
 import ConsoleSidebar from '../components/ConsoleSidebar.jsx';
+import Notify from '../components/Notify.jsx';
 
 const App = (props) => (
   <div>
@@ -9,8 +10,7 @@ const App = (props) => (
     <div className="page-sidebar-expanded page-with-sidebar">
       <ConsoleSidebar />
       <div className="content-wrapper">
-        <div className="flash-container">
-        </div>
+        <Notify />
         {props.children}
       </div>
     </div>
