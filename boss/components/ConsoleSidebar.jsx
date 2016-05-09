@@ -40,7 +40,7 @@ class C extends React.Component {
           </Link>
           <Link className="gitlab-text-container-link" to="/">
             <div className="gitlab-text-container">
-              <h3>LeStack</h3>
+              <h3>{this.props.env.appName}</h3>
             </div>
           </Link>
         </div>
@@ -86,6 +86,7 @@ class C extends React.Component {
 C.propTypes = {
   dispatch: React.PropTypes.func.isRequired,
   auth: React.PropTypes.object,
+  env: React.PropTypes.object,
   routing: React.PropTypes.object,
   t: React.PropTypes.any,
 };
@@ -93,6 +94,7 @@ C.propTypes = {
 function mapStateToProps(store) {
   return {
     auth: store.auth,
+    env: store.env,
     routing: store.routing,
   };
 }
