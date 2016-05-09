@@ -15,7 +15,7 @@ class Boss {
     return this.call('createTenant', tenant);
   }
   modifyTenant(tenant) {
-    return this.call('modifyTenant', tenant);
+    return this.call('modifyTenantAttributes', tenant);
   }
 }
 

@@ -95,7 +95,7 @@ describe('TenantActions', () => {
   it('#requestModifyTenant', () => {
     const scope = mockRequest
     .post('/api/boss/', {
-      action: 'modifyTenant',
+      action: 'modifyTenantAttributes',
       name: 'nameA',
       description: 'descriptionA',
     })
