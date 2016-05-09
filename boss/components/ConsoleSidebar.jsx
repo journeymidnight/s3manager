@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import { translate } from 'react-i18next';
 import NavLink from '../../shared/components/NavLink';
 
 class C extends React.Component {
@@ -30,6 +31,7 @@ class C extends React.Component {
   }
 
   render() {
+    const { t } = this.props;
     return (
       <div className="nicescroll sidebar-expanded sidebar-wrapper" tabIndex="0">
         <div className="header-logo">
@@ -62,7 +64,7 @@ class C extends React.Component {
           </NavLink>
           <NavLink to="/users">
             <i className="fa fa-user fa-fw" />
-            <span>用户</span>
+            <span>{t('sidebarUsers')}</span>
           </NavLink>
           <li className="separate-item" />
           <NavLink to="/admins">
@@ -85,6 +87,7 @@ C.propTypes = {
   dispatch: React.PropTypes.func.isRequired,
   auth: React.PropTypes.object,
   routing: React.PropTypes.object,
+  t: React.PropTypes.any,
 };
 
 function mapStateToProps(store) {
@@ -94,4 +97,4 @@ function mapStateToProps(store) {
   };
 }
 
-export default connect(mapStateToProps)(C);
+export default connect(mapStateToProps)(translate()(C));
