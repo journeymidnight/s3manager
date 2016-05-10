@@ -66,6 +66,7 @@
     "expect-jsx": "^2.5.1",
     "file-loader": "^0.8.5",
     "html-loader": "^0.4.3",
+    "html-webpack-plugin": "^2.16.1",
     "jsdom": "^8.5.0",
     "json-loader": "^0.5.4",
     "mocha": "^2.4.5",
