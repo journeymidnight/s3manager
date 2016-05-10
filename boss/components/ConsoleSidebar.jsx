@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import { translate } from 'react-i18next';
 import NavLink from '../../shared/components/NavLink';
 
 class C extends React.Component {
@@ -30,6 +31,7 @@ class C extends React.Component {
   }
 
   render() {
+    const { t } = this.props;
     return (
       <div className="nicescroll sidebar-expanded sidebar-wrapper" tabIndex="0">
         <div className="header-logo">
@@ -38,7 +40,7 @@ class C extends React.Component {
           </Link>
           <Link className="gitlab-text-container-link" to="/">
             <div className="gitlab-text-container">
-              <h3>LeStack</h3>
+              <h3>{this.props.env.appName}</h3>
             </div>
           </Link>
         </div>
@@ -62,7 +64,7 @@ class C extends React.Component {
           </NavLink>
           <NavLink to="/users">
             <i className="fa fa-user fa-fw" />
-            <span>用户</span>
+            <span>{t('sidebarUsers')}</span>
           </NavLink>
           <li className="separate-item" />
           <NavLink to="/admins">
@@ -84,14 +86,17 @@ class C extends React.Component {
 C.propTypes = {
   dispatch: React.PropTypes.func.isRequired,
   auth: React.PropTypes.object,
+  env: React.PropTypes.object,
   routing: React.PropTypes.object,
+  t: React.PropTypes.any,
 };
 
 function mapStateToProps(store) {
   return {
     auth: store.auth,
+    env: store.env,
     routing: store.routing,
   };
 }
 
-export default connect(mapStateToProps)(C);
+export default connect(mapStateToProps)(translate()(C));

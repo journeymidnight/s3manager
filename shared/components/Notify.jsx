@@ -16,7 +16,6 @@ const C = (props) => {
 };
 
 C.propTypes = {
-  dispatch: React.PropTypes.func.isRequired,
   notify: React.PropTypes.object,
 };
 

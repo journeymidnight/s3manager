@@ -1,11 +1,13 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { Provider } from 'react-redux';
 import { Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
+import { Provider } from 'react-redux';
+import { I18nextProvider } from 'react-i18next';
 
 import DevTools from './components/DevTools';
 import API from './services/api';
+import i18n from './i18n';
 
 const dest = document.getElementById('root');
 
@@ -42,9 +44,9 @@ function renderPage(store, state, routes) {
 
   render((
     <Provider store={store}>
-      <div>
+      <I18nextProvider i18n={i18n}>
         <Router history={history} routes={routes} />
-      </div>
+      </I18nextProvider>
     </Provider>
   ), dest);
   removeLoader();
@@ -55,7 +57,9 @@ function renderPage(store, state, routes) {
     render(
       <Provider store={store} key="provider">
         <div>
-          <Router history={history} routes={routes} />
+          <I18nextProvider i18n={i18n}>
+            <Router history={history} routes={routes} />
+          </I18nextProvider>
           <DevTools />
         </div>
       </Provider>,

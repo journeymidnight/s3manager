@@ -10,15 +10,6 @@ body {
     background: #f1f4f6;
 }
 
-a {
-    color: #333c48;
-
-    &:hover,
-    &:focus {
-        color: #13171b;
-    }
-}
-
 .has-error .help-block, .has-error .control-label, .has-error .radio, .has-error .checkbox, .has-error .radio-inline, .has-error .checkbox-inline, .has-error.radio label, .has-error.checkbox label, .has-error.radio-inline label, .has-error.checkbox-inline label {
     color: inherit;
 }
