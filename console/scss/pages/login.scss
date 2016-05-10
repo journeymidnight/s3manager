@@ -1,11 +1,6 @@
-/* Login Page */
 .login-page {
-  .container {
-    max-width: 960px;
-  }
-
-  .navbar-gitlab .container {
-    max-width: none;
+  .flash-container {
+    margin-bottom: 20px;
   }
 
   .brand-holder {
@@ -35,7 +30,7 @@
   .login-box {
     background: #fafafa;
     border-radius: 10px;
-    box-shadow: 0 0 2px #ccc;
+    border: 1px solid #eee;
     padding: 15px;
 
     .login-heading h3 {
@@ -43,28 +38,5 @@
       line-height: 1.5;
       margin: 0 0 10px;
     }
-
-    .login-footer {
-      margin-top: 10px;
-
-      p:last-child {
-        margin-bottom: 0;
-      }
-    }
-
-    a.forgot {
-      float: right;
-      padding-top: 6px
-    }
-
-    .nav .active a {
-      background: transparent;
-    }
-  }
-
-  @media(min-width: 768px) {
-      label.control-label {
-          width: 100%;
-      }
   }
 }

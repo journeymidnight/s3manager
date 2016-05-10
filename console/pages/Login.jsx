@@ -4,6 +4,7 @@ import * as Actions from '../redux/actions';
 import Header from '../../shared/components/Header';
 import { push } from 'react-router-redux';
 import Auth from '../services/auth';
+import Notify from '../../shared/components/Notify.jsx';
 import LoginForm from '../../shared/forms/LoginForm';
 
 class C extends React.Component {
@@ -28,23 +29,33 @@ class C extends React.Component {
           dispatch(push('/'));
         })
         .catch((error) => {
-          reject({ _error: error.message });
+          reject();
+          dispatch(Actions.notifyAlert(error.message));
         });
       }).catch((error) => {
-        reject({ _error: error.message });
+        reject();
+        dispatch(Actions.notifyAlert(error.message));
       });
     });
   }
-
 
   render() {
     return (
       <div className="login-page">
         <Header />
         <div className="container navless-container">
+          <Notify />
           <div className="content">
             <div className="row">
-              <div className="col-sm-5 pull-right">
+              <div className="col-sm-7 brand-holder pull-left">
+                <h1>
+                  LeStack
+                </h1>
+                <p>
+                  乐视云商业化基础设施云服务 ( LeStack )，提供计算、存储、网络等资源的企业级 IaaS 解决方案, 让企业按需使用高效稳定的云资源，加速产品迭代。
+                </p>
+              </div>
+              <div className="col-sm-5">
                 <div>
                   <div className="prepend-top-20">
                     <div className="login-box">
@@ -59,14 +70,6 @@ class C extends React.Component {
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className="col-sm-7 brand-holder pull-left">
-                <h1>
-                  LeStack
-                </h1>
-                <p>
-                  乐视云商业化基础设施云服务 ( LeStack )，提供计算、存储、网络等资源的企业级 IaaS 解决方案, 让企业按需使用高效稳定的云资源，加速产品迭代。
-                </p>
               </div>
             </div>
           </div>

@@ -23,6 +23,9 @@ describe('AuthActions', () => {
     expect(store.getActions()).toEqual(expectedAction);
   });
 
+  it('#requestLogin', () => {
+  });
+
   it('#requestLogout', () => {
     const expectedActions = [
       { type: ActionTypes.AUTH_LOGOUT },

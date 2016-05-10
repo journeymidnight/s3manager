@@ -1,32 +1,12 @@
 import * as ActionTypes from './constants';
 import { push } from 'react-router-redux';
 import BOSS from '../services/boss';
+import Auth from '../services/auth';
 
 export function extendContext(payload) {
   return {
     type: ActionTypes.EXTEND_CONTEXT,
     payload,
-  };
-}
-
-export function authLogin(context, token) {
-  return {
-    type: ActionTypes.AUTH_LOGIN,
-    context,
-    token,
-  };
-}
-
-export function authLogout() {
-  return {
-    type: ActionTypes.AUTH_LOGOUT,
-  };
-}
-
-export function requestLogout() {
-  return dispatch => {
-    dispatch(authLogout());
-    dispatch(push('/login'));
   };
 }
 
@@ -55,6 +35,47 @@ export function notify(message, type = 'notice', delay = undefined) {
 
 export function notifyAlert(message, delay = undefined) {
   return notify(message, 'alert', delay);
+}
+
+export function authLogin(context, token) {
+  return {
+    type: ActionTypes.AUTH_LOGIN,
+    context,
+    token,
+  };
+}
+
+export function authLogout() {
+  return {
+    type: ActionTypes.AUTH_LOGOUT,
+  };
+}
+
+export function requestLogin(email, password) {
+  return dispatch => {
+    return Auth.authorize(email, password)
+    .promise
+    .then((token) => {
+      Auth.describeContext(token.token)
+      .promise
+      .then((context) => {
+        dispatch(authLogin(context, token));
+        dispatch(push('/'));
+      })
+      .catch((error) => {
+        dispatch(notifyAlert(error.message));
+      });
+    }).catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
+export function requestLogout() {
+  return dispatch => {
+    dispatch(authLogout());
+    dispatch(push('/login'));
+  };
 }
 
 export function requestDescribeTenants() {
