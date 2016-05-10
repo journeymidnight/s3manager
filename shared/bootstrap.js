@@ -83,12 +83,12 @@ export default function bootstrap(callback) {
   })
   .catch((error) => {
     const errorPage = (
-      <div>
+      <div className="container">
         <h1>服务暂时不可用。</h1>
         <pre>
-        Url: {error.config.url}<br />
-        Status: {error.status}<br />
-        Message: {JSON.stringify(error.data)}
+          RetCode: {JSON.stringify(error.retCode)}
+          <br />
+          Message: {JSON.stringify(error.message)}
         </pre>
       </div>
     );

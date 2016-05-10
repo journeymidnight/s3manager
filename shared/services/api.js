@@ -42,7 +42,7 @@ export const call = (method, url, payload) => {
     .catch((error) => {
       reject({
         retCode: -1,
-        message: error.toString(),
+        message: error.data,
         data: null,
       });
     });
