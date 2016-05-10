@@ -5,6 +5,9 @@ import * as ActionTypes from '../constants';
 import { mockStore, mockRequest } from '../../../shared/__tests__/mock';
 import i18n from '../../../shared/i18n';
 
+const tenantName = 'nameA';
+const tenantDescription = 'descriptionA';
+
 describe('TenantActions', () => {
   afterEach(() => {
     nock.cleanAll();
@@ -45,57 +48,87 @@ describe('TenantActions', () => {
     });
   });
 
-  it('#requestCreateTenant', (done) => {
+  it('#requestCreateTenantError', (done) => {
     const scope = mockRequest
     .post('/api/boss/', {
       action: 'createTenant',
-      name: 'nameA',
-      description: 'descriptionA',
+      name: tenantName,
     })
     .reply(200, {
-      data: {
-        tenantId: 'nameA',
-      },
-      retCode: 0,
-      message: null,
+      retCode: 1100,
+      message: 'Invalid',
     });
-
-    const expectedActions = [{
-      payload: {
-        tenant: {
-          id: 'nameA',
-        },
-      },
-      type: ActionTypes.EXTEND_CONTEXT,
-    }, {
-      payload: {
-        args: [
-          '/tenants',
-        ],
-        method: 'push',
-      },
-      type: '@@router/CALL_HISTORY_METHOD',
-    }, {
-      payload: {
-        notify: {
-          message: i18n.t('addSuccessed'),
-          type: 'notice',
-        },
-      },
-      type: ActionTypes.EXTEND_CONTEXT,
-
-    }];
 
     const store = mockStore();
 
     return store
     .dispatch(Actions.requestCreateTenant({
-      name: 'nameA',
-      description: 'descriptionA',
+      name: tenantName,
+      description: tenantDescription,
     }))
     .then(() => {
       scope.isDone();
-      expect(store.getActions()).toEqual(expectedActions);
+      expect(store.getActions()).toEqual([{
+        payload: {
+          notify: {
+            message: 'Invalid',
+            type: 'alert',
+          },
+        },
+        type: ActionTypes.EXTEND_CONTEXT,
+      }]);
+      done();
+    });
+  });
+
+  it('#requestCreateTenant', (done) => {
+    const scope = mockRequest
+    .post('/api/boss/', {
+      action: 'createTenant',
+      name: tenantName,
+      description: tenantDescription,
+    })
+    .reply(200, {
+      data: {
+        tenantId: tenantName,
+      },
+      retCode: 0,
+      message: null,
+    });
+
+    const store = mockStore();
+
+    return store
+    .dispatch(Actions.requestCreateTenant({
+      name: tenantName,
+      description: tenantDescription,
+    }))
+    .then(() => {
+      scope.isDone();
+      expect(store.getActions()).toEqual([{
+        payload: {
+          tenant: {
+            id: tenantName,
+          },
+        },
+        type: ActionTypes.EXTEND_CONTEXT,
+      }, {
+        payload: {
+          args: [
+            '/tenants',
+          ],
+          method: 'push',
+        },
+        type: '@@router/CALL_HISTORY_METHOD',
+      }, {
+        payload: {
+          notify: {
+            message: i18n.t('addSuccessed'),
+            type: 'notice',
+          },
+        },
+        type: ActionTypes.EXTEND_CONTEXT,
+      }]);
       done();
     });
   });

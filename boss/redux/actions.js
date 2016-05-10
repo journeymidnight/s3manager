@@ -57,7 +57,7 @@ export function requestLogin(email, password) {
     return Auth.authorize(email, password)
     .promise
     .then((token) => {
-      Auth.describeContext(token.token)
+      return Auth.describeContext(token.token)
       .promise
       .then((context) => {
         dispatch(authLogin(context, token));
@@ -121,7 +121,10 @@ export function requestCreateTenant(tenant) {
         },
       }));
       dispatch(push('/tenants'));
-      dispatch(notify(i18n.t('addSuccessed')));
+      return dispatch(notify(i18n.t('addSuccessed')));
+    })
+    .catch((error) => {
+      return dispatch(notifyAlert(error.message));
     });
   };
 }
