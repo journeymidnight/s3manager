@@ -10,7 +10,8 @@ class Auth {
   describeContext(token) {
     return call('post', '/boss/', {
       action: 'describeContext',
-      token,
+    }, (options) => {
+      options.headers['X-Le-Token'] = token;
     });
   }
 }

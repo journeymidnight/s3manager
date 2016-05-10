@@ -2,7 +2,7 @@ import axios from 'axios';
 import store from 'store';
 import Promise from 'promise';
 
-export const call = (method, url, payload) => {
+export const call = (method, url, payload, hook) => {
   const token = store.get('token');
   const headers = {
     'Content-Type': 'application/json',
@@ -12,12 +12,18 @@ export const call = (method, url, payload) => {
     headers['X-Le-Token'] = token.token;
   }
 
-  const promise = axios({
+  const options = {
     url: `/api${url}`,
     method,
     data: payload,
     headers,
-  });
+  };
+
+  if (hook) {
+    hook(options);
+  }
+
+  const promise = axios(options);
 
   let hasCanceled = false;
 
