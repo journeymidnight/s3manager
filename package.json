@@ -5,7 +5,7 @@
     "lint": "eslint console boss shared server",
     "test": "mocha --compilers js:babel-register --require './shared/__tests__/mock.js' 'shared/**/__tests__/*.spec.js' 'console/**/__tests__/*.spec.js' 'boss/**/__tests__/*.spec.js'",
     "clean": "rimraf dist",
-    "build": "webpack --config webpack.config.prod.js",
+    "build": "webpack --config webpack.config.prod.js && cp -r asset dist/console  && cp -r asset dist/boss",
     "start": "babel-watch -w ./server index.js"
   },
   "pre-commit": [

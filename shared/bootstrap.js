@@ -84,7 +84,7 @@ export default function bootstrap(callback) {
   .catch((error) => {
     const errorPage = (
       <div className="container">
-        <h1>服务暂时不可用。</h1>
+        <h3>服务暂时不可用。</h3>
         <pre>
           RetCode: {JSON.stringify(error.retCode)}
           <br />
