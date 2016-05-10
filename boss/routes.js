@@ -8,7 +8,16 @@ import Logout from './pages/Logout.jsx';
 import Tenants from './pages/Tenants.jsx';
 import TenantNew from './pages/TenantNew.jsx';
 import Tenant from './pages/Tenant.jsx';
-import Settings from './pages/Settings.jsx';
+import Users from './pages/Users.jsx';
+import UserNew from './pages/UserNew.jsx';
+import User from './pages/User.jsx';
+import Admins from './pages/Admins.jsx';
+import AdminNew from './pages/AdminNew.jsx';
+import Admin from './pages/Admin.jsx';
+import Regions from './pages/Regions.jsx';
+import RegionNew from './pages/RegionNew.jsx';
+import Region from './pages/Region.jsx';
+import Profile from './pages/Profile.jsx';
 
 export default function configureRoutes(store) {
   function requireAuth(nextState, replace) {
@@ -26,15 +35,27 @@ export default function configureRoutes(store) {
       <Route path="/logout" component={Logout} />
       <Route path="/" component={App} onEnter={requireAuth} >
         <IndexRoute component={Home} />
-        <Route path="settings" component={Settings} />
-        <Route path="admins" component={Settings} />
-        <Route path="regions" component={Settings} />
+        <Route path="profile" component={Profile} />
+        <Route path="admins" >
+          <IndexRoute component={Admins} />
+          <Route path="new" component={AdminNew} />
+          <Route path=":adminId" component={Admin} />
+        </Route>
+        <Route path="regions" >
+          <IndexRoute component={Regions} />
+          <Route path="new" component={RegionNew} />
+          <Route path=":regionId" component={Region} />
+        </Route>
         <Route path="tenants" >
           <IndexRoute component={Tenants} />
           <Route path="new" component={TenantNew} />
           <Route path=":tenantId" component={Tenant} />
         </Route>
-        <Route path="users" component={Settings} />
+        <Route path="users" >
+          <IndexRoute component={Users} />
+          <Route path="new" component={UserNew} />
+          <Route path=":userId" component={User} />
+        </Route>
       </Route>
     </Route>
   );

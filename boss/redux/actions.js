@@ -111,3 +111,58 @@ export function requestModifyTenant(tenant) {
     });
   };
 }
+
+export function requestDescribeUsers() {
+  return dispatch => {
+    return BOSS
+    .describeUsers()
+    .promise
+    .then((payload) => {
+      dispatch(extendContext(payload));
+    });
+  };
+}
+
+export function requestDescribeUser(userId) {
+  return dispatch => {
+    return BOSS
+    .describeUsers({
+      users: [userId],
+    })
+    .promise
+    .then((data) => {
+      dispatch(extendContext({
+        user: data.userSet[0],
+      }));
+    });
+  };
+}
+
+export function requestCreateUser(user) {
+  return dispatch => {
+    return BOSS
+    .createUser(user)
+    .promise
+    .then((res) => {
+      dispatch(extendContext({
+        user: {
+          id: res.userId,
+        },
+      }));
+      dispatch(push('/users'));
+      dispatch(notify('Created!'));
+    });
+  };
+}
+
+export function requestModifyUser(user) {
+  return (dispatch) => {
+    return BOSS
+    .modifyUser(user)
+    .promise
+    .then(() => {
+      dispatch(notify('Saved!'));
+      return dispatch(requestDescribeUser(user.userId));
+    });
+  };
+}

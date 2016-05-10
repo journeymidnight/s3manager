@@ -1,6 +1,6 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import NavLink from '../../shared/components/NavLink';
 
@@ -56,11 +56,11 @@ class C extends React.Component {
           </li>
           <NavLink to="/regions">
             <i className="fa fa-codepen fa-fw" />
-            <span>区域</span>
+            <span>{t('sidebarRegions')}</span>
           </NavLink>
           <NavLink to="/tenants">
             <i className="fa fa-cube fa-fw" />
-            <span>租户</span>
+            <span>{t('sidebarTenants')}</span>
           </NavLink>
           <NavLink to="/users">
             <i className="fa fa-user fa-fw" />
@@ -69,7 +69,7 @@ class C extends React.Component {
           <li className="separate-item" />
           <NavLink to="/admins">
             <i className="fa fa-meh-o fa-fw" />
-            <span>管理员</span>
+            <span>{t('sidebarAdmins')}</span>
           </NavLink>
         </ul>
         <div className="collapse-nav">

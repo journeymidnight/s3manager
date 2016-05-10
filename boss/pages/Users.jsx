@@ -8,24 +8,24 @@ class C extends React.Component {
 
   componentDidMount() {
     const { dispatch } = this.props;
-    dispatch(Actions.requestDescribeTenants());
+    dispatch(Actions.requestDescribeUsers());
   }
 
   render() {
     const { t } = this.props;
-    const tenants = this.props.context.tenantSet && this.props.context.tenantSet.map((tenant) => {
+    const users = this.props.context.userSet && this.props.context.userSet.map((user) => {
       return (
-        <tr key={tenant.tenantId}>
-          <td>{tenant.tenantId}</td>
+        <tr key={user.userId}>
+          <td>{user.userId}</td>
           <td>
-            <Link to={`/tenants/${tenant.tenantId}`}>
+            <Link to={`/users/${user.userId}`}>
               <strong>
-                {tenant.name}
+                {user.username}
               </strong>
             </Link>
           </td>
-          <td>{tenant.description}</td>
-          <td className="light">{tenant.created}</td>
+          <td>{user.email}</td>
+          <td className="light">{user.created}</td>
         </tr>
       );
     });
@@ -34,16 +34,16 @@ class C extends React.Component {
         <div className="content">
           <div className="clearfix">
             <h3 className="page-title">
-              {t('tenantManage')}
+              {t('userManage')}
             </h3>
             <div className="top-area">
               <div className="nav-text">
                 <p className="light">
-                  {t('tenantManageDescription')}
+                  {t('userManageDescription')}
                 </p>
               </div>
               <div className="nav-controls">
-                <Link className="btn btn-new" to="/tenants/new">
+                <Link className="btn btn-new" to="/users/new">
                   <i className="fa fa-plus"></i>&nbsp;{t('add')}
                 </Link>
               </div>
@@ -53,13 +53,13 @@ class C extends React.Component {
                 <thead>
                   <tr>
                     <th>{t('id')}</th>
-                    <th>{t('name')}</th>
-                    <th>{t('description')}</th>
+                    <th>{t('username')}</th>
+                    <th>{t('email')}</th>
                     <th>{t('created')}</th>
                   </tr>
                 </thead>
                 <tbody>
-                {tenants}
+                {users}
                 </tbody>
               </table>
             </div>

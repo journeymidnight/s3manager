@@ -27,14 +27,13 @@ class C extends React.Component {
             <div className="navbar-collapse collapse">
               <ul className="nav navbar-nav pull-right">
                 <li>
-                  <Link to="/">
-                    {this.props.auth.username}
+                  <Link to="/profile">
+                    <i className="fa fa-user fa-fw"></i>
                   </Link>
                 </li>
                 <li>
                   <Link className="logout" to="/logout">
-                    <i className="fa fa-sign-out">
-                    </i>
+                    <i className="fa fa-sign-out"></i>
                   </Link>
                 </li>
               </ul>

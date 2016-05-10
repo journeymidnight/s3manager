@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import { reduxForm } from 'redux-form';
+import { translate } from 'react-i18next';
 import * as Validations from '../utils/validations';
 
 const F = (props) => {
@@ -9,35 +10,29 @@ const F = (props) => {
     handleSubmit,
     submitting,
   } = props;
+  const { t } = props;
   return (
     <form onSubmit={handleSubmit}>
       <div className="flash-container">
         {error && <div className="flash-alert">{error}</div>}
       </div>
       <div className={email.touched && email.error ? 'form-group has-error' : 'form-group'}>
-        <label className="control-label" >邮箱</label>
-        <input type="email" className="form-control" placeholder="输入邮箱" {...email} />
+        <label className="control-label" >{t('email')}</label>
+        <input type="email" className="form-control" {...email} />
         {email.touched && email.error && <div className="text-danger"><small>{email.error}</small></div>}
       </div>
       <div className={password.touched && password.error ? 'form-group has-error' : 'form-group'}>
-        <label className="control-label" >密码</label>
-        <input type="password" className="form-control" placeholder="输入密码" {...password} />
+        <label className="control-label" >{t('password')}</label>
+        <input type="password" className="form-control" {...password} />
         {password.touched && password.error && <div className="text-danger"><small>{password.error}</small></div>}
       </div>
       <div className="prepend-top-20">
         <button type="submit" className="btn btn-create" disabled={submitting}>
-          {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} 登录
+          {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('login')}
         </button>
       </div>
     </form>
   );
-};
-
-F.propTypes = {
-  fields: PropTypes.object.isRequired,
-  error: PropTypes.string,
-  handleSubmit: PropTypes.func.isRequired,
-  submitting: PropTypes.bool.isRequired,
 };
 
 F.validate = values => {
@@ -47,8 +42,16 @@ F.validate = values => {
   return errors;
 };
 
+F.propTypes = {
+  fields: PropTypes.object.isRequired,
+  error: PropTypes.string,
+  handleSubmit: PropTypes.func.isRequired,
+  submitting: PropTypes.bool.isRequired,
+  t: React.PropTypes.any,
+};
+
 export default reduxForm({
   form: 'login',
   fields: ['email', 'password'],
   validate: F.validate,
-})(F);
+})(translate()(F));

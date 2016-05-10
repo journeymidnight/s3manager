@@ -1,4 +1,36 @@
 {
     "appName": "LeStack",
-    "sidebarUsers": "用户"
+
+    "add": "添加",
+    "save": "保存",
+    "login": "登录",
+    "cancel": "取消",
+
+    "id": "ID",
+    "name": "名称",
+    "username": "用户名",
+    "email": "邮箱",
+    "password": "密码",
+    "description": "描述",
+    "created": "描述",
+
+    "region": "区域",
+    "tenant": "租户",
+    "user": "用户",
+    "admin": "管理员",
+
+    "addSuccessed": "添加成功",
+    "saveSuccessed": "保存成功",
+    "deleteSuccessed": "删除成功",
+
+    "userManage": "用户管理",
+    "userManageDescription": "添加、删除和修改用户信息。",
+
+    "tenantManage": "租户管理",
+    "tenantManageDescription": "可根据不同的企业或团队划分独立的租户, 分配相应的资源配额。",
+
+    "sidebarRegions": "区域",
+    "sidebarTenants": "租户",
+    "sidebarUsers": "用户",
+    "sidebarAdmins": "管理员"
 }
