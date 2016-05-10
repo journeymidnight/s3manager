@@ -2,6 +2,7 @@ import * as ActionTypes from './constants';
 import { push } from 'react-router-redux';
 import BOSS from '../services/boss';
 import Auth from '../services/auth';
+import i18n from '../../shared/i18n';
 
 export function extendContext(payload) {
   return {
@@ -66,7 +67,11 @@ export function requestLogin(email, password) {
         dispatch(notifyAlert(error.message));
       });
     }).catch((error) => {
-      dispatch(notifyAlert(error.message));
+      if (error.retCode === 1200) {
+        dispatch(notifyAlert(i18n.t('authorizeFailed')));
+      } else {
+        dispatch(notifyAlert(error.message));
+      }
     });
   };
 }
@@ -116,7 +121,7 @@ export function requestCreateTenant(tenant) {
         },
       }));
       dispatch(push('/tenants'));
-      dispatch(notify('Created!'));
+      dispatch(notify(i18n.t('addSuccessed')));
     });
   };
 }
@@ -127,7 +132,7 @@ export function requestModifyTenant(tenant) {
     .modifyTenant(tenant)
     .promise
     .then(() => {
-      dispatch(notify('Saved!'));
+      dispatch(notify(i18n.t('saveSuccessed')));
       return dispatch(requestDescribeTenant(tenant.tenantId));
     });
   };
@@ -171,7 +176,7 @@ export function requestCreateUser(user) {
         },
       }));
       dispatch(push('/users'));
-      dispatch(notify('Created!'));
+      dispatch(notify(i18n.t('addSuccessed')));
     });
   };
 }
@@ -182,7 +187,7 @@ export function requestModifyUser(user) {
     .modifyUser(user)
     .promise
     .then(() => {
-      dispatch(notify('Saved!'));
+      dispatch(notify(i18n.t('saveSuccessed')));
       return dispatch(requestDescribeUser(user.userId));
     });
   };

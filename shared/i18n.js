@@ -1,9 +1,7 @@
 import i18n from 'i18next';
 import XHR from 'i18next-xhr-backend';
 
-i18n
-.use(XHR)
-.init({
+export const i18nextOptions = {
   fallbackLng: 'zh',
   ns: ['common'],
   defaultNS: 'common',
@@ -14,6 +12,10 @@ i18n
   backend: {
     loadPath: '/asset/locales/{{lng}}/{{ns}}.json',
   },
-});
+};
+
+i18n
+.use(XHR)
+.init(i18nextOptions);
 
 export default i18n;

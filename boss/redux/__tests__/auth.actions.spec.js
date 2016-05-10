@@ -1,9 +1,14 @@
 import expect from 'expect';
+import nock from 'nock';
 import * as Actions from '../actions';
 import * as ActionTypes from '../constants';
-import { mockStore } from '../../../shared/__tests__/mock';
+import { mockStore, mockRequest } from '../../../shared/__tests__/mock';
 
 describe('AuthActions', () => {
+  afterEach(() => {
+    nock.cleanAll();
+  });
+
   it('#authLogin', () => {
     const token = {
     };
@@ -23,7 +28,32 @@ describe('AuthActions', () => {
     expect(store.getActions()).toEqual(expectedAction);
   });
 
-  it('#requestLogin', () => {
+  it('#requestLogin', (done) => {
+    const email = 'emailA';
+    const password = 'passwordA';
+    const token = 'tokenA';
+
+    const scope = mockRequest
+    .post('/api/auth/authorize', {
+      email,
+      password,
+    })
+    .reply(200, {
+      data: {
+        token,
+      },
+      retCode: 0,
+      message: null,
+    });
+
+    const store = mockStore();
+
+    return store
+    .dispatch(Actions.requestLogin(email, password))
+    .then(() => {
+      scope.isDone();
+      done();
+    });
   });
 
   it('#requestLogout', () => {

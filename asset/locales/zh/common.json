@@ -22,6 +22,9 @@
     "addSuccessed": "添加成功",
     "saveSuccessed": "保存成功",
     "deleteSuccessed": "删除成功",
+    "authorizeFailed": "验证失败",
+    "addFailed": "添加失败",
+    "saveFailed": "保存失败",
 
     "userManage": "用户管理",
     "userManageDescription": "添加、删除和修改用户信息。",

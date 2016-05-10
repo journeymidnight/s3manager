@@ -1,10 +1,16 @@
 import expect from 'expect';
+import nock from 'nock';
 import * as Actions from '../actions';
 import * as ActionTypes from '../constants';
 import { mockStore, mockRequest } from '../../../shared/__tests__/mock';
+import i18n from '../../../shared/i18n';
 
 describe('TenantActions', () => {
-  it('#requestDescribeTenants', () => {
+  afterEach(() => {
+    nock.cleanAll();
+  });
+
+  it('#requestDescribeTenants', (done) => {
     const rep = {
       totalCount: 9,
       tenantSet: [{
@@ -35,10 +41,11 @@ describe('TenantActions', () => {
     .then(() => {
       scope.isDone();
       expect(store.getActions()).toEqual(expectedActions);
+      done();
     });
   });
 
-  it('#requestCreateTenant', () => {
+  it('#requestCreateTenant', (done) => {
     const scope = mockRequest
     .post('/api/boss/', {
       action: 'createTenant',
@@ -71,7 +78,7 @@ describe('TenantActions', () => {
     }, {
       payload: {
         notify: {
-          message: 'Created!',
+          message: i18n.t('addSuccessed'),
           type: 'notice',
         },
       },
@@ -89,10 +96,11 @@ describe('TenantActions', () => {
     .then(() => {
       scope.isDone();
       expect(store.getActions()).toEqual(expectedActions);
+      done();
     });
   });
 
-  it('#requestModifyTenant', () => {
+  it('#requestModifyTenant', (done) => {
     const scope = mockRequest
     .post('/api/boss/', {
       action: 'modifyTenantAttributes',
@@ -126,7 +134,7 @@ describe('TenantActions', () => {
     const expectedActions = [{
       payload: {
         notify: {
-          message: 'Saved!',
+          message: i18n.t('saveSuccessed'),
           type: 'notice',
         },
       },
@@ -152,6 +160,7 @@ describe('TenantActions', () => {
       scope.isDone();
       scope2.isDone();
       expect(store.getActions()).toEqual(expectedActions);
+      done();
     });
   });
 });
