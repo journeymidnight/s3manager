@@ -25,7 +25,7 @@ export function notify(message, type = 'notice', delay = undefined) {
       }, delay);
     }
 
-    return dispatch(extendContext({
+    dispatch(extendContext({
       notify: {
         message,
         type,
@@ -66,7 +66,8 @@ export function requestLogin(email, password) {
       .catch((error) => {
         dispatch(notifyAlert(error.message));
       });
-    }).catch((error) => {
+    })
+    .catch((error) => {
       if (error.retCode === 1200) {
         dispatch(notifyAlert(i18n.t('authorizeFailed')));
       } else {
@@ -90,6 +91,9 @@ export function requestDescribeTenants() {
     .promise
     .then((payload) => {
       dispatch(extendContext(payload));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
     });
   };
 }
@@ -105,6 +109,9 @@ export function requestDescribeTenant(tenantId) {
       dispatch(extendContext({
         tenant: data.tenantSet[0],
       }));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
     });
   };
 }
@@ -121,10 +128,10 @@ export function requestCreateTenant(tenant) {
         },
       }));
       dispatch(push('/tenants'));
-      return dispatch(notify(i18n.t('addSuccessed')));
+      dispatch(notify(i18n.t('addSuccessed')));
     })
     .catch((error) => {
-      return dispatch(notifyAlert(error.message));
+      dispatch(notifyAlert(error.message));
     });
   };
 }
@@ -137,6 +144,9 @@ export function requestModifyTenant(tenant) {
     .then(() => {
       dispatch(notify(i18n.t('saveSuccessed')));
       return dispatch(requestDescribeTenant(tenant.tenantId));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
     });
   };
 }
@@ -148,6 +158,9 @@ export function requestDescribeUsers() {
     .promise
     .then((payload) => {
       dispatch(extendContext(payload));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
     });
   };
 }
@@ -163,6 +176,9 @@ export function requestDescribeUser(userId) {
       dispatch(extendContext({
         user: data.userSet[0],
       }));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
     });
   };
 }
@@ -172,14 +188,12 @@ export function requestCreateUser(user) {
     return BOSS
     .createUser(user)
     .promise
-    .then((res) => {
-      dispatch(extendContext({
-        user: {
-          id: res.userId,
-        },
-      }));
+    .then(() => {
       dispatch(push('/users'));
       dispatch(notify(i18n.t('addSuccessed')));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
     });
   };
 }
@@ -192,6 +206,130 @@ export function requestModifyUser(user) {
     .then(() => {
       dispatch(notify(i18n.t('saveSuccessed')));
       return dispatch(requestDescribeUser(user.userId));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
+export function requestDescribeAdmins() {
+  return dispatch => {
+    return BOSS
+    .describeAdmins()
+    .promise
+    .then((payload) => {
+      dispatch(extendContext(payload));
+    });
+  };
+}
+
+export function requestDescribeAdmin(adminId) {
+  return dispatch => {
+    return BOSS
+    .describeAdmins({
+      admins: [adminId],
+    })
+    .promise
+    .then((data) => {
+      dispatch(extendContext({
+        admin: data.adminSet[0],
+      }));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
+export function requestCreateAdmin(admin) {
+  return dispatch => {
+    return BOSS
+    .createAdmin(admin)
+    .promise
+    .then(() => {
+      dispatch(push('/admins'));
+      dispatch(notify(i18n.t('addSuccessed')));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
+export function requestModifyAdmin(admin) {
+  return (dispatch) => {
+    return BOSS
+    .modifyAdmin(admin)
+    .promise
+    .then(() => {
+      dispatch(notify(i18n.t('saveSuccessed')));
+      return dispatch(requestDescribeAdmin(admin.adminId));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
+export function requestDescribeRegions() {
+  return dispatch => {
+    return BOSS
+    .describeRegions()
+    .promise
+    .then((payload) => {
+      dispatch(extendContext(payload));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
+export function requestDescribeRegion(regionId) {
+  return dispatch => {
+    return BOSS
+    .describeRegions({
+      regions: [regionId],
+    })
+    .promise
+    .then((data) => {
+      dispatch(extendContext({
+        region: data.regionSet[0],
+      }));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
+export function requestCreateRegion(region) {
+  return dispatch => {
+    return BOSS
+    .createRegion(region)
+    .promise
+    .then(() => {
+      dispatch(push('/regions'));
+      dispatch(notify(i18n.t('addSuccessed')));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
+export function requestModifyRegion(region) {
+  return (dispatch) => {
+    return BOSS
+    .modifyRegion(region)
+    .promise
+    .then(() => {
+      dispatch(notify(i18n.t('saveSuccessed')));
+      return dispatch(requestDescribeRegion(region.regionId));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
     });
   };
 }
