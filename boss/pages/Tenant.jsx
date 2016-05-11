@@ -67,6 +67,7 @@ class C extends React.Component {
 
     this.onSave = this.onSave.bind(this);
     this.onCreateRole = this.onCreateRole.bind(this);
+    this.onDeleteRole = this.onDeleteRole.bind(this);
   }
 
   onCreateRole(values, dispatch) {
@@ -92,6 +93,13 @@ class C extends React.Component {
         reject();
       });
     });
+  }
+
+  onDeleteRole(role) {
+    return () => {
+      const { dispatch } = this.props;
+      dispatch(TenantActions.requestDeleteTenantRole(this.tenantId, role.userId));
+    };
   }
 
   onSave(values, dispatch) {
@@ -130,6 +138,7 @@ class C extends React.Component {
               <th>{t('username')}</th>
               <th>{t('email')}</th>
               <th>{t('role')}</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -148,6 +157,11 @@ class C extends React.Component {
                 <td>
                 {role.role === tenantRoleAdmin && t('tenantRoleAdmin')}
                 {role.role === tenantRoleUser && t('tenantRoleUser')}
+                </td>
+                <td>
+                  <button onClick={this.onDeleteRole(role)} >
+                    <i className="fa fa-cross" />
+                  </button>
                 </td>
               </tr>
             );
