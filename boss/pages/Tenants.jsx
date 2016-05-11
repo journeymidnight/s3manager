@@ -1,10 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { connect } from 'react-redux';
-import { translate } from 'react-i18next';
+import Page, { attach } from '../../shared/pages/Page';
 import * as TenantActions from '../redux/actions.tenant';
 
-class C extends React.Component {
+class C extends Page {
 
   componentDidMount() {
     const { dispatch, routerKey } = this.props;
@@ -70,18 +69,4 @@ class C extends React.Component {
   }
 }
 
-C.propTypes = {
-  dispatch: React.PropTypes.func.isRequired,
-  context: React.PropTypes.object,
-  t: React.PropTypes.any,
-  routerKey: React.PropTypes.string,
-};
-
-function mapStateToProps(state) {
-  return {
-    context: state.context,
-    routerKey: state.routing.locationBeforeTransitions.key,
-  };
-}
-
-export default connect(mapStateToProps)(translate()(C));
+export default attach(C);
