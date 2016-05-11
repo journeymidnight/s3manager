@@ -41,11 +41,11 @@ class C extends React.Component {
             </a>
           </li>
           <NavLink to="/instances">
-            <i className="fa fa-desktop fa-fw" />
+            <i className="fa fa-server fa-fw" />
             <span>{t('sidebarInstance')}</span>
           </NavLink>
           <NavLink to="/volumes">
-            <i className="fa fa-database fa-fw" />
+            <i className="fa fa-hdd-o fa-fw" />
             <span>{t('sidebarVolume')}</span>
           </NavLink>
           <NavLink to="/vxnets">

@@ -60,7 +60,7 @@ class C extends React.Component {
         </ul>
         <div className="collapse-nav">
           <a className="toggle-nav-collapse" href="#">
-            <i className="fa fa-angle-left">
+            <i className="fa fa-angle-right">
             </i>
           </a>
         </div>

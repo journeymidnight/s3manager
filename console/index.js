@@ -7,6 +7,8 @@ import configureRoutes from './routes';
 import bootstrap from '../shared/bootstrap';
 
 bootstrap((token, state, callback) => {
+  document.title = state.env.appName;
+
   let store = configureStore(state);
   let routes = configureRoutes(store);
 

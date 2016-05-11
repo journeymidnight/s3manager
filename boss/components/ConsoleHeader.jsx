@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { translate } from 'react-i18next';
 import { Link } from 'react-router';
 
 class C extends React.Component {
@@ -13,6 +14,7 @@ class C extends React.Component {
     });
   }
   render() {
+    const { t } = this.props;
     return (
       <header className="header-expanded navbar navbar-fixed-top navbar-gitlab">
         <div className="container-fluid">
@@ -39,6 +41,7 @@ class C extends React.Component {
               </ul>
             </div>
             <h1 className="title">
+              {t('boss')}
             </h1>
           </div>
         </div>
@@ -50,6 +53,7 @@ class C extends React.Component {
 C.propTypes = {
   dispatch: React.PropTypes.func.isRequired,
   auth: React.PropTypes.object,
+  t: React.PropTypes.any,
 };
 
 function mapStateToProps(state) {
@@ -58,4 +62,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(C);
+export default connect(mapStateToProps)(translate()(C));

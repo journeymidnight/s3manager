@@ -7,6 +7,9 @@ import configureRoutes from './routes';
 import bootstrap from '../shared/bootstrap';
 
 bootstrap((token, state, callback) => {
+  document.title = `${state.env.appName} | Boss`;
+  window.$('body').toggleClass('ui_charcoal ui_boss');
+
   let store = configureStore(state);
   let routes = configureRoutes(store);
 
