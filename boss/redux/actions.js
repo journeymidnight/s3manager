@@ -4,10 +4,11 @@ import BOSS from '../services/boss';
 import Auth from '../services/auth';
 import i18n from '../../shared/i18n';
 
-export function extendContext(payload) {
+export function extendContext(payload, routerKey = undefined) {
   return {
     type: ActionTypes.EXTEND_CONTEXT,
     payload,
+    routerKey,
   };
 }
 

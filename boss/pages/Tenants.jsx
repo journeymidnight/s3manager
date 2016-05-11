@@ -7,8 +7,8 @@ import * as TenantActions from '../redux/actions.tenant';
 class C extends React.Component {
 
   componentDidMount() {
-    const { dispatch } = this.props;
-    dispatch(TenantActions.requestDescribeTenants());
+    const { dispatch, routerKey } = this.props;
+    dispatch(TenantActions.requestDescribeTenants(routerKey));
   }
 
   render() {
@@ -74,11 +74,13 @@ C.propTypes = {
   dispatch: React.PropTypes.func.isRequired,
   context: React.PropTypes.object,
   t: React.PropTypes.any,
+  routerKey: React.PropTypes.string,
 };
 
 function mapStateToProps(state) {
   return {
     context: state.context,
+    routerKey: state.routing.locationBeforeTransitions.key,
   };
 }
 

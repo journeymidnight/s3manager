@@ -40,6 +40,9 @@ export function rootReducer(state = {}, action) {
       return reducers(newState, action);
 
     case ActionTypes.EXTEND_CONTEXT:
+      if (action.routerKey && action.routerKey !== state.routing.locationBeforeTransitions.key) {
+        return newState;
+      }
       newState.context = Object.assign({}, newState.context);
       newState.context = Object.assign(newState.context, action.payload);
       return newState;
