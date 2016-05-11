@@ -18,7 +18,10 @@ nock.disableNetConnect();
 const middlewares = [
   thunkMiddleware,
 ];
-export const mockStore = configureMockStore(middlewares);
+export function mockStore(reducer) {
+  const store = configureMockStore(middlewares)(reducer);
+  return store;
+}
 
 export const mockRequest = nock('http://localhost:80');
 

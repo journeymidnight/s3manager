@@ -1,5 +1,8 @@
 import { call as rawCall } from '../../shared/services/api';
 
+export const tenantRoleAdmin = 1;
+export const tenantRoleUser = 2;
+
 class Boss {
   call(action, params) {
     const payload = Object.assign(params, {

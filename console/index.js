@@ -18,12 +18,12 @@ bootstrap((token, state, callback) => {
 
       store = configureStore(state);
       routes = configureRoutes(store);
-      callback(store, state, routes);
+      callback(store, routes);
     })
     .catch(() => {
-      callback(store, state, routes);
+      callback(store, routes);
     });
   } else {
-    callback(store, state, routes);
+    callback(store, routes);
   }
 });

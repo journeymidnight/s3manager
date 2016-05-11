@@ -2,9 +2,58 @@ import React from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
+import { reduxForm } from 'redux-form';
+import { tenantRoleAdmin, tenantRoleUser } from '../services/boss';
 import * as Actions from '../redux/actions';
+import * as Validations from '../../shared/utils/validations';
 import TenantForm from '../forms/TenantForm';
-import UserSelectForm from '../forms/UserSelectForm';
+
+const F = (props) => {
+  const { fields:
+    { email, role },
+    handleSubmit,
+    submitting,
+  } = props;
+  const { t } = props;
+  return (
+    <form className="form-inline" onSubmit={handleSubmit}>
+      <div className="form-group append-right-5">
+        <input type="email" className="form-control" placeholder={t('formUserSelectForm.typeEmail')} {...email} />
+      </div>
+      <div className="form-group append-right-5">
+        <select className="form-control" {...role}>
+          <option value={tenantRoleAdmin.toString()}>{t('tenantRoleAdmin')}</option>
+          <option value={tenantRoleUser.toString()}>{t('tenantRoleUser')}</option>
+        </select>
+      </div>
+      <button type="submit" className="btn btn-save" disabled={email.error || submitting}>
+        {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('add')}
+      </button>
+    </form>
+  );
+};
+
+F.validate = values => {
+  const errors = {};
+  errors.email = Validations.required(values.email);
+  errors.role = Validations.required(values.role);
+  return errors;
+};
+
+F.propTypes = {
+  fields: React.PropTypes.object.isRequired,
+  error: React.PropTypes.string,
+  handleSubmit: React.PropTypes.func.isRequired,
+  submitting: React.PropTypes.bool.isRequired,
+  t: React.PropTypes.any,
+};
+
+const UserSelectForm = reduxForm({
+  form: 'UserSelectForm',
+  fields: ['email', 'role'],
+  initialValues: { role: tenantRoleUser.toString() },
+  validate: F.validate,
+})(translate()(F));
 
 class C extends React.Component {
 
@@ -96,8 +145,8 @@ class C extends React.Component {
                 </td>
                 <td>{role.email}</td>
                 <td>
-                {role.role === 1 && t('tenantRoleAdmin')}
-                {role.role === 2 && t('tenantRoleUser')}
+                {role.role === tenantRoleAdmin && t('tenantRoleAdmin')}
+                {role.role === tenantRoleUser && t('tenantRoleUser')}
                 </td>
               </tr>
             );

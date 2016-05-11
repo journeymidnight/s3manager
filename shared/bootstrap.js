@@ -39,7 +39,7 @@ function removeLoader() {
   handleLoader();
 }
 
-function renderPage(store, state, routes) {
+function renderPage(store, routes) {
   const history = syncHistoryWithStore(browserHistory, store);
 
   if (process.env.NODE_ENV !== 'production') {
