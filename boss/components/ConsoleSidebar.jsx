@@ -11,22 +11,8 @@ class C extends React.Component {
     $('.nicescroll')
     .niceScroll({
       cursoropacitymax: '0.4',
-      cursorcolor: '#FFF',
-      cursorborder: '1px solid #FFF',
-    });
-
-    const collapsed = 'page-sidebar-collapsed';
-    const expanded = 'page-sidebar-expanded';
-
-    $('.toggle-nav-collapse').click(() => {
-      $('.page-with-sidebar').toggleClass(`${collapsed} ${expanded}`);
-      $('header').toggleClass('header-collapsed header-expanded');
-      $('.toggle-nav-collapse i').toggleClass('fa-angle-right fa-angle-left');
-
-      setTimeout(() => {
-        const niceScrollBars = $('.nicescroll').niceScroll();
-        niceScrollBars.updateScrollBar();
-      }, 300);
+      cursorcolor: '#fff',
+      cursorborder: '1px solid #fff',
     });
   }
 
@@ -56,20 +42,20 @@ class C extends React.Component {
           </li>
           <NavLink to="/regions">
             <i className="fa fa-codepen fa-fw" />
-            <span>{t('sidebarRegions')}</span>
+            <span>{t('sidebarRegion')}</span>
           </NavLink>
           <NavLink to="/tenants">
             <i className="fa fa-cube fa-fw" />
-            <span>{t('sidebarTenants')}</span>
+            <span>{t('sidebarTenant')}</span>
           </NavLink>
           <NavLink to="/users">
             <i className="fa fa-user fa-fw" />
-            <span>{t('sidebarUsers')}</span>
+            <span>{t('sidebarUser')}</span>
           </NavLink>
           <li className="separate-item" />
           <NavLink to="/admins">
             <i className="fa fa-meh-o fa-fw" />
-            <span>{t('sidebarAdmins')}</span>
+            <span>{t('sidebarAdmin')}</span>
           </NavLink>
         </ul>
         <div className="collapse-nav">
@@ -87,8 +73,8 @@ C.propTypes = {
   dispatch: React.PropTypes.func.isRequired,
   auth: React.PropTypes.object,
   env: React.PropTypes.object,
-  routing: React.PropTypes.object,
   t: React.PropTypes.any,
+  routing: React.PropTypes.object,
 };
 
 function mapStateToProps(store) {

@@ -45,8 +45,17 @@
         "typeEmail": "输入用户邮箱"
     },
 
-    "sidebarRegions": "区域",
-    "sidebarTenants": "租户",
-    "sidebarUsers": "用户",
-    "sidebarAdmins": "管理员"
+    "sidebarInstance": "云主机",
+    "sidebarVolume": "云硬盘",
+    "sidebarVxnet": "私有网络",
+    "sidebarEIP": "公网IP",
+    "sidebarKeyPair": "SSH密钥",
+    "sidebarFirewall": "防火墙",
+    "sidebarAccessKey": "API密钥",
+    "sidebarActivity": "操作日志",
+    "sidebarUsage": "资源使用",
+    "sidebarRegion": "区域",
+    "sidebarTenant": "租户",
+    "sidebarUser": "用户",
+    "sidebarAdmin": "管理员"
 }

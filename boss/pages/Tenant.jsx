@@ -159,9 +159,9 @@ class C extends React.Component {
                 {role.role === tenantRoleUser && t('tenantRoleUser')}
                 </td>
                 <td>
-                  <button onClick={this.onDeleteRole(role)} >
-                    <i className="fa fa-cross" />
-                  </button>
+                  <a onClick={this.onDeleteRole(role)} className="btn btn-sm btn-close" >
+                    <i className="fa fa-close" />
+                  </a>
                 </td>
               </tr>
             );

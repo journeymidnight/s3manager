@@ -1,6 +1,7 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import { connect } from 'react-redux';
+import { translate } from 'react-i18next';
 import NavLink from '../../shared/components/NavLink';
 
 class C extends React.Component {
@@ -10,26 +11,13 @@ class C extends React.Component {
     $('.nicescroll')
     .niceScroll({
       cursoropacitymax: '0.4',
-      cursorcolor: '#FFF',
-      cursorborder: '1px solid #FFF',
-    });
-
-    const collapsed = 'page-sidebar-collapsed';
-    const expanded = 'page-sidebar-expanded';
-
-    $('.toggle-nav-collapse').click(() => {
-      $('.page-with-sidebar').toggleClass(`${collapsed} ${expanded}`);
-      $('header').toggleClass('header-collapsed header-expanded');
-      $('.toggle-nav-collapse i').toggleClass('fa-angle-right fa-angle-left');
-
-      setTimeout(() => {
-        const niceScrollBars = $('.nicescroll').niceScroll();
-        niceScrollBars.updateScrollBar();
-      }, 300);
+      cursorcolor: '#fff',
+      cursorborder: '1px solid #fff',
     });
   }
 
   render() {
+    const { t } = this.props;
     return (
       <div className="nicescroll sidebar-expanded sidebar-wrapper" tabIndex="0">
         <div className="header-logo">
@@ -38,7 +26,7 @@ class C extends React.Component {
           </Link>
           <Link className="gitlab-text-container-link" to="/">
             <div className="gitlab-text-container">
-              <h3>LeStack</h3>
+              <h3>{this.props.env.appName}</h3>
             </div>
           </Link>
         </div>
@@ -52,10 +40,42 @@ class C extends React.Component {
               </span>
             </a>
           </li>
+          <NavLink to="/instances">
+            <i className="fa fa-desktop fa-fw" />
+            <span>{t('sidebarInstance')}</span>
+          </NavLink>
+          <NavLink to="/volumes">
+            <i className="fa fa-database fa-fw" />
+            <span>{t('sidebarVolume')}</span>
+          </NavLink>
+          <NavLink to="/vxnets">
+            <i className="fa fa-exchange fa-fw" />
+            <span>{t('sidebarVxnet')}</span>
+          </NavLink>
+          <NavLink to="/eips">
+            <i className="fa fa-rocket fa-fw" />
+            <span>{t('sidebarEIP')}</span>
+          </NavLink>
+          <NavLink to="/key_pairs">
+            <i className="fa fa-key fa-fw" />
+            <span>{t('sidebarKeyPair')}</span>
+          </NavLink>
+          <NavLink to="/firewalls">
+            <i className="fa fa-shield fa-fw" />
+            <span>{t('sidebarFirewall')}</span>
+          </NavLink>
           <li className="separate-item" />
-          <NavLink to="/">
-            <i className="fa fa-meh-o fa-fw" />
-            <span>管理员</span>
+          <NavLink to="/access_keys">
+            <i className="fa fa-code fa-fw" />
+            <span>{t('sidebarAccessKey')}</span>
+          </NavLink>
+          <NavLink to="/activities">
+            <i className="fa fa-tasks fa-fw" />
+            <span>{t('sidebarActivity')}</span>
+          </NavLink>
+          <NavLink to="/usage">
+            <i className="fa fa-pie-chart fa-fw" />
+            <span>{t('sidebarUsage')}</span>
           </NavLink>
         </ul>
         <div className="collapse-nav">
@@ -72,14 +92,17 @@ class C extends React.Component {
 C.propTypes = {
   dispatch: React.PropTypes.func.isRequired,
   auth: React.PropTypes.object,
+  env: React.PropTypes.object,
+  t: React.PropTypes.any,
   routing: React.PropTypes.object,
 };
 
 function mapStateToProps(store) {
   return {
     auth: store.auth,
+    env: store.env,
     routing: store.routing,
   };
 }
 
-export default connect(mapStateToProps)(C);
+export default connect(mapStateToProps)(translate()(C));

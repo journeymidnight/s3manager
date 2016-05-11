@@ -23,6 +23,8 @@ window.paceOptions = {
   restartOnRequestAfter: false,
 };
 require('../shared/venders/pace');
+require('../shared/venders/breakpoints');
+require('../shared/venders/sidebar');
 require('../shared/venders/jquery.nicescroll');
 
 function removeLoader() {

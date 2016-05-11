@@ -23,7 +23,17 @@ export default function configureRoutes(store) {
       <Route path="/logout" component={Logout} />
       <Route path="/" component={App} onEnter={requireAuth} >
         <IndexRoute component={Home} />
+        <Route path="instances" component={Settings} />
+        <Route path="volumes" component={Settings} />
+        <Route path="vxnets" component={Settings} />
+        <Route path="eips" component={Settings} />
+        <Route path="key_pairs" component={Settings} />
+        <Route path="firewalls" component={Settings} />
+        <Route path="activities" component={Settings} />
+        <Route path="access_keys" component={Settings} />
+        <Route path="usage" component={Settings} />
         <Route path="settings" component={Settings} />
+        <Route path="profile" component={Settings} />
       </Route>
     </Route>
   );
