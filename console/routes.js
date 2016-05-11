@@ -23,12 +23,14 @@ export default function configureRoutes(store) {
       <Route path="/logout" component={Logout} />
       <Route path="/" component={App} onEnter={requireAuth} >
         <IndexRoute component={Home} />
-        <Route path="instances" component={Settings} />
-        <Route path="volumes" component={Settings} />
-        <Route path="vxnets" component={Settings} />
-        <Route path="eips" component={Settings} />
-        <Route path="key_pairs" component={Settings} />
-        <Route path="firewalls" component={Settings} />
+        <Route path=":regionId" component={App} >
+          <Route path="instances" component={Settings} />
+          <Route path="volumes" component={Settings} />
+          <Route path="vxnets" component={Settings} />
+          <Route path="eips" component={Settings} />
+          <Route path="key_pairs" component={Settings} />
+          <Route path="firewalls" component={Settings} />
+        </Route>
         <Route path="activities" component={Settings} />
         <Route path="access_keys" component={Settings} />
         <Route path="usage" component={Settings} />

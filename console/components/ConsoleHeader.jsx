@@ -7,7 +7,7 @@ class C extends React.Component {
     const $ = require('jquery');
 
     $('.navbar-toggle').click(() => {
-      $('.header-content .title').toggle();
+      $('.header-content .navbar-left').toggle();
       $('.header-content .navbar-collapse').toggle();
       $('.navbar-toggle').toggleClass('active');
     });
@@ -21,8 +21,7 @@ class C extends React.Component {
               <span className="sr-only">
                 Toggle navigation
               </span>
-              <i className="fa fa-bars">
-              </i>
+              <i className="fa fa-bars"></i>
             </button>
             <div className="navbar-collapse collapse">
               <ul className="nav navbar-nav pull-right">
@@ -38,8 +37,21 @@ class C extends React.Component {
                 </li>
               </ul>
             </div>
-            <h1 className="title">
-            </h1>
+            <div>
+              <ul className="nav navbar-nav navbar-left">
+                <li className="dropdown">
+                  <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button">
+                    <i className="fa fa-codepen"></i>&nbsp;
+                    北京2区 <span className="caret"></span>
+                  </a>
+                  <ul className="dropdown-menu">
+                    <li><Link to="/">北京1区</Link></li>
+                    <li><Link to="/">广州2区</Link></li>
+                    <li><Link to="/">香港1区</Link></li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </header>

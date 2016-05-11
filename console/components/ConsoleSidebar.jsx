@@ -70,7 +70,7 @@ class C extends React.Component {
             <span>{t('sidebarAccessKey')}</span>
           </NavLink>
           <NavLink to="/activities">
-            <i className="fa fa-tasks fa-fw" />
+            <i className="fa fa-sticky-note fa-fw" />
             <span>{t('sidebarActivity')}</span>
           </NavLink>
           <NavLink to="/usage">

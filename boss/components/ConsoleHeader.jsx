@@ -41,7 +41,7 @@ class C extends React.Component {
               </ul>
             </div>
             <h1 className="title">
-              {t('boss')}
+              <Link to="/">{t('boss')}</Link>
             </h1>
           </div>
         </div>
