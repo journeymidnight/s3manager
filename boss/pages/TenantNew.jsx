@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import * as Actions from '../redux/actions';
+import * as TenantActions from '../redux/actions.tenant';
 import TenantForm from '../forms/TenantForm';
 
 class C extends React.Component {
@@ -14,7 +14,7 @@ class C extends React.Component {
       const name = values.name;
       const description = values.description;
 
-      dispatch(Actions.requestCreateTenant({
+      dispatch(TenantActions.requestCreateTenant({
         name,
         description,
       }))

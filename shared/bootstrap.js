@@ -43,17 +43,16 @@ function renderPage(store, routes) {
   const history = syncHistoryWithStore(browserHistory, store);
 
   if (process.env.NODE_ENV !== 'production') {
-    render(
-      <Provider store={store} key="provider">
+    render((
+      <Provider store={store}>
         <div>
           <I18nextProvider i18n={i18n}>
             <Router history={history} routes={routes} />
           </I18nextProvider>
           <DevTools />
         </div>
-      </Provider>,
-      dest
-    );
+      </Provider>
+    ), dest);
   } else {
     render((
       <Provider store={store}>

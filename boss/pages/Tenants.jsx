@@ -2,13 +2,13 @@ import React from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
-import * as Actions from '../redux/actions';
+import * as TenantActions from '../redux/actions.tenant';
 
 class C extends React.Component {
 
   componentDidMount() {
     const { dispatch } = this.props;
-    dispatch(Actions.requestDescribeTenants());
+    dispatch(TenantActions.requestDescribeTenants());
   }
 
   render() {

@@ -5,6 +5,7 @@ import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
 import { tenantRoleAdmin, tenantRoleUser } from '../services/boss';
 import * as Actions from '../redux/actions';
+import * as TenantActions from '../redux/actions.tenant';
 import * as Validations from '../../shared/utils/validations';
 import TenantForm from '../forms/TenantForm';
 
@@ -61,8 +62,8 @@ class C extends React.Component {
     const { params, dispatch } = this.props;
 
     this.tenantId = params.tenantId;
-    dispatch(Actions.requestDescribeTenant(this.tenantId));
-    dispatch(Actions.requestDescribeTenantRoles(this.tenantId));
+    dispatch(TenantActions.requestDescribeTenant(this.tenantId));
+    dispatch(TenantActions.requestDescribeTenantRoles(this.tenantId));
 
     this.onSave = this.onSave.bind(this);
     this.onCreateRole = this.onCreateRole.bind(this);
@@ -76,7 +77,7 @@ class C extends React.Component {
       dispatch(Actions.requestUserByEmail(email))
       .then((user) => {
         if (user) {
-          dispatch(Actions.requestCreateTenantRole(this.tenantId, user.userId, role))
+          dispatch(TenantActions.requestCreateTenantRole(this.tenantId, user.userId, role))
           .then(() => {
             resolve();
           })
@@ -98,7 +99,7 @@ class C extends React.Component {
       const name = values.name;
       const description = values.description;
 
-      dispatch(Actions.requestModifyTenant({
+      dispatch(TenantActions.requestModifyTenant({
         tenantId: this.tenantId,
         name,
         description,
