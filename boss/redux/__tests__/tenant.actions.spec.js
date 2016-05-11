@@ -5,8 +5,9 @@ import * as ActionTypes from '../constants';
 import { mockStore, mockRequest } from '../../../shared/__tests__/mock';
 import i18n from '../../../shared/i18n';
 
-const tenantName = 'nameA';
-const tenantDescription = 'descriptionA';
+const tenantId = 'idA';
+const name = 'nameA';
+const description = 'descriptionA';
 
 describe('TenantActions', () => {
   afterEach(() => {
@@ -17,8 +18,8 @@ describe('TenantActions', () => {
     const rep = {
       totalCount: 9,
       tenantSet: [{
-        id: 'idA',
-        name: 'nameA',
+        tenantId,
+        name,
       }],
     };
 
@@ -52,7 +53,7 @@ describe('TenantActions', () => {
     const scope = mockRequest
     .post('/api/boss/', {
       action: 'createTenant',
-      name: tenantName,
+      name,
     })
     .reply(200, {
       retCode: 1100,
@@ -63,8 +64,8 @@ describe('TenantActions', () => {
 
     return store
     .dispatch(Actions.requestCreateTenant({
-      name: tenantName,
-      description: tenantDescription,
+      name,
+      description,
     }))
     .then(() => {
       scope.isDone();
@@ -85,12 +86,12 @@ describe('TenantActions', () => {
     const scope = mockRequest
     .post('/api/boss/', {
       action: 'createTenant',
-      name: tenantName,
-      description: tenantDescription,
+      name,
+      description,
     })
     .reply(200, {
       data: {
-        tenantId: tenantName,
+        tenantId: name,
       },
       retCode: 0,
       message: null,
@@ -100,15 +101,15 @@ describe('TenantActions', () => {
 
     return store
     .dispatch(Actions.requestCreateTenant({
-      name: tenantName,
-      description: tenantDescription,
+      name,
+      description,
     }))
     .then(() => {
       scope.isDone();
       expect(store.getActions()).toEqual([{
         payload: {
           tenant: {
-            id: tenantName,
+            id: name,
           },
         },
         type: ActionTypes.EXTEND_CONTEXT,
@@ -137,8 +138,8 @@ describe('TenantActions', () => {
     const scope = mockRequest
     .post('/api/boss/', {
       action: 'modifyTenantAttributes',
-      name: 'nameA',
-      description: 'descriptionA',
+      name,
+      description,
     })
     .reply(200, {
       data: {},
@@ -149,8 +150,8 @@ describe('TenantActions', () => {
     const rep = {
       totalCount: 9,
       tenantSet: [{
-        id: 'idA',
-        name: 'nameA',
+        tenantId,
+        name,
       }],
     };
 
@@ -175,8 +176,8 @@ describe('TenantActions', () => {
     }, {
       payload: {
         tenant: {
-          id: 'idA',
-          name: 'nameA',
+          tenantId,
+          name,
         },
       },
       type: ActionTypes.EXTEND_CONTEXT,
@@ -186,8 +187,8 @@ describe('TenantActions', () => {
 
     return store
     .dispatch(Actions.requestModifyTenant({
-      name: 'nameA',
-      description: 'descriptionA',
+      name,
+      description,
     }))
     .then(() => {
       scope.isDone();
@@ -195,5 +196,21 @@ describe('TenantActions', () => {
       expect(store.getActions()).toEqual(expectedActions);
       done();
     });
+  });
+
+  it('#requestDescribeUserRoles', () => {
+    // TODO
+  });
+
+  it('#requestDescribeTenantRoles', () => {
+    // TODO
+  });
+
+  it('#requestCreateTenantRole', () => {
+    // TODO
+  });
+
+  it('#requestDeleteTenantRole', () => {
+    // TODO
   });
 });

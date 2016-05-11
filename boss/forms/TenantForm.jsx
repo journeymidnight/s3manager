@@ -52,7 +52,7 @@ F.validate = values => {
 };
 
 export default reduxForm({
-  form: 'Tenant',
+  form: 'TenantForm',
   fields: ['name', 'description'],
   validate: F.validate,
 })(F);

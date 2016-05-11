@@ -12,7 +12,6 @@ class C extends React.Component {
   }
 
   render() {
-    const { t } = this.props;
     const tenants = this.props.context.tenantSet && this.props.context.tenantSet.map((tenant) => {
       return (
         <tr key={tenant.tenantId}>
@@ -29,6 +28,7 @@ class C extends React.Component {
         </tr>
       );
     });
+    const { t } = this.props;
     return (
       <div className="container-fluid container-limited">
         <div className="content">

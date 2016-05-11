@@ -42,18 +42,7 @@ function removeLoader() {
 function renderPage(store, state, routes) {
   const history = syncHistoryWithStore(browserHistory, store);
 
-  render((
-    <Provider store={store}>
-      <I18nextProvider i18n={i18n}>
-        <Router history={history} routes={routes} />
-      </I18nextProvider>
-    </Provider>
-  ), dest);
-  removeLoader();
-
   if (process.env.NODE_ENV !== 'production') {
-    window.React = React; // enable debugger
-
     render(
       <Provider store={store} key="provider">
         <div>
@@ -65,7 +54,19 @@ function renderPage(store, state, routes) {
       </Provider>,
       dest
     );
+  } else {
+    render((
+      <Provider store={store}>
+        <div>
+          <I18nextProvider i18n={i18n}>
+            <Router history={history} routes={routes} />
+          </I18nextProvider>
+        </div>
+      </Provider>
+    ), dest);
   }
+
+  removeLoader();
 }
 
 export default function bootstrap(callback) {

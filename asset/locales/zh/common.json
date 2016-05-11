@@ -12,25 +12,38 @@
     "email": "邮箱",
     "password": "密码",
     "description": "描述",
-    "created": "描述",
-
+    "created": "创建时间",
+    "role": "角色",
+    "settings": "设置",
     "region": "区域",
     "tenant": "租户",
     "user": "用户",
     "admin": "管理员",
 
-    "addSuccessed": "添加成功",
-    "saveSuccessed": "保存成功",
-    "deleteSuccessed": "删除成功",
-    "authorizeFailed": "验证失败",
-    "addFailed": "添加失败",
-    "saveFailed": "保存失败",
+    "addSuccessed": "添加成功。",
+    "saveSuccessed": "保存成功。",
+    "deleteSuccessed": "删除成功。",
+    "authorizeFailed": "验证失败。",
+    "addFailed": "添加失败。",
+    "saveFailed": "保存失败。",
+    "nothingHere": "没有任何数据。",
 
     "userManage": "用户管理",
     "userManageDescription": "添加、删除和修改用户信息。",
 
     "tenantManage": "租户管理",
     "tenantManageDescription": "可根据不同的企业或团队划分独立的租户, 分配相应的资源配额。",
+
+    "tenantRoleAdmin": "管理账号",
+    "tenantRoleUser": "使用账户",
+
+    "pageTenants": {
+        "authorizedUsers": "授权用户"
+    },
+
+    "formUserSelectForm": {
+        "typeEmail": "输入用户邮箱"
+    },
 
     "sidebarRegions": "区域",
     "sidebarTenants": "租户",

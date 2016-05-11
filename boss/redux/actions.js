@@ -151,10 +151,70 @@ export function requestModifyTenant(tenant) {
   };
 }
 
-export function requestDescribeUsers() {
+export function requestCreateTenantRole(tenantId, userId, role) {
+  return (dispatch) => {
+    return BOSS
+    .createTenantRole(tenantId, userId, role)
+    .promise
+    .then(() => {
+      dispatch(notify(i18n.t('addSuccessed')));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
+export function requestDeleteTenantRole(tenantId, userId) {
+  return (dispatch) => {
+    return BOSS
+    .deleteTenantRole(tenantId, userId)
+    .promise
+    .then(() => {
+      dispatch(notify(i18n.t('deleteSuccessed')));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
+export function requestDescribeTenantRoles(tenantId) {
+  return (dispatch) => {
+    return BOSS
+    .describeTenantRoles(tenantId)
+    .promise
+    .then((payload) => {
+      dispatch(extendContext({
+        roles: payload,
+      }));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
+export function requestDescribeUserRoles(userId) {
+  return (dispatch) => {
+    return BOSS
+    .describeUserRoles(userId)
+    .promise
+    .then((payload) => {
+      dispatch(extendContext({
+        roles: payload,
+      }));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
+export function requestDescribeUsers(filters = {}) {
   return dispatch => {
     return BOSS
-    .describeUsers()
+    .describeUsers(filters)
     .promise
     .then((payload) => {
       dispatch(extendContext(payload));
@@ -176,6 +236,32 @@ export function requestDescribeUser(userId) {
       dispatch(extendContext({
         user: data.userSet[0],
       }));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
+export function requestUserByEmail(email) {
+  return dispatch => {
+    return BOSS
+    .describeUsers({
+      searchWord: email,
+      size: 0,
+    })
+    .promise
+    .then((res) => {
+      if (res.total > 0) {
+        let user;
+        res.userSet.forEach((u) => {
+          if (u.email === email) {
+            user = u;
+          }
+        });
+        return user;
+      }
+      return null;
     })
     .catch((error) => {
       dispatch(notifyAlert(error.message));

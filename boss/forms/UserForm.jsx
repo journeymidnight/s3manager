@@ -63,7 +63,7 @@ F.propTypes = {
 };
 
 export default reduxForm({
-  form: 'User',
+  form: 'UserForm',
   fields: ['username', 'email', 'password'],
   validate: F.validate,
 })(translate()(F));

@@ -17,6 +17,29 @@ class Boss {
   modifyTenant(tenant) {
     return this.call('modifyTenantAttributes', tenant);
   }
+  describeTenantRoles(tenantId) {
+    return this.call('describeTenantRoles', {
+      tenantId,
+    });
+  }
+  describeUserRoles(userId) {
+    return this.call('describeUserRoles', {
+      userId,
+    });
+  }
+  createTenantRole(tenantId, userId, role) {
+    return this.call('createTenantRole', {
+      tenantId,
+      userId,
+      role,
+    });
+  }
+  deleteTenantRole(tenantId, userId) {
+    return this.call('deleteTenantRole', {
+      tenantId,
+      userId,
+    });
+  }
   describeUsers(filters = {}) {
     return this.call('describeUsers', filters);
   }
