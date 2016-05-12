@@ -1,5 +1,5 @@
 import React from 'react';
-import { IndexRoute, Route } from 'react-router';
+import { Route, IndexRoute, IndexRedirect } from 'react-router';
 
 import App from './pages/App.jsx';
 import Home from './pages/Home.jsx';
@@ -23,7 +23,13 @@ export default function configureRoutes(store) {
       <Route path="/logout" component={Logout} />
       <Route path="/" component={App} onEnter={requireAuth} >
         <IndexRoute component={Home} />
+        <Route path="activities" component={Settings} />
+        <Route path="access_keys" component={Settings} />
+        <Route path="usage" component={Settings} />
+        <Route path="settings" component={Settings} />
+        <Route path="profile" component={Settings} />
         <Route path=":regionId" >
+          <IndexRedirect to="instances" />
           <Route path="instances" component={Settings} />
           <Route path="volumes" component={Settings} />
           <Route path="vxnets" component={Settings} />
@@ -31,11 +37,6 @@ export default function configureRoutes(store) {
           <Route path="key_pairs" component={Settings} />
           <Route path="firewalls" component={Settings} />
         </Route>
-        <Route path="activities" component={Settings} />
-        <Route path="access_keys" component={Settings} />
-        <Route path="usage" component={Settings} />
-        <Route path="settings" component={Settings} />
-        <Route path="profile" component={Settings} />
       </Route>
     </Route>
   );

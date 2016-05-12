@@ -38,19 +38,34 @@ class C extends React.Component {
               </ul>
             </div>
             <div>
-              <ul className="nav navbar-nav navbar-left">
-                <li className="dropdown">
-                  <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button">
-                    <i className="fa fa-codepen"></i>&nbsp;
-                    北京2区 <span className="caret"></span>
-                  </a>
-                  <ul className="dropdown-menu">
-                    <li><Link to="/">北京1区</Link></li>
-                    <li><Link to="/">广州2区</Link></li>
-                    <li><Link to="/">香港1区</Link></li>
-                  </ul>
-                </li>
-              </ul>
+              {this.props.regions.length === 1 &&
+                <ul className="nav navbar-nav navbar-left">
+                  <li>
+                    <Link to="/" >
+                      <i className="fa fa-codepen"></i>&nbsp;
+                      {this.props.region.name}
+                    </Link>
+                  </li>
+                </ul>
+              }
+              {this.props.regions.length > 1 &&
+                <ul className="nav navbar-nav navbar-left">
+                  <li className="dropdown">
+                    <Link to="/" className="dropdown-toggle" data-toggle="dropdown" >
+                      <i className="fa fa-codepen"></i>&nbsp;
+                      {this.props.region.name} <span className="caret"></span>
+                    </Link>
+                    <ul className="dropdown-menu">
+                      {this.props.regions.map((region) => {
+                        if (region.regionId !== this.props.region.regionId) {
+                          return <li key={region.regionId}><Link to={`/${region.regionId}`}>{region.name}</Link></li>;
+                        }
+                        return <li key={region.regionId} />;
+                      })}
+                    </ul>
+                  </li>
+                </ul>
+              }
             </div>
           </div>
         </div>
@@ -62,11 +77,15 @@ class C extends React.Component {
 C.propTypes = {
   dispatch: React.PropTypes.func.isRequired,
   auth: React.PropTypes.object,
+  region: React.PropTypes.object,
+  regions: React.PropTypes.array,
 };
 
 function mapStateToProps(state) {
   return {
     auth: state.auth,
+    region: state.region,
+    regions: state.regions,
   };
 }
 

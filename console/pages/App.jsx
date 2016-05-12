@@ -3,19 +3,19 @@ import { connect } from 'react-redux';
 import ConsoleHeader from '../components/ConsoleHeader.jsx';
 import ConsoleSidebar from '../components/ConsoleSidebar.jsx';
 import Notify from '../../shared/components/Notify.jsx';
-import * as Actions from '../redux/actions';
+import Home from '../pages/Home';
 
 class App extends React.Component {
 
   componentDidMount() {
-    const { dispatch } = this.props;
-    dispatch(Actions.requestRegion('pek2'));
   }
 
   render() {
-    const region = this.props.region;
+    const { region, params } = this.props;
     if (!region) {
-      return <div />;
+      return <Home params={this.props.params} />;
+    } else if (params.regionId && region.regionId !== params.regionId) {
+      return <Home params={this.props.params} />;
     }
 
     return (
@@ -36,10 +36,12 @@ class App extends React.Component {
 App.propTypes = {
   dispatch: React.PropTypes.func.isRequired,
   children: React.PropTypes.element.isRequired,
-  env: React.PropTypes.object.isRequired,
   auth: React.PropTypes.object,
+  env: React.PropTypes.object.isRequired,
   context: React.PropTypes.object,
+  routing: React.PropTypes.object,
   region: React.PropTypes.object,
+  params: React.PropTypes.object,
 };
 
 function mapStateToProps(state) {
@@ -47,6 +49,7 @@ function mapStateToProps(state) {
     auth: state.auth,
     env: state.env,
     context: state.context,
+    routing: state.routing,
     region: state.region,
   };
 }

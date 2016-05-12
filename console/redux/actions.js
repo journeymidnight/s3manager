@@ -70,7 +70,6 @@ export function requestRegion(regionId) {
         regionId,
         name: '北京2区',
       }));
-      dispatch(push(`/${regionId}/instances`));
-    }, 100);
+    }, 500);
   };
 }

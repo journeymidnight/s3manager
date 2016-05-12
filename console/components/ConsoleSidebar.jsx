@@ -99,12 +99,12 @@ C.propTypes = {
   region: React.PropTypes.object,
 };
 
-function mapStateToProps(store) {
+function mapStateToProps(state) {
   return {
-    auth: store.auth,
-    env: store.env,
-    routing: store.routing,
-    region: store.region,
+    auth: state.auth,
+    env: state.env,
+    routing: state.routing,
+    region: state.region,
   };
 }
 
