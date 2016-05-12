@@ -8,8 +8,14 @@ export const constReducer = (state = {}) => {
   return state;
 };
 
-export const regionsReducer = (state = []) => {
-  return state;
+export const regionsReducer = (state = [], action) => {
+  switch (action.type) {
+    case ActionTypes.AUTH_LOGIN:
+      return action.context.regionSet;
+
+    default:
+      return state;
+  }
 };
 
 export const regionReducer = (state = null, action) => {
