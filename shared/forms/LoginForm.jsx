@@ -9,6 +9,7 @@ const F = (props) => {
     error,
     handleSubmit,
     submitting,
+    submitFailed,
   } = props;
   const { t } = props;
   return (
@@ -16,15 +17,15 @@ const F = (props) => {
       <div className="flash-container">
         {error && <div className="flash-alert">{error}</div>}
       </div>
-      <div className={email.touched && email.error ? 'form-group has-error' : 'form-group'}>
+      <div className={submitFailed && email.error ? 'form-group has-error' : 'form-group'}>
         <label className="control-label" >{t('email')}</label>
         <input type="email" className="form-control" {...email} />
-        {email.touched && email.error && <div className="text-danger"><small>{email.error}</small></div>}
+        {submitFailed && email.error && <div className="text-danger"><small>{email.error}</small></div>}
       </div>
-      <div className={password.touched && password.error ? 'form-group has-error' : 'form-group'}>
+      <div className={submitFailed && password.error ? 'form-group has-error' : 'form-group'}>
         <label className="control-label" >{t('password')}</label>
         <input type="password" className="form-control" {...password} />
-        {password.touched && password.error && <div className="text-danger"><small>{password.error}</small></div>}
+        {submitFailed && password.error && <div className="text-danger"><small>{password.error}</small></div>}
       </div>
       <div className="prepend-top-20">
         <button type="submit" className="btn btn-create" disabled={submitting}>
@@ -47,6 +48,7 @@ F.propTypes = {
   error: PropTypes.string,
   handleSubmit: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
+  submitFailed: React.PropTypes.bool.isRequired,
   t: React.PropTypes.any,
 };
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
 import * as Validations from '../../shared/utils/validations';
@@ -8,47 +9,49 @@ const F = (props) => {
     { regionId, name, opKeystoneEndpoint, opAdminName, opAdminPassword },
     handleSubmit,
     submitting,
+    submitFailed,
+    isUpdate,
     t,
   } = props;
   return (
     <form className="form-horizontal" onSubmit={handleSubmit}>
-      <div className={regionId.touched && regionId.error ? 'form-group has-error' : 'form-group'}>
+      <div className={submitFailed && regionId.error ? 'form-group has-error' : 'form-group'}>
         <label className="control-label" >{t('id')}</label>
         <div className="col-sm-10">
-          <input type="text" className="form-control" {...regionId} />
-          {regionId.touched && regionId.error && <div className="text-danger"><small>{regionId.error}</small></div>}
+          <input type="text" disabled={isUpdate} className="form-control" {...regionId} />
+          {submitFailed && regionId.error && <div className="text-danger"><small>{regionId.error}</small></div>}
         </div>
       </div>
 
-      <div className={name.touched && name.error ? 'form-group has-error' : 'form-group'}>
+      <div className={submitFailed && name.error ? 'form-group has-error' : 'form-group'}>
         <label className="control-label" >{t('name')}</label>
         <div className="col-sm-10">
           <input type="text" className="form-control" {...name} />
-          {name.touched && name.error && <div className="text-danger"><small>{name.error}</small></div>}
+          {submitFailed && name.error && <div className="text-danger"><small>{name.error}</small></div>}
         </div>
       </div>
 
-      <div className={opKeystoneEndpoint.touched && opKeystoneEndpoint.error ? 'form-group has-error' : 'form-group'}>
+      <div className={submitFailed && opKeystoneEndpoint.error ? 'form-group has-error' : 'form-group'}>
         <label className="control-label" >{t('formRegionForm.opKeystoneEndpoint')}</label>
         <div className="col-sm-10">
           <input type="text" className="form-control" {...opKeystoneEndpoint} />
-          {opKeystoneEndpoint.touched && opKeystoneEndpoint.error && <div className="text-danger"><small>{opKeystoneEndpoint.error}</small></div>}
+          {submitFailed && opKeystoneEndpoint.error && <div className="text-danger"><small>{opKeystoneEndpoint.error}</small></div>}
         </div>
       </div>
 
-      <div className={opAdminName.touched && opAdminName.error ? 'form-group has-error' : 'form-group'}>
+      <div className={submitFailed && opAdminName.error ? 'form-group has-error' : 'form-group'}>
         <label className="control-label" >{t('formRegionForm.opAdminName')}</label>
         <div className="col-sm-10">
           <input type="text" className="form-control" {...opAdminName} />
-          {opAdminName.touched && opAdminName.error && <div className="text-danger"><small>{opAdminName.error}</small></div>}
+          {submitFailed && opAdminName.error && <div className="text-danger"><small>{opAdminName.error}</small></div>}
         </div>
       </div>
 
-      <div className={opAdminPassword.touched && opAdminPassword.error ? 'form-group has-error' : 'form-group'}>
+      <div className={submitFailed && opAdminPassword.error ? 'form-group has-error' : 'form-group'}>
         <label className="control-label" >{t('formRegionForm.opAdminPassword')}</label>
         <div className="col-sm-10">
           <input type="text" className="form-control" {...opAdminPassword} />
-          {opAdminPassword.touched && opAdminPassword.error && <div className="text-danger"><small>{opAdminPassword.error}</small></div>}
+          {submitFailed && opAdminPassword.error && <div className="text-danger"><small>{opAdminPassword.error}</small></div>}
         </div>
       </div>
 
@@ -57,9 +60,9 @@ const F = (props) => {
           {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('save')}
         </button>
         &nbsp;
-        <a className="btn btn-cancel" href="/tenants">
+        <Link className="btn btn-cancel" to="/regions">
           {t('cancel')}
-        </a>
+        </Link>
       </div>
     </form>
   );
@@ -70,6 +73,8 @@ F.propTypes = {
   error: React.PropTypes.string,
   handleSubmit: React.PropTypes.func.isRequired,
   submitting: React.PropTypes.bool.isRequired,
+  submitFailed: React.PropTypes.bool.isRequired,
+  isUpdate: React.PropTypes.bool,
   t: React.PropTypes.any,
 };
 

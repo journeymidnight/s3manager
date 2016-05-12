@@ -8,29 +8,30 @@ const F = (props) => {
     { username, email, password },
     handleSubmit,
     submitting,
+    submitFailed,
   } = props;
   const { t } = props;
   return (
     <form className="form-horizontal" onSubmit={handleSubmit}>
-      <div className={username.touched && username.error ? 'form-group has-error' : 'form-group'}>
+      <div className={submitFailed && username.error ? 'form-group has-error' : 'form-group'}>
         <label className="control-label" >{t('username')}</label>
         <div className="col-sm-10">
           <input type="text" className="form-control" {...username} />
-          {username.touched && username.error && <div className="text-danger"><small>{username.error}</small></div>}
+          {submitFailed && username.error && <div className="text-danger"><small>{username.error}</small></div>}
         </div>
       </div>
-      <div className={email.touched && email.error ? 'form-group has-error' : 'form-group'}>
+      <div className={submitFailed && email.error ? 'form-group has-error' : 'form-group'}>
         <label className="control-label" >{t('email')}</label>
         <div className="col-sm-10">
           <input type="email" className="form-control" {...email} />
-          {email.touched && email.error && <div className="text-danger"><small>{email.error}</small></div>}
+          {submitFailed && email.error && <div className="text-danger"><small>{email.error}</small></div>}
         </div>
       </div>
-      <div className={password.touched && password.error ? 'form-group has-error' : 'form-group'}>
+      <div className={submitFailed && password.error ? 'form-group has-error' : 'form-group'}>
         <label className="control-label" >{t('password')}</label>
         <div className="col-sm-10">
           <input type="password" className="form-control" {...password} />
-          {password.touched && password.error && <div className="text-danger"><small>{password.error}</small></div>}
+          {submitFailed && password.error && <div className="text-danger"><small>{password.error}</small></div>}
         </div>
       </div>
       <div className="form-actions">
@@ -59,6 +60,7 @@ F.propTypes = {
   error: React.PropTypes.string,
   handleSubmit: React.PropTypes.func.isRequired,
   submitting: React.PropTypes.bool.isRequired,
+  submitFailed: React.PropTypes.bool.isRequired,
   t: React.PropTypes.any,
 };
 
