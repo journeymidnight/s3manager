@@ -17,6 +17,48 @@ export function requestDescribeRegions() {
   };
 }
 
+export function requestDescribeAssignedTenants(regionId) {
+  return dispatch => {
+    return BOSS
+    .describeAssignedTenants(regionId)
+    .promise
+    .then((payload) => {
+      dispatch(extendContext({
+        tenants: payload,
+      }));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
+export function requestAssignTenant(regionId, tenantId, quota) {
+  return dispatch => {
+    return BOSS
+    .describeAssignedTenants(regionId, tenantId, quota)
+    .promise
+    .then(() => {
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
+export function requestDisallowTenant(regionId, tenantId) {
+  return dispatch => {
+    return BOSS
+    .requestDisallowTenant(regionId, tenantId)
+    .promise
+    .then(() => {
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
 export function requestDescribeRegion(regionId) {
   return dispatch => {
     return BOSS

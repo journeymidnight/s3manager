@@ -43,7 +43,6 @@ class C extends Page {
               <li><Link to="/regions">{t('regionManage')}</Link></li>
               <li className="active">{t('add')}</li>
             </ol>
-            <hr />
             <RegionForm onSubmit={this.onSubmit} />
           </div>
         </div>

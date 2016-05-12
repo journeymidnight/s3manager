@@ -187,7 +187,7 @@ class C extends React.Component {
               </div>
             </div>
             <div className="panel panel-default">
-              <div className="panel-heading">{t('pageTenants.authorizedUsers')}</div>
+              <div className="panel-heading">{t('pageTenant.authorizedUsers')}</div>
               <div className="errors-holder"></div>
               <div className="panel-body">
                 {roles}

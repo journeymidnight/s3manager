@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
 import * as Validations from '../../shared/utils/validations';
@@ -8,6 +7,7 @@ const F = (props) => {
   const { fields:
     { name, description },
     handleSubmit,
+    resetForm,
     submitting,
     submitFailed,
     t,
@@ -32,10 +32,9 @@ const F = (props) => {
         <button type="submit" className="btn btn-save" disabled={submitting}>
           {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('save')}
         </button>
-        &nbsp;
-        <Link className="btn btn-cancel" to="/tenants">
-          {t('cancel')}
-        </Link>
+        <button type="button" className="btn pull-right" disabled={submitting} onClick={resetForm}>
+          {t('reset')}
+        </button>
       </div>
     </form>
   );
@@ -45,6 +44,7 @@ F.propTypes = {
   fields: React.PropTypes.object.isRequired,
   error: React.PropTypes.string,
   handleSubmit: React.PropTypes.func.isRequired,
+  resetForm: React.PropTypes.func.isRequired,
   submitting: React.PropTypes.bool.isRequired,
   submitFailed: React.PropTypes.bool.isRequired,
   t: React.PropTypes.any,

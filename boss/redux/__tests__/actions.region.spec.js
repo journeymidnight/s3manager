@@ -216,4 +216,16 @@ describe('RegionActions', () => {
       done(error);
     });
   });
+
+  it('#requestDescribeAssignedTenants', () => {
+    // TODO
+  });
+
+  it('#requestAssignTenant', () => {
+    // TODO
+  });
+
+  it('#requestDisallowTenant', () => {
+    // TODO
+  });
 });
