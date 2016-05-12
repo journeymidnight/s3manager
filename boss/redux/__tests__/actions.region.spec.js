@@ -217,15 +217,15 @@ describe('RegionActions', () => {
     });
   });
 
-  it('#requestDescribeAssignedTenants', () => {
+  it('#requestDescribeAssignedQuotas', () => {
     // TODO
   });
 
-  it('#requestAssignTenant', () => {
+  it('#requestAssignTenantQuota', () => {
     // TODO
   });
 
-  it('#requestDisallowTenant', () => {
+  it('#requestDeleteTenantQuota', () => {
     // TODO
   });
 });

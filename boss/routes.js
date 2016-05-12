@@ -16,6 +16,8 @@ import Admin from './pages/Admin.jsx';
 import Regions from './pages/Regions.jsx';
 import RegionNew from './pages/RegionNew.jsx';
 import Region from './pages/Region.jsx';
+import TenantQuotaNew from './pages/TenantQuotaNew.jsx';
+import TenantQuota from './pages/TenantQuota.jsx';
 import Profile from './pages/Profile.jsx';
 
 export default function configureRoutes(store) {
@@ -43,7 +45,11 @@ export default function configureRoutes(store) {
         <Route path="regions" >
           <IndexRoute component={Regions} />
           <Route path="new" component={RegionNew} />
-          <Route path=":regionId" component={Region} />
+          <Route path=":regionId" >
+            <IndexRoute component={Region} />
+            <Route path="new" component={TenantQuotaNew} />
+            <Route path=":tenantId" component={TenantQuota} />
+          </Route>
         </Route>
         <Route path="tenants" >
           <IndexRoute component={Tenants} />

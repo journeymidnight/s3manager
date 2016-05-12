@@ -61,20 +61,20 @@ class Boss {
   modifyRegion(region) {
     return this.call('modifyRegionAttributes', region);
   }
-  describeAssignedTenants(regionId) {
-    return this.call('describeAssignedTenants', {
+  describeAssignedQuotas(regionId) {
+    return this.call('describeAssignedQuotas', {
       regionId,
     });
   }
-  assignTenant(regionId, tenantId, quota) {
-    return this.call('describeAssignedTenants', {
+  assignTenantQuota(regionId, tenantId, quota) {
+    return this.call('assignTenantQuota', {
       regionId,
       tenantId,
       ...quota,
     });
   }
-  disallowTenant(regionId, tenantId) {
-    return this.call('disallowTenant', {
+  deleteTenantQuota(regionId, tenantId) {
+    return this.call('deleteTenantQuota', {
       regionId,
       tenantId,
     });
