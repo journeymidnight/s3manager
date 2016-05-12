@@ -47,7 +47,7 @@ class C extends React.Component {
           <Notify />
           <div className="content">
             <div className="row">
-              <div className="col-sm-7 brand-holder pull-left">
+              <div className="col-sm-7 brand-holder">
                 <h1>
                   LeStack
                 </h1>

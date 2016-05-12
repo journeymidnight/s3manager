@@ -19,8 +19,9 @@ class C extends React.Component {
   render() {
     const { t } = this.props;
     const regionId = this.props.region.regionId;
+    const regionName = this.props.region.name;
     return (
-      <div className="nicescroll sidebar-expanded sidebar-wrapper" tabIndex="0">
+      <div className="nicescroll sidebar-wrapper" tabIndex="0">
         <div className="header-logo">
           <Link to="/">
             <img width="32" height="32" src="/asset/logo.svg" alt="logo" />
@@ -32,14 +33,8 @@ class C extends React.Component {
           </Link>
         </div>
         <ul className="nav nav-sidebar">
-          <li className="hidden">
-            <a className="back-link" href="/groups/lestack">
-              <i className="fa fa-caret-square-o-left fa-fw">
-              </i>
-              <span>
-                Go to group
-              </span>
-            </a>
+          <li>
+            <h5>{regionName}</h5>
           </li>
           <NavLink to={`/${regionId}/instances`}>
             <i className="fa fa-server fa-fw" />
@@ -66,6 +61,9 @@ class C extends React.Component {
             <span>{t('sidebarFirewall')}</span>
           </NavLink>
           <li className="separate-item" />
+          <li>
+            <h5>Global</h5>
+          </li>
           <NavLink to="/access_keys">
             <i className="fa fa-code fa-fw" />
             <span>{t('sidebarAccessKey')}</span>

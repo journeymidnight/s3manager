@@ -35,6 +35,9 @@
     "tenantManage": "租户管理",
     "tenantManageDescription": "可根据不同的企业或团队划分独立的租户, 分配相应的资源配额。",
 
+    "regionManage": "区域管理",
+    "regionManageDescription": "一个区域即独立完整的IaaS集群，包含OpenStack，Ceph及所有服务组建。可为租户分配不同区域不同配额的云资源，并统一管理。",
+
     "tenantRoleAdmin": "管理账号",
     "tenantRoleUser": "使用账户",
 
@@ -44,6 +47,12 @@
 
     "formUserSelectForm": {
         "typeEmail": "输入用户邮箱"
+    },
+
+    "formRegionForm": {
+        "opKeystoneEndpoint": "KeyStone URL",
+        "opAdminName": "管理员账号",
+        "opAdminPassword": "管理员密码"
     },
 
     "sidebarInstance": "云主机",

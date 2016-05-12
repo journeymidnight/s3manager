@@ -1,7 +1,26 @@
 body {
-    &.ui_charcoal {
-        .page-with-sidebar .nav-sidebar li.active a {
-            background: #2c95c4;
+  &.ui_charcoal {
+    .page-with-sidebar {
+      .nav-sidebar {
+        li.active a {
+          background: #2c95c4;
         }
+        li h5 {
+          padding-left: 15px;
+          font-weight: normal;
+          color: #c5d0de;
+          text-transform: upperCase;
+          opacity: 0.5;
+        }
+      }
+
+      &.page-sidebar-collapsed {
+        .nav-sidebar {
+          li h5 {
+            display: none;
+          }
+        }
+      }
     }
+  }
 }
