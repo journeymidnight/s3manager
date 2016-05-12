@@ -1,6 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router';
 import Page, { attach } from '../../shared/pages/Page';
-import * as RegionActions from '../redux/actions';
+import * as RegionActions from '../redux/actions.region';
 import RegionForm from '../forms/RegionForm';
 
 class C extends Page {
@@ -44,9 +45,10 @@ class C extends Page {
       <div className="container-fluid container-limited">
         <div className="content">
           <div className="clearfix">
-            <h3 className="page-title">
-              {t('region')} {region.name}
-            </h3>
+            <ol className="breadcrumb">
+              <li><Link to="/regions">{t('regionManage')}</Link></li>
+              <li className="active">{region.name}</li>
+            </ol>
             <hr />
             <div className="panel panel-default">
               <div className="panel-heading">{t('settings')}</div>

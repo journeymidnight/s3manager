@@ -1,13 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router';
 import Page, { attach } from '../../shared/pages/Page';
-import * as Actions from '../redux/actions';
+import * as RegionActions from '../redux/actions.region';
 
 class C extends Page {
 
   componentDidMount() {
     const { dispatch, routerKey } = this.props;
-    dispatch(Actions.requestDescribeRegions(routerKey));
+    dispatch(RegionActions.requestDescribeRegions(routerKey));
   }
 
   render() {
@@ -31,9 +31,9 @@ class C extends Page {
       <div className="container-fluid container-limited">
         <div className="content">
           <div className="clearfix">
-            <h3 className="page-title">
-              {t('regionManage')}
-            </h3>
+            <ol className="breadcrumb">
+              <li className="active">{t('regionManage')}</li>
+            </ol>
             <div className="top-area">
               <div className="nav-text">
                 <p className="light">

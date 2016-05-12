@@ -1,6 +1,6 @@
 import expect from 'expect';
 import nock from 'nock';
-import * as Actions from '../actions';
+import * as RegionActions from '../actions.region';
 import * as ActionTypes from '../constants';
 import { mockStore, mockRequest } from '../../../shared/__tests__/mock';
 import i18n from '../../../shared/i18n';
@@ -39,7 +39,7 @@ describe('RegionActions', () => {
 
     const store = mockStore();
     return store
-    .dispatch(Actions.requestDescribeRegions())
+    .dispatch(RegionActions.requestDescribeRegions())
     .then(() => {
       scope.isDone();
       expect(store.getActions()).toEqual([{
@@ -71,7 +71,7 @@ describe('RegionActions', () => {
 
     const store = mockStore();
     return store
-    .dispatch(Actions.requestCreateRegion({
+    .dispatch(RegionActions.requestCreateRegion({
       name,
       opKeystoneEndpoint,
       opAdminName,
@@ -116,7 +116,7 @@ describe('RegionActions', () => {
     const store = mockStore();
 
     return store
-    .dispatch(Actions.requestCreateRegion({
+    .dispatch(RegionActions.requestCreateRegion({
       name,
       opKeystoneEndpoint,
       opAdminName,
@@ -202,7 +202,7 @@ describe('RegionActions', () => {
     const store = mockStore();
 
     return store
-    .dispatch(Actions.requestModifyRegion({
+    .dispatch(RegionActions.requestModifyRegion({
       regionId,
       name,
     }))
