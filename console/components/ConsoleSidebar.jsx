@@ -18,6 +18,7 @@ class C extends React.Component {
 
   render() {
     const { t } = this.props;
+    const regionId = this.props.region.regionId;
     return (
       <div className="nicescroll sidebar-expanded sidebar-wrapper" tabIndex="0">
         <div className="header-logo">
@@ -40,27 +41,27 @@ class C extends React.Component {
               </span>
             </a>
           </li>
-          <NavLink to="/instances">
+          <NavLink to={`/${regionId}/instances`}>
             <i className="fa fa-server fa-fw" />
             <span>{t('sidebarInstance')}</span>
           </NavLink>
-          <NavLink to="/volumes">
+          <NavLink to={`/${regionId}/volumes`}>
             <i className="fa fa-hdd-o fa-fw" />
             <span>{t('sidebarVolume')}</span>
           </NavLink>
-          <NavLink to="/vxnets">
+          <NavLink to={`/${regionId}/vxnets`}>
             <i className="fa fa-exchange fa-fw" />
             <span>{t('sidebarVxnet')}</span>
           </NavLink>
-          <NavLink to="/eips">
+          <NavLink to={`/${regionId}/eips`}>
             <i className="fa fa-rocket fa-fw" />
             <span>{t('sidebarEIP')}</span>
           </NavLink>
-          <NavLink to="/key_pairs">
+          <NavLink to={`/${regionId}/key_pairs`}>
             <i className="fa fa-key fa-fw" />
             <span>{t('sidebarKeyPair')}</span>
           </NavLink>
-          <NavLink to="/firewalls">
+          <NavLink to={`/${regionId}/firewalls`}>
             <i className="fa fa-shield fa-fw" />
             <span>{t('sidebarFirewall')}</span>
           </NavLink>
@@ -95,6 +96,7 @@ C.propTypes = {
   env: React.PropTypes.object,
   t: React.PropTypes.any,
   routing: React.PropTypes.object,
+  region: React.PropTypes.object,
 };
 
 function mapStateToProps(store) {
@@ -102,6 +104,7 @@ function mapStateToProps(store) {
     auth: store.auth,
     env: store.env,
     routing: store.routing,
+    region: store.region,
   };
 }
 

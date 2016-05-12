@@ -8,6 +8,16 @@ export const constReducer = (state = {}) => {
   return state;
 };
 
+export const regionReducer = (state = null, action) => {
+  switch (action.type) {
+    case ActionTypes.SELECT_REGION:
+      return action.region;
+
+    default:
+      return state;
+  }
+};
+
 export const authReducer = (state = null, action) => {
   switch (action.type) {
     case ActionTypes.AUTH_LOGIN:
@@ -28,6 +38,8 @@ const reducers = combineReducers({
   auth: authReducer,
   routing: routerReducer,
   form: formReducer,
+  regions: constReducer,
+  region: regionReducer,
   context: constReducer,
 });
 

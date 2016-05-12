@@ -3,19 +3,35 @@ import { connect } from 'react-redux';
 import ConsoleHeader from '../components/ConsoleHeader.jsx';
 import ConsoleSidebar from '../components/ConsoleSidebar.jsx';
 import Notify from '../../shared/components/Notify.jsx';
+import * as Actions from '../redux/actions';
 
-const App = (props) => (
-  <div>
-    <ConsoleHeader auth={props.auth} env={props.env} />
-    <div className="page-sidebar-expanded page-with-sidebar">
-      <ConsoleSidebar />
-      <div className="content-wrapper">
-        <Notify />
-        {props.children}
+class App extends React.Component {
+
+  componentDidMount() {
+    const { dispatch } = this.props;
+    dispatch(Actions.requestRegion('pek2'));
+  }
+
+  render() {
+    const region = this.props.region;
+    if (!region) {
+      return <div />;
+    }
+
+    return (
+      <div>
+        <ConsoleHeader auth={this.props.auth} env={this.props.env} />
+        <div className="page-sidebar-expanded page-with-sidebar">
+          <ConsoleSidebar />
+          <div className="content-wrapper">
+            <Notify />
+            {this.props.children}
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-);
+    );
+  }
+}
 
 App.propTypes = {
   dispatch: React.PropTypes.func.isRequired,
@@ -23,6 +39,7 @@ App.propTypes = {
   env: React.PropTypes.object.isRequired,
   auth: React.PropTypes.object,
   context: React.PropTypes.object,
+  region: React.PropTypes.object,
 };
 
 function mapStateToProps(state) {
@@ -30,6 +47,7 @@ function mapStateToProps(state) {
     auth: state.auth,
     env: state.env,
     context: state.context,
+    region: state.region,
   };
 }
 

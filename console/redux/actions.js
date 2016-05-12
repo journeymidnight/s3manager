@@ -55,3 +55,22 @@ export function notify(message, type = 'notice', delay = undefined) {
 export function notifyAlert(message, delay = undefined) {
   return notify(message, 'alert', delay);
 }
+
+export function selectRegion(region) {
+  return {
+    type: ActionTypes.SELECT_REGION,
+    region,
+  };
+}
+
+export function requestRegion(regionId) {
+  return dispatch => {
+    setTimeout(() => {
+      dispatch(selectRegion({
+        regionId,
+        name: '北京2区',
+      }));
+      dispatch(push(`/${regionId}/instances`));
+    }, 100);
+  };
+}

@@ -17,6 +17,16 @@ bootstrap((token, state, callback) => {
     .promise
     .then((context) => {
       state.auth = context.auth;
+      state.regions = [{
+        name: '北京2区',
+        regionId: 'pek2',
+      }, {
+        name: '北京1区',
+        regionId: 'pek1',
+      }, {
+        name: '亚太1区',
+        regionId: 'ap1',
+      }];
 
       store = configureStore(state);
       routes = configureRoutes(store);
