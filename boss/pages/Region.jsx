@@ -43,7 +43,7 @@ class C extends Page {
     }
 
     let tenants = <div className="nothing-here-block">{t('nothingHere')}</div>;
-    if (this.props.context.tenants && this.props.context.tenants.total > 0) {
+    if (this.props.context.quotas && this.props.context.quotas.total > 0) {
       tenants = (
         <table className="table">
           <thead>
@@ -54,7 +54,7 @@ class C extends Page {
             </tr>
           </thead>
           <tbody>
-          {this.props.context.tenants.tenantSet.map((tenant) => {
+          {this.props.context.quotas.tenantQuotaSet.map((tenant) => {
             return (
               <tr key={tenant.tenantId}>
                 <td>{tenant.tenantId}</td>

@@ -60,6 +60,18 @@
         "opAdminPassword": "管理员密码"
     },
 
+    "formTenantQuotaForm": {
+        "tenantId": "租户ID",
+        "quotaInstances": "云主机",
+        "quotaCPU": "vCPU",
+        "quotaMemory": "内存(GB)",
+        "quotaImages": "镜像",
+        "quotaEIPs": "公网IP",
+        "quotaVolumes": "云硬盘",
+        "quotaVolumeSize": "云硬盘容量(GB)",
+        "quotaKeypairs": "SSH密钥"
+    },
+
     "sidebarInstance": "云主机",
     "sidebarVolume": "云硬盘",
     "sidebarVxnet": "私有网络",

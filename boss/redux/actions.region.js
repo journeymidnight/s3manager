@@ -24,7 +24,25 @@ export function requestDescribeAssignedQuotas(regionId) {
     .promise
     .then((payload) => {
       dispatch(extendContext({
-        tenants: payload,
+        quotas: payload,
+      }));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
+export function requestDescribeAssignedQuota(regionId, tenantId) {
+  return dispatch => {
+    return BOSS
+    .describeAssignedQuotas(regionId, {
+      tenants: [tenantId],
+    })
+    .promise
+    .then((payload) => {
+      dispatch(extendContext({
+        quota: payload.tenantQuotaSet[0],
       }));
     })
     .catch((error) => {
@@ -39,6 +57,7 @@ export function requestAssignTenantQuota(regionId, tenantId, quota) {
     .assignTenantQuota(regionId, tenantId, quota)
     .promise
     .then(() => {
+      dispatch(notify(i18n.t('saveSuccessed')));
     })
     .catch((error) => {
       dispatch(notifyAlert(error.message));
