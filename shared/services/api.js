@@ -41,6 +41,10 @@ export const call = (method, url, payload, hook) => {
         if (data.retCode === 0) {
           resolve(data.data);
         } else {
+          if (data.retCode === 1200) {
+            store.remove('token');
+            window.location.reload();
+          }
           reject(data);
         }
       }
