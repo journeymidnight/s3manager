@@ -1,10 +1,11 @@
 import React from 'react';
-import { Route, IndexRoute, IndexRedirect } from 'react-router';
+import { Route, IndexRoute } from 'react-router';
 
 import App from './pages/App.jsx';
 import Home from './pages/Home.jsx';
 import Login from './pages/Login.jsx';
 import Logout from './pages/Logout.jsx';
+import RegionIndex from './pages/RegionIndex.jsx';
 import Settings from './pages/Settings.jsx';
 
 export default function configureRoutes(store) {
@@ -29,7 +30,7 @@ export default function configureRoutes(store) {
         <Route path="settings" component={Settings} />
         <Route path="profile" component={Settings} />
         <Route path=":regionId" >
-          <IndexRedirect to="instances" />
+          <IndexRoute component={RegionIndex} />
           <Route path="instances" component={Settings} />
           <Route path="volumes" component={Settings} />
           <Route path="vxnets" component={Settings} />

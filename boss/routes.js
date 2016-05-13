@@ -1,7 +1,8 @@
 import React from 'react';
-import { IndexRedirect, IndexRoute, Route } from 'react-router';
+import { IndexRoute, Route } from 'react-router';
 
 import App from './pages/App.jsx';
+import Index from './pages/Index.jsx';
 import Login from './pages/Login.jsx';
 import Logout from './pages/Logout.jsx';
 import Tenants from './pages/Tenants.jsx';
@@ -35,7 +36,7 @@ export default function configureRoutes(store) {
       <Route path="/login" component={Login} />
       <Route path="/logout" component={Logout} />
       <Route path="/" component={App} onEnter={requireAuth} >
-        <IndexRedirect to="regions" />
+        <IndexRoute component={Index} />
         <Route path="profile" component={Profile} />
         <Route path="admins" >
           <IndexRoute component={Admins} />
