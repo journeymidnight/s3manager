@@ -19,12 +19,16 @@ class C extends Page {
   onSave(values, dispatch) {
     return new Promise((resolve, reject) => {
       const name = values.name;
-      const description = values.description;
+      const opKeystoneEndpoint = values.opKeystoneEndpoint;
+      const opAdminName = values.opAdminName;
+      const opAdminPassword = values.opAdminPassword;
 
       dispatch(RegionActions.requestModifyRegion({
         regionId: this.regionId,
         name,
-        description,
+        opKeystoneEndpoint,
+        opAdminName,
+        opAdminPassword,
       }))
       .then(() => {
         resolve();
