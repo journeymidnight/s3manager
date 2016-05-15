@@ -1,5 +1,6 @@
 import * as ActionTypes from './constants';
 import { push } from 'react-router-redux';
+import IaaS from '../services/iaas';
 
 export function extendContext(payload) {
   return {
@@ -63,13 +64,19 @@ export function selectRegion(region) {
   };
 }
 
-export function requestRegion(regionId) {
+export function requestDescribeRegion(regionId) {
   return dispatch => {
-    setTimeout(() => {
-      dispatch(selectRegion({
-        regionId,
-        name: '北京2区',
-      }));
-    }, 500);
+    return IaaS
+    .describeRegions({
+      regions: [regionId],
+    })
+    .promise
+    .then((payload) => {
+      const region = payload.regionSet[0];
+      dispatch(selectRegion(region));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
   };
 }

@@ -10,16 +10,16 @@ class C extends React.Component {
 
     if (!region) {
       if (params.regionId) {
-        dispatch(Actions.requestRegion(params.regionId));
+        dispatch(Actions.requestDescribeRegion(params.regionId));
       } else {
         const regionId = regions[0].regionId;
-        dispatch(Actions.requestRegion(regionId));
+        dispatch(Actions.requestDescribeRegion(regionId));
       }
     } else {
       const regionId = region.regionId;
       if (params.regionId && regionId !== params.regionId) {
         dispatch(Actions.selectRegion(null));
-        dispatch(Actions.requestRegion(params.regionId));
+        dispatch(Actions.requestDescribeRegion(params.regionId));
       } else {
         dispatch(push(`/${regionId}`));
       }
