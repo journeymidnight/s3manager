@@ -20,7 +20,9 @@ export function requestDescribeRegions() {
 export function requestDescribeAssignedQuotas(regionId) {
   return dispatch => {
     return BOSS
-    .describeAssignedQuotas(regionId)
+    .describeTenantQuotas({
+      regions: [regionId],
+    })
     .promise
     .then((payload) => {
       dispatch(extendContext({
@@ -33,10 +35,11 @@ export function requestDescribeAssignedQuotas(regionId) {
   };
 }
 
-export function requestDescribeAssignedQuota(regionId, tenantId) {
+export function requestDescribeTenantQuota(regionId, tenantId) {
   return dispatch => {
     return BOSS
-    .describeAssignedQuotas(regionId, {
+    .describeTenantQuotas({
+      regions: [regionId],
       tenants: [tenantId],
     })
     .promise
@@ -58,19 +61,6 @@ export function requestAssignTenantQuota(regionId, tenantId, quota) {
     .promise
     .then(() => {
       dispatch(notify(i18n.t('saveSuccessed')));
-    })
-    .catch((error) => {
-      dispatch(notifyAlert(error.message));
-    });
-  };
-}
-
-export function requestDeleteTenantQuota(regionId, tenantId) {
-  return dispatch => {
-    return BOSS
-    .deleteTenantQuota(regionId, tenantId)
-    .promise
-    .then(() => {
     })
     .catch((error) => {
       dispatch(notifyAlert(error.message));

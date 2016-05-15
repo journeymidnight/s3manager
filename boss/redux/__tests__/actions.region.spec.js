@@ -221,6 +221,10 @@ describe('RegionActions', () => {
     // TODO
   });
 
+  it('#requestDescribeTenantQuota', () => {
+    // TODO
+  });
+
   it('#requestAssignTenantQuota', () => {
     // TODO
   });

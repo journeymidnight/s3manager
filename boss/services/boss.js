@@ -61,23 +61,14 @@ class Boss {
   modifyRegion(region) {
     return this.call('modifyRegionAttributes', region);
   }
-  describeAssignedQuotas(regionId, filters = {}) {
-    return this.call('describeAssignedQuotas', {
-      regionId,
-      ...filters,
-    });
+  describeTenantQuotas(filters = {}) {
+    return this.call('describeTenantQuotas', filters);
   }
   assignTenantQuota(regionId, tenantId, quota) {
     return this.call('assignTenantQuota', {
       regionId,
       tenantId,
       ...quota,
-    });
-  }
-  deleteTenantQuota(regionId, tenantId) {
-    return this.call('deleteTenantQuota', {
-      regionId,
-      tenantId,
     });
   }
   describeAdmins(filters = {}) {

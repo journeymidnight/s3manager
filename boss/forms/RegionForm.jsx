@@ -50,7 +50,7 @@ const F = (props) => {
       <div className={submitFailed && opAdminPassword.error ? 'form-group has-error' : 'form-group'}>
         <label className="control-label" >{t('formRegionForm.opAdminPassword')}</label>
         <div className="col-sm-10">
-          <input type="text" className="form-control" {...opAdminPassword} />
+          <input type="password" className="form-control" {...opAdminPassword} />
           {submitFailed && opAdminPassword.error && <div className="text-danger"><small>{opAdminPassword.error}</small></div>}
         </div>
       </div>

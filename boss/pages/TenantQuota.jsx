@@ -12,7 +12,7 @@ class C extends Page {
     this.regionId = params.regionId;
     this.tenantId = params.tenantId;
     dispatch(RegionActions.requestDescribeRegion(this.regionId));
-    dispatch(RegionActions.requestDescribeAssignedQuota(this.regionId, this.tenantId));
+    dispatch(RegionActions.requestDescribeTenantQuota(this.regionId, this.tenantId));
 
     this.onSubmit = this.onSubmit.bind(this);
   }

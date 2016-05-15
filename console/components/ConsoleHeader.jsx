@@ -58,7 +58,7 @@ class C extends React.Component {
                     <ul className="dropdown-menu">
                       {this.props.regions.map((region) => {
                         if (region.regionId !== this.props.region.regionId) {
-                          return <li key={region.regionId}><Link to={`/${region.regionId}`}>{region.name}</Link></li>;
+                          return <li key={region.regionId}><Link to={`/${region.regionId}/instances`}>{region.name}</Link></li>;
                         }
                         return <li key={region.regionId} />;
                       })}
