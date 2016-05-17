@@ -5,11 +5,8 @@ export const tenantRoleUser = 2;
 
 class Boss {
   call(action, params) {
-    const payload = Object.assign(params, {
-      action,
-    });
-
-    return rawCall('post', '/boss/', payload);
+    const payload = Object.assign({}, params);
+    return rawCall('post', `/boss/${action}`, payload);
   }
   describeTenants(filters = {}) {
     return this.call('describeTenants', filters);

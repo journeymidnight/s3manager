@@ -8,9 +8,7 @@ class Auth {
     });
   }
   describeContext(token) {
-    return call('post', '/boss/', {
-      action: 'describeContext',
-    }, (options) => {
+    return call('post', '/boss/describeContext', {}, (options) => {
       options.headers['X-Le-Token'] = token;
     });
   }

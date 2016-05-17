@@ -50,8 +50,7 @@ describe('AuthActions', () => {
     });
 
     const scope2 = mockRequest
-    .post('/api/boss/', {
-      action: 'describeContext',
+    .post('/api/boss/describeContext', {
     })
     .reply(200, {
       data: context,
