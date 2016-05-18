@@ -10,8 +10,6 @@ import config from '../webpack.config.dev';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 
-const API_ENDPOINT = process.env.API_ENDPOINT || 'http://localhost:10001';
-
 const compiler = webpack(config);
 const devMiddleware = webpackDevMiddleware(compiler, {
   noInfo: true,
@@ -20,10 +18,12 @@ const devMiddleware = webpackDevMiddleware(compiler, {
 const hotMiddleware = webpackHotMiddleware(compiler);
 
 function createApp(module) {
+  const endpoint = process.env[`${module}_endpoint`.toUpperCase()] || 'http://localhost:8080';
+
   const app = new Express();
   app.use(logger('dev'));
   app.use('/asset', Express.static(path.resolve(__dirname, '../asset')));
-  app.use('/api', proxy(API_ENDPOINT, {
+  app.use('/api', proxy(endpoint, {
     forwardPath: (req) => {
       return url.parse(req.url).path;
     },
@@ -41,5 +41,7 @@ function createApp(module) {
   return app;
 }
 
-createApp('console').listen(9002);
+createApp('region').listen(9002);
 createApp('boss').listen(9003);
+createApp('devops').listen(9004);
+createApp('central').listen(9005);

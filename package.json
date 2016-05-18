@@ -2,10 +2,10 @@
   "name": "app",
   "version": "0.0.1",
   "scripts": {
-    "lint": "eslint console boss shared server",
-    "test": "mocha --compilers js:babel-register --require './shared/__tests__/mock.js' 'shared/**/__tests__/*.spec.js' 'console/**/__tests__/*.spec.js' 'boss/**/__tests__/*.spec.js'",
+    "lint": "eslint region boss shared server",
+    "test": "mocha --compilers js:babel-register --require './shared/__tests__/mock.js' 'shared/**/__tests__/*.spec.js' 'region/**/__tests__/*.spec.js' 'boss/**/__tests__/*.spec.js' 'devops/**/__tests__/*.spec.js' 'central/**/__tests__/*.spec.js'",
     "clean": "rimraf dist",
-    "build": "webpack --config webpack.config.prod.js && cp -r asset dist/console  && cp -r asset dist/boss",
+    "build": "webpack --config webpack.config.prod.js && cp -r asset dist/region && cp -r asset dist/boss && cp -r asset dist/devops && cp -r asset dist/central",
     "start": "babel-watch -w ./server index.js"
   },
   "pre-commit": [
