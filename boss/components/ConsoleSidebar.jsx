@@ -31,15 +31,6 @@ class C extends React.Component {
           </Link>
         </div>
         <ul className="nav nav-sidebar">
-          <li className="hidden">
-            <a className="back-link" href="/groups/lestack">
-              <i className="fa fa-caret-square-o-left fa-fw">
-              </i>
-              <span>
-                Go to group
-              </span>
-            </a>
-          </li>
           <NavLink to="/regions">
             <i className="fa fa-codepen fa-fw" />
             <span>{t('sidebarRegion')}</span>

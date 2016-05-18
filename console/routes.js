@@ -33,7 +33,8 @@ export default function configureRoutes(store) {
           <IndexRoute component={RegionIndex} />
           <Route path="instances" component={Settings} />
           <Route path="volumes" component={Settings} />
-          <Route path="vxnets" component={Settings} />
+          <Route path="networks" component={Settings} />
+          <Route path="snapshots" component={Settings} />
           <Route path="eips" component={Settings} />
           <Route path="key_pairs" component={Settings} />
           <Route path="firewalls" component={Settings} />

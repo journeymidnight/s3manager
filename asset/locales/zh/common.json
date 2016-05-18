@@ -74,7 +74,8 @@
 
     "sidebarInstance": "云主机",
     "sidebarVolume": "云硬盘",
-    "sidebarVxnet": "私有网络",
+    "sidebarNetwork": "私有网络",
+    "sidebarSnapshot": "快照备份",
     "sidebarEIP": "公网IP",
     "sidebarKeyPair": "SSH密钥",
     "sidebarFirewall": "防火墙",

@@ -44,9 +44,13 @@ class C extends React.Component {
             <i className="fa fa-hdd-o fa-fw" />
             <span>{t('sidebarVolume')}</span>
           </NavLink>
-          <NavLink to={`/${regionId}/vxnets`}>
+          <NavLink to={`/${regionId}/networks`}>
             <i className="fa fa-exchange fa-fw" />
-            <span>{t('sidebarVxnet')}</span>
+            <span>{t('sidebarNetwork')}</span>
+          </NavLink>
+          <NavLink to={`/${regionId}/snapshots`}>
+            <i className="fa fa-certificate fa-fw" />
+            <span>{t('sidebarSnapshot')}</span>
           </NavLink>
           <NavLink to={`/${regionId}/eips`}>
             <i className="fa fa-rocket fa-fw" />
