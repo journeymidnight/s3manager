@@ -4,10 +4,9 @@ module.exports = {
   devtool: 'source-map',
 
   entry: {
-    region: './region/index.js',
+    console: './console/index.js',
     devops: './devops/index.js',
     boss: './boss/index.js',
-    central: './central/index.js',
   },
 
   output: {
@@ -34,7 +33,7 @@ module.exports = {
       { test: /\.jsx*$/, loader: 'babel!eslint',
         includes: [
           /devops/,
-          /region/,
+          /console/,
           /boss/,
           /shared/,
         ],
