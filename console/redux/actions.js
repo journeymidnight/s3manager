@@ -67,9 +67,7 @@ export function selectRegion(region) {
 export function requestDescribeRegion(regionId) {
   return dispatch => {
     return IaaS
-    .describeRegions({
-      regions: [regionId],
-    })
+    .describeRegions(regionId)
     .promise
     .then((payload) => {
       const region = payload.regionSet[0];

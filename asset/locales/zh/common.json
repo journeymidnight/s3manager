@@ -55,9 +55,10 @@
     },
 
     "formRegionForm": {
-        "opKeystoneEndpoint": "KeyStone URL",
-        "opAdminName": "管理员账号",
-        "opAdminPassword": "管理员密码"
+        "publicEndpoint": "对外接口URL",
+        "manageEndpoint": "管理接口URL",
+        "manageKey": "管理员账号",
+        "manageSecret": "管理员密码"
     },
 
     "formTenantQuotaForm": {

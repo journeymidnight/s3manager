@@ -27,7 +27,7 @@ require('../shared/venders/breakpoints');
 require('../shared/venders/sidebar');
 require('../shared/venders/jquery.nicescroll');
 
-function removeLoader() {
+export function removeLoader() {
   let i = 0;
   function handleLoader() {
     if (i < 2) {

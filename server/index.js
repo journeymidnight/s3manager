@@ -41,6 +41,6 @@ function createApp(module) {
   return app;
 }
 
-createApp('console').listen(9001);
-createApp('boss').listen(9002);
-createApp('devops').listen(9003);
+createApp('devops').listen(9002);
+createApp('boss').listen(9003);
+createApp('console').listen(9004);

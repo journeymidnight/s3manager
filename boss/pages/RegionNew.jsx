@@ -14,16 +14,18 @@ class C extends Page {
     return new Promise((resolve, reject) => {
       const regionId = values.regionId;
       const name = values.name;
-      const opKeystoneEndpoint = values.opKeystoneEndpoint;
-      const opAdminName = values.opAdminName;
-      const opAdminPassword = values.opAdminPassword;
+      const publicEndpoint = values.publicEndpoint;
+      const manageEndpoint = values.manageEndpoint;
+      const manageKey = values.manageKey;
+      const manageSecret = values.manageSecret;
 
       dispatch(RegionActions.requestCreateRegion({
         regionId,
         name,
-        opKeystoneEndpoint,
-        opAdminName,
-        opAdminPassword,
+        publicEndpoint,
+        manageEndpoint,
+        manageKey,
+        manageSecret,
       }))
       .then(() => {
         resolve();

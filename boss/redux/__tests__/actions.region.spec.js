@@ -7,9 +7,10 @@ import i18n from '../../../shared/i18n';
 
 const regionId = 'idA';
 const name = 'nameA';
-const opKeystoneEndpoint = 'opKeystoneEndpointA';
-const opAdminName = 'opAdminNameA';
-const opAdminPassword = 'opAdminPasswordA';
+const publicEndpoint = 'publicEndpointA';
+const manageEndpoint = 'manageEndpointA';
+const manageKey = 'manageKeyA';
+const manageSecret = 'manageSecretA';
 
 describe('RegionActions', () => {
   afterEach(() => {
@@ -22,8 +23,9 @@ describe('RegionActions', () => {
       regionSet: [{
         regionId,
         name,
-        opKeystoneEndpoint,
-        opAdminName,
+        publicEndpoint,
+        manageEndpoint,
+        manageKey,
       }],
     };
 
@@ -57,9 +59,10 @@ describe('RegionActions', () => {
     const scope = mockRequest
     .post('/api/boss/createRegion', {
       name,
-      opKeystoneEndpoint,
-      opAdminName,
-      opAdminPassword,
+      publicEndpoint,
+      manageEndpoint,
+      manageKey,
+      manageSecret,
     })
     .reply(200, {
       retCode: 1100,
@@ -71,9 +74,10 @@ describe('RegionActions', () => {
     return store
     .dispatch(RegionActions.requestCreateRegion({
       name,
-      opKeystoneEndpoint,
-      opAdminName,
-      opAdminPassword,
+      publicEndpoint,
+      manageEndpoint,
+      manageKey,
+      manageSecret,
     }))
     .then(() => {
       scope.isDone();
@@ -98,9 +102,10 @@ describe('RegionActions', () => {
     const scope = mockRequest
     .post('/api/boss/createRegion', {
       name,
-      opKeystoneEndpoint,
-      opAdminName,
-      opAdminPassword,
+      publicEndpoint,
+      manageEndpoint,
+      manageKey,
+      manageSecret,
     })
     .reply(200, {
       data: {
@@ -115,9 +120,10 @@ describe('RegionActions', () => {
     return store
     .dispatch(RegionActions.requestCreateRegion({
       name,
-      opKeystoneEndpoint,
-      opAdminName,
-      opAdminPassword,
+      publicEndpoint,
+      manageEndpoint,
+      manageKey,
+      manageSecret,
     }))
     .then(() => {
       scope.isDone();
@@ -163,7 +169,8 @@ describe('RegionActions', () => {
       regionSet: [{
         regionId,
         name,
-        opKeystoneEndpoint,
+        publicEndpoint,
+        manageEndpoint,
       }],
     };
 
