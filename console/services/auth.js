@@ -12,6 +12,11 @@ class Auth {
       options.headers['X-Le-Token'] = token;
     });
   }
+  describeRegions(regionId) {
+    return call('post', '/proxy/iam/describeRegions', {
+      regions: [regionId],
+    });
+  }
 }
 
 export default new Auth();
