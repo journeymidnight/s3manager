@@ -5,6 +5,9 @@ class IaaS {
     const payload = Object.assign({}, params);
     return rawCall('post', `/proxy/r/${regionId}/${action}`, payload);
   }
+  describeKeyPairs(regionId) {
+    return this.call(regionId, 'describeKeyPairs', {});
+  }
 }
 
 export default new IaaS();

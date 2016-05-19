@@ -33,6 +33,9 @@
     "userManage": "用户管理",
     "userManageDescription": "添加、删除和修改用户信息。",
 
+    "keyPairManage": "SSH 密钥",
+    "keyPairManageDescription": "为 Linux 云主机提供 SSH 公钥/私钥验证身份。",
+
     "tenantManage": "租户管理",
     "tenantManageDescription": "可根据不同的企业或团队划分独立的租户, 分配相应的资源配额。",
 
@@ -67,10 +70,10 @@
         "quotaCPU": "vCPU",
         "quotaMemory": "内存(GB)",
         "quotaImages": "镜像",
-        "quotaEIPs": "公网IP",
+        "quotaEIPs": "公网 IP",
         "quotaVolumes": "云硬盘",
         "quotaVolumeSize": "云硬盘容量(GB)",
-        "quotaKeypairs": "SSH密钥"
+        "quotaKeypairs": "SSH 密钥"
     },
 
     "sidebarInstance": "云主机",
@@ -78,9 +81,9 @@
     "sidebarNetwork": "私有网络",
     "sidebarSnapshot": "快照备份",
     "sidebarEIP": "公网IP",
-    "sidebarKeyPair": "SSH密钥",
+    "sidebarKeyPair": "SSH 密钥",
     "sidebarFirewall": "防火墙",
-    "sidebarAccessKey": "API密钥",
+    "sidebarAccessKey": "API 密钥",
     "sidebarActivity": "操作日志",
     "sidebarUsage": "资源使用",
     "sidebarRegion": "区域",
