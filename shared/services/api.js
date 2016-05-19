@@ -41,7 +41,8 @@ export const call = (method, url, payload, hook) => {
         if (data.retCode === 0) {
           resolve(data.data);
         } else {
-          if (data.retCode === 1200) {
+          const _ = require('lodash');
+          if (data.retCode === 1200 && !_.endsWith(url, 'authorize')) {
             store.remove('token');
             window.location.reload();
             return;
