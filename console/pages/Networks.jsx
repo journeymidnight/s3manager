@@ -1,28 +1,28 @@
 import React from 'react';
 import { Link } from 'react-router';
 import RegionPage, { attach } from '../../shared/pages/RegionPage';
-import * as KeyPairActions from '../redux/actions.key_pair';
+import * as NetworkActions from '../redux/actions.network';
 
 class C extends RegionPage {
 
   componentDidMount() {
     const { dispatch, region, routerKey } = this.props;
-    dispatch(KeyPairActions.requestDescribeKeyPairs(routerKey, region.regionId));
+    dispatch(NetworkActions.requestDescribeNetworks(routerKey, region.regionId));
   }
 
   render() {
-    const keyPairs = this.props.context.keyPairSet && this.props.context.keyPairSet.map((keyPair) => {
+    const networks = this.props.context.networkSet && this.props.context.networkSet.map((network) => {
       return (
-        <tr key={keyPair.keyPairId}>
-          <td>{keyPair.keyPairId}</td>
+        <tr key={network.networkId}>
+          <td>{network.networkId}</td>
           <td>
-            <Link to={`/${this.props.region.regionId}/key_pairs/${keyPair.keyPairId}`}>
+            <Link to={`/${this.props.region.regionId}/networks/${network.networkId}`}>
               <strong>
-                {keyPair.name}
+                {network.name}
               </strong>
             </Link>
           </td>
-          <td className="light">{keyPair.created}</td>
+          <td className="light">{network.created}</td>
         </tr>
       );
     });
@@ -32,16 +32,16 @@ class C extends RegionPage {
         <div className="content">
           <div className="clearfix">
             <h3 className="page-title">
-              {t('keyPairManage')}
+              {t('networkManage')}
             </h3>
             <div className="top-area">
               <div className="nav-text">
                 <p className="light">
-                  {t('keyPairManageDescription')}
+                  {t('networkManageDescription')}
                 </p>
               </div>
               <div className="nav-controls">
-                <Link className="btn btn-new" to={`/${this.props.region.regionId}/key_pairs/new`}>
+                <Link className="btn btn-new" to={`/${this.props.region.regionId}/networks/new`}>
                   <i className="fa fa-plus"></i>&nbsp;{t('add')}
                 </Link>
               </div>
@@ -56,7 +56,7 @@ class C extends RegionPage {
                   </tr>
                 </thead>
                 <tbody>
-                {keyPairs}
+                {networks}
                 </tbody>
               </table>
             </div>

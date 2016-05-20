@@ -43,3 +43,147 @@ header.navbar-empty .center-logo {
         color: #555555;
     }
 }
+
+
+.right-sidebar {
+  position: fixed;
+  top: 58px;
+  bottom: 0;
+  right: 0;
+  z-index: 10;
+  transition: width .3s;
+  background: $gray-light;
+  padding: 10px 20px;
+
+  a.gutter-toggle {
+    color: inherit;
+
+    &:hover {
+      color: #c9c9c9;
+    }
+  }
+
+  &.right-sidebar-expanded {
+    width: $gutter_width;
+
+    .value {
+      line-height: 1;
+
+      .assign-yourself {
+        margin-top: 10px;
+        font-weight: normal;
+        display: block;
+      }
+    }
+
+    .bold {
+      font-weight: 600;
+    }
+
+    .sidebar-collapsed-icon {
+      display: none;
+    }
+
+    .gutter-toggle {
+      margin-top: 7px;
+      border-left: 1px solid $border-gray-light;
+    }
+
+    .assignee .avatar {
+      float: left;
+      margin-right: 10px;
+      margin-bottom: 0;
+      margin-left: 0;
+    }
+
+    .username {
+      display: block;
+      margin-top: 4px;
+      font-size: 13px;
+      font-weight: normal;
+    }
+  }
+
+  &.right-sidebar-collapsed {
+    /* Extra small devices (phones, less than 768px) */
+    display: none;
+    /* Small devices (tablets, 768px and up) */
+    @media (min-width: $screen-sm-min) {
+      display: block
+    }
+
+    width: $sidebar_collapsed_width;
+    padding-top: 0;
+
+    .block {
+      width: $sidebar_collapsed_width - 1px;
+      margin-left: -19px;
+      padding: 15px 0 0;
+      border-bottom: none;
+      overflow: hidden;
+    }
+
+    .participants {
+      border-bottom: 1px solid $border-gray-light;
+    }
+
+    .hide-collapsed {
+      display: none;
+    }
+
+    .gutter-toggle {
+      width: 100%;
+      margin-left: 0;
+      padding-left: 25px;
+    }
+
+    .sidebar-collapsed-icon {
+      display: block;
+      width: 100%;
+      text-align: center;
+      padding-bottom: 10px;
+      color: #999;
+
+      span {
+        display: block;
+        margin-top: 0;
+      }
+
+      .author {
+        display: none;
+      }
+
+      .btn-clipboard {
+        border: none;
+
+        &:hover {
+          background: transparent;
+        }
+
+        i {
+          color: #999;
+        }
+      }
+    }
+
+    .sidebar-collapsed-user {
+      padding-bottom: 0;
+      margin-bottom: 10px;
+    }
+  }
+
+  .dropdown-content {
+    a:hover {
+      color: inherit;
+    }
+  }
+
+  .dropdown-menu-toggle {
+    width: 100%;
+    padding-top: 6px;
+  }
+
+  .open .dropdown-menu {
+    width: 100%;
+  }
+}

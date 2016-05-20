@@ -8,7 +8,11 @@ import Logout from './pages/Logout.jsx';
 import KeyPair from './pages/KeyPair.jsx';
 import KeyPairs from './pages/KeyPairs.jsx';
 import KeyPairNew from './pages/KeyPairNew.jsx';
+import Network from './pages/Network.jsx';
+import Networks from './pages/Networks.jsx';
+import NetworkNew from './pages/NetworkNew.jsx';
 import RegionIndex from './pages/RegionIndex.jsx';
+import Snapshots from './pages/Snapshots.jsx';
 import Settings from './pages/Settings.jsx';
 
 export default function configureRoutes(store) {
@@ -36,13 +40,19 @@ export default function configureRoutes(store) {
           <IndexRoute component={RegionIndex} />
           <Route path="instances" component={Settings} />
           <Route path="volumes" component={Settings} />
-          <Route path="networks" component={Settings} />
-          <Route path="snapshots" component={Settings} />
+          <Route path="snapshots" >
+            <IndexRoute component={Snapshots} />
+          </Route>
           <Route path="eips" component={Settings} />
           <Route path="key_pairs" >
             <IndexRoute component={KeyPairs} />
             <Route path="new" component={KeyPairNew} />
             <Route path=":keyPairId" component={KeyPair} />
+          </Route>
+          <Route path="networks" >
+            <IndexRoute component={Networks} />
+            <Route path="new" component={NetworkNew} />
+            <Route path=":networkId" component={Network} />
           </Route>
           <Route path="firewalls" component={Settings} />
         </Route>

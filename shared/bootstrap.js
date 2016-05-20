@@ -22,10 +22,11 @@ window.paceOptions = {
   elements: true,
   restartOnRequestAfter: false,
 };
-require('../shared/venders/pace');
-require('../shared/venders/breakpoints');
-require('../shared/venders/sidebar');
-require('../shared/venders/jquery.nicescroll');
+require('../shared/vendors/pace');
+require('../shared/vendors/breakpoints');
+require('../shared/vendors/sidebar');
+require('../shared/vendors/right_sidebar');
+require('../shared/vendors/jquery.nicescroll');
 
 export function removeLoader() {
   let i = 0;

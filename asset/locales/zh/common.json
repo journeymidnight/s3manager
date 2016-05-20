@@ -21,6 +21,9 @@
     "tenant": "租户",
     "user": "用户",
     "admin": "管理员",
+    "cidr": "网段地址",
+    "volume": "硬盘",
+    "image": "映像",
 
     "addSuccessed": "添加成功。",
     "saveSuccessed": "保存成功。",
@@ -32,6 +35,9 @@
 
     "userManage": "用户管理",
     "userManageDescription": "添加、删除和修改用户信息。",
+
+    "networkManage": "私有网络管理（VPC）",
+    "networkManageDescription": "私有网络可以提供100%的安全隔离，而且有丰富的工具帮助您进行自动化管理。 ",
 
     "keyPairManage": "SSH 密钥",
     "keyPairManageDescription": "为 Linux 云主机提供 SSH 公钥/私钥验证身份。",
@@ -51,6 +57,11 @@
 
     "pageTenant": {
         "authorizedUsers": "授权用户"
+    },
+
+    "pageNetwork": {
+        "subnet": "子网",
+        "router": "路由"
     },
 
     "formUserSelectForm": {

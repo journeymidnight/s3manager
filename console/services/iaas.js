@@ -11,6 +11,12 @@ class IaaS {
   createKeyPair(regionId, keyPair) {
     return this.call(regionId, 'createKeyPair', keyPair);
   }
+  describeNetworks(regionId) {
+    return this.call(regionId, 'describeNetworks', {});
+  }
+  createNetwork(regionId, keyPair) {
+    return this.call(regionId, 'createNetwork', keyPair);
+  }
 }
 
 export default new IaaS();
