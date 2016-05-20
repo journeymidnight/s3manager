@@ -35,3 +35,11 @@ header.navbar-empty .center-logo {
 .has-error .form-control {
     border-color: #a94442;
 }
+
+.breadcrumb {
+    margin-top: 20px;
+
+    .active {
+        color: #555555;
+    }
+}

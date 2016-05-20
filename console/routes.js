@@ -5,6 +5,7 @@ import App from './pages/App.jsx';
 import Home from './pages/Home.jsx';
 import Login from './pages/Login.jsx';
 import Logout from './pages/Logout.jsx';
+import KeyPair from './pages/KeyPair.jsx';
 import KeyPairs from './pages/KeyPairs.jsx';
 import KeyPairNew from './pages/KeyPairNew.jsx';
 import RegionIndex from './pages/RegionIndex.jsx';
@@ -41,6 +42,7 @@ export default function configureRoutes(store) {
           <Route path="key_pairs" >
             <IndexRoute component={KeyPairs} />
             <Route path="new" component={KeyPairNew} />
+            <Route path=":keyPairId" component={KeyPair} />
           </Route>
           <Route path="firewalls" component={Settings} />
         </Route>

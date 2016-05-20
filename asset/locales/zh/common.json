@@ -57,6 +57,10 @@
         "typeEmail": "输入用户邮箱"
     },
 
+    "formKeyPairForm": {
+        "publicKey": "公钥"
+    },
+
     "formRegionForm": {
         "publicEndpoint": "对外接口URL",
         "manageEndpoint": "管理接口URL",

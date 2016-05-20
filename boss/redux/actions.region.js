@@ -1,5 +1,5 @@
 import { push } from 'react-router-redux';
-import { notifyAlert, notify, extendContext } from './actions';
+import { notify, notifyAlert, extendContext } from './actions';
 import BOSS from '../services/boss';
 import i18n from '../../shared/i18n';
 

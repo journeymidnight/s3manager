@@ -11,12 +11,12 @@ class C extends RegionPage {
   }
 
   render() {
-    const keyPairs = this.props.context.keyPairs && this.props.context.keyPairSet.map((keyPair) => {
+    const keyPairs = this.props.context.keyPairSet && this.props.context.keyPairSet.map((keyPair) => {
       return (
         <tr key={keyPair.keyPairId}>
           <td>{keyPair.keyPairId}</td>
           <td>
-            <Link to={`/keyPairs/${keyPair.keyPairId}`}>
+            <Link to={`/${this.props.region.regionId}/key_pairs/${keyPair.keyPairId}`}>
               <strong>
                 {keyPair.name}
               </strong>
@@ -41,7 +41,7 @@ class C extends RegionPage {
                 </p>
               </div>
               <div className="nav-controls">
-                <Link className="btn btn-new" to="/keyPairs/new">
+                <Link className="btn btn-new" to={`/${this.props.region.regionId}/key_pairs/new`}>
                   <i className="fa fa-plus"></i>&nbsp;{t('add')}
                 </Link>
               </div>
