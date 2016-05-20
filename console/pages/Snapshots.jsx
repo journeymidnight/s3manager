@@ -14,9 +14,9 @@ class C extends RegionPage {
           <div className="clearfix">
             <ul className="nav-links">
               <li className="home active">
-                <a data-placement="right" href="/">{t('image')}</a></li>
+                <a data-placement="right" href="#">{t('image')}</a></li>
               <li className="">
-                <a data-placement="right" href="/">{t('volume')}</a></li>
+                <a data-placement="right" href="#">{t('volume')}</a></li>
             </ul>
             <div className="nav-block hidden">
               <div className="controls">

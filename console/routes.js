@@ -11,6 +11,9 @@ import KeyPairNew from './pages/KeyPairNew.jsx';
 import Network from './pages/Network.jsx';
 import Networks from './pages/Networks.jsx';
 import NetworkNew from './pages/NetworkNew.jsx';
+import Instance from './pages/Instance.jsx';
+import Instances from './pages/Instances.jsx';
+import InstanceNew from './pages/InstanceNew.jsx';
 import RegionIndex from './pages/RegionIndex.jsx';
 import Snapshots from './pages/Snapshots.jsx';
 import Settings from './pages/Settings.jsx';
@@ -38,12 +41,16 @@ export default function configureRoutes(store) {
         <Route path="profile" component={Settings} />
         <Route path=":regionId" >
           <IndexRoute component={RegionIndex} />
-          <Route path="instances" component={Settings} />
           <Route path="volumes" component={Settings} />
           <Route path="snapshots" >
             <IndexRoute component={Snapshots} />
           </Route>
           <Route path="eips" component={Settings} />
+          <Route path="instances" >
+            <IndexRoute component={Instances} />
+            <Route path="new" component={InstanceNew} />
+            <Route path=":instanceId" component={Instance} />
+          </Route>
           <Route path="key_pairs" >
             <IndexRoute component={KeyPairs} />
             <Route path="new" component={KeyPairNew} />

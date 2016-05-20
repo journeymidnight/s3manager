@@ -17,6 +17,15 @@ class IaaS {
   createNetwork(regionId, keyPair) {
     return this.call(regionId, 'createNetwork', keyPair);
   }
+  describeInstanceTypes(regionId) {
+    return this.call(regionId, 'describeInstanceTypes', {});
+  }
+  describeInstances(regionId) {
+    return this.call(regionId, 'describeInstances', {});
+  }
+  createInstance(regionId, instance) {
+    return this.call(regionId, 'createInstance', instance);
+  }
 }
 
 export default new IaaS();

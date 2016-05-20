@@ -33,6 +33,9 @@
     "saveFailed": "保存失败。",
     "nothingHere": "没有任何数据。",
 
+    "instanceManage": "云主机管理",
+    "instanceManageDescription": "添加、删除和修改云主机信息。",
+
     "userManage": "用户管理",
     "userManageDescription": "添加、删除和修改用户信息。",
 
