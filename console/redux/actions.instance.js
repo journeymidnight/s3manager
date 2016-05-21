@@ -3,6 +3,40 @@ import { notify, notifyAlert, extendContext } from './actions';
 import IaaS from '../services/iaas';
 import i18n from '../../shared/i18n';
 
+export function requestDescribePrerequisites(routerKey, regionId) {
+  return dispatch => {
+    return IaaS
+    .describeInstanceTypes(regionId)
+    .promise
+    .then((payload) => {
+      dispatch(extendContext({
+        instanceTypeSet: payload.instanceTypeSet,
+      }));
+
+      return IaaS
+      .describeImages(regionId)
+      .promise;
+    })
+    .then((payload) => {
+      dispatch(extendContext({
+        imageSet: payload.imageSet,
+      }));
+
+      return IaaS
+      .describeNetworks(regionId)
+      .promise;
+    })
+    .then((payload) => {
+      dispatch(extendContext({
+        networkSet: payload.networkSet,
+      }));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
 export function requestDescribeInstances(routerKey, regionId) {
   return dispatch => {
     return IaaS

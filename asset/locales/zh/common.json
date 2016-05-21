@@ -2,8 +2,8 @@
     "appName": "LeStack",
     "boss": "BOSS业务运营支撑系统",
 
-    "add": "添加",
-    "save": "保存",
+    "create": "添加",
+    "update": "保存",
     "reset": "重置",
     "login": "登录",
     "cancel": "取消",
@@ -25,12 +25,12 @@
     "volume": "硬盘",
     "image": "映像",
 
-    "addSuccessed": "添加成功。",
-    "saveSuccessed": "保存成功。",
+    "createSuccessed": "添加成功。",
+    "updateSuccessed": "保存成功。",
     "deleteSuccessed": "删除成功。",
     "authorizeFailed": "验证失败。",
-    "addFailed": "添加失败。",
-    "saveFailed": "保存失败。",
+    "createFailed": "添加失败。",
+    "updateFailed": "保存失败。",
     "nothingHere": "没有任何数据。",
 
     "instanceManage": "云主机管理",
@@ -53,6 +53,10 @@
 
     "tenantRoleAdmin": "管理账号",
     "tenantRoleUser": "使用账户",
+
+    "pageInstanceNew": {
+        "createInstance": "添加云主机"
+    },
 
     "pageRegion": {
         "assignedTenants": "分配租户"

@@ -17,6 +17,9 @@ class IaaS {
   createNetwork(regionId, keyPair) {
     return this.call(regionId, 'createNetwork', keyPair);
   }
+  describeImages(regionId) {
+    return this.call(regionId, 'describeImages', {});
+  }
   describeInstanceTypes(regionId) {
     return this.call(regionId, 'describeInstanceTypes', {});
   }
