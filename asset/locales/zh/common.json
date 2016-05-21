@@ -24,6 +24,10 @@
     "cidr": "网段地址",
     "volume": "硬盘",
     "image": "映像",
+    "instanceType": "配置",
+    "network": "映像",
+    "subnet": "子网",
+    "router": "路由器",
 
     "createSuccessed": "添加成功。",
     "updateSuccessed": "保存成功。",

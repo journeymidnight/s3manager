@@ -6,7 +6,7 @@ import * as Validations from '../../shared/utils/validations';
 
 const F = (props) => {
   const { fields:
-    { name, cidr },
+    { name, imageId, instanceTypeId, subnetId },
     handleSubmit,
     submitting,
     submitFailed,
@@ -23,11 +23,39 @@ const F = (props) => {
         </div>
       </div>
 
-      <div className={submitFailed && cidr.error ? 'form-group has-error' : 'form-group'}>
-        <label className="control-label" >{t('cidr')}</label>
+      <div className={submitFailed && imageId.error ? 'form-group has-error' : 'form-group'}>
+        <label className="control-label" >{t('image')}</label>
         <div className="col-sm-10">
-          <input type="text" className="form-control" {...cidr} />
-          {submitFailed && cidr.error && <div className="text-danger"><small>{cidr.error}</small></div>}
+          <select className="form-control" {...imageId}>
+            {props.imageSet.map((image) => {
+              return <option key={image.imageId} value={image.imageId}>{image.name}</option>;
+            })}
+          </select>
+          {submitFailed && imageId.error && <div className="text-danger"><small>{imageId.error}</small></div>}
+        </div>
+      </div>
+
+      <div className={submitFailed && instanceTypeId.error ? 'form-group has-error' : 'form-group'}>
+        <label className="control-label" >{t('instanceType')}</label>
+        <div className="col-sm-10">
+          <select className="form-control" {...instanceTypeId}>
+            {props.instanceTypeSet.map((instanceType) => {
+              return <option key={instanceType.instanceTypeId} value={instanceType.instanceTypeId}>{instanceType.instanceTypeId}</option>;
+            })}
+          </select>
+          {submitFailed && instanceTypeId.error && <div className="text-danger"><small>{instanceTypeId.error}</small></div>}
+        </div>
+      </div>
+
+      <div className={submitFailed && subnetId.error ? 'form-group has-error' : 'form-group'}>
+        <label className="control-label" >{t('network')}</label>
+        <div className="col-sm-10">
+          <select className="form-control" {...subnetId}>
+            {props.networkSet.map((network) => {
+              return <option key={network.networkId} value={network.networkId}>{network.name}</option>;
+            })}
+          </select>
+          {submitFailed && subnetId.error && <div className="text-danger"><small>{subnetId.error}</small></div>}
         </div>
       </div>
 
@@ -51,17 +79,22 @@ F.propTypes = {
   submitting: React.PropTypes.bool.isRequired,
   submitFailed: React.PropTypes.bool.isRequired,
   t: React.PropTypes.any,
+  imageSet: React.PropTypes.array,
+  instanceTypeSet: React.PropTypes.array,
+  networkSet: React.PropTypes.array,
 };
 
 F.validate = values => {
   const errors = {};
   errors.name = Validations.required(values.name);
-  errors.cidr = Validations.required(values.cidr);
+  errors.imageId = Validations.required(values.imageId);
+  errors.instanceTypeId = Validations.required(values.instanceTypeId);
+  errors.subnetId = Validations.required(values.subnetId);
   return errors;
 };
 
 export default reduxForm({
   form: 'KeyPairForm',
-  fields: ['name', 'cidr'],
+  fields: ['name', 'imageId', 'instanceTypeId', 'subnetId'],
   validate: F.validate,
 })(translate()(F));

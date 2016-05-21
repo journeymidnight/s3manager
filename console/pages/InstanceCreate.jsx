@@ -5,9 +5,37 @@ import * as InstanceActions from '../redux/actions.instance';
 
 class C extends RegionPage {
 
+  constructor(props) {
+    super(props);
+    this.onSubmit = this.onSubmit.bind(this);
+  }
+
   componentDidMount() {
     const { dispatch, region, routerKey } = this.props;
     dispatch(InstanceActions.requestDescribePrerequisites(routerKey, region.regionId));
+  }
+
+  onSubmit(values) {
+    const { dispatch, region, routerKey } = this.props;
+
+    return new Promise((resolve, reject) => {
+      const name = values.name;
+      const imageId = values.imageId;
+      const instanceTypeId = values.instanceTypeId;
+      const subnetId = values.subnetId;
+
+      dispatch(InstanceActions.requestCreateInstance(routerKey, region.regionId, {
+        name,
+        imageId,
+        instanceTypeId,
+        subnetId,
+      }))
+      .then(() => {
+        resolve();
+      }).catch((error) => {
+        reject({ _error: error.message });
+      });
+    });
   }
 
   render() {
@@ -23,7 +51,7 @@ class C extends RegionPage {
             <h3 className="page-title">
               {t('pageInstanceCreate.createInstance')}
             </h3>
-            <InstanceCreateForm onSubmit={this.onSubmit} />
+            <InstanceCreateForm onSubmit={this.onSubmit} {...this.props.context} />
           </div>
         </div>
       </div>
