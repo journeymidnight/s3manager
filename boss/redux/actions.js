@@ -166,7 +166,7 @@ export function requestCreateUser(user) {
     .promise
     .then(() => {
       dispatch(push('/users'));
-      dispatch(notify(i18n.t('addSuccessed')));
+      dispatch(notify(i18n.t('createSuccessed')));
     })
     .catch((error) => {
       dispatch(notifyAlert(error.message));
@@ -180,7 +180,7 @@ export function requestModifyUser(user) {
     .modifyUser(user)
     .promise
     .then(() => {
-      dispatch(notify(i18n.t('saveSuccessed')));
+      dispatch(notify(i18n.t('updateSuccessed')));
       return dispatch(requestDescribeUser(user.userId));
     })
     .catch((error) => {
@@ -225,7 +225,7 @@ export function requestCreateAdmin(admin) {
     .promise
     .then(() => {
       dispatch(push('/admins'));
-      dispatch(notify(i18n.t('addSuccessed')));
+      dispatch(notify(i18n.t('createSuccessed')));
     })
     .catch((error) => {
       dispatch(notifyAlert(error.message));
@@ -239,7 +239,7 @@ export function requestModifyAdmin(admin) {
     .modifyAdmin(admin)
     .promise
     .then(() => {
-      dispatch(notify(i18n.t('saveSuccessed')));
+      dispatch(notify(i18n.t('updateSuccessed')));
       return dispatch(requestDescribeAdmin(admin.adminId));
     })
     .catch((error) => {

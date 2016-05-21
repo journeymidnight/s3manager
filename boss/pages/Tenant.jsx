@@ -28,7 +28,7 @@ const F = (props) => {
         </select>
       </div>
       <button type="submit" className="btn btn-save" disabled={email.error || submitting}>
-        {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('add')}
+        {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('create')}
       </button>
     </form>
   );

@@ -6,18 +6,18 @@ import Index from './pages/Index.jsx';
 import Login from './pages/Login.jsx';
 import Logout from './pages/Logout.jsx';
 import Tenants from './pages/Tenants.jsx';
-import TenantNew from './pages/TenantNew.jsx';
+import TenantCreate from './pages/TenantCreate.jsx';
 import Tenant from './pages/Tenant.jsx';
 import Users from './pages/Users.jsx';
-import UserNew from './pages/UserNew.jsx';
+import UserCreate from './pages/UserCreate.jsx';
 import User from './pages/User.jsx';
 import Admins from './pages/Admins.jsx';
-import AdminNew from './pages/AdminNew.jsx';
+import AdminCreate from './pages/AdminCreate.jsx';
 import Admin from './pages/Admin.jsx';
 import Regions from './pages/Regions.jsx';
-import RegionNew from './pages/RegionNew.jsx';
+import RegionCreate from './pages/RegionCreate.jsx';
 import Region from './pages/Region.jsx';
-import TenantQuotaNew from './pages/TenantQuotaNew.jsx';
+import TenantQuotaCreate from './pages/TenantQuotaCreate.jsx';
 import TenantQuota from './pages/TenantQuota.jsx';
 import Profile from './pages/Profile.jsx';
 
@@ -40,26 +40,26 @@ export default function configureRoutes(store) {
         <Route path="profile" component={Profile} />
         <Route path="admins" >
           <IndexRoute component={Admins} />
-          <Route path="new" component={AdminNew} />
+          <Route path="create" component={AdminCreate} />
           <Route path=":adminId" component={Admin} />
         </Route>
         <Route path="regions" >
           <IndexRoute component={Regions} />
-          <Route path="new" component={RegionNew} />
+          <Route path="create" component={RegionCreate} />
           <Route path=":regionId" >
             <IndexRoute component={Region} />
-            <Route path="new" component={TenantQuotaNew} />
+            <Route path="create" component={TenantQuotaCreate} />
             <Route path=":tenantId" component={TenantQuota} />
           </Route>
         </Route>
         <Route path="tenants" >
           <IndexRoute component={Tenants} />
-          <Route path="new" component={TenantNew} />
+          <Route path="create" component={TenantCreate} />
           <Route path=":tenantId" component={Tenant} />
         </Route>
         <Route path="users" >
           <IndexRoute component={Users} />
-          <Route path="new" component={UserNew} />
+          <Route path="create" component={UserCreate} />
           <Route path=":userId" component={User} />
         </Route>
       </Route>

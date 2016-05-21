@@ -7,13 +7,13 @@ import Login from './pages/Login.jsx';
 import Logout from './pages/Logout.jsx';
 import KeyPair from './pages/KeyPair.jsx';
 import KeyPairs from './pages/KeyPairs.jsx';
-import KeyPairNew from './pages/KeyPairNew.jsx';
+import KeyPairCreate from './pages/KeyPairCreate.jsx';
 import Network from './pages/Network.jsx';
 import Networks from './pages/Networks.jsx';
-import NetworkNew from './pages/NetworkNew.jsx';
+import NetworkCreate from './pages/NetworkCreate.jsx';
 import Instance from './pages/Instance.jsx';
 import Instances from './pages/Instances.jsx';
-import InstanceNew from './pages/InstanceNew.jsx';
+import InstanceCreate from './pages/InstanceCreate.jsx';
 import RegionIndex from './pages/RegionIndex.jsx';
 import Snapshots from './pages/Snapshots.jsx';
 import Settings from './pages/Settings.jsx';
@@ -48,17 +48,17 @@ export default function configureRoutes(store) {
           <Route path="eips" component={Settings} />
           <Route path="instances" >
             <IndexRoute component={Instances} />
-            <Route path="new" component={InstanceNew} />
+            <Route path="create" component={InstanceCreate} />
             <Route path=":instanceId" component={Instance} />
           </Route>
           <Route path="key_pairs" >
             <IndexRoute component={KeyPairs} />
-            <Route path="new" component={KeyPairNew} />
+            <Route path="create" component={KeyPairCreate} />
             <Route path=":keyPairId" component={KeyPair} />
           </Route>
           <Route path="networks" >
             <IndexRoute component={Networks} />
-            <Route path="new" component={NetworkNew} />
+            <Route path="create" component={NetworkCreate} />
             <Route path=":networkId" component={Network} />
           </Route>
           <Route path="firewalls" component={Settings} />

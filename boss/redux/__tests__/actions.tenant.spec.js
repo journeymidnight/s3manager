@@ -124,7 +124,7 @@ describe('TenantActions', () => {
       }, {
         payload: {
           notify: {
-            message: i18n.t('addSuccessed'),
+            message: i18n.t('createSuccessed'),
             type: 'notice',
           },
         },
@@ -167,7 +167,7 @@ describe('TenantActions', () => {
     const expectedActions = [{
       payload: {
         notify: {
-          message: i18n.t('saveSuccessed'),
+          message: i18n.t('updateSuccessed'),
           type: 'notice',
         },
       },

@@ -24,7 +24,7 @@ export function requestCreateNetwork(routerKey, regionId, network) {
     .promise
     .then(() => {
       dispatch(push(`/${regionId}/networks`));
-      dispatch(notify(i18n.t('addSuccessed')));
+      dispatch(notify(i18n.t('createSuccessed')));
     })
     .catch((error) => {
       dispatch(notifyAlert(error.message));

@@ -43,8 +43,8 @@ class C extends React.Component {
                 </p>
               </div>
               <div className="nav-controls">
-                <Link className="btn btn-new" to="/users/new">
-                  <i className="fa fa-plus"></i>&nbsp;{t('add')}
+                <Link className="btn btn-new" to="/users/create">
+                  <i className="fa fa-plus"></i>&nbsp;{t('create')}
                 </Link>
               </div>
             </div>

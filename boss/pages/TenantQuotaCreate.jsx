@@ -70,7 +70,7 @@ class C extends Page {
             <ol className="breadcrumb">
               <li><Link to="/regions">{t('regionManage')}</Link></li>
               <li><Link to={`/regions/${region.regionId}`}>{region.name}</Link></li>
-              <li className="active">{t('add')}</li>
+              <li className="active">{t('create')}</li>
             </ol>
             <TenantQuotaForm onSubmit={this.onSubmit} initialValues={this.defaultTenantQuota} />
           </div>

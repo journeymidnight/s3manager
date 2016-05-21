@@ -41,8 +41,8 @@ class C extends RegionPage {
                 </p>
               </div>
               <div className="nav-controls">
-                <Link className="btn btn-new" to={`/${this.props.region.regionId}/networks/new`}>
-                  <i className="fa fa-plus"></i>&nbsp;{t('add')}
+                <Link className="btn btn-new" to={`/${this.props.region.regionId}/networks/create`}>
+                  <i className="fa fa-plus"></i>&nbsp;{t('create')}
                 </Link>
               </div>
             </div>

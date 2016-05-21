@@ -1,6 +1,6 @@
 import React from 'react';
 import RegionPage, { attach } from '../../shared/pages/RegionPage';
-import InstanceNewForm from '../forms/InstanceNewForm';
+import InstanceCreateForm from '../forms/InstanceCreateForm';
 import * as InstanceActions from '../redux/actions.instance';
 
 class C extends RegionPage {
@@ -21,9 +21,9 @@ class C extends RegionPage {
         <div className="content">
           <div className="clearfix">
             <h3 className="page-title">
-              {t('pageInstanceNew.createInstance')}
+              {t('pageInstanceCreate.createInstance')}
             </h3>
-            <InstanceNewForm onSubmit={this.onSubmit} />
+            <InstanceCreateForm onSubmit={this.onSubmit} />
           </div>
         </div>
       </div>

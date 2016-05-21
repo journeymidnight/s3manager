@@ -47,7 +47,7 @@ export function requestCreateTenant(tenant) {
         },
       }));
       dispatch(push('/tenants'));
-      dispatch(notify(i18n.t('addSuccessed')));
+      dispatch(notify(i18n.t('createSuccessed')));
     })
     .catch((error) => {
       dispatch(notifyAlert(error.message));
@@ -61,7 +61,7 @@ export function requestModifyTenant(tenant) {
     .modifyTenant(tenant)
     .promise
     .then(() => {
-      dispatch(notify(i18n.t('saveSuccessed')));
+      dispatch(notify(i18n.t('updateSuccessed')));
       return dispatch(requestDescribeTenant(tenant.tenantId));
     })
     .catch((error) => {
@@ -76,7 +76,7 @@ export function requestCreateTenantRole(tenantId, userId, role) {
     .createTenantRole(tenantId, userId, role)
     .promise
     .then(() => {
-      dispatch(notify(i18n.t('addSuccessed')));
+      dispatch(notify(i18n.t('createSuccessed')));
     })
     .catch((error) => {
       dispatch(notifyAlert(error.message));

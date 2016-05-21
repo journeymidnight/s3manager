@@ -54,7 +54,7 @@
     "tenantRoleAdmin": "管理账号",
     "tenantRoleUser": "使用账户",
 
-    "pageInstanceNew": {
+    "pageInstanceCreate": {
         "createInstance": "添加云主机"
     },
 

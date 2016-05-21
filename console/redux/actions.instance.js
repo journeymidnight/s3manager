@@ -58,7 +58,7 @@ export function requestCreateInstance(routerKey, regionId, instance) {
     .promise
     .then(() => {
       dispatch(push(`/${regionId}/instances`));
-      dispatch(notify(i18n.t('addSuccessed')));
+      dispatch(notify(i18n.t('createSuccessed')));
     })
     .catch((error) => {
       dispatch(notifyAlert(error.message));

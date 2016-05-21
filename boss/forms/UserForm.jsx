@@ -36,7 +36,7 @@ const F = (props) => {
       </div>
       <div className="form-actions">
         <button type="submit" className="btn btn-save" disabled={submitting}>
-          {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('save')}
+          {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('update')}
         </button>
         &nbsp;
         <a className="btn btn-cancel" href="/tenants">

@@ -42,8 +42,8 @@ class C extends Page {
                 </p>
               </div>
               <div className="nav-controls">
-                <Link className="btn btn-new" to="/tenants/new">
-                  <i className="fa fa-plus"></i>&nbsp;{t('add')}
+                <Link className="btn btn-new" to="/tenants/create">
+                  <i className="fa fa-plus"></i>&nbsp;{t('create')}
                 </Link>
               </div>
             </div>

@@ -61,7 +61,7 @@ class C extends Page {
           <div className="clearfix">
             <ol className="breadcrumb">
               <li><Link to="/regions">{t('regionManage')}</Link></li>
-              <li className="active">{t('add')}</li>
+              <li className="active">{t('create')}</li>
             </ol>
             <TenantQuotaForm onSubmit={this.onSubmit} isUpdate initialValues={quota} />
           </div>

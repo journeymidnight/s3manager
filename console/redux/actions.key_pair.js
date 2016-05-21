@@ -24,7 +24,7 @@ export function requestCreateKeyPair(routerKey, regionId, keyPair) {
     .promise
     .then(() => {
       dispatch(push(`/${regionId}/key_pairs`));
-      dispatch(notify(i18n.t('addSuccessed')));
+      dispatch(notify(i18n.t('createSuccessed')));
     })
     .catch((error) => {
       dispatch(notifyAlert(error.message));
