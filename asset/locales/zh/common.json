@@ -115,5 +115,7 @@
     "sidebarRegion": "区域",
     "sidebarTenant": "租户",
     "sidebarUser": "用户",
-    "sidebarAdmin": "管理员"
+    "sidebarAdmin": "管理员",
+
+    "smallScreen": "低宽度的屏幕中有可能影响组件的正常布局。"
 }

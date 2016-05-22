@@ -9,8 +9,6 @@ body {
     height: 100%;
     overflow: auto;
     background: #ffffff;
-    min-width: 1000px;
-    overflow-x: auto;
 }
 
 .has-error .help-block, .has-error .control-label, .has-error .radio, .has-error .checkbox, .has-error .radio-inline, .has-error .checkbox-inline, .has-error.radio label, .has-error.checkbox label, .has-error.radio-inline label, .has-error.checkbox-inline label {
@@ -244,5 +242,13 @@ header.navbar-gitlab .container-fluid {
         padding: 10px 16px;
       }
     }
+  }
+}
+
+.flash-container {
+  .flash-warning {
+    @extend .alert;
+    @extend .alert-warning;
+    margin: 0;
   }
 }
