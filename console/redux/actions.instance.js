@@ -23,12 +23,12 @@ export function requestDescribePrerequisites(routerKey, regionId) {
       }));
 
       return IaaS
-      .describeNetworks(regionId)
+      .describeSubnets(regionId)
       .promise;
     })
     .then((payload) => {
       dispatch(extendContext({
-        networkSet: payload.networkSet,
+        subnetSet: payload.subnetSet,
       }));
     })
     .catch((error) => {

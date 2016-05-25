@@ -17,6 +17,20 @@ export function requestDescribeNetworks(routerKey, regionId) {
   };
 }
 
+export function requestDescribeSubnets(routerKey, regionId) {
+  return dispatch => {
+    return IaaS
+    .describeSubnets(regionId)
+    .promise
+    .then((payload) => {
+      dispatch(extendContext(payload));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
 export function requestCreateNetwork(routerKey, regionId, network) {
   return dispatch => {
     return IaaS

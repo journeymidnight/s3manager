@@ -11,6 +11,7 @@ class C extends RegionPage {
   }
 
   render() {
+    const { t } = this.props;
     const instances = this.props.context.instanceSet && this.props.context.instanceSet.map((instance) => {
       return (
         <tr key={instance.instanceId}>
@@ -22,11 +23,14 @@ class C extends RegionPage {
               </strong>
             </Link>
           </td>
+          <td className={`i-status i-status-${instance.status}`}>
+            <i className="icon"></i>
+            {t(`instanceStatus.${instance.status}`)}
+          </td>
           <td className="light">{instance.created}</td>
         </tr>
       );
     });
-    const { t } = this.props;
     return (
       <div className="container-fluid container-limited">
         <div className="content">
@@ -52,6 +56,7 @@ class C extends RegionPage {
                   <tr>
                     <th>{t('id')}</th>
                     <th>{t('name')}</th>
+                    <th>{t('status')}</th>
                     <th>{t('created')}</th>
                   </tr>
                 </thead>

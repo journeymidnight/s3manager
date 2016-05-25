@@ -17,7 +17,7 @@ class C extends RegionPage {
             </h3>
             <hr />
             <div className="row with-info">
-              <div className="col-md-3 info">
+              <div className="col-md-4 info">
                 <div className="panel panel-default">
                   <div className="panel-heading">基本信息</div>
                   <div className="panel-body">
@@ -48,8 +48,13 @@ class C extends RegionPage {
                     </dl>
                   </div>
                 </div>
+                <div className="panel panel-default">
+                  <div className="panel-heading">基本信息</div>
+                  <div className="panel-body">
+                  </div>
+                </div>
               </div>
-              <div className="col-md-9">
+              <div className="col-md-8">
                 <ul className="nav-links">
                   <li className="home active">
                     <a data-placement="right" href="#">{t('pageNetwork.subnet')}</a>

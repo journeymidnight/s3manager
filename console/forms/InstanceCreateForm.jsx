@@ -51,8 +51,8 @@ const F = (props) => {
         <label className="control-label" >{t('network')}</label>
         <div className="col-sm-10">
           <select className="form-control" {...subnetId}>
-            {props.networkSet.map((network) => {
-              return <option key={network.networkId} value={network.networkId}>{network.name}</option>;
+            {props.subnetSet.map((subnet) => {
+              return <option key={subnet.subnetId} value={subnet.subnetId}>{subnet.name} ({subnet.cidr})</option>;
             })}
           </select>
           {submitFailed && subnetId.error && <div className="text-danger"><small>{subnetId.error}</small></div>}
@@ -81,7 +81,7 @@ F.propTypes = {
   t: React.PropTypes.any,
   imageSet: React.PropTypes.array,
   instanceTypeSet: React.PropTypes.array,
-  networkSet: React.PropTypes.array,
+  subnetSet: React.PropTypes.array,
 };
 
 F.validate = values => {

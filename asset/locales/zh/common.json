@@ -22,10 +22,11 @@
     "user": "用户",
     "admin": "管理员",
     "cidr": "网段地址",
+    "status": "状态",
     "volume": "硬盘",
     "image": "映像",
     "instanceType": "配置",
-    "network": "映像",
+    "network": "私有网络",
     "subnet": "子网",
     "router": "路由器",
 
@@ -57,6 +58,18 @@
 
     "tenantRoleAdmin": "管理账号",
     "tenantRoleUser": "使用账户",
+
+    "instanceStatus": {
+        "pending": "准备中",
+        "active": "运行中",
+        "starting": "启动中",
+        "stopped": "已关机",
+        "stopping": "关闭中",
+        "restarting": "重启中",
+        "scheduling": "调度中",
+        "deleted": "已删除",
+        "ceased": "彻底删除"
+    },
 
     "pageInstanceCreate": {
         "createInstance": "添加云主机"
@@ -117,5 +130,5 @@
     "sidebarUser": "用户",
     "sidebarAdmin": "管理员",
 
-    "smallScreen": "低宽度的屏幕中有可能影响组件的正常布局。"
+    "smallScreen": "低宽度的屏幕中可能会影响组件的正常布局。"
 }

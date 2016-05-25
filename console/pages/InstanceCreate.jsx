@@ -39,8 +39,8 @@ class C extends RegionPage {
   }
 
   render() {
-    const { imageSet, instanceTypeSet, networkSet } = this.props.context;
-    if (!(imageSet && instanceTypeSet && networkSet)) {
+    const { imageSet, instanceTypeSet, subnetSet } = this.props.context;
+    if (!(imageSet && instanceTypeSet && subnetSet)) {
       return <div />;
     }
     const { t } = this.props;
