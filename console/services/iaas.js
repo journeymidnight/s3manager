@@ -26,11 +26,21 @@ class IaaS {
   describeInstanceTypes(regionId) {
     return this.call(regionId, 'describeInstanceTypes', {});
   }
-  describeInstances(regionId) {
-    return this.call(regionId, 'describeInstances', {});
+  describeInstances(regionId, filter = {}) {
+    return this.call(regionId, 'describeInstances', filter);
   }
-  createInstance(regionId, instance) {
-    return this.call(regionId, 'createInstance', instance);
+  createInstances(regionId, params) {
+    return this.call(regionId, 'createInstances', params);
+  }
+  startInstances(regionId, instances) {
+    return this.call(regionId, 'startInstances', {
+      instances,
+    });
+  }
+  stopInstances(regionId, instances) {
+    return this.call(regionId, 'stopInstances', {
+      instances,
+    });
   }
 }
 

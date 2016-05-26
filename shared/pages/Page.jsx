@@ -4,8 +4,10 @@ import { translate } from 'react-i18next';
 
 // this shoule be class
 class C extends React.Component {
+
   componentDidMount() {
   }
+
   render() {
     return <div />;
   }

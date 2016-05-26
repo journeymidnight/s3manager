@@ -1,6 +1,23 @@
 .i-status {
     font-size: 13px;
 
+    i.icon {
+        -webkit-border-radius: 25px;
+        -moz-border-radius: 25px;
+        border-radius: 25px;
+        height: 16px;
+        width: 16px;
+        border-width: 3px;
+        border-style: solid;
+        display: inline-block;
+        vertical-align: top;
+        margin-right: 5px;
+    }
+
+    &.i-status-starting,
+    &.i-status-stopping,
+    &.i-status-restarting,
+    &.i-status-scheduling,
     &.i-status-pending {
         color: #c09853;
         font-style: italic;
@@ -17,6 +34,16 @@
             -webkit-animation-delay: .4s;
         }
     }
+
+    &.i-status-stopped {
+        color: #333333;
+
+        i.icon {
+            background: #999999;
+            border-color: #eeeeee;
+        }
+    }
+
     &.i-status-active {
         color: #468847;
 
@@ -26,6 +53,8 @@
         }
     }
 
+    &.i-status-error,
+    &.i-status-ceased,
     &.i-status-deleted {
         color: #b94a48;
 
@@ -33,19 +62,6 @@
             background: #b94a48;
             border-color: #f2dede;
         }
-    }
-
-    i.icon {
-        -webkit-border-radius: 25px;
-        -moz-border-radius: 25px;
-        border-radius: 25px;
-        height: 16px;
-        width: 16px;
-        border-width: 3px;
-        border-style: solid;
-        display: inline-block;
-        vertical-align: top;
-        margin-right: 5px;
     }
 }
 

@@ -24,9 +24,9 @@ export function requestDescribeTenant(tenantId) {
       tenants: [tenantId],
     })
     .promise
-    .then((data) => {
+    .then((payload) => {
       dispatch(extendContext({
-        tenant: data.tenantSet[0],
+        tenant: payload.tenantSet[0],
       }));
     })
     .catch((error) => {

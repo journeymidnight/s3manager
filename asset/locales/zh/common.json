@@ -68,7 +68,8 @@
         "restarting": "重启中",
         "scheduling": "调度中",
         "deleted": "已删除",
-        "ceased": "彻底删除"
+        "ceased": "彻底删除",
+        "error": "状态异常"
     },
 
     "pageInstanceCreate": {

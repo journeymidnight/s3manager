@@ -24,11 +24,12 @@ class C extends RegionPage {
       const instanceTypeId = values.instanceTypeId;
       const subnetId = values.subnetId;
 
-      dispatch(InstanceActions.requestCreateInstance(routerKey, region.regionId, {
+      dispatch(InstanceActions.requestCreateInstances(routerKey, region.regionId, {
         name,
         imageId,
         instanceTypeId,
         subnetId,
+        count: 1,
       }))
       .then(() => {
         resolve();

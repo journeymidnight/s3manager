@@ -40,7 +40,11 @@ const F = (props) => {
         <div className="col-sm-10">
           <select className="form-control" {...instanceTypeId}>
             {props.instanceTypeSet.map((instanceType) => {
-              return <option key={instanceType.instanceTypeId} value={instanceType.instanceTypeId}>{instanceType.instanceTypeId}</option>;
+              return (
+                <option key={instanceType.instanceTypeId} value={instanceType.instanceTypeId}>
+                  {instanceType.instanceTypeId} {instanceType.vcpus} CPU {instanceType.memory}MB 内存
+                </option>
+              );
             })}
           </select>
           {submitFailed && instanceTypeId.error && <div className="text-danger"><small>{instanceTypeId.error}</small></div>}

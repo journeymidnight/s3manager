@@ -1,13 +1,46 @@
 import React from 'react';
 import RegionPage, { attach } from '../../shared/pages/RegionPage';
+import * as InstanceActions from '../redux/actions.instance';
 
 class C extends RegionPage {
 
+  constructor(props) {
+    super(props);
+    this.startInstance = this.startInstance.bind(this);
+    this.stopInstance = this.stopInstance.bind(this);
+  }
+
   componentDidMount() {
+    const { dispatch, region, routerKey, params } = this.props;
+
+    this.instanceId = params.instanceId;
+    dispatch(InstanceActions.requestDescribeInstance(routerKey, region.regionId, this.instanceId));
+
+    this.setInterval(() => {
+      dispatch(InstanceActions.requestDescribeInstance(routerKey, region.regionId, this.instanceId));
+    }, 2000);
+  }
+
+  startInstance() {
+    const { dispatch, region, routerKey } = this.props;
+
+    dispatch(InstanceActions.requestStartInstance(routerKey, region.regionId, this.instanceId));
+  }
+
+  stopInstance() {
+    const { dispatch, region, routerKey } = this.props;
+
+    dispatch(InstanceActions.requestStopInstance(routerKey, region.regionId, this.instanceId));
   }
 
   render() {
     const { t } = this.props;
+    const instance = this.props.context.instance;
+
+    if (!instance) {
+      return <div />;
+    }
+
     return (
       <div className="container-fluid container-limited">
         <div className="content">
@@ -23,19 +56,15 @@ class C extends RegionPage {
                   <div className="panel-body">
                     <dl className="dl-horizontal">
                       <dt>ID</dt>
-                      <dd>
-                        <span className="id">i-u2lcu2fp</span>&nbsp;
-                        <a className="btn-connect" href="#" title="Web 终端">
-                          <span className="icon-instance"></span></a>
-                      </dd>
+                      <dd>{instance.instanceId}</dd>
                       <dt>名称</dt>
-                      <dd>es-host-721121</dd>
-                      <dt>标签</dt>
+                      <dd>{instance.name}</dd>
+                      <dt>状态</dt>
                       <dd>
-                        <div data-id="tag-wmjllb0n">
-                          <a className="resource-tag" data-tag-id="tag-wmjllb0n" id="color-tag-wmjllb0n">test</a>
-                          <a className="btn-detach-tag icon-close" href="#"></a>
-                        </div>
+                        <span className={`i-status i-status-${instance.status}`}>
+                          <i className="icon"></i>
+                          {t(`instanceStatus.${instance.status}`)}
+                        </span>
                       </dd>
                       <dt>描述</dt>
                       <dd></dd>
@@ -51,6 +80,12 @@ class C extends RegionPage {
                 <div className="panel panel-default">
                   <div className="panel-heading">基本信息</div>
                   <div className="panel-body">
+                    <button type="button" className="btn" disabled={instance.status !== 'stopped'} onClick={this.startInstance}>
+                      开机
+                    </button>
+                    <button type="button" className="btn" disabled={instance.status !== 'active'} onClick={this.stopInstance}>
+                      关机
+                    </button>
                   </div>
                 </div>
               </div>

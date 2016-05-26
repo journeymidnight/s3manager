@@ -4,8 +4,30 @@ import { translate } from 'react-i18next';
 
 // this shoule be class
 class C extends React.Component {
+
+  constructor(props) {
+    super(props);
+
+    this.timers = [];
+  }
+
   componentDidMount() {
   }
+
+  componentWillUnmount() {
+    this.timers.forEach((timer) => {
+      clearInterval(timer);
+    });
+  }
+
+  setInterval(callback, interval) {
+    const timer = setInterval(() => {
+      callback();
+    }, interval);
+
+    this.timers.push(timer);
+  }
+
   render() {
     return <div />;
   }
