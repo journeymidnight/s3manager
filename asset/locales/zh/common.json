@@ -89,6 +89,10 @@
         "router": "路由"
     },
 
+    "formInstanceCreateForm": {
+        "count": "主机数量"
+    },
+
     "formUserSelectForm": {
         "typeEmail": "输入用户邮箱"
     },

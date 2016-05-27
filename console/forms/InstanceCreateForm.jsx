@@ -6,7 +6,7 @@ import * as Validations from '../../shared/utils/validations';
 
 const F = (props) => {
   const { fields:
-    { name, imageId, instanceTypeId, subnetId },
+    { name, imageId, instanceTypeId, subnetId, count },
     handleSubmit,
     submitting,
     submitFailed,
@@ -63,6 +63,14 @@ const F = (props) => {
         </div>
       </div>
 
+      <div className={submitFailed && count.error ? 'form-group has-error' : 'form-group'}>
+        <label className="control-label" >{t('formInstanceCreateForm.count')}</label>
+        <div className="col-sm-10">
+          <input type="number" className="form-control" {...count} />
+          {submitFailed && count.error && <div className="text-danger"><small>{count.error}</small></div>}
+        </div>
+      </div>
+
       <div className="form-actions">
         <button type="submit" className="btn btn-save" disabled={submitting}>
           {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('update')}
@@ -94,11 +102,12 @@ F.validate = values => {
   errors.imageId = Validations.required(values.imageId);
   errors.instanceTypeId = Validations.required(values.instanceTypeId);
   errors.subnetId = Validations.required(values.subnetId);
+  errors.count = Validations.required(values.count);
   return errors;
 };
 
 export default reduxForm({
   form: 'KeyPairForm',
-  fields: ['name', 'imageId', 'instanceTypeId', 'subnetId'],
+  fields: ['name', 'imageId', 'instanceTypeId', 'subnetId', 'count'],
   validate: F.validate,
 })(translate()(F));
