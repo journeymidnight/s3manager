@@ -9,5 +9,6 @@ run npm run lint
 run npm run test
 run npm run clean
 run npm run build
+run npm rebuild node-sass
 
 workdir /app
