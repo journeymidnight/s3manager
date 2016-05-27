@@ -5,5 +5,11 @@ dist
 node_modules
 npm-debug.log
 
+env/tmp
+
+.env
+env.local
+docker-compose.yml
+
 *.swo
 *.swp

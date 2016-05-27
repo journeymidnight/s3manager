@@ -1,0 +1,8 @@
+ui:
+  build: ./
+  command: npm run start
+  env_file: .env
+  ports:
+    - "0.0.0.0:${DEVOPS_PORT}:9002"
+    - "0.0.0.0:${BOSS_PORT}:9003"
+    - "0.0.0.0:${CONSOLE_PORT}:9004"
