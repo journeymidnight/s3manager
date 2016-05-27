@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { translate } from 'react-i18next';
 import ConsoleHeader from '../components/ConsoleHeader.jsx';
 import ConsoleSidebar from '../components/ConsoleSidebar.jsx';
 import Notify from '../../shared/components/Notify.jsx';
@@ -42,7 +43,7 @@ class App extends React.Component {
   }
 
   render() {
-    const { region, params } = this.props;
+    const { t, region, params } = this.props;
     if (!region) {
       return <Home params={this.props.params} />;
     } else if (params.regionId && region.regionId !== params.regionId) {
@@ -55,6 +56,11 @@ class App extends React.Component {
         <div className="page-sidebar-expanded page-with-sidebar">
           <ConsoleSidebar />
           <div className="content-wrapper">
+            <div className="visible-xs-block">
+              <div className="flash-container">
+                <div className="flash-warning">{t('smallScreen')}</div>
+              </div>
+            </div>
             <Notify />
             {this.props.children}
           </div>
@@ -70,6 +76,7 @@ App.propTypes = {
   auth: React.PropTypes.object,
   env: React.PropTypes.object.isRequired,
   context: React.PropTypes.object,
+  t: React.PropTypes.any,
   routing: React.PropTypes.object,
   region: React.PropTypes.object,
   params: React.PropTypes.object,
@@ -85,4 +92,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps)(translate()(App));

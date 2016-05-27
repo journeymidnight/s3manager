@@ -105,8 +105,8 @@ class C extends Page {
               <div className="panel-body">
                 {tenants}
                 <div className="form-actions">
-                  <Link className="btn btn-save" to={`/regions/${this.regionId}/new`}>
-                    {t('add')}
+                  <Link className="btn btn-save" to={`/regions/${this.regionId}/create`}>
+                    {t('create')}
                   </Link>
                 </div>
               </div>

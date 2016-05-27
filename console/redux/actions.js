@@ -2,11 +2,39 @@ import * as ActionTypes from './constants';
 import { push } from 'react-router-redux';
 import Auth from '../services/auth';
 
-export function extendContext(payload) {
+export function extendContext(payload, routerKey = undefined) {
   return {
     type: ActionTypes.EXTEND_CONTEXT,
     payload,
+    routerKey,
   };
+}
+
+export function cleanNotify() {
+  return extendContext({
+    notify: null,
+  });
+}
+
+export function notify(message, type = 'notice', delay = undefined) {
+  return (dispatch) => {
+    if (delay) {
+      setTimeout(() => {
+        dispatch(cleanNotify());
+      }, delay);
+    }
+
+    dispatch(extendContext({
+      notify: {
+        message,
+        type,
+      },
+    }));
+  };
+}
+
+export function notifyAlert(message, delay = undefined) {
+  return notify(message, 'alert', delay);
 }
 
 export function authLogin(context, token) {
@@ -28,33 +56,6 @@ export function requestLogout() {
     dispatch(authLogout());
     dispatch(push('/login'));
   };
-}
-
-export function cleanNotify() {
-  return extendContext({
-    notify: null,
-  });
-}
-
-export function notify(message, type = 'notice', delay = undefined) {
-  return (dispatch) => {
-    if (delay) {
-      setTimeout(() => {
-        dispatch(cleanNotify());
-      }, delay);
-    }
-
-    return dispatch(extendContext({
-      notify: {
-        message,
-        type,
-      },
-    }));
-  };
-}
-
-export function notifyAlert(message, delay = undefined) {
-  return notify(message, 'alert', delay);
 }
 
 export function selectRegion(region) {

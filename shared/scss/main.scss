@@ -5,10 +5,10 @@
 body {
     font-family: Arial, "Hiragino Sans GB", "Microsoft YaHei", STHeiti, "WenQuanYi Micro Hei", SimSun, sans-serif;
     margin: 0;
-    background-color: #fff;
+    background-color: #ffffff;
     height: 100%;
     overflow: auto;
-    background: #fff;
+    background: #ffffff;
 }
 
 .has-error .help-block, .has-error .control-label, .has-error .radio, .has-error .checkbox, .has-error .radio-inline, .has-error .checkbox-inline, .has-error.radio label, .has-error.checkbox label, .has-error.radio-inline label, .has-error.checkbox-inline label {
@@ -43,7 +43,6 @@ header.navbar-empty .center-logo {
         color: #555555;
     }
 }
-
 
 .right-sidebar {
   position: fixed;
@@ -184,5 +183,72 @@ header.navbar-empty .center-logo {
 
   .open .dropdown-menu {
     width: 100%;
+  }
+}
+
+header.navbar-gitlab .container-fluid {
+  .header-content {
+    .navbar-toggle,
+    .navbar-nav > li > a {
+      width: inherit;
+      height: 58px;
+      padding: 15px 10px;
+      margin: 0px;
+      border-top: none;
+      border-bottom: none;
+      border-right: 1px solid transparent;
+      border-left: 1px solid transparent;
+
+      &:focus,
+      &:hover,
+      &:active {
+        background: #fafafa;
+        border-right: 1px solid #eee;
+        border-left: 1px solid #eee;
+      }
+    }
+  }
+  .navbar-toggle {
+  }
+}
+
+.header-logo {
+  a h3 {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+.row.with-info {
+  @media (min-width: $screen-md-min) {
+    .col-md-8 {
+      padding-left: 0px;
+    }
+
+    .dl-horizontal {
+      dt {
+        width: 80px;
+        text-align: left;
+      }
+      dd {
+        margin-left: 80px;
+        margin-bottom: 5px;
+      }
+    }
+  }
+  .info {
+    .panel.panel-default {
+      .panel-heading {
+        padding: 10px 16px;
+      }
+    }
+  }
+}
+
+.flash-container {
+  .flash-warning {
+    @extend .alert;
+    @extend .alert-warning;
+    margin: 0;
   }
 }

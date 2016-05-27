@@ -36,7 +36,7 @@ class C extends React.Component {
         <div className="content">
           <div className="clearfix">
             <h3 className="page-title">
-              {t('add') + t('user')}
+              {t('create') + t('user')}
             </h3>
             <hr />
             <UserForm onSubmit={this.onSubmit} />

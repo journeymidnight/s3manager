@@ -2,8 +2,8 @@
     "appName": "LeStack",
     "boss": "BOSS业务运营支撑系统",
 
-    "add": "添加",
-    "save": "保存",
+    "create": "添加",
+    "update": "保存",
     "reset": "重置",
     "login": "登录",
     "cancel": "取消",
@@ -22,15 +22,20 @@
     "user": "用户",
     "admin": "管理员",
     "cidr": "网段地址",
+    "status": "状态",
     "volume": "硬盘",
     "image": "映像",
+    "instanceType": "配置",
+    "network": "私有网络",
+    "subnet": "子网",
+    "router": "路由器",
 
-    "addSuccessed": "添加成功。",
-    "saveSuccessed": "保存成功。",
+    "createSuccessed": "添加成功。",
+    "updateSuccessed": "保存成功。",
     "deleteSuccessed": "删除成功。",
     "authorizeFailed": "验证失败。",
-    "addFailed": "添加失败。",
-    "saveFailed": "保存失败。",
+    "createFailed": "添加失败。",
+    "updateFailed": "保存失败。",
     "nothingHere": "没有任何数据。",
 
     "instanceManage": "云主机管理",
@@ -54,6 +59,23 @@
     "tenantRoleAdmin": "管理账号",
     "tenantRoleUser": "使用账户",
 
+    "instanceStatus": {
+        "pending": "准备中",
+        "active": "运行中",
+        "starting": "启动中",
+        "stopped": "已关机",
+        "stopping": "关闭中",
+        "restarting": "重启中",
+        "scheduling": "调度中",
+        "deleted": "已删除",
+        "ceased": "彻底删除",
+        "error": "状态异常"
+    },
+
+    "pageInstanceCreate": {
+        "createInstance": "添加云主机"
+    },
+
     "pageRegion": {
         "assignedTenants": "分配租户"
     },
@@ -65,6 +87,10 @@
     "pageNetwork": {
         "subnet": "子网",
         "router": "路由"
+    },
+
+    "formInstanceCreateForm": {
+        "count": "主机数量"
     },
 
     "formUserSelectForm": {
@@ -107,5 +133,7 @@
     "sidebarRegion": "区域",
     "sidebarTenant": "租户",
     "sidebarUser": "用户",
-    "sidebarAdmin": "管理员"
+    "sidebarAdmin": "管理员",
+
+    "smallScreen": "低宽度的屏幕中可能会影响组件的正常布局。"
 }

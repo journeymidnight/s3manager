@@ -8,17 +8,15 @@ header.navbar-gitlab .container-fluid {
       > li > a {
         width: inherit;
         height: 58px;
-        padding: 15px;
+        padding: 15px 16px;
         margin: 0;
-        @media (min-width: $screen-sm-min) {
-          background: #fafafa;
-          border-right: 1px solid #eee;
-        }
 
         &:focus,
         &:hover,
         &:active {
-            background: #ffffff;
+          background: #fafafa;
+          border-right: 1px solid #eee;
+          border-left: 1px solid #eee;
         }
       }
     }

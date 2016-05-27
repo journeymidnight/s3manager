@@ -60,7 +60,7 @@ export function requestAssignTenantQuota(regionId, tenantId, quota) {
     .assignTenantQuota(regionId, tenantId, quota)
     .promise
     .then(() => {
-      dispatch(notify(i18n.t('saveSuccessed')));
+      dispatch(notify(i18n.t('updateSuccessed')));
     })
     .catch((error) => {
       dispatch(notifyAlert(error.message));
@@ -93,7 +93,7 @@ export function requestCreateRegion(region) {
     .promise
     .then(() => {
       dispatch(push('/regions'));
-      dispatch(notify(i18n.t('addSuccessed')));
+      dispatch(notify(i18n.t('createSuccessed')));
     })
     .catch((error) => {
       dispatch(notifyAlert(error.message));
@@ -107,7 +107,7 @@ export function requestModifyRegion(region) {
     .modifyRegion(region)
     .promise
     .then(() => {
-      dispatch(notify(i18n.t('saveSuccessed')));
+      dispatch(notify(i18n.t('updateSuccessed')));
       return dispatch(requestDescribeRegion(region.regionId));
     })
     .catch((error) => {

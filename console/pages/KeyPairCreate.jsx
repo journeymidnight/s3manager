@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router';
 import RegionPage, { attach } from '../../shared/pages/RegionPage';
-import NetworkForm from '../forms/NetworkForm';
-import * as NetworkActions from '../redux/actions.network';
+import KeyPairForm from '../forms/KeyPairForm';
+import * as KeyPairActions from '../redux/actions.key_pair';
 
 class C extends RegionPage {
 
@@ -19,11 +19,11 @@ class C extends RegionPage {
 
     return new Promise((resolve, reject) => {
       const name = values.name;
-      const cidr = values.cidr;
+      const publicKey = values.publicKey;
 
-      dispatch(NetworkActions.requestCreateNetwork(routerKey, region.regionId, {
+      dispatch(KeyPairActions.requestCreateKeyPair(routerKey, region.regionId, {
         name,
-        cidr,
+        publicKey,
       }))
       .then(() => {
         resolve();
@@ -40,10 +40,10 @@ class C extends RegionPage {
         <div className="content">
           <div className="clearfix">
             <ol className="breadcrumb">
-              <li><Link to={`/${this.props.region.regionId}/networks`}>{t('networkManage')}</Link></li>
-              <li className="active">{t('add')}</li>
+              <li><Link to={`/${this.props.region.regionId}/key_pairs`}>{t('keyPairManage')}</Link></li>
+              <li className="active">{t('create')}</li>
             </ol>
-            <NetworkForm onSubmit={this.onSubmit} />
+            <KeyPairForm onSubmit={this.onSubmit} />
           </div>
         </div>
       </div>

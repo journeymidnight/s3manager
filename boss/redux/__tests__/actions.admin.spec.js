@@ -126,7 +126,7 @@ describe('AdminActions', () => {
       }, {
         payload: {
           notify: {
-            message: i18n.t('addSuccessed'),
+            message: i18n.t('createSuccessed'),
             type: 'notice',
           },
         },
@@ -184,7 +184,7 @@ describe('AdminActions', () => {
       expect(store.getActions()).toEqual([{
         payload: {
           notify: {
-            message: i18n.t('saveSuccessed'),
+            message: i18n.t('updateSuccessed'),
             type: 'notice',
           },
         },

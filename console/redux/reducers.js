@@ -58,10 +58,16 @@ export function rootReducer(state = {}, action) {
 
   switch (action.type) {
     case '@@router/LOCATION_CHANGE':
+      if (state.routing.locationBeforeTransitions && action.payload.pathname === state.routing.locationBeforeTransitions.pathname) {
+        return reducers(state, action);
+      }
       newState.context = {};
       return reducers(newState, action);
 
     case ActionTypes.EXTEND_CONTEXT:
+      if (action.routerKey && action.routerKey !== state.routing.locationBeforeTransitions.key) {
+        return newState;
+      }
       newState.context = Object.assign({}, newState.context);
       newState.context = Object.assign(newState.context, action.payload);
       return newState;

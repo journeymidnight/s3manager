@@ -20,7 +20,7 @@ class C extends RegionPage {
             </ul>
             <div className="nav-block hidden">
               <div className="controls">
-                <a className="btn btn-new" title="New Snippet" href="/snippets/new">
+                <a className="btn btn-new" title="New Snippet" href="/snippets/create">
                   <i className="fa fa-plus"></i>New Snippet</a>
               </div>
               <div className="nav-links snippet-scope-menu">

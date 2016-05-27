@@ -65,7 +65,7 @@ const F = (props) => {
 
       <div className="form-actions">
         <button type="submit" className="btn btn-save" disabled={submitting}>
-          {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('save')}
+          {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('update')}
         </button>
         &nbsp;
         <Link className="btn btn-cancel" to="/regions">

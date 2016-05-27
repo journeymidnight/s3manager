@@ -3,13 +3,33 @@ import { notify, notifyAlert, extendContext } from './actions';
 import IaaS from '../services/iaas';
 import i18n from '../../shared/i18n';
 
-export function requestDescribeInstances(routerKey, regionId) {
+export function requestDescribePrerequisites(routerKey, regionId) {
   return dispatch => {
     return IaaS
-    .describeInstances(regionId)
+    .describeInstanceTypes(regionId)
     .promise
     .then((payload) => {
-      dispatch(extendContext(payload));
+      dispatch(extendContext({
+        instanceTypeSet: payload.instanceTypeSet,
+      }, routerKey));
+
+      return IaaS
+      .describeImages(regionId)
+      .promise;
+    })
+    .then((payload) => {
+      dispatch(extendContext({
+        imageSet: payload.imageSet,
+      }, routerKey));
+
+      return IaaS
+      .describeSubnets(regionId)
+      .promise;
+    })
+    .then((payload) => {
+      dispatch(extendContext({
+        subnetSet: payload.subnetSet,
+      }, routerKey));
     })
     .catch((error) => {
       dispatch(notifyAlert(error.message));
@@ -17,14 +37,72 @@ export function requestDescribeInstances(routerKey, regionId) {
   };
 }
 
-export function requestCreateInstance(routerKey, regionId, instance) {
+export function requestDescribeInstances(routerKey, regionId) {
   return dispatch => {
     return IaaS
-    .createInstance(regionId, instance)
+    .describeInstances(regionId)
+    .promise
+    .then((payload) => {
+      dispatch(extendContext(payload, routerKey));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
+export function requestDescribeInstance(routerKey, regionId, instanceId) {
+  return dispatch => {
+    return IaaS
+    .describeInstances(regionId, {
+      instances: [instanceId],
+    })
+    .promise
+    .then((payload) => {
+      dispatch(extendContext({
+        instance: payload.instanceSet[0],
+      }, routerKey));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
+export function requestCreateInstances(routerKey, regionId, params) {
+  return dispatch => {
+    return IaaS
+    .createInstances(regionId, params)
     .promise
     .then(() => {
       dispatch(push(`/${regionId}/instances`));
-      dispatch(notify(i18n.t('addSuccessed')));
+      dispatch(notify(i18n.t('createSuccessed')));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
+export function requestStartInstance(routerKey, regionId, instanceId) {
+  return dispatch => {
+    return IaaS
+    .startInstances(regionId, [instanceId])
+    .promise
+    .then(() => {
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
+export function requestStopInstance(routerKey, regionId, instanceId) {
+  return dispatch => {
+    return IaaS
+    .stopInstances(regionId, [instanceId])
+    .promise
+    .then(() => {
     })
     .catch((error) => {
       dispatch(notifyAlert(error.message));

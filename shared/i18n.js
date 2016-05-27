@@ -1,6 +1,10 @@
 import i18n from 'i18next';
 import XHR from 'i18next-xhr-backend';
 
+// check json
+import '../asset/locales/zh/common.json';
+import '../asset/locales/en/common.json';
+
 export const i18nextOptions = {
   fallbackLng: 'zh',
   ns: ['common'],
