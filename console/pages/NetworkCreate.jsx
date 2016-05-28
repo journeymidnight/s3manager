@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router';
 import RegionPage, { attach } from '../../shared/pages/RegionPage';
 import NetworkForm from '../forms/NetworkForm';
 import * as NetworkActions from '../redux/actions.network';
@@ -42,10 +41,10 @@ class C extends RegionPage {
       <div className="container-fluid container-limited">
         <div className="content">
           <div className="clearfix">
-            <ol className="breadcrumb">
-              <li><Link to={`/${this.props.region.regionId}/networks`}>{t('networkManage')}</Link></li>
-              <li className="active">{t('create')}</li>
-            </ol>
+            <h3 className="page-title">
+              {`${t('create')} ${t('networkManage')}`}
+            </h3>
+            <hr />
             <NetworkForm onSubmit={this.onSubmit} initialValues={initialValues} />
           </div>
         </div>

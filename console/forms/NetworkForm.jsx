@@ -11,6 +11,7 @@ const F = (props) => {
     submitting,
     submitFailed,
     t,
+    invalid,
   } = props;
   return (
     <form className="form-horizontal" onSubmit={handleSubmit}>
@@ -32,7 +33,7 @@ const F = (props) => {
       </div>
 
       <div className="form-actions">
-        <button type="submit" className="btn btn-save" disabled={submitting}>
+        <button type="submit" className="btn btn-save" disabled={submitting || invalid}>
           {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('update')}
         </button>
         &nbsp;
@@ -47,6 +48,7 @@ const F = (props) => {
 F.propTypes = {
   fields: React.PropTypes.object.isRequired,
   error: React.PropTypes.string,
+  invalid: React.PropTypes.bool,
   handleSubmit: React.PropTypes.func.isRequired,
   submitting: React.PropTypes.bool.isRequired,
   submitFailed: React.PropTypes.bool.isRequired,
