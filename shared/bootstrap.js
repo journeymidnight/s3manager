@@ -25,7 +25,6 @@ window.paceOptions = {
 require('../shared/vendors/pace');
 require('../shared/vendors/breakpoints');
 require('../shared/vendors/sidebar');
-require('../shared/vendors/right_sidebar');
 require('../shared/vendors/jquery.nicescroll');
 
 export function removeLoader() {

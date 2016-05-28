@@ -1,28 +1,34 @@
 import React from 'react';
 import RegionPage, { attach } from '../../shared/pages/RegionPage';
+import * as NetworkActions from '../redux/actions.network';
 
 class C extends RegionPage {
 
   componentDidMount() {
-    this.sidebar = new window.Sidebar();
+    const { dispatch, region, routerKey, params } = this.props;
 
-    const $ = require('jquery');
-    $('.js-sidebar-toggle').click();
+    this.networkId = params.networkId;
+    dispatch(NetworkActions.requestDescribeNetwork(routerKey, region.regionId, this.networkId));
   }
 
   componentWillUnmount() {
-    const $ = require('jquery');
-    $('.page-with-sidebar')
-    .removeClass('right-sidebar-expanded')
-    .removeClass('right-sidebar-collapsed');
   }
 
   render() {
     const { t } = this.props;
+    const network = this.props.context.network;
+
+    if (!network) {
+      return <div />;
+    }
     return (
       <div className="container-fluid container-limited">
         <div className="content">
           <div className="clearfix">
+            <h3 className="page-title">
+              {network.name}
+            </h3>
+            <hr />
             <div className="clearfix detail-page-header">
               <div className="header">
                 <ul className="nav-links">
@@ -35,15 +41,6 @@ class C extends RegionPage {
                 </ul>
               </div>
             </div>
-            <aside className="right-sidebar right-sidebar-collapsed">
-              <div className="issuable-sidebar">
-                <div className="block issuable-sidebar-header">
-                  <a className="gutter-toggle pull-right js-sidebar-toggle" href="#">
-                    <i className="fa fa-angle-double-left"></i>
-                  </a>
-                </div>
-              </div>
-            </aside>
           </div>
         </div>
       </div>

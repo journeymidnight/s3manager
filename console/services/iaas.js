@@ -11,11 +11,11 @@ class IaaS {
   createKeyPair(regionId, keyPair) {
     return this.call(regionId, 'createKeyPair', keyPair);
   }
-  describeNetworks(regionId) {
-    return this.call(regionId, 'describeNetworks', {});
+  describeNetworks(regionId, filter = {}) {
+    return this.call(regionId, 'describeNetworks', filter);
   }
-  describeSubnets(regionId) {
-    return this.call(regionId, 'describeSubnets', {});
+  describeSubnets(regionId, filter = {}) {
+    return this.call(regionId, 'describeSubnets', filter);
   }
   createNetwork(regionId, keyPair) {
     return this.call(regionId, 'createNetwork', keyPair);

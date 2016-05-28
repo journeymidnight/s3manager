@@ -3,6 +3,24 @@ import { notify, notifyAlert, extendContext } from './actions';
 import IaaS from '../services/iaas';
 import i18n from '../../shared/i18n';
 
+export function requestDescribeNetwork(routerKey, regionId, networkId) {
+  return dispatch => {
+    return IaaS
+    .describeNetworks(regionId, {
+      networks: [networkId],
+    })
+    .promise
+    .then((payload) => {
+      dispatch(extendContext({
+        network: payload.networkSet[0],
+      }));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
 export function requestDescribeNetworks(routerKey, regionId) {
   return dispatch => {
     return IaaS

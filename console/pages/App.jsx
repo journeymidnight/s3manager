@@ -9,37 +9,6 @@ import Home from '../pages/Home';
 class App extends React.Component {
 
   componentDidMount() {
-    const $ = require('jquery');
-    $(document)
-    .off('click', '.js-sidebar-toggle')
-    .on('click', '.js-sidebar-toggle', (e) => {
-      e.preventDefault();
-
-      let thisIcon = $(e.target);
-      if (e.target.tagName === 'A') {
-        thisIcon = $(e.target).find('i');
-      }
-
-      if (thisIcon.hasClass('fa-angle-double-right')) {
-        $('aside.right-sidebar')
-        .removeClass('right-sidebar-expanded')
-        .addClass('right-sidebar-collapsed');
-
-        $('.page-with-sidebar')
-        .removeClass('right-sidebar-expanded')
-        .addClass('right-sidebar-collapsed');
-      } else {
-        $('aside.right-sidebar')
-        .removeClass('right-sidebar-collapsed')
-        .addClass('right-sidebar-expanded');
-
-        $('.page-with-sidebar')
-        .removeClass('right-sidebar-collapsed')
-        .addClass('right-sidebar-expanded');
-      }
-
-      thisIcon.toggleClass('fa-angle-double-right fa-angle-double-left');
-    });
   }
 
   render() {
