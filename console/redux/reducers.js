@@ -54,17 +54,18 @@ const reducers = combineReducers({
 });
 
 export function rootReducer(state = {}, action) {
-  const newState = Object.assign({}, state);
-
+  let newState;
   switch (action.type) {
     case '@@router/LOCATION_CHANGE':
       if (state.routing.locationBeforeTransitions && action.payload.pathname === state.routing.locationBeforeTransitions.pathname) {
         return reducers(state, action);
       }
+      newState = Object.assign({}, state);
       newState.context = {};
       return reducers(newState, action);
 
     case ActionTypes.EXTEND_CONTEXT:
+      newState = Object.assign({}, state);
       if (action.routerKey && action.routerKey !== state.routing.locationBeforeTransitions.key) {
         return newState;
       }

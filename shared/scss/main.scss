@@ -252,3 +252,31 @@ header.navbar-gitlab .container-fluid {
     margin: 0;
   }
 }
+
+.top-area {
+    .nav-text {
+        width: 70%;
+
+        /* Small devices (phones, tablets, 768px and lower) */
+        @media (max-width: $screen-sm-min) {
+          width: 100%;
+        }
+    }
+    .nav-controls {
+        width: 30%;
+
+        /* Small devices (tablets, 768px and lower) */
+        @media (max-width: $screen-sm-max) {
+          width: 100%;
+          text-align: left;
+
+          input {
+            width: 300px;
+          }
+        }
+    }
+}
+
+.gl-pagination {
+    border-top: none;
+}

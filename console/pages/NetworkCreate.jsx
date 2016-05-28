@@ -35,6 +35,9 @@ class C extends RegionPage {
 
   render() {
     const { t } = this.props;
+    const initialValues = {
+      cidr: '192.168.0.0/24',
+    };
     return (
       <div className="container-fluid container-limited">
         <div className="content">
@@ -43,7 +46,7 @@ class C extends RegionPage {
               <li><Link to={`/${this.props.region.regionId}/networks`}>{t('networkManage')}</Link></li>
               <li className="active">{t('create')}</li>
             </ol>
-            <NetworkForm onSubmit={this.onSubmit} />
+            <NetworkForm onSubmit={this.onSubmit} initialValues={initialValues} />
           </div>
         </div>
       </div>
