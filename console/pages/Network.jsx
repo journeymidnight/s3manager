@@ -25,21 +25,23 @@ class C extends RegionPage {
       <div className="container-fluid container-limited">
         <div className="content">
           <div className="clearfix">
-            <h3 className="page-title">
-              {network.name}
-            </h3>
-            <hr />
-            <div className="clearfix detail-page-header">
-              <div className="header">
-                <ul className="nav-links">
-                  <li className="home active">
-                    <a data-placement="right" href="#">{t('pageNetwork.subnet')}</a>
-                  </li>
-                  <li className="">
-                    <a data-placement="right" href="#">{t('pageNetwork.router')}</a>
-                  </li>
-                </ul>
-              </div>
+            <div className="header">
+              <ul className="nav-links clearfix">
+                <li>
+                  <h3 className="page-title">
+                    {network.name}
+                    <span className={`i-status i-status-${network.status}`}>
+                      <i className="icon"></i>
+                    </span>
+                  </h3>
+                </li>
+                <li className="pull-right active">
+                  <a data-placement="left" href="#">{t('pageNetwork.subnet')}</a>
+                </li>
+                <li className="pull-right">
+                  <a data-placement="left" href="#">{t('pageNetwork.router')}</a>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
