@@ -54,7 +54,7 @@ class C extends React.Component {
               }
               {this.props.regions.length > 1 &&
                 <div className="js-dropdown-menu-projects">
-                  <div className="dropdown-menu dropdown-select dropdown-menu-projects">
+                  <div className="dropdown-menu">
                     <div className="dropdown-title">
                       <span>{t('selectRegion')}</span>
                       <button className="dropdown-title-button dropdown-menu-close" aria-label="Close" type="button">

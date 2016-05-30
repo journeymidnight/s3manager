@@ -21,13 +21,13 @@ export function requestDescribeNetwork(routerKey, regionId, networkId) {
   };
 }
 
-export function requestDescribeNetworks(routerKey, regionId) {
+export function requestDescribeNetworks(routerKey, regionId, filters) {
   return dispatch => {
     return IaaS
-    .describeNetworks(regionId)
+    .describeNetworks(regionId, filters)
     .promise
     .then((payload) => {
-      dispatch(extendContext(payload));
+      dispatch(extendContext(payload, routerKey));
     })
     .catch((error) => {
       dispatch(notifyAlert(error.message));

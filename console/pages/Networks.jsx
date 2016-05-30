@@ -1,19 +1,77 @@
 import React from 'react';
 import { Link } from 'react-router';
+import _ from 'lodash';
 import RegionPage, { attach } from '../../shared/pages/RegionPage';
 import * as Actions from '../redux/actions';
 import * as NetworkActions from '../redux/actions.network';
 
 class C extends RegionPage {
 
-  componentDidMount() {
-    const { t, dispatch, region, routerKey } = this.props;
-    dispatch(NetworkActions.requestDescribeNetworks(routerKey, region.regionId));
+  constructor(props) {
+    super(props);
 
+    this.state = {
+      status: ['pending', 'active'],
+      currentPage: 1,
+      size: 10,
+      sortedBy: 'created',
+      reverse: true,
+      searchWord: null,
+      loading: true,
+    };
+    this.refresh = this.refresh.bind(this);
+    this.onRefresh = this.onRefresh.bind(this);
+    this.onSearchKeyPress = this.onSearchKeyPress.bind(this);
+  }
+
+  componentDidMount() {
+    const { t, dispatch, region } = this.props;
     dispatch(Actions.setHeader(t('networkManage'), `/${region.regionId}/networks`));
+
+    this.refresh()();
+  }
+
+  refresh(overideFilters = {}) {
+    return (e) => {
+      if (e) {
+        e.preventDefault();
+      }
+
+      this.setState(Object.assign(this.state, overideFilters));
+      this.onRefresh();
+    };
+  }
+
+  onRefresh() {
+    const { dispatch, region, routerKey } = this.props;
+
+    const filters = {
+      currentPage: this.state.currentPage,
+      size: this.state.size,
+      status: this.state.status,
+      sortedBy: this.state.sortedBy,
+      reverse: this.state.reverse,
+      searchWord: this.state.searchWord,
+    };
+    dispatch(NetworkActions.requestDescribeNetworks(routerKey, region.regionId, filters))
+    .then(() => {
+      this.setState({ loading: false });
+    });
+    this.setState({ loading: true });
+  }
+
+  onSearchKeyPress(e) {
+    if (e.key === 'Enter') {
+      let searchWord = this.refs.search.value;
+      if (_.isEmpty(searchWord)) {
+        searchWord = null;
+      }
+      this.refresh({ searchWord })();
+    }
   }
 
   render() {
+    const { t } = this.props;
     const networks = this.props.context.networkSet && this.props.context.networkSet.map((network) => {
       return (
         <tr key={network.networkId}>
@@ -28,11 +86,14 @@ class C extends RegionPage {
               </strong>
             </Link>
           </td>
+          <td className={`i-status i-status-${network.status}`}>
+            <i className="icon"></i>
+            {t(`networkStatus.${network.status}`)}
+          </td>
           <td className="light">{network.created}</td>
         </tr>
       );
     });
-    const { t } = this.props;
     return (
       <div className="container-fluid container-limited">
         <div className="content">
@@ -49,109 +110,65 @@ class C extends RegionPage {
                 </Link>
               </div>
             </div>
-            <div className="issues-filters">
-              <div className="issues-details-filters gray-content-block second-block">
-                <form className="filter-form" action="/root/awesome/issues?scope=all&amp;sort=id_desc&amp;state=closed" acceptCharset="UTF-8" method="get">
-                  <div className="issues-other-filters">
-                    <div className="filter-item inline">
-                      <Link className="btn btn-default" to={`/${this.props.region.regionId}/networks/create`}>
-                        <i className="fa fa-refresh"></i>
-                      </Link>
-                    </div>
-                    <div className="filter-item inline labels-filter">
-                      <div className="dropdown">
-                        <button className="dropdown-menu-toggle js-label-select js-filter-submit js-multiselect js-extra-options" data-default-label="Label" data-field-name="label_name[]" data-labels="/root/awesome/labels.json" data-project-id="1" data-show-any="true" data-show-no="true" data-toggle="dropdown" type="button">
-                          <span className="dropdown-toggle-text">Label</span>
-                          <i className="fa fa-chevron-down"></i>
-                        </button>
-                        <div className="dropdown-menu dropdown-select dropdown-menu-paging dropdown-menu-labels dropdown-menu-selectable">
-                          <div className="dropdown-page-one">
-                            <div className="dropdown-title">
-                              <span>Filter by label</span>
-                              <button className="dropdown-title-button dropdown-menu-close" aria-label="Close" type="button">
-                                <i className="fa fa-times dropdown-menu-close-icon"></i>
-                              </button>
-                            </div>
-                            <div className="dropdown-input">
-                              <input type="search" id="" className="dropdown-input-field" placeholder="Search labels" value="" />
-                              <i className="fa fa-search dropdown-input-search"></i>
-                              <i role="button" className="fa fa-times dropdown-input-clear js-dropdown-input-clear"></i>
-                            </div>
-                            <div className="dropdown-content"></div>
-                            <div className="dropdown-footer">
-                              <ul className="dropdown-footer-list">
-                                <li>
-                                  <a className="dropdown-toggle-page" href="#">Create new</a></li>
-                                <li>
-                                  <a data-is-link="true" href="/root/awesome/labels">Manage labels</a></li>
-                              </ul>
-                            </div>
-                            <div className="dropdown-loading">
-                              <i className="fa fa-spinner fa-spin"></i>
-                            </div>
-                          </div>
-                          <div className="dropdown-page-two dropdown-new-label">
-                            <div className="dropdown-title">
-                              <button className="dropdown-title-button dropdown-menu-back" aria-label="Go back" type="button">
-                                <i className="fa fa-arrow-left"></i>
-                              </button>
-                              <span>Create new label</span>
-                              <button className="dropdown-title-button dropdown-menu-close" aria-label="Close" type="button">
-                                <i className="fa fa-times dropdown-menu-close-icon"></i>
-                              </button>
-                            </div>
-                            <div className="dropdown-content">
-                              <input className="default-dropdown-input" id="new_label_name" placeholder="Name new label" type="text" />
-                              <div className="suggest-colors suggest-colors-dropdown">
-                                <a data-color="#0033CC" href="#">&nbsp;</a>
-                                <a data-color="#428BCA" href="#">&nbsp;</a>
-                                <a data-color="#CC0033" href="#">&nbsp;</a>
-                                <a data-color="#FF0000" href="#">&nbsp;</a>
-                                <a data-color="#D9534F" href="#">&nbsp;</a>
-                                <a data-color="#D1D100" href="#">&nbsp;</a>
-                                <a data-color="#F0AD4E" href="#">&nbsp;</a>
-                                <a data-color="#AD8D43" href="#">&nbsp;</a></div>
-                              <div className="dropdown-label-color-input">
-                                <div className="dropdown-label-color-preview js-dropdown-label-color-preview"></div>
-                                <input className="default-dropdown-input" id="new_label_color" type="text" /></div>
-                              <div className="clearfix">
-                                <button className="btn btn-primary pull-left js-new-label-btn disabled" type="button" disabled="disabled">Create</button>
-                                <button className="btn btn-default pull-right js-cancel-label-btn" type="button">Cancel</button></div>
-                            </div>
-                          </div>
-                          <div className="dropdown-loading">
-                            <i className="fa fa-spinner fa-spin"></i>
-                          </div>
+            <div>
+              <div className="gray-content-block second-block">
+                <div>
+                  <div className="filter-item inline">
+                    <a className="btn btn-default" onClick={this.refresh()}>
+                      <i className={`fa fa-refresh ${this.state.loading ? 'fa-spin' : ''}`}></i>
+                    </a>
+                  </div>
+                  <div className="filter-item inline labels-filter">
+                    <div className="dropdown">
+                      <button className="dropdown-menu-toggle" data-toggle="dropdown" type="button">
+                        <span className="dropdown-toggle-text">{t('status')}</span>
+                        <i className="fa fa-chevron-down"></i>
+                      </button>
+                      <div className="dropdown-menu dropdown-select dropdown-menu-selectable">
+                        <div className="dropdown-content">
+                          <ul>
+                          {[{
+                            status: ['pending', 'active'],
+                            name: t('allAvaliableStatus'),
+                          }, {
+                            status: ['pending'],
+                            name: t('networkStatus.pending'),
+                          }, {
+                            status: ['active'],
+                            name: t('networkStatus.active'),
+                          }, {
+                            status: ['deleted'],
+                            name: t('networkStatus.deleted'),
+                          }, {
+                            status: ['ceased'],
+                            name: t('networkStatus.ceased'),
+                          }].map((filter) => {
+                            return (
+                              <li key={filter.name}>
+                                <a className={this.state.status.toString() === filter.status.toString() ? 'is-active' : ''} href onClick={this.refresh({ status: filter.status })}>{filter.name}</a>
+                              </li>
+                            );
+                          })}
+                          </ul>
                         </div>
                       </div>
                     </div>
-                    <div className="filter-item inline">
-                      <form className="search-form">
-                        <input type="search" name="issue_search" placeholder="Filter by name ..." className="form-control issue_search search-text-input input-short" spellCheck="false" value="" />
-                      </form>
-                    </div>
-                    <div className="pull-right">
-                      <div className="dropdown inline prepend-left-10">
-                        <button className="dropdown-toggle btn" data-toggle="dropdown" type="button">
-                          <span className="light"></span>最新创建
-                          <b className="caret"></b></button>
-                        <ul className="dropdown-menu dropdown-menu-align-right">
-                          <li>
-                            <a href="/root/awesome/issues?assignee_id=&amp;author_id=&amp;milestone_title=&amp;scope=all&amp;sort=id_desc&amp;state=closed">Last created</a>
-                            <a href="/root/awesome/issues?assignee_id=&amp;author_id=&amp;milestone_title=&amp;scope=all&amp;sort=id_asc&amp;state=closed">Oldest created</a>
-                            <a href="/root/awesome/issues?assignee_id=&amp;author_id=&amp;milestone_title=&amp;scope=all&amp;sort=updated_desc&amp;state=closed">Last updated</a>
-                            <a href="/root/awesome/issues?assignee_id=&amp;author_id=&amp;milestone_title=&amp;scope=all&amp;sort=updated_asc&amp;state=closed">Oldest updated</a>
-                            <a href="/root/awesome/issues?assignee_id=&amp;author_id=&amp;milestone_title=&amp;scope=all&amp;sort=milestone_due_asc&amp;state=closed">Milestone due soon</a>
-                            <a href="/root/awesome/issues?assignee_id=&amp;author_id=&amp;milestone_title=&amp;scope=all&amp;sort=milestone_due_desc&amp;state=closed">Milestone due later</a>
-                            <a href="/root/awesome/issues?assignee_id=&amp;author_id=&amp;milestone_title=&amp;scope=all&amp;sort=due_date_asc&amp;state=closed">Due soon</a>
-                            <a href="/root/awesome/issues?assignee_id=&amp;author_id=&amp;milestone_title=&amp;scope=all&amp;sort=due_date_desc&amp;state=closed">Due later</a>
-                            <a href="/root/awesome/issues?assignee_id=&amp;author_id=&amp;milestone_title=&amp;scope=all&amp;sort=upvotes_desc&amp;state=closed">Most popular</a>
-                            <a href="/root/awesome/issues?assignee_id=&amp;author_id=&amp;milestone_title=&amp;scope=all&amp;sort=downvotes_desc&amp;state=closed">Least popular</a></li>
-                        </ul>
-                      </div>
+                  </div>
+                  <div className="filter-item inline">
+                    <input type="search" ref="search" placeholder={t('filterByIdorName')} className="form-control" onKeyPress={this.onSearchKeyPress} />
+                  </div>
+                  <div className="pull-right">
+                    <div className="dropdown inline prepend-left-10">
+                      <button className="dropdown-toggle btn" data-toggle="dropdown" type="button">
+                        <span className="light"></span> {this.state.reverse ? t('lastCreated') : t('firstCreated')}
+                        <b className="caret"></b></button>
+                      <ul className="dropdown-menu dropdown-menu-align-right dropdown-select dropdown-menu-selectable">
+                        <li><a className={this.state.reverse ? 'is-active' : ''} href onClick={this.refresh({ reverse: true })}>{t('lastCreated')}</a></li>
+                        <li><a className={this.state.reverse ? '' : 'is-active'} href onClick={this.refresh({ reverse: false })}>{t('firstCreated')}</a></li>
+                      </ul>
                     </div>
                   </div>
-                </form>
+                </div>
                 <div className="issues_bulk_update hide">
                   <form action="/root/awesome/issues/bulk_update" acceptCharset="UTF-8" method="post">
                     <input name="utf8" type="hidden" value="✓" />
@@ -251,6 +268,7 @@ class C extends RegionPage {
                     </th>
                     <th width="150">{t('id')}</th>
                     <th>{t('name')}</th>
+                    <th>{t('status')}</th>
                     <th width="200">{t('created')}</th>
                   </tr>
                 </thead>
@@ -259,18 +277,31 @@ class C extends RegionPage {
                 </tbody>
               </table>
             </div>
-            <div className="gl-pagination">
+            {this.props.context.currentPage && <div className="gl-pagination">
               <ul className="pagination clearfix">
-                <li className="prev disabled">
-                  <span>Prev</span></li>
-                <li className="page active">
-                  <a href="/root/awesome/issues?scope=all&amp;sort=id_asc&amp;state=closed&amp;utf8=%E2%9C%93">1</a></li>
-                <li className="page">
-                  <a rel="next" href="/root/awesome/issues?page=2&amp;scope=all&amp;sort=id_asc&amp;state=closed&amp;utf8=%E2%9C%93">2</a></li>
-                <li className="next">
-                  <a rel="next" href="/root/awesome/issues?page=2&amp;scope=all&amp;sort=id_asc&amp;state=closed&amp;utf8=%E2%9C%93">Next</a></li>
+                {this.props.context.currentPage > 1 && <li>
+                  <a href onClick={this.refresh({ currentPage: 1 })}>
+                    {t('paging.first')}
+                  </a>
+                </li>}
+                {this.props.context.currentPage > 1 && <li>
+                  <a href onClick={this.refresh({ currentPage: this.props.context.currentPage - 1 })}>
+                    {this.props.context.currentPage - 1}
+                  </a>
+                </li>}
+                <li className="active">
+                  <span>{this.props.context.currentPage}</span>
+                </li>
+                {this.props.context.currentPage * this.props.context.size < this.props.context.total && <li>
+                  <a href onClick={this.refresh({ currentPage: this.props.context.currentPage + 1 })}>
+                    {this.props.context.currentPage + 1}
+                  </a>
+                </li>}
+                {this.props.context.currentPage * this.props.context.size < this.props.context.total && <li>
+                  <a href onClick={this.refresh({ currentPage: parseInt(this.props.context.total / this.props.context.currentPage, 10) })}>{t('paging.last')}</a>
+                </li>}
               </ul>
-            </div>
+            </div>}
           </div>
         </div>
       </div>

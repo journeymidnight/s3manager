@@ -30,7 +30,18 @@
     "subnet": "子网",
     "router": "路由器",
 
+    "paging": {
+        "first": "第一页",
+        "prev": "上一页",
+        "next": "下一页",
+        "last": "最后一页"
+    },
+
+    "lastCreated": "最新创建",
+    "firstCreated": "最早创建",
+
     "selectRegion": "选择区域",
+    "filterByIdorName": "用ID或名称过滤...",
 
     "createSuccessed": "添加成功。",
     "updateSuccessed": "保存成功。",
@@ -60,6 +71,15 @@
 
     "tenantRoleAdmin": "管理账号",
     "tenantRoleUser": "使用账户",
+
+    "allAvaliableStatus": "可用资源",
+
+    "networkStatus": {
+        "pending": "准备中",
+        "active": "运行中",
+        "deleted": "已删除",
+        "ceased": "彻底删除"
+    },
 
     "instanceStatus": {
         "pending": "准备中",
