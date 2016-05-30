@@ -15,8 +15,7 @@ class C extends RegionPage {
       selected: {
       },
       currentPage: 1,
-      size: 10,
-      sortedBy: 'created',
+      size: 20,
       reverse: true,
       searchWord: null,
       loading: true,
@@ -81,7 +80,6 @@ class C extends RegionPage {
       currentPage: this.state.currentPage,
       size: this.state.size,
       status: this.state.status,
-      sortedBy: this.state.sortedBy,
       reverse: this.state.reverse,
       searchWord: this.state.searchWord,
     };
