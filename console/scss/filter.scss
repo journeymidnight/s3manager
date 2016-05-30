@@ -3,3 +3,10 @@
         overflow-y: inherit;
     }
 }
+
+
+@media (max-width: $screen-sm-max) {
+    .gray-content-block {
+        display: none;
+    }
+}

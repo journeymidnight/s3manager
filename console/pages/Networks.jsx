@@ -12,6 +12,8 @@ class C extends RegionPage {
 
     this.state = {
       status: ['pending', 'active'],
+      selected: {
+      },
       currentPage: 1,
       size: 10,
       sortedBy: 'created',
@@ -20,6 +22,8 @@ class C extends RegionPage {
       loading: true,
     };
     this.refresh = this.refresh.bind(this);
+    this.onSelect = this.onSelect.bind(this);
+    this.onSelectAll = this.onSelectAll.bind(this);
     this.onRefresh = this.onRefresh.bind(this);
     this.onSearchKeyPress = this.onSearchKeyPress.bind(this);
   }
@@ -40,9 +44,34 @@ class C extends RegionPage {
       if (firstPage) {
         overideFilters.currentPage = 1;
       }
+      overideFilters.selected = {};
       this.setState(Object.assign(this.state, overideFilters));
       this.onRefresh();
     };
+  }
+
+  onSelect(item) {
+    return (e) => {
+      const selected = this.state.selected;
+      if (e.target.checked) {
+        selected[item.networkId] = true;
+      } else {
+        delete selected[item.networkId];
+      }
+      this.setState(Object.assign(this.state, { selected }));
+    };
+  }
+
+  onSelectAll(e) {
+    const selected = this.state.selected;
+    this.props.context.networkSet.forEach((item) => {
+      if (e.target.checked) {
+        selected[item.networkId] = true;
+      } else {
+        delete selected[item.networkId];
+      }
+    });
+    this.setState(Object.assign(this.state, { selected }));
   }
 
   onRefresh() {
@@ -79,7 +108,7 @@ class C extends RegionPage {
       return (
         <tr key={network.networkId}>
           <td>
-            <input type="checkbox" className="selected" />
+            <input type="checkbox" className="selected" onChange={this.onSelect(network)} checked={this.state.selected[network.networkId] === true} />
           </td>
           <td>{network.networkId}</td>
           <td>
@@ -113,161 +142,78 @@ class C extends RegionPage {
                 </Link>
               </div>
             </div>
-            <div>
-              <div className="gray-content-block second-block">
-                <div>
-                  <div className="filter-item inline">
-                    <a className="btn btn-default" onClick={this.refresh({}, false)}>
-                      <i className={`fa fa-refresh ${this.state.loading ? 'fa-spin' : ''}`}></i>
-                    </a>
-                  </div>
-                  <div className="filter-item inline labels-filter">
-                    <div className="dropdown">
-                      <button className="dropdown-menu-toggle" data-toggle="dropdown" type="button">
-                        <span className="dropdown-toggle-text">{t('status')}</span>
-                        <i className="fa fa-chevron-down"></i>
-                      </button>
-                      <div className="dropdown-menu dropdown-select dropdown-menu-selectable">
-                        <div className="dropdown-content">
-                          <ul>
-                          {[{
-                            status: ['pending', 'active'],
-                            name: t('allAvaliableStatus'),
-                          }, {
-                            status: ['pending'],
-                            name: t('networkStatus.pending'),
-                          }, {
-                            status: ['active'],
-                            name: t('networkStatus.active'),
-                          }, {
-                            status: ['deleted'],
-                            name: t('networkStatus.deleted'),
-                          }, {
-                            status: ['ceased'],
-                            name: t('networkStatus.ceased'),
-                          }].map((filter) => {
-                            return (
-                              <li key={filter.name}>
-                                <a className={this.state.status.toString() === filter.status.toString() ? 'is-active' : ''} href onClick={this.refresh({ status: filter.status })}>{filter.name}</a>
-                              </li>
-                            );
-                          })}
-                          </ul>
-                        </div>
+            <div className="gray-content-block second-block">
+              <div className={Object.keys(this.state.selected).length > 0 ? 'hidden' : ''}>
+                <div className="filter-item inline">
+                  <a className="btn btn-default" onClick={this.refresh({}, false)}>
+                    <i className={`fa fa-refresh ${this.state.loading ? 'fa-spin' : ''}`}></i>
+                  </a>
+                </div>
+                <div className="filter-item inline labels-filter">
+                  <div className="dropdown">
+                    <button className="dropdown-menu-toggle" data-toggle="dropdown" type="button">
+                      <span className="dropdown-toggle-text">{t('status')}</span>
+                      <i className="fa fa-chevron-down"></i>
+                    </button>
+                    <div className="dropdown-menu dropdown-select dropdown-menu-selectable">
+                      <div className="dropdown-content">
+                        <ul>
+                        {[{
+                          status: ['pending', 'active'],
+                          name: t('allAvaliableStatus'),
+                        }, {
+                          status: ['pending'],
+                          name: t('networkStatus.pending'),
+                        }, {
+                          status: ['active'],
+                          name: t('networkStatus.active'),
+                        }, {
+                          status: ['deleted'],
+                          name: t('networkStatus.deleted'),
+                        }, {
+                          status: ['ceased'],
+                          name: t('networkStatus.ceased'),
+                        }].map((filter) => {
+                          return (
+                            <li key={filter.name}>
+                              <a className={this.state.status.toString() === filter.status.toString() ? 'is-active' : ''} href onClick={this.refresh({ status: filter.status })}>
+                                {filter.name}
+                              </a>
+                            </li>
+                          );
+                        })}
+                        </ul>
                       </div>
-                    </div>
-                  </div>
-                  <div className="filter-item inline">
-                    <input type="search" ref="search" placeholder={t('filterByIdorName')} className="form-control" onKeyPress={this.onSearchKeyPress} />
-                  </div>
-                  <div className="pull-right">
-                    <div className="dropdown inline prepend-left-10">
-                      <button className="dropdown-toggle btn" data-toggle="dropdown" type="button">
-                        <span className="light"></span> {this.state.reverse ? t('lastCreated') : t('firstCreated')}
-                        <b className="caret"></b></button>
-                      <ul className="dropdown-menu dropdown-menu-align-right dropdown-select dropdown-menu-selectable">
-                        <li><a className={this.state.reverse ? 'is-active' : ''} href onClick={this.refresh({ reverse: true })}>{t('lastCreated')}</a></li>
-                        <li><a className={this.state.reverse ? '' : 'is-active'} href onClick={this.refresh({ reverse: false })}>{t('firstCreated')}</a></li>
-                      </ul>
                     </div>
                   </div>
                 </div>
-                <div className="issues_bulk_update hide">
-                  <form action="/root/awesome/issues/bulk_update" acceptCharset="UTF-8" method="post">
-                    <input name="utf8" type="hidden" value="✓" />
-                    <input type="hidden" name="authenticity_token" value="PZuv4woG3ysArunCYx9YRyzCCaSXeXu3AohlXT0Z/6z1PtyjvcIQvoFivxW0KN7XlFACfXP3CT6x5S77kex/og==" />
-                    <div className="filter-item inline">
-                      <div className="dropdown">
-                        <button className="dropdown-menu-toggle js-issue-status" type="button" data-field-name="update[state_event]" data-toggle="dropdown">
-                          <span className="dropdown-toggle-text">Status</span>
-                          <i className="fa fa-chevron-down"></i>
-                        </button>
-                        <div className="dropdown-menu dropdown-select dropdown-menu-status dropdown-menu-selectable">
-                          <div className="dropdown-title">
-                            <span>Change status</span>
-                            <button className="dropdown-title-button dropdown-menu-close" aria-label="Close" type="button">
-                              <i className="fa fa-times dropdown-menu-close-icon"></i>
-                            </button>
-                          </div>
-                          <div className="dropdown-content">
-                            <ul>
-                              <li>
-                                <a data-id="reopen" href="#">Open</a></li>
-                              <li>
-                                <a data-id="close" href="#">Closed</a></li>
-                            </ul>
-                          </div>
-                          <div className="dropdown-loading">
-                            <i className="fa fa-spinner fa-spin"></i>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="filter-item inline">
-                      <div className="dropdown">
-                        <button className="dropdown-menu-toggle js-user-search js-update-assignee js-filter-submit js-filter-bulk-update" type="button" data-first-user="root" data-null-user="true" data-current-user="true" data-project-id="1" data-field-name="update[assignee_id]" data-toggle="dropdown">
-                          <span className="dropdown-toggle-text">Assignee</span>
-                          <i className="fa fa-chevron-down"></i>
-                        </button>
-                        <div className="dropdown-menu dropdown-select dropdown-menu-user dropdown-menu-selectable">
-                          <div className="dropdown-title">
-                            <span>Assign to</span>
-                            <button className="dropdown-title-button dropdown-menu-close" aria-label="Close" type="button">
-                              <i className="fa fa-times dropdown-menu-close-icon"></i>
-                            </button>
-                          </div>
-                          <div className="dropdown-input">
-                            <input type="search" id="" className="dropdown-input-field" placeholder="Search authors" value="" />
-                            <i className="fa fa-search dropdown-input-search"></i>
-                            <i role="button" className="fa fa-times dropdown-input-clear js-dropdown-input-clear"></i>
-                          </div>
-                          <div className="dropdown-content"></div>
-                          <div className="dropdown-loading">
-                            <i className="fa fa-spinner fa-spin"></i>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="filter-item inline">
-                      <div className="dropdown">
-                        <button className="dropdown-menu-toggle js-milestone-select js-extra-options js-filter-submit js-filter-bulk-update" type="button" data-show-no="true" data-field-name="update[milestone_id]" data-project-id="1" data-milestones="/root/awesome/milestones.json" data-use-id="true" data-toggle="dropdown">
-                          <span className="dropdown-toggle-text">Milestone</span>
-                          <i className="fa fa-chevron-down"></i>
-                        </button>
-                        <div className="dropdown-menu dropdown-select dropdown-menu-selectable dropdown-menu-milestone">
-                          <div className="dropdown-title">
-                            <span>Assign milestone</span>
-                            <button className="dropdown-title-button dropdown-menu-close" aria-label="Close" type="button">
-                              <i className="fa fa-times dropdown-menu-close-icon"></i>
-                            </button>
-                          </div>
-                          <div className="dropdown-input">
-                            <input type="search" id="" className="dropdown-input-field" placeholder="Search milestones" value="" />
-                            <i className="fa fa-search dropdown-input-search"></i>
-                            <i role="button" className="fa fa-times dropdown-input-clear js-dropdown-input-clear"></i>
-                          </div>
-                          <div className="dropdown-content"></div>
-                          <div className="dropdown-loading">
-                            <i className="fa fa-spinner fa-spin"></i>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <input type="hidden" name="update[issues_ids]" id="update_issues_ids" value="" />
-                    <input type="hidden" name="state_event" id="state_event" />
-                    <div className="filter-item inline">
-                      <button name="button" type="submit" className="btn update_selected_issues btn-save">Update issues</button></div>
-                  </form>
+                <div className="filter-item inline">
+                  <input type="search" ref="search" placeholder={t('filterByIdorName')} className="form-control" onKeyPress={this.onSearchKeyPress} />
+                </div>
+                <div className="pull-right">
+                  <div className="dropdown inline prepend-left-10">
+                    <button className="dropdown-toggle btn" data-toggle="dropdown" type="button">
+                      <span className="light"></span> {this.state.reverse ? t('lastCreated') : t('firstCreated')}
+                      <b className="caret"></b></button>
+                    <ul className="dropdown-menu dropdown-menu-align-right dropdown-select dropdown-menu-selectable">
+                      <li><a className={this.state.reverse ? 'is-active' : ''} href onClick={this.refresh({ reverse: true })}>{t('lastCreated')}</a></li>
+                      <li><a className={this.state.reverse ? '' : 'is-active'} href onClick={this.refresh({ reverse: false })}>{t('firstCreated')}</a></li>
+                    </ul>
+                  </div>
                 </div>
               </div>
-              <div className="filtered-labels gray-content-block hidden second-block"></div>
+              <div className={Object.keys(this.state.selected).length > 0 ? '' : 'hidden'}>
+                <div className="filter-item inline">
+                  <a className="btn btn-danger">{t('delete')}</a>
+                </div>
+              </div>
             </div>
             <div className="table-holder">
               <table className="table">
                 <thead>
                   <tr>
                     <th width="40">
-                      <input type="checkbox" className="selected" />
+                      <input type="checkbox" className="selected" onChange={this.onSelectAll} />
                     </th>
                     <th width="150">{t('id')}</th>
                     <th>{t('name')}</th>
