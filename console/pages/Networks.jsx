@@ -31,12 +31,15 @@ class C extends RegionPage {
     this.refresh()();
   }
 
-  refresh(overideFilters = {}) {
+  refresh(overideFilters = {}, firstPage = true) {
     return (e) => {
       if (e) {
         e.preventDefault();
       }
 
+      if (firstPage) {
+        overideFilters.currentPage = 1;
+      }
       this.setState(Object.assign(this.state, overideFilters));
       this.onRefresh();
     };
@@ -114,7 +117,7 @@ class C extends RegionPage {
               <div className="gray-content-block second-block">
                 <div>
                   <div className="filter-item inline">
-                    <a className="btn btn-default" onClick={this.refresh()}>
+                    <a className="btn btn-default" onClick={this.refresh({}, false)}>
                       <i className={`fa fa-refresh ${this.state.loading ? 'fa-spin' : ''}`}></i>
                     </a>
                   </div>
@@ -285,7 +288,7 @@ class C extends RegionPage {
                   </a>
                 </li>}
                 {this.props.context.currentPage > 1 && <li>
-                  <a href onClick={this.refresh({ currentPage: this.props.context.currentPage - 1 })}>
+                  <a href onClick={this.refresh({ currentPage: this.props.context.currentPage - 1 }, false)}>
                     {this.props.context.currentPage - 1}
                   </a>
                 </li>}
@@ -293,12 +296,12 @@ class C extends RegionPage {
                   <span>{this.props.context.currentPage}</span>
                 </li>
                 {this.props.context.currentPage * this.props.context.size < this.props.context.total && <li>
-                  <a href onClick={this.refresh({ currentPage: this.props.context.currentPage + 1 })}>
+                  <a href onClick={this.refresh({ currentPage: this.props.context.currentPage + 1 }, false)}>
                     {this.props.context.currentPage + 1}
                   </a>
                 </li>}
                 {this.props.context.currentPage * this.props.context.size < this.props.context.total && <li>
-                  <a href onClick={this.refresh({ currentPage: parseInt(this.props.context.total / this.props.context.currentPage, 10) })}>{t('paging.last')}</a>
+                  <a href onClick={this.refresh({ currentPage: parseInt(this.props.context.total / this.props.context.size, 10) }, false)}>{t('paging.last')}</a>
                 </li>}
               </ul>
             </div>}
