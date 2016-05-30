@@ -107,6 +107,7 @@
     },
 
     "pageNetwork": {
+        "basic": "基本信息",
         "subnet": "子网",
         "router": "路由"
     },

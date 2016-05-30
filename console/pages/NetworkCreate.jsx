@@ -1,6 +1,7 @@
 import React from 'react';
 import RegionPage, { attach } from '../../shared/pages/RegionPage';
 import NetworkForm from '../forms/NetworkForm';
+import * as Actions from '../redux/actions';
 import * as NetworkActions from '../redux/actions.network';
 
 class C extends RegionPage {
@@ -11,6 +12,8 @@ class C extends RegionPage {
   }
 
   componentDidMount() {
+    const { t, dispatch, region } = this.props;
+    dispatch(Actions.setHeader(t('networkManage'), `/${region.regionId}/networks`));
   }
 
   onSubmit(values) {
@@ -42,7 +45,7 @@ class C extends RegionPage {
         <div className="content">
           <div className="clearfix">
             <h3 className="page-title">
-              {`${t('create')} ${t('networkManage')}`}
+              {t('create')}
             </h3>
             <hr />
             <NetworkForm onSubmit={this.onSubmit} initialValues={initialValues} />
