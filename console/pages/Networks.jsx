@@ -1,13 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router';
 import RegionPage, { attach } from '../../shared/pages/RegionPage';
+import * as Actions from '../redux/actions';
 import * as NetworkActions from '../redux/actions.network';
 
 class C extends RegionPage {
 
   componentDidMount() {
-    const { dispatch, region, routerKey } = this.props;
+    const { t, dispatch, region, routerKey } = this.props;
     dispatch(NetworkActions.requestDescribeNetworks(routerKey, region.regionId));
+
+    dispatch(Actions.setHeader(t('networkManage'), `/${region.regionId}/networks`));
   }
 
   render() {
@@ -34,14 +37,11 @@ class C extends RegionPage {
       <div className="container-fluid container-limited">
         <div className="content">
           <div className="clearfix">
-            <h3 className="page-title">
-              {t('networkManage')}
-            </h3>
             <div className="top-area">
               <div className="nav-text">
-                <p className="light">
+                <span className="light">
                   {t('networkManageDescription')}
-                </p>
+                </span>
               </div>
               <div className="nav-controls">
                 <Link className="btn btn-new" to={`/${this.props.region.regionId}/networks/create`}>

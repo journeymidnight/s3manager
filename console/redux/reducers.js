@@ -50,6 +50,7 @@ const reducers = combineReducers({
   form: formReducer,
   regions: regionsReducer,
   region: regionReducer,
+  header: constReducer,
   context: constReducer,
 });
 

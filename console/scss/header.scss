@@ -1,5 +1,15 @@
 header.navbar-gitlab .container-fluid {
   .header-content {
+    h1 {
+      font-size: 16px;
+
+      a:active,
+      a:hover,
+      a:focus {
+        text-decoration: none;
+      }
+    }
+
     .navbar-left {
       @media (min-width: $screen-sm-min) {
         margin-left: -20px;
