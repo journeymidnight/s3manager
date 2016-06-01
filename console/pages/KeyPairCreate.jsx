@@ -20,10 +20,12 @@ class C extends RegionPage {
     return new Promise((resolve, reject) => {
       const name = values.name;
       const publicKey = values.publicKey;
+      const description = values.description;
 
       dispatch(KeyPairActions.requestCreateKeyPair(routerKey, region.regionId, {
         name,
         publicKey,
+        description
       }))
       .then(() => {
         resolve();
