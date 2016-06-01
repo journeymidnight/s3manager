@@ -31,3 +31,35 @@ export function requestCreateKeyPair(routerKey, regionId, keyPair) {
     });
   };
 }
+
+export function requestDescribeKeyPair(routerKey, regionId,keyPairId) {
+  return dispatch => {
+    return IaaS
+    .describeKeyPairs(regionId)
+    .promise
+    .then((payload) => {
+      dispatch(extendContext({ keyPair2: payload.keyPairSet.filter(function name(keyPair) {
+        return keyPair.keyPairId===keyPairId;
+      })[0]}));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
+export function requestDescribeKeyPair(routerKey, regionId,keyPairId) {
+  return dispatch => {
+    return IaaS
+    .describeKeyPairs(regionId)
+    .promise
+    .then((payload) => {
+      dispatch(extendContext({ keyPair2: payload.keyPairSet.filter(function name(keyPair) {
+        return keyPair.keyPairId===keyPairId;
+      })[0]}));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}

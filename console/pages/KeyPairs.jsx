@@ -9,7 +9,11 @@ class C extends RegionPage {
     const { dispatch, region, routerKey } = this.props;
     dispatch(KeyPairActions.requestDescribeKeyPairs(routerKey, region.regionId));
   }
-
+  deleteKeyPair(keyPair){
+    console.log(keyPair);
+    const { dispatch, region, routerKey } = this.props;
+    dispatch(KeyPairActions.requestDeleteKeyPairs(routerKey, region.regionId));
+  }
   render() {
     const keyPairs = this.props.context.keyPairSet && this.props.context.keyPairSet.map((keyPair) => {
       return (
@@ -23,6 +27,7 @@ class C extends RegionPage {
             </Link>
           </td>
           <td className="light">{keyPair.created}</td>
+          <td><button onClick={()=>this.deleteKeyPair(keyPair)}>delete</button></td>
         </tr>
       );
     });
@@ -53,6 +58,7 @@ class C extends RegionPage {
                     <th>{t('id')}</th>
                     <th>{t('name')}</th>
                     <th>{t('created')}</th>
+                    <th>operation</th>
                   </tr>
                 </thead>
                 <tbody>
