@@ -148,7 +148,7 @@
     "sidebarVolume": "云硬盘",
     "sidebarNetwork": "私有网络",
     "sidebarSnapshot": "快照备份",
-    "sidebarEIP": "公网IP",
+    "sidebarEIP": "公网 IP",
     "sidebarKeyPair": "SSH 密钥",
     "sidebarFirewall": "防火墙",
     "sidebarAccessKey": "API 密钥",

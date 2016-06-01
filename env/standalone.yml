@@ -2,6 +2,8 @@ ui:
   build: ./
   command: npm run start
   env_file: .env
+  volumes:
+    - "./:/app"
   ports:
     - "0.0.0.0:${DEVOPS_PORT}:9012"
     - "0.0.0.0:${BOSS_PORT}:9013"
