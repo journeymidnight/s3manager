@@ -23,7 +23,7 @@ const F = (props) => {
         </div>
       </div>
 
-      <div className={submitFailed && description.count ? 'form-group has-error' : 'form-group'}>
+      <div className={submitFailed && count.error ? 'form-group has-error' : 'form-group'}>
         <label className="control-label" >{t('count') }</label>
         <div className="col-sm-10">
           <input type="text" className="form-control" {...count} />
