@@ -86,7 +86,7 @@ class C extends RegionPage {
         <tr key={eip.eipId}>
           <td>{eip.eipId}</td>
           <td>
-            <Link to={`/${this.props.region.regionId}/key_pairs/${eip.eipId}`}>
+            <Link to={`/${this.props.region.regionId}/eips/${eip.eipId}`}>
               <strong>
                 {eip.name}
               </strong>

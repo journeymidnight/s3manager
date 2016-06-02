@@ -1,23 +1,27 @@
 import React from 'react';
 import RegionPage, { attach } from '../../shared/pages/RegionPage';
-import * as KeyPairActions from '../redux/actions.key_pair';
+import * as EipActions from '../redux/actions.eip';
 
 class C extends RegionPage {
 
   componentDidMount() {
     const { dispatch, region, routerKey, routeParams } = this.props;
-    dispatch(KeyPairActions.requestDescribeKeyPair(routerKey, region.regionId, routeParams.keyPairId));
+    dispatch(EipActions.requestDescribeEips(routerKey, region.regionId, { eipIds: [routeParams.eipId] }));
   }
 
   render() {
-    const currentKeyPair = this.props.context.keyPair2 || {};
+    const currentEip = (this.props.context.eipSet && this.props.context.eipSet[0]) || {};
+    const { t } = this.props;
     return (
       <div className="container-fluid container-limited">
         <div className="content">
           <div className="clearfix">
-            <div><span>ID:</span><span>{currentKeyPair.keyPairId}</span></div>
-            <div><span>名称:</span><span>{currentKeyPair.name}</span></div>
-            <div><span>创建时间:</span><span>{currentKeyPair.created}</span></div>
+            <div><span>{t('id')}: </span><span>{currentEip.eipId}</span></div>
+            <div><span>{t('name')}: </span><span>{currentEip.name}</span></div>        
+            <div><span>{t('description')}: </span><span>{currentEip.description}</span></div>
+            <div><span>{t('address')}: </span><span>{currentEip.address}</span></div>
+            <div><span>{t('status')}: </span><span>{currentEip.status}</span></div>
+            <div><span>{t('created')}: </span><span>{currentEip.created}</span></div>
           </div>
         </div>
       </div>
