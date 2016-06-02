@@ -16,7 +16,7 @@ const F = (props) => {
     <form className="form-horizontal" onSubmit={handleSubmit}>
 
       <div className={submitFailed && name.error ? 'form-group has-error' : 'form-group'}>
-        <label className="control-label" >{t('name') }</label>
+        <label className="control-label" >{t('name')}</label>
         <div className="col-sm-10">
           <input type="text" className="form-control" {...name} />
           {submitFailed && name.error && <div className="text-danger"><small>{name.error}</small></div>}
@@ -24,7 +24,7 @@ const F = (props) => {
       </div>
 
       <div className={submitFailed && count.error ? 'form-group has-error' : 'form-group'}>
-        <label className="control-label" >{t('count') }</label>
+        <label className="control-label" >{t('count')}</label>
         <div className="col-sm-10">
           <input type="text" className="form-control" {...count} />
           {submitFailed && count.error && <div className="text-danger"><small>{count.error}</small></div>}
@@ -33,11 +33,11 @@ const F = (props) => {
 
       <div className="form-actions">
         <button type="submit" className="btn btn-save" disabled={submitting}>
-          {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('update') }
+          {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('update')}
         </button>
         &nbsp;
         <Link className="btn btn-cancel" to="/regions">
-          {t('cancel') }
+          {t('cancel')}
         </Link>
       </div>
     </form>
@@ -56,7 +56,7 @@ F.propTypes = {
 F.validate = values => {
   const errors = {};
   errors.name = Validations.required(values.name);
-  errors.count = Validations.integer(values.count);  
+  errors.count = Validations.integer(values.count);
   return errors;
 };
 

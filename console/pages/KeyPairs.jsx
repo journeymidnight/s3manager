@@ -75,7 +75,7 @@ class C extends RegionPage {
     }
   }
 
-  deleteKeyPair(keyPair) {
+  deleteKeyPair() {
     const { dispatch, region, routerKey } = this.props;
     dispatch(KeyPairActions.requestDeleteKeyPairs(routerKey, region.regionId));
   }
@@ -93,7 +93,7 @@ class C extends RegionPage {
             </Link>
           </td>
           <td className="light">{keyPair.created}</td>
-          <td><button onClick={() => this.deleteKeyPair(keyPair) }>delete </button></td>
+          <td><button onClick={() => this.deleteKeyPair(keyPair)}>delete </button></td>
         </tr>
       );
     });
@@ -105,27 +105,27 @@ class C extends RegionPage {
             <div className="top-area">
               <div className="nav-text">
                 <p className="light">
-                  {t('keyPairManageDescription') }
+                  {t('keyPairManageDescription')}
                 </p>
               </div>
               <div className="nav-controls">
                 <Link className="btn btn-new" to={`/${this.props.region.regionId}/key_pairs/create`}>
-                  <i className="fa fa-plus"></i>&nbsp; {t('create') }
+                  <i className="fa fa-plus"></i>&nbsp; {t('create')}
                 </Link>
               </div>
             </div>
             <div className="gray-content-block second-block">
               <div className="filter-item inline">
-                <input type="search" ref="search" placeholder={t('filterByIdorName') } className="form-control" onKeyPress={this.onSearchKeyPress} />
+                <input type="search" ref="search" placeholder={t('filterByIdorName')} className="form-control" onKeyPress={this.onSearchKeyPress} />
               </div>
               <div className="pull-right">
                 <div className="dropdown inline prepend-left-10">
                   <button className="dropdown-toggle btn" data-toggle="dropdown" type="button">
-                    <span className="light"></span> {this.state.reverse ? t('lastCreated') : t('firstCreated') }
+                    <span className="light"></span> {this.state.reverse ? t('lastCreated') : t('firstCreated')}
                     <b className="caret"></b></button>
                   <ul className="dropdown-menu dropdown-menu-align-right dropdown-select dropdown-menu-selectable">
-                    <li><a className={this.state.reverse ? 'is-active' : ''} href onClick={this.refresh({ reverse: true }) }>{t('lastCreated') }</a></li>
-                    <li><a className={this.state.reverse ? '' : 'is-active'} href onClick={this.refresh({ reverse: false }) }>{t('firstCreated') }</a></li>
+                    <li><a className={this.state.reverse ? 'is-active' : ''} href onClick={this.refresh({ reverse: true })}>{t('lastCreated')}</a></li>
+                    <li><a className={this.state.reverse ? '' : 'is-active'} href onClick={this.refresh({ reverse: false })}>{t('firstCreated')}</a></li>
                   </ul>
                 </div>
               </div>
@@ -136,9 +136,9 @@ class C extends RegionPage {
               <table className="table">
                 <thead>
                   <tr>
-                    <th>{t('id') }</th>
-                    <th>{t('name') }</th>
-                    <th>{t('created') }</th>
+                    <th>{t('id')}</th>
+                    <th>{t('name')}</th>
+                    <th>{t('created')}</th>
                     <th>operation</th>
                   </tr>
                 </thead>
@@ -150,12 +150,12 @@ class C extends RegionPage {
             {this.props.context.currentPage && <div className="gl-pagination">
               <ul className="pagination clearfix">
                 {this.props.context.currentPage > 1 && <li>
-                  <a href onClick={this.refresh({ currentPage: 1 }) }>
-                    {t('paging.first') }
+                  <a href onClick={this.refresh({ currentPage: 1 })}>
+                    {t('paging.first')}
                   </a>
                 </li>}
                 {this.props.context.currentPage > 1 && <li>
-                  <a href onClick={this.refresh({ currentPage: this.props.context.currentPage - 1 }, false) }>
+                  <a href onClick={this.refresh({ currentPage: this.props.context.currentPage - 1 }, false)}>
                     {this.props.context.currentPage - 1}
                   </a>
                 </li>}
@@ -163,12 +163,12 @@ class C extends RegionPage {
                   <span>{this.props.context.currentPage}</span>
                 </li>
                 {this.props.context.currentPage * this.props.context.size < this.props.context.total && <li>
-                  <a href onClick={this.refresh({ currentPage: this.props.context.currentPage + 1 }, false) }>
+                  <a href onClick={this.refresh({ currentPage: this.props.context.currentPage + 1 }, false)}>
                     {this.props.context.currentPage + 1}
                   </a>
                 </li>}
                 {this.props.context.currentPage * this.props.context.size < this.props.context.total && <li>
-                  <a href onClick={this.refresh({ currentPage: parseInt(this.props.context.total / this.props.context.size, 10) }, false) }>{t('paging.last') }</a>
+                  <a href onClick={this.refresh({ currentPage: parseInt(this.props.context.total / this.props.context.size, 10) }, false)}>{t('paging.last')}</a>
                 </li>}
               </ul>
             </div>}

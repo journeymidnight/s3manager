@@ -5,12 +5,12 @@ import * as KeyPairActions from '../redux/actions.key_pair';
 class C extends RegionPage {
 
   componentDidMount() {
-    const { dispatch, region, routerKey,routeParams} = this.props;
-    dispatch(KeyPairActions.requestDescribeKeyPair(routerKey, region.regionId,routeParams.keyPairId));
+    const { dispatch, region, routerKey, routeParams } = this.props;
+    dispatch(KeyPairActions.requestDescribeKeyPair(routerKey, region.regionId, routeParams.keyPairId));
   }
 
   render() {
-    const currentKeyPair=this.props.context.keyPair2|| {};
+    const currentKeyPair = this.props.context.keyPair2 || {};
     return (
       <div className="container-fluid container-limited">
         <div className="content">
