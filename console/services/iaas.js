@@ -5,11 +5,17 @@ class IaaS {
     const payload = Object.assign({}, params);
     return rawCall('post', `/proxy/r/${regionId}/${action}`, payload);
   }
-  describeKeyPairs(regionId) {
-    return this.call(regionId, 'describeKeyPairs', {});
+  describeKeyPairs(regionId, filter = {}) {
+    return this.call(regionId, 'DescribeKeyPairs', filter);
   }
   createKeyPair(regionId, keyPair) {
-    return this.call(regionId, 'createKeyPair', keyPair);
+    return this.call(regionId, 'CreateKeyPair', keyPair);
+  }
+  describeEips(regionId, filter = {}) {
+    return this.call(regionId, 'DescribeEips', filter);
+  }
+  allocateEips(regionId, eip) {
+    return this.call(regionId, 'AllocateEips', eip);
   }
   describeNetworks(regionId, filter = {}) {
     return this.call(regionId, 'describeNetworks', filter);

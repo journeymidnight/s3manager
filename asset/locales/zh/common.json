@@ -30,6 +30,8 @@
     "network": "私有网络",
     "subnet": "子网",
     "router": "路由器",
+    "count": "数量",
+    "address": "地址",
 
     "paging": {
         "first": "第一页",
@@ -63,6 +65,9 @@
 
     "keyPairManage": "SSH 密钥",
     "keyPairManageDescription": "为 Linux 云主机提供 SSH 公钥/私钥验证身份。",
+    
+    "eipManage": "公网 IP",
+    "eipManageDescription": "为 Linux 云主机提供 可以被外网访问的IP地址。",
 
     "tenantManage": "租户管理",
     "tenantManageDescription": "可根据不同的企业或团队划分独立的租户, 分配相应的资源配额。",

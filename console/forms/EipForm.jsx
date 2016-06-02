@@ -6,7 +6,7 @@ import * as Validations from '../../shared/utils/validations';
 
 const F = (props) => {
   const { fields:
-    { name, description, publicKey },
+    { name, count },
     handleSubmit,
     submitting,
     submitFailed,
@@ -23,19 +23,11 @@ const F = (props) => {
         </div>
       </div>
 
-      <div className={submitFailed && description.error ? 'form-group has-error' : 'form-group'}>
-        <label className="control-label" >{t('description')}</label>
+      <div className={submitFailed && count.error ? 'form-group has-error' : 'form-group'}>
+        <label className="control-label" >{t('count')}</label>
         <div className="col-sm-10">
-          <input type="text" className="form-control" {...description} />
-          {submitFailed && description.error && <div className="text-danger"><small>{description.error}</small></div>}
-        </div>
-      </div>
-
-      <div className={submitFailed && publicKey.error ? 'form-group has-error' : 'form-group'}>
-        <label className="control-label" >{t('formKeyPairForm.publicKey')}</label>
-        <div className="col-sm-10">
-          <textarea className="form-control" rows="10" {...publicKey} />
-          {submitFailed && publicKey.error && <div className="text-danger"><small>{publicKey.error}</small></div>}
+          <input type="text" className="form-control" {...count} />
+          {submitFailed && count.error && <div className="text-danger"><small>{count.error}</small></div>}
         </div>
       </div>
 
@@ -64,11 +56,12 @@ F.propTypes = {
 F.validate = values => {
   const errors = {};
   errors.name = Validations.required(values.name);
+  errors.count = Validations.integer(values.count);
   return errors;
 };
 
 export default reduxForm({
-  form: 'KeyPairForm',
-  fields: ['name', 'publicKey', 'description'],
+  form: 'EipForm',
+  fields: ['name', 'count'],
   validate: F.validate,
 })(translate()(F));

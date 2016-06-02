@@ -17,6 +17,9 @@ import InstanceCreate from './pages/InstanceCreate.jsx';
 import RegionIndex from './pages/RegionIndex.jsx';
 import Snapshots from './pages/Snapshots.jsx';
 import Settings from './pages/Settings.jsx';
+import Eip from './pages/Eip.jsx';
+import Eips from './pages/Eips.jsx';
+import EipCreate from './pages/EipCreate.jsx';
 
 export default function configureRoutes(store) {
   function requireAuth(nextState, replace) {
@@ -45,7 +48,11 @@ export default function configureRoutes(store) {
           <Route path="snapshots" >
             <IndexRoute component={Snapshots} />
           </Route>
-          <Route path="eips" component={Settings} />
+          <Route path="eips">
+            <IndexRoute component={Eips} />
+            <Route path="create" component={EipCreate} />
+            <Route path=":eipId" component={Eip} />
+          </Route>
           <Route path="instances" >
             <IndexRoute component={Instances} />
             <Route path="create" component={InstanceCreate} />
@@ -64,6 +71,6 @@ export default function configureRoutes(store) {
           <Route path="firewalls" component={Settings} />
         </Route>
       </Route>
-    </Route>
+    </Route >
   );
 }

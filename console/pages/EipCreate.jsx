@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router';
 import RegionPage, { attach } from '../../shared/pages/RegionPage';
-import KeyPairForm from '../forms/KeyPairForm';
-import * as KeyPairActions from '../redux/actions.key_pair';
+import EipForm from '../forms/EipForm';
+import * as EipActions from '../redux/actions.eip';
 
 class C extends RegionPage {
 
@@ -19,13 +19,11 @@ class C extends RegionPage {
 
     return new Promise((resolve, reject) => {
       const name = values.name;
-      const publicKey = values.publicKey;
-      const description = values.description;
+      const count = Number(values.count);
 
-      dispatch(KeyPairActions.requestCreateKeyPair(routerKey, region.regionId, {
+      dispatch(EipActions.requestCreateEip(routerKey, region.regionId, {
         name,
-        publicKey,
-        description
+        count
       }))
       .then(() => {
         resolve();
@@ -42,10 +40,10 @@ class C extends RegionPage {
         <div className="content">
           <div className="clearfix">
             <ol className="breadcrumb">
-              <li><Link to={`/${this.props.region.regionId}/key_pairs`}>{t('keyPairManage')}</Link></li>
+              <li><Link to={`/${this.props.region.regionId}/eips`}>{t('eipManage')}</Link></li>
               <li className="active">{t('create')}</li>
             </ol>
-            <KeyPairForm onSubmit={this.onSubmit} />
+            <EipForm onSubmit={this.onSubmit} />
           </div>
         </div>
       </div>

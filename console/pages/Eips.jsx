@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import _ from 'lodash';
 import RegionPage, { attach } from '../../shared/pages/RegionPage';
 import * as Actions from '../redux/actions';
-import * as KeyPairActions from '../redux/actions.key_pair';
+import * as EipActions from '../redux/actions.eip';
 
 class C extends RegionPage {
 
@@ -29,7 +29,7 @@ class C extends RegionPage {
 
   componentDidMount() {
     const { t, dispatch, region } = this.props;
-    dispatch(Actions.setHeader(t('keyPairManage'), `/${region.regionId}/key_pairs`));
+    dispatch(Actions.setHeader(t('eipManage'), `/${region.regionId}/eips`));
     this.refresh()();
   }
 
@@ -58,7 +58,7 @@ class C extends RegionPage {
       reverse: this.state.reverse,
       searchWord: this.state.searchWord,
     };
-    dispatch(KeyPairActions.requestDescribeKeyPairs(routerKey, region.regionId, filters))
+    dispatch(EipActions.requestDescribeEips(routerKey, region.regionId, filters))
       .then(() => {
         this.setState({ loading: false });
       });
@@ -75,25 +75,27 @@ class C extends RegionPage {
     }
   }
 
-  deleteKeyPair() {
-    const { dispatch, region, routerKey } = this.props;
-    dispatch(KeyPairActions.requestDeleteKeyPairs(routerKey, region.regionId));
+  deleteEip() {
+    // const { dispatch, region, routerKey } = this.props;
+    // dispatch(KeyPairActions.requestDeleteKeyPairs(routerKey, region.regionId));
   }
 
   render() {
-    const keyPairs = this.props.context.keyPairSet && this.props.context.keyPairSet.map((keyPair) => {
+    const eips = this.props.context.eipSet && this.props.context.eipSet.map((eip) => {
       return (
-        <tr key={keyPair.keyPairId}>
-          <td>{keyPair.keyPairId}</td>
+        <tr key={eip.eipId}>
+          <td>{eip.eipId}</td>
           <td>
-            <Link to={`/${this.props.region.regionId}/key_pairs/${keyPair.keyPairId}`}>
+            <Link to={`/${this.props.region.regionId}/eips/${eip.eipId}`}>
               <strong>
-                {keyPair.name}
+                {eip.name}
               </strong>
             </Link>
           </td>
-          <td className="light">{keyPair.created}</td>
-          <td><button onClick={() => this.deleteKeyPair(keyPair)}>delete </button></td>
+          <td>{eip.description}</td>
+          <td>{eip.address}</td>
+          <td>{eip.status}</td>
+          <td className="light">{eip.created}</td>
         </tr>
       );
     });
@@ -105,11 +107,11 @@ class C extends RegionPage {
             <div className="top-area">
               <div className="nav-text">
                 <p className="light">
-                  {t('keyPairManageDescription')}
+                  {t('eipManageDescription')}
                 </p>
               </div>
               <div className="nav-controls">
-                <Link className="btn btn-new" to={`/${this.props.region.regionId}/key_pairs/create`}>
+                <Link className="btn btn-new" to={`/${this.props.region.regionId}/eips/create`}>
                   <i className="fa fa-plus"></i>&nbsp; {t('create')}
                 </Link>
               </div>
@@ -136,14 +138,16 @@ class C extends RegionPage {
               <table className="table">
                 <thead>
                   <tr>
-                    <th>{t('id')}</th>
+                    <th>{t('eipId')}</th>
                     <th>{t('name')}</th>
+                    <th>{t('description')}</th>
+                    <th>{t('address')}</th>
+                    <th>{t('status')}</th>
                     <th>{t('created')}</th>
-                    <th>operation</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {keyPairs}
+                  {eips}
                 </tbody>
               </table>
             </div>
