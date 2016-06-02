@@ -11,7 +11,8 @@ export function requestDescribeKeyPairs(routerKey, regionId, filters) {
       .then((payload) => {
         dispatch(extendContext(Object.assign(payload, {
           currentPage: payload.offset / payload.limit + 1,
-          size: payload.limit
+          size: payload.limit,
+          pageCount: payload.total % payload.limit === 0 ? payload.total / payload.limit : payload.total / payload.limit + 1
         })));
       })
       .catch((error) => {

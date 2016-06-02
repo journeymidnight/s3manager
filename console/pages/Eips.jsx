@@ -166,12 +166,12 @@ class C extends RegionPage {
                 <li className="active">
                   <span>{this.props.context.currentPage}</span>
                 </li>
-                {this.props.context.currentPage * this.props.context.size < this.props.context.total && <li>
+                {this.props.context.currentPage < this.props.context.pageCount && <li>
                   <a href onClick={this.refresh({ currentPage: this.props.context.currentPage + 1 }, false)}>
                     {this.props.context.currentPage + 1}
                   </a>
                 </li>}
-                {this.props.context.currentPage * this.props.context.size < this.props.context.total && <li>
+                {this.props.context.currentPage < this.props.context.pageCount && <li>
                   <a href onClick={this.refresh({ currentPage: parseInt(this.props.context.total / this.props.context.size, 10) }, false)}>{t('paging.last')}</a>
                 </li>}
               </ul>

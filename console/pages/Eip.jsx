@@ -17,7 +17,7 @@ class C extends RegionPage {
         <div className="content">
           <div className="clearfix">
             <div><span>{t('id')}: </span><span>{currentEip.eipId}</span></div>
-            <div><span>{t('name')}: </span><span>{currentEip.name}</span></div>        
+            <div><span>{t('name')}: </span><span>{currentEip.name}</span></div>       
             <div><span>{t('description')}: </span><span>{currentEip.description}</span></div>
             <div><span>{t('address')}: </span><span>{currentEip.address}</span></div>
             <div><span>{t('status')}: </span><span>{currentEip.status}</span></div>
