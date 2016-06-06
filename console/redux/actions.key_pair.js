@@ -36,3 +36,18 @@ export function requestCreateKeyPair(routerKey, regionId, keyPair) {
   };
 }
 
+export function requestModifyKeyPair(routerKey, regionId, keyPair) {
+  return dispatch => {
+    return IaaS
+      .createKeyPair(regionId, keyPair)
+      .promise
+      .then(() => {
+        dispatch(push(`/${regionId}/key_pairs`));
+        dispatch(notify(i18n.t('modifySuccessed')));
+      })
+      .catch((error) => {
+        dispatch(notifyAlert(error.message));
+      });
+  };
+}
+
