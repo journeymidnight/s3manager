@@ -62,6 +62,7 @@ export default function configureRoutes(store) {
             <IndexRoute component={KeyPairs} />
             <Route path="create" component={KeyPairCreate} />
             <Route path=":keyPairId" component={KeyPair} />
+            <Route path=":keyPairId/modify" component={KeyPairCreate} />
           </Route>
           <Route path="networks" >
             <IndexRoute component={Networks} />
