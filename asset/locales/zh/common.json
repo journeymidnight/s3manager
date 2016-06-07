@@ -122,7 +122,8 @@
         "subnet": "子网",
         "router": "路由",
         "updateNetwork": "更新基本信息",
-        "deleteNetwork": "删除私有网络"
+        "deleteNetwork": "删除私有网络",
+        "externalGatewayIp": "出口网关 IP"
     },
 
     "formInstanceCreateForm": {

@@ -147,7 +147,7 @@ class C extends RegionPage {
     return (
       <div>
         <div className="panel panel-default">
-          <div className="panel-heading">{t('pageNetwork.updateNetwork')}</div>
+          <div className="panel-heading">{t('pageNetwork.basic')}</div>
           <div className="panel-body">
 
             <dl className="dl-horizontal">
@@ -163,6 +163,11 @@ class C extends RegionPage {
               {network.description && <strong>{network.description}</strong>}
               {!network.description && <i className="text-muted">{t('noName')}</i>}
               </dd>
+              <dt>{t('pageNetwork.externalGatewayIp')}</dt>
+              <dd>
+              {network.externalGatewayIp && <strong>{network.externalGatewayIp}</strong>}
+              {!network.externalGatewayIp && <i className="text-muted">{t('noName')}</i>}
+              </dd>
               <dt>{t('status')}</dt>
               <dd className={`i-status i-status-${network.status}`}>
                 <i className="icon"></i>
@@ -176,7 +181,7 @@ class C extends RegionPage {
         </div>
 
         {this.notDeleted() && <div className="panel panel-primary">
-          <div className="panel-heading">{t('settings')}</div>
+          <div className="panel-heading">{t('pageNetwork.updateNetwork')}</div>
           <div className="panel-body">
             <NetworkUpdateForm onSubmit={this.onSave} initialValues={network} />
           </div>
