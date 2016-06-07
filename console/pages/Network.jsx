@@ -36,12 +36,15 @@ class C extends RegionPage {
     dispatch(Actions.setHeader(t('networkManage'), `/${region.regionId}/networks`));
 
     this.networkId = params.networkId;
-    dispatch(NetworkActions.requestDescribeNetwork(routerKey, region.regionId, this.networkId));
+    dispatch(NetworkActions.requestDescribeNetwork(routerKey, region.regionId, this.networkId))
+    .then(() => {
+      dispatch(Actions.extendContext({ initialized: true }, routerKey));
+    });
 
     this.changeTab('basic')();
   }
 
-  render() {
+  renderAfterInitialized() {
     const { t } = this.props;
     const network = this.props.context.network;
 
@@ -57,7 +60,7 @@ class C extends RegionPage {
               <ul className="nav-links clearfix">
                 <li>
                   <h3 className="page-title">
-                    {network.name}
+                    {network.networkId}
                     <span className={`i-status i-status-${network.status}`}>
                       <i className="icon"></i>
                     </span>

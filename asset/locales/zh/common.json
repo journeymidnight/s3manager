@@ -85,7 +85,7 @@
         "pending": "准备中",
         "active": "运行中",
         "deleted": "已删除",
-        "ceased": "彻底删除"
+        "ceased": "物理删除"
     },
 
     "instanceStatus": {
@@ -97,7 +97,7 @@
         "restarting": "重启中",
         "scheduling": "调度中",
         "deleted": "已删除",
-        "ceased": "彻底删除",
+        "ceased": "物理删除",
         "error": "状态异常"
     },
 

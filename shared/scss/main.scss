@@ -286,8 +286,14 @@ header.navbar-gitlab .container-fluid {
 .table-holder {
     min-height: 200px;
     font-size: 14px;
+}
 
-    .text-muted {
-        color: #ccc;
+.text-muted {
+    color: #ccc;
+}
+
+.form-group {
+    p {
+        padding-top: 7px;
     }
 }

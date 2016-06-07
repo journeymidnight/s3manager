@@ -31,6 +31,13 @@ class IaaS {
       networkIds,
     });
   }
+  modifyNetworkAttributes(regionId, networkId, name, description) {
+    return this.call(regionId, 'ModifyNetworkAttributes', {
+      networkId,
+      name,
+      description,
+    });
+  }
   describeImages(regionId) {
     return this.call(regionId, 'describeImages', {});
   }
