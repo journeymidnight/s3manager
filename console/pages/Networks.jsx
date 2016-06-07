@@ -19,7 +19,6 @@ class C extends RegionPage {
       size: 20,
       reverse: true,
       searchWord: null,
-      loading: true,
     };
     this.refresh = this.refresh.bind(this);
     this.onSelect = this.onSelect.bind(this);
@@ -32,10 +31,27 @@ class C extends RegionPage {
     const { t, dispatch, region } = this.props;
     dispatch(Actions.setHeader(t('networkManage'), `/${region.regionId}/networks`));
 
-    this.refresh()();
+    this.onRefresh()();
   }
 
-  refresh(overideFilters = {}, firstPage = true) {
+  refresh() {
+    const { dispatch, region, routerKey } = this.props;
+
+    const filters = {
+      offset: (this.state.currentPage - 1) * this.state.size,
+      limit: this.state.size,
+      status: this.state.status,
+      reverse: this.state.reverse,
+      searchWord: this.state.searchWord,
+    };
+    dispatch(NetworkActions.requestDescribeNetworks(routerKey, region.regionId, filters))
+    .then(() => {
+      dispatch(Actions.extendContext({ loading: false, initialized: true }, routerKey));
+    });
+    dispatch(Actions.extendContext({ loading: true }, routerKey));
+  }
+
+  onRefresh(overideFilters = {}, firstPage = true) {
     return (e) => {
       if (e) {
         e.preventDefault();
@@ -46,7 +62,7 @@ class C extends RegionPage {
       }
       overideFilters.selected = {};
       this.setState(Object.assign(this.state, overideFilters));
-      this.onRefresh();
+      this.refresh();
     };
   }
 
@@ -74,57 +90,61 @@ class C extends RegionPage {
     this.setState(Object.assign(this.state, { selected }));
   }
 
-  onRefresh() {
-    const { dispatch, region, routerKey } = this.props;
-
-    const filters = {
-      offset: (this.state.currentPage - 1) * this.state.size,
-      limit: this.state.size,
-      status: this.state.status,
-      reverse: this.state.reverse,
-      searchWord: this.state.searchWord,
-    };
-    dispatch(NetworkActions.requestDescribeNetworks(routerKey, region.regionId, filters))
-    .then(() => {
-      this.setState({ loading: false });
-    });
-    this.setState({ loading: true });
-  }
-
   onSearchKeyPress(e) {
     if (e.key === 'Enter') {
       let searchWord = this.refs.search.value;
       if (_.isEmpty(searchWord)) {
         searchWord = null;
       }
-      this.refresh({ searchWord })();
+      this.onRefresh({ searchWord })();
     }
   }
 
-  render() {
+  renderTable() {
     const { t } = this.props;
-    const networks = this.props.context.networkSet && this.props.context.networkSet.map((network) => {
-      return (
-        <tr key={network.networkId}>
-          <td>
-            <input type="checkbox" className="selected" onChange={this.onSelect(network)} checked={this.state.selected[network.networkId] === true} />
-          </td>
-          <td>{network.networkId}</td>
-          <td>
-            <Link to={`/${this.props.region.regionId}/networks/${network.networkId}`}>
-              <strong>
-                {network.name}
-              </strong>
-            </Link>
-          </td>
-          <td className={`i-status i-status-${network.status}`}>
-            <i className="icon"></i>
-            {t(`networkStatus.${network.status}`)}
-          </td>
-          <td className="light">{network.created}</td>
-        </tr>
-      );
-    });
+    return this.props.context.total > 0 && this.props.context.networkSet.length > 0 && (
+      <table className="table">
+        <thead>
+          <tr>
+            <th width="40">
+              <input type="checkbox" className="selected" onChange={this.onSelectAll} />
+            </th>
+            <th width="150">{t('id')}</th>
+            <th>{t('name')}</th>
+            <th>{t('status')}</th>
+            <th width="200">{t('created')}</th>
+          </tr>
+        </thead>
+        <tbody>
+        {this.props.context.networkSet.map((network) => {
+          return (
+            <tr key={network.networkId}>
+              <td>
+                <input type="checkbox" className="selected" onChange={this.onSelect(network)} checked={this.state.selected[network.networkId] === true} />
+              </td>
+              <td>{network.networkId}</td>
+              <td>
+                <Link to={`/${this.props.region.regionId}/networks/${network.networkId}`}>
+                  <strong>
+                    {network.name}
+                  </strong>
+                </Link>
+              </td>
+              <td className={`i-status i-status-${network.status}`}>
+                <i className="icon"></i>
+                {t(`networkStatus.${network.status}`)}
+              </td>
+              <td className="light">{network.created}</td>
+            </tr>
+          );
+        })}
+        </tbody>
+      </table>
+    );
+  }
+
+  renderAfterInitialized() {
+    const { t } = this.props;
     return (
       <div className="container-fluid container-limited">
         <div className="content">
@@ -144,8 +164,8 @@ class C extends RegionPage {
             <div className="gray-content-block second-block">
               <div className={Object.keys(this.state.selected).length > 0 ? 'hidden' : ''}>
                 <div className="filter-item inline">
-                  <a className="btn btn-default" onClick={this.refresh({}, false)}>
-                    <i className={`fa fa-refresh ${this.state.loading ? 'fa-spin' : ''}`}></i>
+                  <a className="btn btn-default" onClick={this.onRefresh({}, false)}>
+                    <i className={`fa fa-refresh ${this.props.context.loading ? 'fa-spin' : ''}`}></i>
                   </a>
                 </div>
                 <div className="filter-item inline labels-filter">
@@ -175,7 +195,7 @@ class C extends RegionPage {
                         }].map((filter) => {
                           return (
                             <li key={filter.name}>
-                              <a className={this.state.status.toString() === filter.status.toString() ? 'is-active' : ''} href onClick={this.refresh({ status: filter.status })}>
+                              <a className={this.state.status.toString() === filter.status.toString() ? 'is-active' : ''} href onClick={this.onRefresh({ status: filter.status })}>
                                 {filter.name}
                               </a>
                             </li>
@@ -195,8 +215,8 @@ class C extends RegionPage {
                       <span className="light"></span> {this.state.reverse ? t('lastCreated') : t('firstCreated')}
                       <b className="caret"></b></button>
                     <ul className="dropdown-menu dropdown-menu-align-right dropdown-select dropdown-menu-selectable">
-                      <li><a className={this.state.reverse ? 'is-active' : ''} href onClick={this.refresh({ reverse: true })}>{t('lastCreated')}</a></li>
-                      <li><a className={this.state.reverse ? '' : 'is-active'} href onClick={this.refresh({ reverse: false })}>{t('firstCreated')}</a></li>
+                      <li><a className={this.state.reverse ? 'is-active' : ''} href onClick={this.onRefresh({ reverse: true })}>{t('lastCreated')}</a></li>
+                      <li><a className={this.state.reverse ? '' : 'is-active'} href onClick={this.onRefresh({ reverse: false })}>{t('firstCreated')}</a></li>
                     </ul>
                   </div>
                 </div>
@@ -208,26 +228,11 @@ class C extends RegionPage {
               </div>
             </div>
             <div className="table-holder">
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th width="40">
-                      <input type="checkbox" className="selected" onChange={this.onSelectAll} />
-                    </th>
-                    <th width="150">{t('id')}</th>
-                    <th>{t('name')}</th>
-                    <th>{t('status')}</th>
-                    <th width="200">{t('created')}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                {networks}
-                </tbody>
-              </table>
+              {this.renderTable() || <div className="nothing-here-block">{t('nothingHere')}</div>}
             </div>
-            {this.props.context.currentPage && (
+            {this.props.context.total > 0 && (
               <Pagination
-                onRefresh={this.refresh}
+                onRefresh={this.onRefresh}
                 currentPage={this.props.context.currentPage}
                 totalPage={this.props.context.totalPage}
               />
