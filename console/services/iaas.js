@@ -26,6 +26,11 @@ class IaaS {
   createNetwork(regionId, keyPair) {
     return this.call(regionId, 'CreateNetwork', keyPair);
   }
+  deleteNetworks(regionId, networkIds) {
+    return this.call(regionId, 'DeleteNetworks', {
+      networkIds,
+    });
+  }
   describeImages(regionId) {
     return this.call(regionId, 'describeImages', {});
   }

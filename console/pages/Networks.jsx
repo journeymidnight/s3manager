@@ -1,17 +1,57 @@
 import React from 'react';
 import { Link } from 'react-router';
+import { translate } from 'react-i18next';
+import { reduxForm } from 'redux-form';
 import _ from 'lodash';
 import RegionPage, { attach } from '../../shared/pages/RegionPage';
 import Pagination from '../../shared/components/Pagination';
 import * as Actions from '../redux/actions';
 import * as NetworkActions from '../redux/actions.network';
 
+const F = (props) => {
+  const {
+    handleSubmit,
+    submitting,
+    t,
+  } = props;
+  return (
+    <form onSubmit={handleSubmit}>
+      <button type="submit" className="btn btn-danger" disabled={submitting}>
+        {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('delete')}
+      </button>
+    </form>
+  );
+};
+
+F.propTypes = {
+  handleSubmit: React.PropTypes.func.isRequired,
+  submitting: React.PropTypes.bool.isRequired,
+  t: React.PropTypes.any,
+};
+
+const DeleteNetworksForm = reduxForm({
+  form: 'DeleteNetworksForm',
+  fields: [],
+})(translate()(F));
+
 class C extends RegionPage {
 
   constructor(props) {
     super(props);
 
-    this.state = {
+    this.refresh = this.refresh.bind(this);
+    this.onSelect = this.onSelect.bind(this);
+    this.onSelectAll = this.onSelectAll.bind(this);
+    this.onDelete = this.onDelete.bind(this);
+    this.onRefresh = this.onRefresh.bind(this);
+    this.onSearchKeyPress = this.onSearchKeyPress.bind(this);
+  }
+
+  componentDidMount() {
+    const { t, dispatch, region, routerKey } = this.props;
+    dispatch(Actions.setHeader(t('networkManage'), `/${region.regionId}/networks`));
+
+    dispatch(Actions.extendContext({
       status: ['pending', 'active'],
       selected: {
       },
@@ -19,30 +59,20 @@ class C extends RegionPage {
       size: 20,
       reverse: true,
       searchWord: null,
-    };
-    this.refresh = this.refresh.bind(this);
-    this.onSelect = this.onSelect.bind(this);
-    this.onSelectAll = this.onSelectAll.bind(this);
-    this.onRefresh = this.onRefresh.bind(this);
-    this.onSearchKeyPress = this.onSearchKeyPress.bind(this);
-  }
+    }, routerKey));
 
-  componentDidMount() {
-    const { t, dispatch, region } = this.props;
-    dispatch(Actions.setHeader(t('networkManage'), `/${region.regionId}/networks`));
-
-    this.onRefresh()();
+    setTimeout(this.onRefresh(), 100);
   }
 
   refresh() {
     const { dispatch, region, routerKey } = this.props;
 
     const filters = {
-      offset: (this.state.currentPage - 1) * this.state.size,
-      limit: this.state.size,
-      status: this.state.status,
-      reverse: this.state.reverse,
-      searchWord: this.state.searchWord,
+      offset: (this.props.context.currentPage - 1) * this.props.context.size,
+      limit: this.props.context.size,
+      status: this.props.context.status,
+      reverse: this.props.context.reverse,
+      searchWord: this.props.context.searchWord,
     };
     dispatch(NetworkActions.requestDescribeNetworks(routerKey, region.regionId, filters))
     .then(() => {
@@ -61,25 +91,30 @@ class C extends RegionPage {
         overideFilters.currentPage = 1;
       }
       overideFilters.selected = {};
-      this.setState(Object.assign(this.state, overideFilters));
-      this.refresh();
+
+      const { dispatch, routerKey } = this.props;
+      dispatch(Actions.extendContext(overideFilters, routerKey));
+
+      setTimeout(this.refresh, 100);
     };
   }
 
   onSelect(item) {
     return (e) => {
-      const selected = this.state.selected;
+      const selected = this.props.context.selected;
       if (e.target.checked) {
         selected[item.networkId] = true;
       } else {
         delete selected[item.networkId];
       }
-      this.setState(Object.assign(this.state, { selected }));
+
+      const { dispatch, routerKey } = this.props;
+      dispatch(Actions.extendContext({ selected }, routerKey));
     };
   }
 
   onSelectAll(e) {
-    const selected = this.state.selected;
+    const selected = this.props.context.selected;
     this.props.context.networkSet.forEach((item) => {
       if (e.target.checked) {
         selected[item.networkId] = true;
@@ -87,7 +122,24 @@ class C extends RegionPage {
         delete selected[item.networkId];
       }
     });
-    this.setState(Object.assign(this.state, { selected }));
+
+    const { dispatch, routerKey } = this.props;
+    dispatch(Actions.extendContext({ selected }, routerKey));
+  }
+
+  onDelete() {
+    const { dispatch, region, routerKey } = this.props;
+    const networkIds = _.keys(this.props.context.selected);
+
+    return new Promise((resolve, reject) => {
+      dispatch(NetworkActions.requestDeleteNetworks(routerKey, region.regionId, networkIds))
+      .then(() => {
+        resolve();
+        this.onRefresh({}, false)();
+      }).catch(() => {
+        reject();
+      });
+    });
   }
 
   onSearchKeyPress(e) {
@@ -103,7 +155,7 @@ class C extends RegionPage {
   renderTable() {
     const { t } = this.props;
     return this.props.context.total > 0 && this.props.context.networkSet.length > 0 && (
-      <table className="table table-hover">
+      <table className="table">
         <thead>
           <tr>
             <th width="40">
@@ -120,7 +172,7 @@ class C extends RegionPage {
           return (
             <tr key={network.networkId}>
               <td>
-                <input type="checkbox" className="selected" onChange={this.onSelect(network)} checked={this.state.selected[network.networkId] === true} />
+                <input type="checkbox" className="selected" onChange={this.onSelect(network)} checked={this.props.context.selected[network.networkId] === true} />
               </td>
               <td>
                 <Link to={`/${this.props.region.regionId}/networks/${network.networkId}`}>
@@ -163,7 +215,7 @@ class C extends RegionPage {
               </div>
             </div>
             <div className="gray-content-block second-block">
-              <div className={Object.keys(this.state.selected).length > 0 ? 'hidden' : ''}>
+              <div className={Object.keys(this.props.context.selected).length > 0 ? 'hidden' : ''}>
                 <div className="filter-item inline">
                   <a className="btn btn-default" onClick={this.onRefresh({}, false)}>
                     <i className={`fa fa-refresh ${this.props.context.loading ? 'fa-spin' : ''}`}></i>
@@ -196,7 +248,11 @@ class C extends RegionPage {
                         }].map((filter) => {
                           return (
                             <li key={filter.name}>
-                              <a className={this.state.status.toString() === filter.status.toString() ? 'is-active' : ''} href onClick={this.onRefresh({ status: filter.status })}>
+                              <a
+                                className={this.props.context.status.toString() === filter.status.toString() ? 'is-active' : ''}
+                                href
+                                onClick={this.onRefresh({ status: filter.status })}
+                              >
                                 {filter.name}
                               </a>
                             </li>
@@ -213,18 +269,18 @@ class C extends RegionPage {
                 <div className="pull-right">
                   <div className="dropdown inline prepend-left-10">
                     <button className="dropdown-toggle btn" data-toggle="dropdown" type="button">
-                      <span className="light"></span> {this.state.reverse ? t('lastCreated') : t('firstCreated')}
+                      <span className="light"></span> {this.props.context.reverse ? t('lastCreated') : t('firstCreated')}
                       <b className="caret"></b></button>
                     <ul className="dropdown-menu dropdown-menu-align-right dropdown-select dropdown-menu-selectable">
-                      <li><a className={this.state.reverse ? 'is-active' : ''} href onClick={this.onRefresh({ reverse: true })}>{t('lastCreated')}</a></li>
-                      <li><a className={this.state.reverse ? '' : 'is-active'} href onClick={this.onRefresh({ reverse: false })}>{t('firstCreated')}</a></li>
+                      <li><a className={this.props.context.reverse ? 'is-active' : ''} href onClick={this.onRefresh({ reverse: true })}>{t('lastCreated')}</a></li>
+                      <li><a className={this.props.context.reverse ? '' : 'is-active'} href onClick={this.onRefresh({ reverse: false })}>{t('firstCreated')}</a></li>
                     </ul>
                   </div>
                 </div>
               </div>
-              <div className={Object.keys(this.state.selected).length > 0 ? '' : 'hidden'}>
+              <div className={Object.keys(this.props.context.selected).length > 0 ? '' : 'hidden'}>
                 <div className="filter-item inline">
-                  <a className="btn btn-danger">{t('delete')}</a>
+                  <DeleteNetworksForm onSubmit={this.onDelete} />
                 </div>
               </div>
             </div>

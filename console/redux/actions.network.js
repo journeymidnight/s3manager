@@ -67,3 +67,17 @@ export function requestCreateNetwork(routerKey, regionId, network) {
     });
   };
 }
+
+export function requestDeleteNetworks(routerKey, regionId, networkIds) {
+  return dispatch => {
+    return IaaS
+    .deleteNetworks(regionId, networkIds)
+    .promise
+    .then(() => {
+      dispatch(notify(i18n.t('deleteSuccessed')));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
