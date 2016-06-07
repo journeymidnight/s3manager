@@ -100,6 +100,10 @@
         "error": "状态异常"
     },
 
+    "pageNetworkCreate": {
+        "createNetwork": "添加私有网络"
+    },
+
     "pageInstanceCreate": {
         "createInstance": "添加云主机"
     },

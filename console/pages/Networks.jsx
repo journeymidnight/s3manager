@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import _ from 'lodash';
 import RegionPage, { attach } from '../../shared/pages/RegionPage';
+import Pagination from '../../shared/components/Pagination';
 import * as Actions from '../redux/actions';
 import * as NetworkActions from '../redux/actions.network';
 
@@ -77,8 +78,8 @@ class C extends RegionPage {
     const { dispatch, region, routerKey } = this.props;
 
     const filters = {
-      currentPage: this.state.currentPage,
-      size: this.state.size,
+      offset: (this.state.currentPage - 1) * this.state.size,
+      limit: this.state.size,
       status: this.state.status,
       reverse: this.state.reverse,
       searchWord: this.state.searchWord,
@@ -224,31 +225,13 @@ class C extends RegionPage {
                 </tbody>
               </table>
             </div>
-            {this.props.context.currentPage && <div className="gl-pagination">
-              <ul className="pagination clearfix">
-                {this.props.context.currentPage > 1 && <li>
-                  <a href onClick={this.refresh({ currentPage: 1 })}>
-                    {t('paging.first')}
-                  </a>
-                </li>}
-                {this.props.context.currentPage > 1 && <li>
-                  <a href onClick={this.refresh({ currentPage: this.props.context.currentPage - 1 }, false)}>
-                    {this.props.context.currentPage - 1}
-                  </a>
-                </li>}
-                <li className="active">
-                  <span>{this.props.context.currentPage}</span>
-                </li>
-                {this.props.context.currentPage * this.props.context.size < this.props.context.total && <li>
-                  <a href onClick={this.refresh({ currentPage: this.props.context.currentPage + 1 }, false)}>
-                    {this.props.context.currentPage + 1}
-                  </a>
-                </li>}
-                {this.props.context.currentPage * this.props.context.size < this.props.context.total && <li>
-                  <a href onClick={this.refresh({ currentPage: parseInt(this.props.context.total / this.props.context.size, 10) }, false)}>{t('paging.last')}</a>
-                </li>}
-              </ul>
-            </div>}
+            {this.props.context.currentPage && (
+              <Pagination
+                onRefresh={this.refresh}
+                currentPage={this.props.context.currentPage}
+                totalPage={this.props.context.totalPage}
+              />
+            )}
           </div>
         </div>
       </div>

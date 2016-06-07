@@ -57,7 +57,6 @@ F.propTypes = {
 
 F.validate = values => {
   const errors = {};
-  errors.name = Validations.required(values.name);
   errors.cidr = Validations.required(values.cidr);
   return errors;
 };

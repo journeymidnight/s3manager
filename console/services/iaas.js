@@ -18,13 +18,13 @@ class IaaS {
     return this.call(regionId, 'AllocateEips', eip);
   }
   describeNetworks(regionId, filter = {}) {
-    return this.call(regionId, 'describeNetworks', filter);
+    return this.call(regionId, 'DescribeNetworks', filter);
   }
   describeSubnets(regionId, filter = {}) {
-    return this.call(regionId, 'describeSubnets', filter);
+    return this.call(regionId, 'DescribeSubnets', filter);
   }
   createNetwork(regionId, keyPair) {
-    return this.call(regionId, 'createNetwork', keyPair);
+    return this.call(regionId, 'CreateNetwork', keyPair);
   }
   describeImages(regionId) {
     return this.call(regionId, 'describeImages', {});

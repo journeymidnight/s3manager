@@ -45,7 +45,7 @@ class C extends RegionPage {
         <div className="content">
           <div className="clearfix">
             <h3 className="page-title">
-              {t('create')}
+              {t('pageNetworkCreate.createNetwork')}
             </h3>
             <hr />
             <NetworkForm onSubmit={this.onSubmit} initialValues={initialValues} />
