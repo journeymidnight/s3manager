@@ -21,6 +21,11 @@ class C extends RegionPage {
   refresh() {
   }
 
+  notDeleted() {
+    const { network } = this.props.context;
+    return network.status !== 'deleted' && network.status !== 'ceased';
+  }
+
   changeTab(tab) {
     return (e) => {
       if (e) {
@@ -52,6 +57,22 @@ class C extends RegionPage {
       return <div />;
     }
 
+    const tabs = [{
+      id: 'subnet',
+      title: t('pageNetwork.subnet'),
+    }];
+
+    if (this.notDeleted()) {
+      tabs.push({
+        id: 'router',
+        title: t('pageNetwork.router'),
+      });
+      tabs.push({
+        id: 'basic',
+        title: t('pageNetwork.basic'),
+      });
+    }
+
     return (
       <div className="container-fluid container-limited">
         <div className="content">
@@ -66,16 +87,7 @@ class C extends RegionPage {
                     </span>
                   </h3>
                 </li>
-                {[{
-                  id: 'subnet',
-                  title: t('pageNetwork.subnet'),
-                }, {
-                  id: 'router',
-                  title: t('pageNetwork.router'),
-                }, {
-                  id: 'basic',
-                  title: t('pageNetwork.basic'),
-                }].map((tab) => {
+                {tabs.map((tab) => {
                   return (
                     <li className={`pull-right ${this.state.activeTab === tab.id ? 'active' : ''}`} key={tab.id}>
                       <a data-placement="left" href onClick={this.changeTab(tab.id)}>

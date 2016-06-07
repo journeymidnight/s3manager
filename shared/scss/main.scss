@@ -292,8 +292,11 @@ header.navbar-gitlab .container-fluid {
     color: #ccc;
 }
 
-.form-group {
-    p {
-        padding-top: 7px;
+.dl-horizontal {
+    dd {
+        padding-top: 10px;
+    }
+    dt {
+        padding-top: 10px;
     }
 }

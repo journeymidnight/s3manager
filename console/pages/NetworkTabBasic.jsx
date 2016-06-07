@@ -4,7 +4,33 @@ import { reduxForm } from 'redux-form';
 import RegionPage, { attach } from '../../shared/pages/RegionPage';
 import * as NetworkActions from '../redux/actions.network';
 
-const F = (props) => {
+let NetworkDeleteForm = (props) => {
+  const {
+    handleSubmit,
+    submitting,
+    t,
+  } = props;
+  return (
+    <form onSubmit={handleSubmit}>
+      <button type="submit" className="btn btn-danger" disabled={submitting}>
+        {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('delete')}
+      </button>
+    </form>
+  );
+};
+
+NetworkDeleteForm.propTypes = {
+  handleSubmit: React.PropTypes.func.isRequired,
+  submitting: React.PropTypes.bool.isRequired,
+  t: React.PropTypes.any,
+};
+
+NetworkDeleteForm = reduxForm({
+  form: 'NetworkDeleteForm',
+  fields: [],
+})(translate()(NetworkDeleteForm));
+
+let NetworkUpdateForm = (props) => {
   const { fields:
     { name, description },
     handleSubmit,
@@ -46,7 +72,7 @@ const F = (props) => {
   );
 };
 
-F.propTypes = {
+NetworkUpdateForm.propTypes = {
   fields: React.PropTypes.object.isRequired,
   error: React.PropTypes.string,
   invalid: React.PropTypes.bool,
@@ -57,16 +83,16 @@ F.propTypes = {
   t: React.PropTypes.any,
 };
 
-F.validate = () => {
+NetworkUpdateForm.validate = () => {
   const errors = {};
   return errors;
 };
 
-const NetworkForm = reduxForm({
+NetworkUpdateForm = reduxForm({
   form: 'KeyPairForm',
   fields: ['name', 'description'],
-  validate: F.validate,
-})(translate()(F));
+  validate: NetworkUpdateForm.validate,
+})(translate()(NetworkUpdateForm));
 
 class C extends RegionPage {
 
@@ -74,6 +100,22 @@ class C extends RegionPage {
     super(props);
 
     this.onSave = this.onSave.bind(this);
+    this.onDelete = this.onDelete.bind(this);
+  }
+
+  onDelete() {
+    const { dispatch, region, routerKey } = this.props;
+    const { network } = this.props.context;
+
+    return new Promise((resolve, reject) => {
+      dispatch(NetworkActions.requestDeleteNetworks(routerKey, region.regionId, [network.networkId]))
+      .then(() => {
+        dispatch(NetworkActions.requestDescribeNetwork(routerKey, region.regionId, network.networkId));
+        resolve();
+      }).catch(() => {
+        reject();
+      });
+    });
   }
 
   onSave(values) {
@@ -93,6 +135,11 @@ class C extends RegionPage {
     });
   }
 
+  notDeleted() {
+    const { network } = this.props.context;
+    return network.status !== 'deleted' && network.status !== 'ceased';
+  }
+
   render() {
     const { t } = this.props;
     const { network } = this.props.context;
@@ -100,57 +147,47 @@ class C extends RegionPage {
     return (
       <div>
         <div className="panel panel-default">
-          <div className="panel-heading">{t('pageNetwork.basic')}</div>
+          <div className="panel-heading">{t('pageNetwork.updateNetwork')}</div>
           <div className="panel-body">
-            <form className="form-horizontal">
 
-              <div className="form-group">
-                <label className="control-label" >{t('id')}</label>
-                <div className="col-sm-10">
-                  <p>{network.networkId}</p>
-                </div>
-              </div>
+            <dl className="dl-horizontal">
+              <dt>{t('id')}</dt>
+              <dd>{network.networkId}</dd>
+              <dt>{t('name')}</dt>
+              <dd>
+              {network.name && <strong>{network.name}</strong>}
+              {!network.name && <i className="text-muted">{t('noName')}</i>}
+              </dd>
+              <dt>{t('description')}</dt>
+              <dd>
+              {network.description && <strong>{network.description}</strong>}
+              {!network.description && <i className="text-muted">{t('noName')}</i>}
+              </dd>
+              <dt>{t('status')}</dt>
+              <dd className={`i-status i-status-${network.status}`}>
+                <i className="icon"></i>
+                {t(`networkStatus.${network.status}`)}
+              </dd>
+              <dt>{t('created')}</dt>
+              <dd>{network.created}</dd>
+            </dl>
 
-              <div className="form-group">
-                <label className="control-label" >{t('name')}</label>
-                <div className="col-sm-10">
-                  <p>
-                  {network.name && <strong>{network.name}</strong>}
-                  {!network.name && <i className="text-muted">{t('noName')}</i>}
-                  </p>
-                </div>
-              </div>
-
-              <div className="form-group">
-                <label className="control-label" >{t('description')}</label>
-                <div className="col-sm-10">
-                  <p>
-                  {network.description && <strong>{network.description}</strong>}
-                  {!network.description && <i className="text-muted">{t('noName')}</i>}
-                  </p>
-                </div>
-              </div>
-
-              <div className="form-group">
-                <label className="control-label" >{t('status')}</label>
-                <div className="col-sm-10">
-                  <p className={`i-status i-status-${network.status}`}>
-                    <i className="icon"></i>
-                    {t(`networkStatus.${network.status}`)}
-                  </p>
-                </div>
-              </div>
-
-            </form>
           </div>
         </div>
 
-        <div className="panel panel-primary">
+        {this.notDeleted() && <div className="panel panel-primary">
           <div className="panel-heading">{t('settings')}</div>
           <div className="panel-body">
-            <NetworkForm onSubmit={this.onSave} initialValues={network} />
+            <NetworkUpdateForm onSubmit={this.onSave} initialValues={network} />
           </div>
-        </div>
+        </div>}
+
+        {this.notDeleted() && <div className="panel panel-danger">
+          <div className="panel-heading">{t('pageNetwork.deleteNetwork')}</div>
+          <div className="panel-body">
+            <NetworkDeleteForm onSubmit={this.onDelete} />
+          </div>
+        </div>}
       </div>
     );
   }
