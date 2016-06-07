@@ -11,6 +11,7 @@
 
     "id": "ID",
     "name": "名称",
+    "noName": "无",
     "username": "用户名",
     "email": "邮箱",
     "password": "密码",

@@ -103,7 +103,7 @@ class C extends RegionPage {
   renderTable() {
     const { t } = this.props;
     return this.props.context.total > 0 && this.props.context.networkSet.length > 0 && (
-      <table className="table">
+      <table className="table table-hover">
         <thead>
           <tr>
             <th width="40">
@@ -122,13 +122,14 @@ class C extends RegionPage {
               <td>
                 <input type="checkbox" className="selected" onChange={this.onSelect(network)} checked={this.state.selected[network.networkId] === true} />
               </td>
-              <td>{network.networkId}</td>
               <td>
                 <Link to={`/${this.props.region.regionId}/networks/${network.networkId}`}>
-                  <strong>
-                    {network.name}
-                  </strong>
+                  {network.networkId}
                 </Link>
+              </td>
+              <td>
+                {network.name && <strong>{network.name}</strong>}
+                {!network.name && <i className="text-muted">{t('noName')}</i>}
               </td>
               <td className={`i-status i-status-${network.status}`}>
                 <i className="icon"></i>
