@@ -282,3 +282,21 @@ header.navbar-gitlab .container-fluid {
         margin-left: 5px;
     }
 }
+
+.table-holder {
+    min-height: 200px;
+    font-size: 14px;
+}
+
+.text-muted {
+    color: #ccc;
+}
+
+.dl-horizontal {
+    dd {
+        padding-top: 10px;
+    }
+    dt {
+        padding-top: 10px;
+    }
+}

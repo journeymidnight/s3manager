@@ -5,12 +5,13 @@ import * as Validations from '../../shared/utils/validations';
 
 const F = (props) => {
   const { fields:
-    { name, count },
+    { name, cidr },
     handleSubmit,
     submitting,
     submitFailed,
     resetForm,
     t,
+    invalid,
   } = props;
   return (
     <form className="form-horizontal" onSubmit={handleSubmit}>
@@ -23,16 +24,16 @@ const F = (props) => {
         </div>
       </div>
 
-      <div className={submitFailed && count.error ? 'form-group has-error' : 'form-group'}>
-        <label className="control-label" >{t('count')}</label>
+      <div className={submitFailed && cidr.error ? 'form-group has-error' : 'form-group'}>
+        <label className="control-label" >{t('cidr')}</label>
         <div className="col-sm-10">
-          <input type="text" className="form-control" {...count} />
-          {submitFailed && count.error && <div className="text-danger"><small>{count.error}</small></div>}
+          <input type="text" className="form-control" {...cidr} />
+          {submitFailed && cidr.error && <div className="text-danger"><small>{cidr.error}</small></div>}
         </div>
       </div>
 
       <div className="form-actions">
-        <button type="submit" className="btn btn-save" disabled={submitting}>
+        <button type="submit" className="btn btn-save" disabled={submitting || invalid}>
           {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('update')}
         </button>
         &nbsp;
@@ -47,6 +48,7 @@ const F = (props) => {
 F.propTypes = {
   fields: React.PropTypes.object.isRequired,
   error: React.PropTypes.string,
+  invalid: React.PropTypes.bool,
   handleSubmit: React.PropTypes.func.isRequired,
   submitting: React.PropTypes.bool.isRequired,
   submitFailed: React.PropTypes.bool.isRequired,
@@ -56,13 +58,12 @@ F.propTypes = {
 
 F.validate = values => {
   const errors = {};
-  errors.name = Validations.required(values.name);
-  errors.count = Validations.integer(values.count);
+  errors.cidr = Validations.required(values.cidr);
   return errors;
 };
 
 export default reduxForm({
-  form: 'EipForm',
-  fields: ['name', 'count'],
+  form: 'NetworkCreateForm',
+  fields: ['name', 'cidr'],
   validate: F.validate,
 })(translate()(F));

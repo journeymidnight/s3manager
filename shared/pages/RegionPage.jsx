@@ -28,8 +28,16 @@ class C extends React.Component {
     this.timers.push(timer);
   }
 
-  render() {
+  renderAfterInitialized() {
     return <div />;
+  }
+
+  render() {
+    if (!this.props.context || !this.props.context.initialized) {
+      return <div />;
+    }
+
+    return this.renderAfterInitialized();
   }
 }
 

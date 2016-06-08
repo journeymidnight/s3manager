@@ -1,8 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router';
+import _ from 'lodash';
 import RegionPage, { attach } from '../../shared/pages/RegionPage';
-import NetworkTabBasic from './NetworkTabBasic';
-import NetworkTabRouter from './NetworkTabRouter';
-import NetworkTabSubnets from './NetworkTabSubnets';
 import * as Actions from '../redux/actions';
 import * as NetworkActions from '../redux/actions.network';
 
@@ -11,41 +10,33 @@ class C extends RegionPage {
   constructor(props) {
     super(props);
 
-    this.changeTab = this.changeTab.bind(this);
-    this.state = {
-      activeTab: 'basic',
-    };
     this.refresh = this.refresh.bind(this);
   }
 
   refresh() {
   }
 
-  changeTab(tab) {
-    return (e) => {
-      if (e) {
-        e.preventDefault();
-      }
-
-      this.setState({ activeTab: tab });
-    };
+  notDeleted() {
+    const { network } = this.network;
+    return network.status !== 'deleted' && network.status !== 'ceased';
   }
 
   componentDidMount() {
-    const { t, dispatch, region, routerKey, params } = this.props;
+    const { t, dispatch, region } = this.props;
     dispatch(Actions.setHeader(t('networkManage'), `/${region.regionId}/networks`));
-
-    this.networkId = params.networkId;
-    dispatch(NetworkActions.requestDescribeNetwork(routerKey, region.regionId, this.networkId));
-
-    this.changeTab('basic')();
   }
 
   render() {
-    const { t } = this.props;
-    const network = this.props.context.network;
+    const { t, dispatch, region, routerKey, params } = this.props;
 
-    if (!network) {
+    const network = this.props.context.network || this.network;
+    if (!network || network.networkId !== params.networkId) {
+      const networkId = params.networkId;
+      dispatch(NetworkActions.requestDescribeNetwork(routerKey, region.regionId, networkId))
+      .then(() => {
+        this.network = this.props.context.network;
+      });
+
       return <div />;
     }
 
@@ -57,39 +48,28 @@ class C extends RegionPage {
               <ul className="nav-links clearfix">
                 <li>
                   <h3 className="page-title">
-                    {network.name}
-                    <span className={`i-status i-status-${network.status}`}>
-                      <i className="icon"></i>
-                    </span>
+                    {network.networkId}
                   </h3>
                 </li>
-                {[{
-                  id: 'subnet',
-                  title: t('pageNetwork.subnet'),
-                }, {
-                  id: 'router',
-                  title: t('pageNetwork.router'),
-                }, {
-                  id: 'basic',
-                  title: t('pageNetwork.basic'),
-                }].map((tab) => {
-                  return (
-                    <li className={`pull-right ${this.state.activeTab === tab.id ? 'active' : ''}`} key={tab.id}>
-                      <a data-placement="left" href onClick={this.changeTab(tab.id)}>
-                        {tab.title}
-                      </a>
-                    </li>
-                  );
-                })}
+                <li className={`pull-right ${_.endsWith(this.props.location.pathname, 'subnets') ? 'active' : ''}`}>
+                  <Link data-placement="left" to={`/${region.regionId}/networks/${network.networkId}/subnets`}>
+                    {t('pageNetwork.subnets')}
+                  </Link>
+                </li>
+                <li className={`pull-right ${_.endsWith(this.props.location.pathname, 'router') ? 'active' : ''}`}>
+                  <Link data-placement="left" to={`/${region.regionId}/networks/${network.networkId}/router`}>
+                    {t('pageNetwork.router')}
+                  </Link>
+                </li>
+                <li className={`pull-right ${!(_.endsWith(this.props.location.pathname, 'router') || _.endsWith(this.props.location.pathname, 'subnets')) ? 'active' : ''}`}>
+                  <Link data-placement="left" to={`/${region.regionId}/networks/${network.networkId}/`}>
+                    {t('pageNetwork.basic')}
+                  </Link>
+                </li>
               </ul>
             </div>
             <div className="prepend-top-10">
-              {this.state.activeTab === 'basic' &&
-                <NetworkTabBasic network={network} />}
-              {this.state.activeTab === 'subnet' &&
-                <NetworkTabSubnets network={network} />}
-              {this.state.activeTab === 'router' &&
-                <NetworkTabRouter network={network} />}
+              {React.cloneElement(this.props.children, { network })}
             </div>
           </div>
         </div>

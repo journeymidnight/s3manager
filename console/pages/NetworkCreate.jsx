@@ -1,6 +1,6 @@
 import React from 'react';
 import RegionPage, { attach } from '../../shared/pages/RegionPage';
-import NetworkForm from '../forms/NetworkForm';
+import NetworkCreateForm from '../forms/NetworkCreateForm';
 import * as Actions from '../redux/actions';
 import * as NetworkActions from '../redux/actions.network';
 
@@ -45,10 +45,10 @@ class C extends RegionPage {
         <div className="content">
           <div className="clearfix">
             <h3 className="page-title">
-              {t('create')}
+              {t('pageNetworkCreate.createNetwork')}
             </h3>
             <hr />
-            <NetworkForm onSubmit={this.onSubmit} initialValues={initialValues} />
+            <NetworkCreateForm onSubmit={this.onSubmit} initialValues={initialValues} />
           </div>
         </div>
       </div>

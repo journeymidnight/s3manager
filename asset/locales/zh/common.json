@@ -11,6 +11,7 @@
 
     "id": "ID",
     "name": "名称",
+    "noName": "无",
     "username": "用户名",
     "email": "邮箱",
     "password": "密码",
@@ -62,6 +63,7 @@
 
     "networkManage": "私有网络管理（VPC）",
     "networkManageDescription": "私有网络可以提供100%的安全隔离，而且有丰富的工具帮助您进行自动化管理。 ",
+    "subnetManageDescription": "私有网络可以划分一到多个子网，云主机可以添加或迁移至在任意子网。",
 
     "keyPairManage": "SSH 密钥",
     "keyPairManageDescription": "为 Linux 云主机提供 SSH 公钥/私钥验证身份。",
@@ -84,7 +86,7 @@
         "pending": "准备中",
         "active": "运行中",
         "deleted": "已删除",
-        "ceased": "彻底删除"
+        "ceased": "物理删除"
     },
 
     "instanceStatus": {
@@ -96,8 +98,12 @@
         "restarting": "重启中",
         "scheduling": "调度中",
         "deleted": "已删除",
-        "ceased": "彻底删除",
+        "ceased": "物理删除",
         "error": "状态异常"
+    },
+
+    "pageNetworkCreate": {
+        "createNetwork": "添加私有网络"
     },
 
     "pageInstanceCreate": {
@@ -114,8 +120,12 @@
 
     "pageNetwork": {
         "basic": "基本信息",
-        "subnet": "子网",
-        "router": "路由"
+        "subnets": "子网",
+        "router": "路由",
+        "updateNetwork": "更新基本信息",
+        "deleteNetwork": "删除私有网络",
+        "externalGatewayIp": "出口网关 IP",
+        "createSubnet": "添加子网"
     },
 
     "formInstanceCreateForm": {
