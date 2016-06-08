@@ -5,7 +5,7 @@ import * as Validations from '../../shared/utils/validations';
 
 const F = (props) => {
   const { fields:
-    { name, cidr },
+    { cidr },
     handleSubmit,
     submitting,
     submitFailed,
@@ -15,14 +15,6 @@ const F = (props) => {
   } = props;
   return (
     <form className="form-horizontal" onSubmit={handleSubmit}>
-
-      <div className={submitFailed && name.error ? 'form-group has-error' : 'form-group'}>
-        <label className="control-label" >{t('name')}</label>
-        <div className="col-sm-10">
-          <input type="text" className="form-control" {...name} />
-          {submitFailed && name.error && <div className="text-danger"><small>{name.error}</small></div>}
-        </div>
-      </div>
 
       <div className={submitFailed && cidr.error ? 'form-group has-error' : 'form-group'}>
         <label className="control-label" >{t('cidr')}</label>
@@ -63,7 +55,7 @@ F.validate = values => {
 };
 
 export default reduxForm({
-  form: 'NetworkCreateForm',
-  fields: ['name', 'cidr'],
+  form: 'SubnetCreateForm',
+  fields: ['cidr'],
   validate: F.validate,
 })(translate()(F));

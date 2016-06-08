@@ -39,10 +39,10 @@ export function requestDescribeNetworks(routerKey, regionId, filters) {
   };
 }
 
-export function requestDescribeSubnets(routerKey, regionId) {
+export function requestDescribeSubnets(routerKey, regionId, filters) {
   return dispatch => {
     return IaaS
-    .describeSubnets(regionId)
+    .describeSubnets(regionId, filters)
     .promise
     .then((payload) => {
       dispatch(extendContext(payload, routerKey));
@@ -90,6 +90,34 @@ export function requestModifyNetworkAttributes(routerKey, regionId, networkId, n
     .then(() => {
       dispatch(notify(i18n.t('updateSuccessed')));
       return dispatch(requestDescribeNetwork(routerKey, regionId, networkId));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
+export function requestDeleteSubnets(routerKey, regionId, subnetIds) {
+  return dispatch => {
+    return IaaS
+    .deleteSubnets(regionId, subnetIds)
+    .promise
+    .then(() => {
+      dispatch(notify(i18n.t('deleteSuccessed')));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
+export function requestCreateSubnet(routerKey, regionId, subnet) {
+  return dispatch => {
+    return IaaS
+    .createSubnet(regionId, subnet)
+    .promise
+    .then(() => {
+      dispatch(notify(i18n.t('createSuccessed')));
     })
     .catch((error) => {
       dispatch(notifyAlert(error.message));

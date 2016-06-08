@@ -63,6 +63,7 @@
 
     "networkManage": "私有网络管理（VPC）",
     "networkManageDescription": "私有网络可以提供100%的安全隔离，而且有丰富的工具帮助您进行自动化管理。 ",
+    "subnetManageDescription": "私有网络可以划分一到多个子网，云主机可以添加或迁移至在任意子网。",
 
     "keyPairManage": "SSH 密钥",
     "keyPairManageDescription": "为 Linux 云主机提供 SSH 公钥/私钥验证身份。",
@@ -119,11 +120,12 @@
 
     "pageNetwork": {
         "basic": "基本信息",
-        "subnet": "子网",
+        "subnets": "子网",
         "router": "路由",
         "updateNetwork": "更新基本信息",
         "deleteNetwork": "删除私有网络",
-        "externalGatewayIp": "出口网关 IP"
+        "externalGatewayIp": "出口网关 IP",
+        "createSubnet": "添加子网"
     },
 
     "formInstanceCreateForm": {

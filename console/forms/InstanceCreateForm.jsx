@@ -108,7 +108,7 @@ F.validate = values => {
 };
 
 export default reduxForm({
-  form: 'KeyPairForm',
+  form: 'InstanceCreateForm',
   fields: ['name', 'imageId', 'instanceTypeId', 'subnetId', 'count'],
   validate: F.validate,
 })(translate()(F));

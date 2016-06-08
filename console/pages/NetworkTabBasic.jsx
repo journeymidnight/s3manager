@@ -105,7 +105,7 @@ class C extends RegionPage {
 
   onDelete() {
     const { dispatch, region, routerKey } = this.props;
-    const { network } = this.props.context;
+    const { network } = this.props;
 
     return new Promise((resolve, reject) => {
       dispatch(NetworkActions.requestDeleteNetworks(routerKey, region.regionId, [network.networkId]))
@@ -120,7 +120,7 @@ class C extends RegionPage {
 
   onSave(values) {
     const { dispatch, region, routerKey } = this.props;
-    const { network } = this.props.context;
+    const { network } = this.props;
 
     return new Promise((resolve, reject) => {
       const name = values.name;
@@ -136,13 +136,12 @@ class C extends RegionPage {
   }
 
   notDeleted() {
-    const { network } = this.props.context;
+    const { network } = this.props;
     return network.status !== 'deleted' && network.status !== 'ceased';
   }
 
   render() {
-    const { t } = this.props;
-    const { network } = this.props.context;
+    const { t, network } = this.props;
 
     return (
       <div>
