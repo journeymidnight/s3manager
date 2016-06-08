@@ -12,7 +12,7 @@ export function requestDescribeKeyPairs(routerKey, regionId, filters) {
         dispatch(extendContext(Object.assign(payload, {
           currentPage: payload.offset / payload.limit + 1,
           size: payload.limit,
-          pageCount: payload.total % payload.limit === 0 ? payload.total / payload.limit : payload.total / payload.limit + 1
+          pageCount: payload.total % payload.limit === 0 ? payload.total / payload.limit : payload.total / payload.limit + 1,
         })));
       })
       .catch((error) => {
@@ -26,9 +26,12 @@ export function requestCreateKeyPair(routerKey, regionId, keyPair) {
     return IaaS
       .createKeyPair(regionId, keyPair)
       .promise
-      .then(() => {
-        dispatch(push(`/${regionId}/key_pairs`));
-        dispatch(notify(i18n.t('createSuccessed')));
+      .then((payload) => {
+        dispatch(extendContext({ keyPair: payload }));
+        setTimeout(() => {
+          dispatch(push(`/${regionId}/key_pairs`));
+          dispatch(notify(i18n.t('createSuccessed')));
+        }, 1000);
       })
       .catch((error) => {
         dispatch(notifyAlert(error.message));

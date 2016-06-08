@@ -31,19 +31,18 @@ class C extends RegionPage {
           id: routeParams.keyPairId,
           name,
           publicKey,
-          description
+          description,
         }))
           .then(() => {
             resolve();
           }).catch((error) => {
             reject({ _error: error.message });
           });
-      }
-      else {
+      } else {
         dispatch(KeyPairActions.requestCreateKeyPair(routerKey, region.regionId, {
           name,
           publicKey,
-          description
+          description,
         }))
           .then(() => {
             resolve();
@@ -57,6 +56,7 @@ class C extends RegionPage {
   render() {
     const { t } = this.props;
     const keyPair = (this.props.context.keyPairSet && this.props.context.keyPairSet[0]) || {};
+    const keyPairDownloadUrl = this.props.context.keyPair && this.props.context.keyPair.privateKey;
     return (
       <div className="container-fluid container-limited">
         <div className="content">
@@ -66,6 +66,7 @@ class C extends RegionPage {
               <li className="active">{t('create')}</li>
             </ol>
             <KeyPairForm onSubmit={this.onSubmit} initialValues={keyPair} />
+            <iframe className="hide" src={keyPairDownloadUrl} />
           </div>
         </div>
       </div>

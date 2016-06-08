@@ -12,7 +12,7 @@ export function requestDescribeEips(routerKey, regionId, filters) {
         dispatch(extendContext(Object.assign(payload, {
           currentPage: payload.offset / payload.limit + 1,
           size: payload.limit,
-          pageCount: payload.total % payload.limit === 0 ? payload.total / payload.limit : payload.total / payload.limit + 1
+          pageCount: payload.total % payload.limit === 0 ? payload.total / payload.limit : payload.total / payload.limit + 1,
         })));
       })
       .catch((error) => {
@@ -45,7 +45,7 @@ export function requestDescribeKeyPair(routerKey, regionId, keyPairId) {
         dispatch(extendContext({
           keyPair2: payload.keyPairSet.filter(
             (keyPair) => keyPair.keyPairId === keyPairId
-          )[0]
+          )[0],
         }));
       })
       .catch((error) => {
