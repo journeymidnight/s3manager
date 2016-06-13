@@ -59,24 +59,24 @@ class IaaS {
     });
   }
   describeImages(regionId) {
-    return this.call(regionId, 'describeImages', {});
+    return this.call(regionId, 'DescribeImages', {});
   }
   describeInstanceTypes(regionId) {
-    return this.call(regionId, 'describeInstanceTypes', {});
+    return this.call(regionId, 'DescribeInstanceTypes', {});
   }
   describeInstances(regionId, filter = {}) {
-    return this.call(regionId, 'describeInstances', filter);
+    return this.call(regionId, 'DescribeInstances', filter);
   }
   createInstances(regionId, params) {
-    return this.call(regionId, 'createInstances', params);
+    return this.call(regionId, 'CreateInstances', params);
   }
   startInstances(regionId, instances) {
-    return this.call(regionId, 'startInstances', {
+    return this.call(regionId, 'StartInstances', {
       instances,
     });
   }
   stopInstances(regionId, instances) {
-    return this.call(regionId, 'stopInstances', {
+    return this.call(regionId, 'StopInstances', {
       instances,
     });
   }
