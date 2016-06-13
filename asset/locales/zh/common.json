@@ -97,9 +97,9 @@
         "stopping": "关闭中",
         "restarting": "重启中",
         "scheduling": "调度中",
+        "error": "状态异常",
         "deleted": "已删除",
-        "ceased": "物理删除",
-        "error": "状态异常"
+        "ceased": "物理删除"
     },
 
     "pageNetworkCreate": {

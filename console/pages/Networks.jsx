@@ -127,6 +127,16 @@ class C extends RegionPage {
     dispatch(Actions.extendContext({ selected }, routerKey));
   }
 
+  onSearchKeyPress(e) {
+    if (e.key === 'Enter') {
+      let searchWord = this.refs.search.value;
+      if (_.isEmpty(searchWord)) {
+        searchWord = null;
+      }
+      this.onRefresh({ searchWord })();
+    }
+  }
+
   onDelete() {
     const { dispatch, region, routerKey } = this.props;
     const networkIds = _.keys(this.props.context.selected);
@@ -140,16 +150,6 @@ class C extends RegionPage {
         reject();
       });
     });
-  }
-
-  onSearchKeyPress(e) {
-    if (e.key === 'Enter') {
-      let searchWord = this.refs.search.value;
-      if (_.isEmpty(searchWord)) {
-        searchWord = null;
-      }
-      this.onRefresh({ searchWord })();
-    }
   }
 
   renderTable() {
@@ -214,6 +214,7 @@ class C extends RegionPage {
                 </Link>
               </div>
             </div>
+
             <div className="gray-content-block second-block">
               <div className={Object.keys(this.props.context.selected).length > 0 ? 'hidden' : ''}>
                 <div className="filter-item inline">
@@ -284,9 +285,11 @@ class C extends RegionPage {
                 </div>
               </div>
             </div>
+
             <div className="table-holder">
               {this.renderTable() || <div className="nothing-here-block">{t('nothingHere')}</div>}
             </div>
+
             {this.props.context.total > 0 && (
               <Pagination
                 onRefresh={this.onRefresh}

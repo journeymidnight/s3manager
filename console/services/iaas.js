@@ -70,14 +70,19 @@ class IaaS {
   createInstances(regionId, params) {
     return this.call(regionId, 'CreateInstances', params);
   }
-  startInstances(regionId, instances) {
+  startInstances(regionId, instanceIds) {
     return this.call(regionId, 'StartInstances', {
-      instances,
+      instanceIds,
     });
   }
-  stopInstances(regionId, instances) {
+  stopInstances(regionId, instanceIds) {
     return this.call(regionId, 'StopInstances', {
-      instances,
+      instanceIds,
+    });
+  }
+  deleteInstances(regionId, instanceIds) {
+    return this.call(regionId, 'DeleteInstances', {
+      instanceIds,
     });
   }
 }

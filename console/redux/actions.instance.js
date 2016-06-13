@@ -37,10 +37,10 @@ export function requestDescribePrerequisites(routerKey, regionId) {
   };
 }
 
-export function requestDescribeInstances(routerKey, regionId) {
+export function requestDescribeInstances(routerKey, regionId, filters) {
   return dispatch => {
     return IaaS
-    .describeInstances(regionId)
+    .describeInstances(regionId, filters)
     .promise
     .then((payload) => {
       dispatch(extendContext(payload, routerKey));
@@ -101,6 +101,19 @@ export function requestStopInstance(routerKey, regionId, instanceId) {
   return dispatch => {
     return IaaS
     .stopInstances(regionId, [instanceId])
+    .promise
+    .then(() => {
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
+export function requestDeleteInstances(routerKey, regionId, instanceIds) {
+  return dispatch => {
+    return IaaS
+    .deleteInstances(regionId, instanceIds)
     .promise
     .then(() => {
     })
