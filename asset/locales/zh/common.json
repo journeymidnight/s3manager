@@ -128,6 +128,12 @@
         "createSubnet": "添加子网"
     },
 
+    "pageKeyPair": {
+        "basic": "基本信息",
+        "updateKeyPair": "更新基本信息",
+        "deleteKeyPair": "删除秘钥"
+    },              
+
     "formInstanceCreateForm": {
         "count": "主机数量"
     },

@@ -1,39 +1,86 @@
 import React from 'react';
 import { Link } from 'react-router';
+import { translate } from 'react-i18next';
+import { reduxForm } from 'redux-form';
 import _ from 'lodash';
 import RegionPage, { attach } from '../../shared/pages/RegionPage';
+import Pagination from '../../shared/components/Pagination';
 import * as Actions from '../redux/actions';
 import * as KeyPairActions from '../redux/actions.key_pair';
+
+const F = (props) => {
+  const {
+    handleSubmit,
+    submitting,
+    t,
+  } = props;
+  return (
+    <form onSubmit={handleSubmit}>
+      <button type="submit" className="btn btn-danger" disabled={submitting}>
+        {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('delete')}
+      </button>
+    </form>
+  );
+};
+
+F.propTypes = {
+  handleSubmit: React.PropTypes.func.isRequired,
+  submitting: React.PropTypes.bool.isRequired,
+  t: React.PropTypes.any,
+};
+
+const DeleteKeyPairsForm = reduxForm({
+  form: 'DeleteKeyPairsForm',
+  fields: [],
+})(translate()(F));
 
 class C extends RegionPage {
 
   constructor(props) {
     super(props);
 
-    this.state = {
+    this.refresh = this.refresh.bind(this);
+    this.onSelect = this.onSelect.bind(this);
+    this.onSelectAll = this.onSelectAll.bind(this);
+    this.onRefresh = this.onRefresh.bind(this);
+    this.onSearchKeyPress = this.onSearchKeyPress.bind(this);
+    this.onDelete = this.onDelete.bind(this);
+  }
+
+  componentDidMount() {
+    const { t, dispatch, region, routerKey } = this.props;
+    dispatch(Actions.setHeader(t('keyPairManage'), `/${region.regionId}/key_pairs`));
+    dispatch(Actions.extendContext({
       status: ['pending', 'active'],
       selected: {
       },
       currentPage: 1,
-      size: 2,
+      size: 20,
       reverse: true,
       searchWord: null,
-      loading: true,
+    }, routerKey));
+
+    setTimeout(this.onRefresh(), 100);
+  }
+
+  refresh() {
+    const { dispatch, region, routerKey } = this.props;
+
+    const filters = {
+      offset: (this.props.context.currentPage - 1) * this.props.context.size,
+      limit: this.props.context.size,
+      status: this.props.context.status,
+      reverse: this.props.context.reverse,
+      searchWord: this.props.context.searchWord,
     };
-    this.refresh = this.refresh.bind(this);
-    // this.onSelect = this.onSelect.bind(this);
-    // this.onSelectAll = this.onSelectAll.bind(this);
-    this.onRefresh = this.onRefresh.bind(this);
-    this.onSearchKeyPress = this.onSearchKeyPress.bind(this);
+    dispatch(KeyPairActions.requestDescribeKeyPairs(routerKey, region.regionId, filters))
+      .then(() => {
+        dispatch(Actions.extendContext({ loading: false, initialized: true }, routerKey));
+      });
+    dispatch(Actions.extendContext({ loading: true }, routerKey));
   }
 
-  componentDidMount() {
-    const { t, dispatch, region } = this.props;
-    dispatch(Actions.setHeader(t('keyPairManage'), `/${region.regionId}/key_pairs`));
-    this.refresh()();
-  }
-
-  refresh(overideFilters = {}, firstPage = true) {
+  onRefresh(overideFilters = {}, firstPage = true) {
     return (e) => {
       if (e) {
         e.preventDefault();
@@ -43,26 +90,40 @@ class C extends RegionPage {
         overideFilters.currentPage = 1;
       }
       overideFilters.selected = {};
-      this.setState(Object.assign(this.state, overideFilters));
-      this.onRefresh();
+
+      const { dispatch, routerKey } = this.props;
+      dispatch(Actions.extendContext(overideFilters, routerKey));
+
+      setTimeout(this.refresh, 100);
     };
   }
 
-  onRefresh() {
-    const { dispatch, region, routerKey } = this.props;
+  onSelect(item) {
+    return (e) => {
+      const selected = this.props.context.selected;
+      if (e.target.checked) {
+        selected[item.keyPairId] = true;
+      } else {
+        delete selected[item.keyPairId];
+      }
 
-    const filters = {
-      offset: (this.state.currentPage - 1) * this.state.size,
-      limit: this.state.size,
-      status: this.state.status,
-      reverse: this.state.reverse,
-      searchWord: this.state.searchWord,
+      const { dispatch, routerKey } = this.props;
+      dispatch(Actions.extendContext({ selected }, routerKey));
     };
-    dispatch(KeyPairActions.requestDescribeKeyPairs(routerKey, region.regionId, filters))
-      .then(() => {
-        this.setState({ loading: false });
-      });
-    this.setState({ loading: true });
+  }
+
+  onSelectAll(e) {
+    const selected = this.props.context.selected;
+    this.props.context.keyPairSet.forEach((item) => {
+      if (e.target.checked) {
+        selected[item.keyPairId] = true;
+      } else {
+        delete selected[item.keyPairId];
+      }
+    });
+
+    const { dispatch, routerKey } = this.props;
+    dispatch(Actions.extendContext({ selected }, routerKey));
   }
 
   onSearchKeyPress(e) {
@@ -71,19 +132,32 @@ class C extends RegionPage {
       if (_.isEmpty(searchWord)) {
         searchWord = null;
       }
-      this.refresh({ searchWord })();
+      this.onRefresh({ searchWord })();
     }
   }
 
-  deleteKeyPair() {
+  onDelete() {
     const { dispatch, region, routerKey } = this.props;
-    dispatch(KeyPairActions.requestDeleteKeyPairs(routerKey, region.regionId));
+    const keyPairIds = _.keys(this.props.context.selected);
+
+    return new Promise((resolve, reject) => {
+      dispatch(KeyPairActions.requestDeleteKeyPairs(routerKey, region.regionId, keyPairIds))
+      .then(() => {
+        resolve();
+        this.onRefresh({}, false)();
+      }).catch(() => {
+        reject();
+      });
+    });
   }
 
-  render() {
+  renderAfterInitialized() {
     const keyPairs = this.props.context.keyPairSet && this.props.context.keyPairSet.map((keyPair) => {
       return (
         <tr key={keyPair.keyPairId}>
+          <td>
+            <input type="checkbox" className="selected" onChange={this.onSelect(keyPair)} checked={this.props.context.selected[keyPair.keyPairId] === true} />
+          </td>
           <td>{keyPair.keyPairId}</td>
           <td>
             <Link to={`/${this.props.region.regionId}/key_pairs/${keyPair.keyPairId}`}>
@@ -93,7 +167,6 @@ class C extends RegionPage {
             </Link>
           </td>
           <td className="light">{keyPair.created}</td>
-          <td><button onClick={() => this.deleteKeyPair(keyPair)}>delete </button></td>
         </tr>
       );
     });
@@ -115,31 +188,38 @@ class C extends RegionPage {
               </div>
             </div>
             <div className="gray-content-block second-block">
-              <div className="filter-item inline">
-                <input type="search" ref="search" placeholder={t('filterByIdorName')} className="form-control" onKeyPress={this.onSearchKeyPress} />
+              <div className={Object.keys(this.props.context.selected).length > 0 ? 'hidden' : ''}>
+                <div className="filter-item inline">
+                  <input type="search" ref="search" placeholder={t('filterByIdorName')} className="form-control" onKeyPress={this.onSearchKeyPress} />
+                </div>
+                <div className="pull-right">
+                  <div className="dropdown inline prepend-left-10">
+                    <button className="dropdown-toggle btn" data-toggle="dropdown" type="button">
+                      <span className="light"></span> {this.props.context.reverse ? t('lastCreated') : t('firstCreated')}
+                      <b className="caret"></b></button>
+                    <ul className="dropdown-menu dropdown-menu-align-right dropdown-select dropdown-menu-selectable">
+                      <li><a className={this.props.context.reverse ? 'is-active' : ''} href onClick={this.onRefresh({ reverse: true })}>{t('lastCreated')}</a></li>
+                      <li><a className={this.props.context.reverse ? '' : 'is-active'} href onClick={this.onRefresh({ reverse: false })}>{t('firstCreated')}</a></li>
+                    </ul>
+                  </div>
+                </div>
               </div>
-              <div className="pull-right">
-                <div className="dropdown inline prepend-left-10">
-                  <button className="dropdown-toggle btn" data-toggle="dropdown" type="button">
-                    <span className="light"></span> {this.state.reverse ? t('lastCreated') : t('firstCreated')}
-                    <b className="caret"></b></button>
-                  <ul className="dropdown-menu dropdown-menu-align-right dropdown-select dropdown-menu-selectable">
-                    <li><a className={this.state.reverse ? 'is-active' : ''} href onClick={this.refresh({ reverse: true })}>{t('lastCreated')}</a></li>
-                    <li><a className={this.state.reverse ? '' : 'is-active'} href onClick={this.refresh({ reverse: false })}>{t('firstCreated')}</a></li>
-                  </ul>
+              <div className={Object.keys(this.props.context.selected).length > 0 ? '' : 'hidden'}>
+                <div className="filter-item inline">
+                  <DeleteKeyPairsForm onSubmit={this.onDelete} />
                 </div>
               </div>
             </div>
-          </div>
-          <div>
             <div className="table-holder">
               <table className="table">
                 <thead>
                   <tr>
+                    <th width="40">
+                      <input type="checkbox" className="selected" onChange={this.onSelectAll} />
+                    </th>
                     <th>{t('id')}</th>
                     <th>{t('name')}</th>
                     <th>{t('created')}</th>
-                    <th>operation</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -147,31 +227,9 @@ class C extends RegionPage {
                 </tbody>
               </table>
             </div>
-            {this.props.context.currentPage && <div className="gl-pagination">
-              <ul className="pagination clearfix">
-                {this.props.context.currentPage > 1 && <li>
-                  <a href onClick={this.refresh({ currentPage: 1 })}>
-                    {t('paging.first')}
-                  </a>
-                </li>}
-                {this.props.context.currentPage > 1 && <li>
-                  <a href onClick={this.refresh({ currentPage: this.props.context.currentPage - 1 }, false)}>
-                    {this.props.context.currentPage - 1}
-                  </a>
-                </li>}
-                <li className="active">
-                  <span>{this.props.context.currentPage}</span>
-                </li>
-                {this.props.context.currentPage < this.props.context.pageCount && <li>
-                  <a href onClick={this.refresh({ currentPage: this.props.context.currentPage + 1 }, false)}>
-                    {this.props.context.currentPage + 1}
-                  </a>
-                </li>}
-                {this.props.context.currentPage < this.props.context.pageCount && <li>
-                  <a href onClick={this.refresh({ currentPage: parseInt(this.props.context.total / this.props.context.size, 10) }, false)}>{t('paging.last')}</a>
-                </li>}
-              </ul>
-            </div>}
+            {this.props.context.total > 0 && (
+              <Pagination onRefresh={this.onRefresh} currentPage={this.props.context.currentPage} totalPage={this.props.context.totalPage} />
+            )}
           </div>
         </div>
       </div>
