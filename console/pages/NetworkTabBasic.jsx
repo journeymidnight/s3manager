@@ -144,54 +144,56 @@ class C extends RegionPage {
     const { t, network } = this.props;
 
     return (
-      <div>
-        <div className="panel panel-default">
-          <div className="panel-heading">{t('pageNetwork.basic')}</div>
-          <div className="panel-body">
+      <div className="content">
+        <div className="clearfix">
+          <div className="panel panel-default">
+            <div className="panel-heading">{t('pageNetwork.basic')}</div>
+            <div className="panel-body">
 
-            <dl className="dl-horizontal">
-              <dt>{t('id')}</dt>
-              <dd>{network.networkId}</dd>
-              <dt>{t('name')}</dt>
-              <dd>
-              {network.name && <strong>{network.name}</strong>}
-              {!network.name && <i className="text-muted">{t('noName')}</i>}
-              </dd>
-              <dt>{t('description')}</dt>
-              <dd>
-              {network.description && <strong>{network.description}</strong>}
-              {!network.description && <i className="text-muted">{t('noName')}</i>}
-              </dd>
-              <dt>{t('pageNetwork.externalGatewayIp')}</dt>
-              <dd>
-              {network.externalGatewayIp && <strong>{network.externalGatewayIp}</strong>}
-              {!network.externalGatewayIp && <i className="text-muted">{t('noName')}</i>}
-              </dd>
-              <dt>{t('status')}</dt>
-              <dd className={`i-status i-status-${network.status}`}>
-                <i className="icon"></i>
-                {t(`networkStatus.${network.status}`)}
-              </dd>
-              <dt>{t('created')}</dt>
-              <dd>{network.created}</dd>
-            </dl>
+              <dl className="dl-horizontal">
+                <dt>{t('id')}</dt>
+                <dd>{network.networkId}</dd>
+                <dt>{t('name')}</dt>
+                <dd>
+                {network.name && <strong>{network.name}</strong>}
+                {!network.name && <i className="text-muted">{t('noName')}</i>}
+                </dd>
+                <dt>{t('description')}</dt>
+                <dd>
+                {network.description && <strong>{network.description}</strong>}
+                {!network.description && <i className="text-muted">{t('noName')}</i>}
+                </dd>
+                <dt>{t('pageNetwork.externalGatewayIp')}</dt>
+                <dd>
+                {network.externalGatewayIp && <strong>{network.externalGatewayIp}</strong>}
+                {!network.externalGatewayIp && <i className="text-muted">{t('noName')}</i>}
+                </dd>
+                <dt>{t('status')}</dt>
+                <dd className={`i-status i-status-${network.status}`}>
+                  <i className="icon"></i>
+                  {t(`networkStatus.${network.status}`)}
+                </dd>
+                <dt>{t('created')}</dt>
+                <dd>{network.created}</dd>
+              </dl>
 
+            </div>
           </div>
+
+          {this.notDeleted() && <div className="panel panel-primary">
+            <div className="panel-heading">{t('pageNetwork.updateNetwork')}</div>
+            <div className="panel-body">
+              <NetworkUpdateForm onSubmit={this.onSave} initialValues={network} />
+            </div>
+          </div>}
+
+          {this.notDeleted() && <div className="panel panel-danger">
+            <div className="panel-heading">{t('pageNetwork.deleteNetwork')}</div>
+            <div className="panel-body">
+              <NetworkDeleteForm onSubmit={this.onDelete} />
+            </div>
+          </div>}
         </div>
-
-        {this.notDeleted() && <div className="panel panel-primary">
-          <div className="panel-heading">{t('pageNetwork.updateNetwork')}</div>
-          <div className="panel-body">
-            <NetworkUpdateForm onSubmit={this.onSave} initialValues={network} />
-          </div>
-        </div>}
-
-        {this.notDeleted() && <div className="panel panel-danger">
-          <div className="panel-heading">{t('pageNetwork.deleteNetwork')}</div>
-          <div className="panel-body">
-            <NetworkDeleteForm onSubmit={this.onDelete} />
-          </div>
-        </div>}
       </div>
     );
   }
