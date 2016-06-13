@@ -2,19 +2,19 @@ import { call } from '../../shared/services/api';
 
 class Auth {
   authorize(email, password) {
-    return call('post', '/proxy/iam/authorize', {
+    return call('post', '/api/iam/authorize', {
       email,
       password,
     });
   }
   describeContext(token) {
-    return call('post', '/proxy/iam/describeContext', {}, (options) => {
+    return call('post', '/api/iam/describeContext', {}, (options) => {
       options.headers['X-Le-Token'] = token;
     });
   }
-  describeRegions(regionId) {
-    return call('post', '/proxy/iam/describeRegions', {
-      regions: [regionId],
+  connectRegion(regionId) {
+    return call('post', '/api/iam/connectRegion', {
+      regionId,
     });
   }
 }

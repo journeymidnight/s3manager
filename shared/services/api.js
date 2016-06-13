@@ -3,17 +3,25 @@ import store from 'store';
 import Promise from 'promise';
 
 export const call = (method, url, payload, hook) => {
-  const token = store.get('token');
   const headers = {
     'Content-Type': 'application/json',
     Accept: 'application/json',
   };
+
+  const token = store.get('token');
   if (token) {
     headers['X-Le-Token'] = token.token;
   }
 
+  const region = store.get('region');
+  if (region) {
+    headers['X-Le-Endpoint'] = region.endpoint;
+    headers['X-Le-Key'] = region.accessKey;
+    headers['X-Le-Secret'] = region.accessSecret;
+  }
+
   const options = {
-    url: `/api${url}`,
+    url: `/p${url}`,
     method,
     data: payload,
     headers,

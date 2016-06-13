@@ -30,7 +30,7 @@ describe('RegionActions', () => {
     };
 
     const scope = mockRequest
-    .post('/api/boss/describeRegions', {
+    .post('/p/api/describeRegions', {
     })
     .reply(200, {
       data: rep,
@@ -57,7 +57,7 @@ describe('RegionActions', () => {
 
   it('#requestCreateRegionError', (done) => {
     const scope = mockRequest
-    .post('/api/boss/createRegion', {
+    .post('/p/api/createRegion', {
       name,
       publicEndpoint,
       manageEndpoint,
@@ -100,7 +100,7 @@ describe('RegionActions', () => {
 
   it('#requestCreateRegion', (done) => {
     const scope = mockRequest
-    .post('/api/boss/createRegion', {
+    .post('/p/api/createRegion', {
       name,
       publicEndpoint,
       manageEndpoint,
@@ -154,7 +154,7 @@ describe('RegionActions', () => {
 
   it('#requestModifyRegion', (done) => {
     const scope = mockRequest
-    .post('/api/boss/modifyRegionAttributes', {
+    .post('/p/api/modifyRegionAttributes', {
       regionId,
       name,
     })
@@ -175,7 +175,7 @@ describe('RegionActions', () => {
     };
 
     const scope2 = mockRequest
-    .post('/api/boss/describeRegions', {
+    .post('/p/api/describeRegions', {
       regions: [regionId],
     })
     .reply(200, {

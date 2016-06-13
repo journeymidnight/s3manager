@@ -23,7 +23,7 @@ function createApp(module) {
   const app = new Express();
   app.use(logger('dev'));
   app.use('/asset', Express.static(path.resolve(__dirname, '../asset')));
-  app.use('/api', proxy(endpoint, {
+  app.use('/p', proxy(endpoint, {
     forwardPath: (req) => {
       return url.parse(req.url).path;
     },

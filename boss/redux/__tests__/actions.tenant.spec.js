@@ -24,7 +24,7 @@ describe('TenantActions', () => {
     };
 
     const scope = mockRequest
-    .post('/api/boss/describeTenants', {
+    .post('/p/api/describeTenants', {
     })
     .reply(200, {
       data: rep,
@@ -51,7 +51,7 @@ describe('TenantActions', () => {
 
   it('#requestCreateTenantError', (done) => {
     const scope = mockRequest
-    .post('/api/boss/createTenant', {
+    .post('/p/api/createTenant', {
       name,
     })
     .reply(200, {
@@ -84,7 +84,7 @@ describe('TenantActions', () => {
 
   it('#requestCreateTenant', (done) => {
     const scope = mockRequest
-    .post('/api/boss/createTenant', {
+    .post('/p/api/createTenant', {
       name,
       description,
     })
@@ -137,7 +137,7 @@ describe('TenantActions', () => {
 
   it('#requestModifyTenant', (done) => {
     const scope = mockRequest
-    .post('/api/boss/modifyTenantAttributes', {
+    .post('/p/api/modifyTenantAttributes', {
       name,
       description,
     })
@@ -156,7 +156,7 @@ describe('TenantActions', () => {
     };
 
     const scope2 = mockRequest
-    .post('/api/boss/describeTenants', {
+    .post('/p/api/describeTenants', {
     })
     .reply(200, {
       data: rep,

@@ -26,7 +26,7 @@ describe('AdminActions', () => {
     };
 
     const scope = mockRequest
-    .post('/api/boss/describeAdmins', {
+    .post('/p/api/describeAdmins', {
     })
     .reply(200, {
       data: rep,
@@ -53,7 +53,7 @@ describe('AdminActions', () => {
 
   it('#requestCreateAdminError', (done) => {
     const scope = mockRequest
-    .post('/api/boss/createAdmin', {
+    .post('/p/api/createAdmin', {
       username,
       email,
       password,
@@ -92,7 +92,7 @@ describe('AdminActions', () => {
 
   it('#requestCreateAdmin', (done) => {
     const scope = mockRequest
-    .post('/api/boss/createAdmin', {
+    .post('/p/api/createAdmin', {
       username,
       email,
       password,
@@ -142,7 +142,7 @@ describe('AdminActions', () => {
 
   it('#requestModifyAdmin', (done) => {
     const scope = mockRequest
-    .post('/api/boss/modifyAdminAttributes', {
+    .post('/p/api/modifyAdminAttributes', {
       adminId,
       username,
     })
@@ -162,7 +162,7 @@ describe('AdminActions', () => {
     };
 
     const scope2 = mockRequest
-    .post('/api/boss/describeAdmins', {
+    .post('/p/api/describeAdmins', {
       admins: [adminId],
     })
     .reply(200, {
