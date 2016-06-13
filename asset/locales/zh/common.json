@@ -106,6 +106,13 @@
         "createNetwork": "添加私有网络"
     },
 
+    "pageInstance": {
+        "basic": "基本信息",
+        "monitor": "监控",
+        "output": "启动日志",
+        "console": "VNC"
+    },
+
     "pageInstanceCreate": {
         "createInstance": "添加云主机"
     },
