@@ -29,6 +29,18 @@ class IaaS {
   allocateEips(regionId, eip) {
     return this.call(regionId, 'AllocateEips', eip);
   }
+  releaseEips(regionId, eipIds) {
+    return this.call(regionId, 'ReleaseEips', {
+      eipIds,
+    });
+  }
+  modifyEipAttributes(regionId, eipId, name, description) {
+    return this.call(regionId, 'ModifyEipAttributes', {
+      eipId,
+      name,
+      description,
+    });
+  }
   describeNetworks(regionId, filter = {}) {
     return this.call(regionId, 'DescribeNetworks', filter);
   }
