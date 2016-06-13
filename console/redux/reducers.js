@@ -21,6 +21,7 @@ export const regionsReducer = (state = [], action) => {
 export const regionReducer = (state = null, action) => {
   switch (action.type) {
     case ActionTypes.SELECT_REGION:
+      store.set('region', action.region);
       return action.region;
 
     default:

@@ -3,7 +3,7 @@ import { call as rawCall } from '../../shared/services/api';
 class IaaS {
   call(regionId, action, params) {
     const payload = Object.assign({}, params);
-    return rawCall('post', `/proxy/r/${regionId}/${action}`, payload);
+    return rawCall('post', `/api/r/${regionId}/${action}`, payload);
   }
   describeKeyPairs(regionId, filter = {}) {
     return this.call(regionId, 'DescribeKeyPairs', filter);

@@ -77,14 +77,13 @@ export function selectRegion(region) {
   };
 }
 
-export function requestDescribeRegion(regionId) {
+export function requestConnectRegion(regionId) {
   return dispatch => {
     return Auth
-    .describeRegions(regionId)
+    .connectRegion(regionId)
     .promise
     .then((payload) => {
-      const region = payload.regionSet[0];
-      dispatch(selectRegion(region));
+      dispatch(selectRegion(payload));
     })
     .catch((error) => {
       dispatch(notifyAlert(error.message));

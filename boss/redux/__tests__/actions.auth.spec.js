@@ -37,7 +37,7 @@ describe('AuthActions', () => {
     };
 
     const scope = mockRequest
-    .post('/api/boss/authorize', {
+    .post('/p/api/authorize', {
       email,
       password,
     })
@@ -50,7 +50,7 @@ describe('AuthActions', () => {
     });
 
     const scope2 = mockRequest
-    .post('/api/boss/describeContext', {
+    .post('/p/api/describeContext', {
     })
     .reply(200, {
       data: context,
