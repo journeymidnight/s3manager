@@ -23,7 +23,7 @@ class C extends RegionPage {
 
       dispatch(EipActions.requestCreateEip(routerKey, region.regionId, {
         name,
-        count
+        count,
       }))
       .then(() => {
         resolve();

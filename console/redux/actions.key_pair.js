@@ -3,6 +3,24 @@ import { notify, notifyAlert, extendContext } from './actions';
 import IaaS from '../services/iaas';
 import i18n from '../../shared/i18n';
 
+export function requestDescribeKeyPair(routerKey, regionId, keyPairId) {
+  return dispatch => {
+    return IaaS
+    .describeKeyPairs(regionId, {
+      keyPairIds: [keyPairId],
+    })
+    .promise
+    .then((payload) => {
+      dispatch(extendContext({
+        keyPair: payload.keyPairSet[0],
+      }, routerKey));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
 export function requestDescribeKeyPairs(routerKey, regionId, filters) {
   return dispatch => {
     return IaaS
@@ -10,9 +28,9 @@ export function requestDescribeKeyPairs(routerKey, regionId, filters) {
       .promise
       .then((payload) => {
         dispatch(extendContext(Object.assign(payload, {
-          currentPage: payload.offset / payload.limit + 1,
+          currentPage: parseInt(payload.offset / payload.limit, 10) + 1,
           size: payload.limit,
-          pageCount: payload.total % payload.limit === 0 ? payload.total / payload.limit : payload.total / payload.limit + 1
+          totalPage: parseInt((payload.total - 1) / payload.limit, 10) + 1,
         })));
       })
       .catch((error) => {
@@ -26,9 +44,12 @@ export function requestCreateKeyPair(routerKey, regionId, keyPair) {
     return IaaS
       .createKeyPair(regionId, keyPair)
       .promise
-      .then(() => {
-        dispatch(push(`/${regionId}/key_pairs`));
-        dispatch(notify(i18n.t('createSuccessed')));
+      .then((payload) => {
+        dispatch(extendContext({ keyPair: payload }));
+        setTimeout(() => {
+          dispatch(push(`/${regionId}/key_pairs`));
+          dispatch(notify(i18n.t('createSuccessed')));
+        }, 1000);
       })
       .catch((error) => {
         dispatch(notifyAlert(error.message));
@@ -36,18 +57,32 @@ export function requestCreateKeyPair(routerKey, regionId, keyPair) {
   };
 }
 
-export function requestModifyKeyPair(routerKey, regionId, keyPair) {
+export function requestModifyKeyPairAttributes(routerKey, regionId, keyPairId, name, description) {
   return dispatch => {
     return IaaS
-      .createKeyPair(regionId, keyPair)
-      .promise
-      .then(() => {
-        dispatch(push(`/${regionId}/key_pairs`));
-        dispatch(notify(i18n.t('modifySuccessed')));
-      })
-      .catch((error) => {
-        dispatch(notifyAlert(error.message));
-      });
+    .modifyKeyPairAttributes(regionId, keyPairId, name, description)
+    .promise
+    .then(() => {
+      dispatch(notify(i18n.t('updateSuccessed')));
+      return dispatch(requestDescribeKeyPair(routerKey, regionId, keyPairId));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
+export function requestDeleteKeyPairs(routerKey, regionId, keyPairIds) {
+  return dispatch => {
+    return IaaS
+    .deleteKeyPairs(regionId, keyPairIds)
+    .promise
+    .then(() => {
+      dispatch(notify(i18n.t('deleteSuccessed')));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
   };
 }
 

@@ -11,6 +11,18 @@ class IaaS {
   createKeyPair(regionId, keyPair) {
     return this.call(regionId, 'CreateKeyPair', keyPair);
   }
+  deleteKeyPairs(regionId, keyPairIds) {
+    return this.call(regionId, 'DeleteKeyPairs', {
+      keyPairIds,
+    });
+  }
+  modifyKeyPairAttributes(regionId, keyPairId, name, description) {
+    return this.call(regionId, 'ModifyKeyPairAttributes', {
+      keyPairId,
+      name,
+      description,
+    });
+  }
   describeEips(regionId, filter = {}) {
     return this.call(regionId, 'DescribeEips', filter);
   }
