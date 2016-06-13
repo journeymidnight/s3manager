@@ -122,3 +122,18 @@ export function requestDeleteInstances(routerKey, regionId, instanceIds) {
     });
   };
 }
+
+export function requestModifyInstanceAttributes(routerKey, regionId, instanceId, name, description) {
+  return dispatch => {
+    return IaaS
+    .modifyInstanceAttributes(regionId, instanceId, name, description)
+    .promise
+    .then(() => {
+      dispatch(notify(i18n.t('updateSuccessed')));
+      return dispatch(requestDescribeInstance(routerKey, regionId, instanceId));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}

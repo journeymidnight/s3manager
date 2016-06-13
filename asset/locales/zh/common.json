@@ -110,7 +110,9 @@
         "basic": "基本信息",
         "monitor": "监控",
         "output": "启动日志",
-        "console": "VNC"
+        "console": "VNC",
+        "updateInstance": "更新基本信息",
+        "deleteInstance": "删除云主机"
     },
 
     "pageInstanceCreate": {

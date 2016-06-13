@@ -70,6 +70,13 @@ class IaaS {
   createInstances(regionId, params) {
     return this.call(regionId, 'CreateInstances', params);
   }
+  modifyInstanceAttributes(regionId, instanceId, name, description) {
+    return this.call(regionId, 'ModifyInstanceAttributes', {
+      instanceId,
+      name,
+      description,
+    });
+  }
   startInstances(regionId, instanceIds) {
     return this.call(regionId, 'StartInstances', {
       instanceIds,
