@@ -81,10 +81,13 @@ class C extends RegionPage {
       <div className="container-fluid container-limited">
         <div className="content">
           <div className="clearfix">
-            <h3 className="page-title">
-              {t('pageInstanceCreate.createInstance')}
-            </h3>
-            <hr />
+            <div className="top-area append-bottom-20">
+              <div className="nav-text">
+                <span className="light">
+                  {t('pageInstanceCreate.createInstance')}
+                </span>
+              </div>
+            </div>
             <InstanceCreateForm
               onSubmit={this.onSubmit}
               subnetSet={subnetSet}

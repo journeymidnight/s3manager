@@ -32,7 +32,7 @@
     "subnet": "子网",
     "router": "路由器",
     "count": "数量",
-    "address": "地址",
+    "address": "IP 地址",
 
     "paging": {
         "first": "第一页",
@@ -85,6 +85,10 @@
 
     "allAvaliableStatus": "可用资源",
 
+    "closeModal": "关闭",
+    "confirmModal": "确认",
+    "confirmDelete": "确认删除吗?",
+
     "networkStatus": {
         "pending": "准备中",
         "active": "运行中",
@@ -133,8 +137,11 @@
         "monitor": "监控",
         "output": "启动日志",
         "console": "VNC",
-        "updateInstance": "更新基本信息",
-        "deleteInstance": "删除云主机"
+        "startInstance": "启动",
+        "stopInstance": "关机",
+        "restartInstance": "重启",
+        "deleteInstance": "删除",
+        "updateInstance": "更新"
     },
 
     "pageInstanceCreate": {

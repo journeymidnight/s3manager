@@ -15,7 +15,6 @@ import NetworkTabSubnets from './pages/NetworkTabSubnets.jsx';
 import Networks from './pages/Networks.jsx';
 import NetworkCreate from './pages/NetworkCreate.jsx';
 import Instance from './pages/Instance.jsx';
-import InstanceTabBasic from './pages/InstanceTabBasic.jsx';
 import InstanceTabMonitor from './pages/InstanceTabMonitor.jsx';
 import InstanceTabConsole from './pages/InstanceTabConsole.jsx';
 import InstanceTabOutput from './pages/InstanceTabOutput.jsx';
@@ -66,7 +65,7 @@ export default function configureRoutes(store) {
             <IndexRoute component={Instances} />
             <Route path="create" component={InstanceCreate} />
             <Route path=":instanceId" component={Instance} >
-              <IndexRoute component={InstanceTabBasic} />
+              <IndexRoute component={InstanceTabMonitor} />
               <Route path="monitor" component={InstanceTabMonitor} />
               <Route path="console" component={InstanceTabConsole} />
               <Route path="output" component={InstanceTabOutput} />
