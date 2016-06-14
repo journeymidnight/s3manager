@@ -156,7 +156,7 @@ class C extends RegionPage {
       return (
         <tr key={eip.eipId}>
           <td>
-            <input type="checkbox" className="selected" onChange={this.onSelect(eip)} checked={this.props.context.selected[eip.eip] === true} />
+            <input type="checkbox" className="selected" onChange={this.onSelect(eip)} checked={this.props.context.selected[eip.eipId] === true} />
           </td>
           <td>{eip.eipId}</td>
           <td>
@@ -192,6 +192,50 @@ class C extends RegionPage {
             </div>
             <div className="gray-content-block second-block">
               <div className={Object.keys(this.props.context.selected).length > 0 ? 'hidden' : ''}>
+                <div className="filter-item inline">
+                  <a className="btn btn-default" onClick={this.onRefresh({}, false)}>
+                    <i className={`fa fa-refresh ${this.props.context.loading ? 'fa-spin' : ''}`}></i>
+                  </a>
+                </div>
+                <div className="filter-item inline labels-filter">
+                  <div className="dropdown">
+                    <button className="dropdown-menu-toggle" data-toggle="dropdown" type="button">
+                      <span className="dropdown-toggle-text">{t('status')}</span>
+                      <i className="fa fa-chevron-down"></i>
+                    </button>
+                    <div className="dropdown-menu dropdown-select dropdown-menu-selectable">
+                      <div className="dropdown-content">
+                        <ul>
+                        {[{
+                          status: ['active'],
+                          name: t('eipStatus.active'),
+                        }, {
+                          status: ['associated'],
+                          name: t('eipStatus.associated'),
+                        }, {
+                          status: ['deleted'],
+                          name: t('eipStatus.deleted'),
+                        }, {
+                          status: ['ceased'],
+                          name: t('eipStatus.ceased'),
+                        }].map((filter) => {
+                          return (
+                            <li key={filter.name}>
+                              <a
+                                className={this.props.context.status.toString() === filter.status.toString() ? 'is-active' : ''}
+                                href
+                                onClick={this.onRefresh({ status: filter.status })}
+                              >
+                                {filter.name}
+                              </a>
+                            </li>
+                          );
+                        })}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 <div className="filter-item inline">
                   <input type="search" ref="search" placeholder={t('filterByIdorName')} className="form-control" onKeyPress={this.onSearchKeyPress} />
                 </div>

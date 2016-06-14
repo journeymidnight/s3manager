@@ -105,6 +105,25 @@
         "ceased": "物理删除"
     },
 
+    "keyPairStatus": {
+        "active": "运行中",
+        "deleted": "已删除"
+    },
+
+    "eipStatus": {
+        "active": "运行中",
+        "associated": "已关联",
+        "deleted": "已删除",
+        "ceased": "物理删除"
+    },
+
+    "imageStatus": {
+        "pending": "准备中",
+        "active": "运行中",
+        "deleted": "已删除",
+        "ceased": "物理删除"
+    },
+
     "pageNetworkCreate": {
         "createNetwork": "添加私有网络"
     },
@@ -151,7 +170,7 @@
         "updateEip": "更新基本信息",
         "releaseEip": "删除公网IP"
     },
-    
+
     "formInstanceCreateForm": {
         "count": "主机数量"
     },

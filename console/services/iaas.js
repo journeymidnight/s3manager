@@ -73,9 +73,6 @@ class IaaS {
       description,
     });
   }
-  describeImages(regionId) {
-    return this.call(regionId, 'DescribeImages', {});
-  }
   describeInstanceTypes(regionId) {
     return this.call(regionId, 'DescribeInstanceTypes', {});
   }

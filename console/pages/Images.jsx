@@ -1,7 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { translate } from 'react-i18next';
-import { reduxForm } from 'redux-form';
 import _ from 'lodash';
 import RegionPage, { attach } from '../../shared/pages/RegionPage';
 import Pagination from '../../shared/components/Pagination';
@@ -142,6 +140,50 @@ class C extends RegionPage {
             </div>
             <div className="gray-content-block second-block">
               <div className={Object.keys(this.props.context.selected).length > 0 ? 'hidden' : ''}>
+                <div className="filter-item inline">
+                  <a className="btn btn-default" onClick={this.onRefresh({}, false)}>
+                    <i className={`fa fa-refresh ${this.props.context.loading ? 'fa-spin' : ''}`}></i>
+                  </a>
+                </div>
+                <div className="filter-item inline labels-filter">
+                  <div className="dropdown">
+                    <button className="dropdown-menu-toggle" data-toggle="dropdown" type="button">
+                      <span className="dropdown-toggle-text">{t('status')}</span>
+                      <i className="fa fa-chevron-down"></i>
+                    </button>
+                    <div className="dropdown-menu dropdown-select dropdown-menu-selectable">
+                      <div className="dropdown-content">
+                        <ul>
+                        {[{
+                          status: ['pending'],
+                          name: t('imageStatus.pending'),
+                        }, {
+                          status: ['active'],
+                          name: t('imageStatus.active'),
+                        }, {
+                          status: ['deleted'],
+                          name: t('imageStatus.deleted'),
+                        }, {
+                          status: ['ceased'],
+                          name: t('imageStatus.ceased'),
+                        }].map((filter) => {
+                          return (
+                            <li key={filter.name}>
+                              <a
+                                className={this.props.context.status.toString() === filter.status.toString() ? 'is-active' : ''}
+                                href
+                                onClick={this.onRefresh({ status: filter.status })}
+                              >
+                                {filter.name}
+                              </a>
+                            </li>
+                          );
+                        })}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 <div className="filter-item inline">
                   <input type="search" ref="search" placeholder={t('filterByIdorName')} className="form-control" onKeyPress={this.onSearchKeyPress} />
                 </div>
