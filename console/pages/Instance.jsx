@@ -11,7 +11,7 @@ class C extends RegionPage {
     super(props);
 
     this.refresh = this.refresh.bind(this);
-    this.isEnabled = this.isEnabled.bind(this);
+    this.deleteInstance = this.deleteInstance.bind(this);
     this.startInstance = this.startInstance.bind(this);
     this.stopInstance = this.stopInstance.bind(this);
     this.restartInstance = this.restartInstance.bind(this);
@@ -36,9 +36,12 @@ class C extends RegionPage {
     });
   }
 
-  isEnabled() {
-    const { instance } = this.instance;
+  isEnabled(instance) {
     return instance.status !== 'deleted' && instance.status !== 'ceased' && instance.status !== 'error';
+  }
+
+  isDeletable(instance) {
+    return instance.status !== 'deleted' && instance.status !== 'ceased';
   }
 
   startInstance(e) {
@@ -60,6 +63,13 @@ class C extends RegionPage {
 
     const { dispatch, region, routerKey, params } = this.props;
     dispatch(InstanceActions.requestRestartInstances(routerKey, region.regionId, [params.instanceId]));
+  }
+
+  deleteInstance(e) {
+    e.preventDefault();
+
+    const { dispatch, region, routerKey, params } = this.props;
+    dispatch(InstanceActions.requestDeleteInstances(routerKey, region.regionId, [params.instanceId]));
   }
 
   render() {
@@ -99,7 +109,7 @@ class C extends RegionPage {
                 <div className="panel panel-default">
                   <div className="panel-heading">
                     {t('pageInstance.basic')}
-                    <div className="btn-group pull-right">
+                    {this.isEnabled(instance) && <div className="btn-group pull-right">
                       <button type="button" className="btn dropdown-toggle" data-toggle="dropdown">
                         <i className="fa fa-bars"></i>
                       </button>
@@ -107,8 +117,14 @@ class C extends RegionPage {
                         <li><a href onClick={this.startInstance}>{t('pageInstance.startInstance')}</a></li>
                         <li><a href onClick={this.stopInstance}>{t('pageInstance.stopInstance')}</a></li>
                         <li><a href onClick={this.restartInstance}>{t('pageInstance.restartInstance')}</a></li>
+                        <li><a href onClick={this.deleteInstance}>{t('pageInstance.deleteInstance')}</a></li>
                       </ul>
-                    </div>
+                    </div>}
+                    {!this.isEnabled(instance) && this.isDeletable(instance) && <div className="btn-group pull-right">
+                      <button type="button" className="btn" onClick={this.deleteInstance}>
+                        {t('pageInstance.deleteInstance')}
+                      </button>
+                    </div>}
                   </div>
                   <table className="table">
                     <tbody>
@@ -153,7 +169,7 @@ class C extends RegionPage {
                   </table>
                 </div>
               </div>
-              <div className="col-md-8 tabs">
+              {this.isEnabled(instance) && <div className="col-md-8 tabs">
                 <ul className="nav-links clearfix">
                   <li className={`pull-left ${(active === 'monitor') ? 'active' : ''}`}>
                     <Link data-placement="left" to={`/${region.regionId}/instances/${instance.instanceId}/monitor`}>
@@ -174,7 +190,7 @@ class C extends RegionPage {
                 <div className="prepend-top-20">
                   {React.cloneElement(this.props.children, { instance })}
                 </div>
-              </div>
+              </div>}
             </div>
           </div>
         </div>

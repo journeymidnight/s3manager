@@ -114,8 +114,8 @@
         "startInstance": "启动",
         "stopInstance": "关机",
         "restartInstance": "重启",
-        "updateInstance": "更新基本信息",
-        "deleteInstance": "删除云主机"
+        "deleteInstance": "删除",
+        "updateInstance": "更新基本信息"
     },
 
     "pageInstanceCreate": {
