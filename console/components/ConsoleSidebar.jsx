@@ -56,6 +56,10 @@ class C extends React.Component {
             <i className="fa fa-rocket fa-fw" />
             <span>{t('sidebarEIP')}</span>
           </NavLink>
+          <NavLink to={`/${regionId}/images`}>
+            <i className="fa fa-file-image-o fa-fw" />
+            <span>{t('sidebarIMAGE')}</span>
+          </NavLink>
           <NavLink to={`/${regionId}/key_pairs`}>
             <i className="fa fa-key fa-fw" />
             <span>{t('sidebarKeyPair')}</span>

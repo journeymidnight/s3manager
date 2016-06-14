@@ -41,6 +41,9 @@ class IaaS {
       description,
     });
   }
+  describeImages(regionId, filter = {}) {
+    return this.call(regionId, 'DescribeImages', filter);
+  }
   describeNetworks(regionId, filter = {}) {
     return this.call(regionId, 'DescribeNetworks', filter);
   }
