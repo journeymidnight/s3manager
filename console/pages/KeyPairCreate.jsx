@@ -12,50 +12,31 @@ class C extends RegionPage {
   }
 
   componentDidMount() {
-    const { dispatch, region, routerKey, routeParams } = this.props;
-    if (routeParams.keyPairId) {
-      dispatch(KeyPairActions.requestDescribeKeyPairs(routerKey, region.regionId, { keyPairIds: [routeParams.keyPairId] }));
-    }
   }
 
   onSubmit(values) {
-    const { dispatch, region, routerKey, routeParams } = this.props;
+    const { dispatch, region, routerKey } = this.props;
 
     return new Promise((resolve, reject) => {
       const name = values.name;
       const publicKey = values.publicKey;
       const description = values.description;
 
-      if (routeParams.keyPairId) {
-        dispatch(KeyPairActions.requestModifyKeyPair(routerKey, region.regionId, {
-          id: routeParams.keyPairId,
-          name,
-          publicKey,
-          description,
-        }))
-          .then(() => {
-            resolve();
-          }).catch((error) => {
-            reject({ _error: error.message });
-          });
-      } else {
-        dispatch(KeyPairActions.requestCreateKeyPair(routerKey, region.regionId, {
-          name,
-          publicKey,
-          description,
-        }))
-          .then(() => {
-            resolve();
-          }).catch((error) => {
-            reject({ _error: error.message });
-          });
-      }
+      dispatch(KeyPairActions.requestCreateKeyPair(routerKey, region.regionId, {
+        name,
+        publicKey,
+        description,
+      }))
+        .then(() => {
+          resolve();
+        }).catch((error) => {
+          reject({ _error: error.message });
+        });
     });
   }
 
   render() {
     const { t } = this.props;
-    const keyPair = (this.props.context.keyPairSet && this.props.context.keyPairSet[0]) || {};
     const keyPairDownloadUrl = this.props.context.keyPair && this.props.context.keyPair.privateKey;
     return (
       <div className="container-fluid container-limited">
@@ -65,7 +46,7 @@ class C extends RegionPage {
               <li><Link to={`/${this.props.region.regionId}/key_pairs`}>{t('keyPairManage')}</Link></li>
               <li className="active">{t('create')}</li>
             </ol>
-            <KeyPairForm onSubmit={this.onSubmit} initialValues={keyPair} />
+            <KeyPairForm onSubmit={this.onSubmit} />
             <iframe className="hide" src={keyPairDownloadUrl} />
           </div>
         </div>

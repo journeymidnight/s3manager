@@ -1,38 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router';
 import _ from 'lodash';
-import { translate } from 'react-i18next';
-import { reduxForm } from 'redux-form';
 import RegionPage, { attach } from '../../shared/pages/RegionPage';
 import Pagination from '../../shared/components/Pagination';
 import * as Actions from '../redux/actions';
-import * as EipActions from '../redux/actions.eip';
-
-const F = (props) => {
-  const {
-    handleSubmit,
-    submitting,
-    t,
-  } = props;
-  return (
-    <form onSubmit={handleSubmit}>
-      <button type="submit" className="btn btn-danger" disabled={submitting}>
-        {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('delete')}
-      </button>
-    </form>
-  );
-};
-
-F.propTypes = {
-  handleSubmit: React.PropTypes.func.isRequired,
-  submitting: React.PropTypes.bool.isRequired,
-  t: React.PropTypes.any,
-};
-
-const DeleteEipsForm = reduxForm({
-  form: 'DeleteEipsForm',
-  fields: [],
-})(translate()(F));
+import * as ImageActions from '../redux/actions.image';
 
 class C extends RegionPage {
 
@@ -40,16 +12,15 @@ class C extends RegionPage {
     super(props);
 
     this.refresh = this.refresh.bind(this);
-    this.onRefresh = this.onRefresh.bind(this);
     this.onSelect = this.onSelect.bind(this);
     this.onSelectAll = this.onSelectAll.bind(this);
+    this.onRefresh = this.onRefresh.bind(this);
     this.onSearchKeyPress = this.onSearchKeyPress.bind(this);
-    this.onRelease = this.onRelease.bind(this);
   }
 
   componentDidMount() {
     const { t, dispatch, region, routerKey } = this.props;
-    dispatch(Actions.setHeader(t('eipManage'), `/${region.regionId}/eips`));
+    dispatch(Actions.setHeader(t('imageManage'), `/${region.regionId}/images`));
     dispatch(Actions.extendContext({
       status: ['pending', 'active'],
       selected: {
@@ -73,7 +44,7 @@ class C extends RegionPage {
       reverse: this.props.context.reverse,
       searchWord: this.props.context.searchWord,
     };
-    dispatch(EipActions.requestDescribeEips(routerKey, region.regionId, filters))
+    dispatch(ImageActions.requestDescribeImages(routerKey, region.regionId, filters))
       .then(() => {
         dispatch(Actions.extendContext({ loading: false, initialized: true }, routerKey));
       });
@@ -102,9 +73,9 @@ class C extends RegionPage {
     return (e) => {
       const selected = this.props.context.selected;
       if (e.target.checked) {
-        selected[item.eipId] = true;
+        selected[item.imageId] = true;
       } else {
-        delete selected[item.eipId];
+        delete selected[item.imageId];
       }
 
       const { dispatch, routerKey } = this.props;
@@ -114,11 +85,11 @@ class C extends RegionPage {
 
   onSelectAll(e) {
     const selected = this.props.context.selected;
-    this.props.context.eipSet.forEach((item) => {
+    this.props.context.imageSet.forEach((item) => {
       if (e.target.checked) {
-        selected[item.eipId] = true;
+        selected[item.imageId] = true;
       } else {
-        delete selected[item.eipId];
+        delete selected[item.imageId];
       }
     });
 
@@ -136,40 +107,22 @@ class C extends RegionPage {
     }
   }
 
-  onRelease() {
-    const { dispatch, region, routerKey } = this.props;
-    const eipIdIds = _.keys(this.props.context.selected);
-
-    return new Promise((resolve, reject) => {
-      dispatch(EipActions.requestReleaseEips(routerKey, region.regionId, eipIdIds))
-      .then(() => {
-        resolve();
-        this.onRefresh({}, false)();
-      }).catch(() => {
-        reject();
-      });
-    });
-  }
-
   renderAfterInitialized() {
-    const eips = this.props.context.eipSet && this.props.context.eipSet.map((eip) => {
+    const images = this.props.context.imageSet && this.props.context.imageSet.map((image) => {
       return (
-        <tr key={eip.eipId}>
+        <tr key={image.imageId}>
           <td>
-            <input type="checkbox" className="selected" onChange={this.onSelect(eip)} checked={this.props.context.selected[eip.eipId] === true} />
+            <input type="checkbox" className="selected" onChange={this.onSelect(image)} checked={this.props.context.selected[image.imageId] === true} />
           </td>
-          <td>{eip.eipId}</td>
+          <td>{image.imageId}</td>
           <td>
-            <Link to={`/${this.props.region.regionId}/eips/${eip.eipId}`}>
+            <Link to={`/${this.props.region.regionId}/images/${image.imageId}`}>
               <strong>
-                {eip.name}
+                {image.name}
               </strong>
             </Link>
           </td>
-          <td>{eip.description}</td>
-          <td>{eip.address}</td>
-          <td>{eip.status}</td>
-          <td className="light">{eip.created}</td>
+          <td className="light">{image.created}</td>
         </tr>
       );
     });
@@ -181,13 +134,8 @@ class C extends RegionPage {
             <div className="top-area">
               <div className="nav-text">
                 <p className="light">
-                  {t('eipManageDescription')}
+                  {t('imageManageDescription')}
                 </p>
-              </div>
-              <div className="nav-controls">
-                <Link className="btn btn-new" to={`/${this.props.region.regionId}/eips/create`}>
-                  <i className="fa fa-plus"></i>&nbsp; {t('create')}
-                </Link>
               </div>
             </div>
             <div className="gray-content-block second-block">
@@ -207,17 +155,17 @@ class C extends RegionPage {
                       <div className="dropdown-content">
                         <ul>
                         {[{
-                          status: ['active'],
-                          name: t('eipStatus.active'),
+                          status: ['pending'],
+                          name: t('imageStatus.pending'),
                         }, {
-                          status: ['associated'],
-                          name: t('eipStatus.associated'),
+                          status: ['active'],
+                          name: t('imageStatus.active'),
                         }, {
                           status: ['deleted'],
-                          name: t('eipStatus.deleted'),
+                          name: t('imageStatus.deleted'),
                         }, {
                           status: ['ceased'],
-                          name: t('eipStatus.ceased'),
+                          name: t('imageStatus.ceased'),
                         }].map((filter) => {
                           return (
                             <li key={filter.name}>
@@ -251,11 +199,6 @@ class C extends RegionPage {
                   </div>
                 </div>
               </div>
-              <div className={Object.keys(this.props.context.selected).length > 0 ? '' : 'hidden'}>
-                <div className="filter-item inline">
-                  <DeleteEipsForm onSubmit={this.onRelease} />
-                </div>
-              </div>
             </div>
             <div className="table-holder">
               <table className="table">
@@ -266,14 +209,11 @@ class C extends RegionPage {
                     </th>
                     <th>{t('id')}</th>
                     <th>{t('name')}</th>
-                    <th>{t('description')}</th>
-                    <th>{t('address')}</th>
-                    <th>{t('status')}</th>
                     <th>{t('created')}</th>
                   </tr>
                 </thead>
                 <tbody>
-                {eips}
+                  {images}
                 </tbody>
               </table>
             </div>
@@ -285,7 +225,6 @@ class C extends RegionPage {
       </div>
     );
   }
-
 }
 
 export default attach(C);
