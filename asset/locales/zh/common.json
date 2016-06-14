@@ -71,6 +71,9 @@
     "eipManage": "公网 IP",
     "eipManageDescription": "为 Linux 云主机提供 可以被外网访问的IP地址。",
 
+    "imageManage": "映像",
+    "imageManageDescription": "为 Linux 云主机提供 映像。",
+
     "tenantManage": "租户管理",
     "tenantManageDescription": "可根据不同的企业或团队划分独立的租户, 分配相应的资源配额。",
 
@@ -102,6 +105,25 @@
         "restarting": "重启中",
         "scheduling": "调度中",
         "error": "状态异常",
+        "deleted": "已删除",
+        "ceased": "物理删除"
+    },
+
+    "keyPairStatus": {
+        "active": "运行中",
+        "deleted": "已删除"
+    },
+
+    "eipStatus": {
+        "active": "运行中",
+        "associated": "已关联",
+        "deleted": "已删除",
+        "ceased": "物理删除"
+    },
+
+    "imageStatus": {
+        "pending": "准备中",
+        "active": "运行中",
         "deleted": "已删除",
         "ceased": "物理删除"
     },
@@ -148,7 +170,13 @@
         "basic": "基本信息",
         "updateKeyPair": "更新基本信息",
         "deleteKeyPair": "删除秘钥"
-    },              
+    },
+
+    "pageEip": {
+        "basic": "基本信息",
+        "updateEip": "更新基本信息",
+        "releaseEip": "删除公网IP"
+    },
 
     "formInstanceCreateForm": {
         "count": "主机数量"
@@ -186,6 +214,7 @@
     "sidebarNetwork": "私有网络",
     "sidebarSnapshot": "快照备份",
     "sidebarEIP": "公网 IP",
+    "sidebarIMAGE": "映像",
     "sidebarKeyPair": "SSH 密钥",
     "sidebarFirewall": "防火墙",
     "sidebarAccessKey": "API 密钥",

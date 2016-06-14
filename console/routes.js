@@ -26,6 +26,7 @@ import Settings from './pages/Settings.jsx';
 import Eip from './pages/Eip.jsx';
 import Eips from './pages/Eips.jsx';
 import EipCreate from './pages/EipCreate.jsx';
+import Images from './pages/Images.jsx';
 
 export default function configureRoutes(store) {
   function requireAuth(nextState, replace) {
@@ -59,6 +60,7 @@ export default function configureRoutes(store) {
             <Route path="create" component={EipCreate} />
             <Route path=":eipId" component={Eip} />
           </Route>
+          <Route path="images" component={Images} />
           <Route path="instances" >
             <IndexRoute component={Instances} />
             <Route path="create" component={InstanceCreate} />
