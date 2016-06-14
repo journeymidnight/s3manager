@@ -11,6 +11,19 @@ class C extends RegionPage {
     super(props);
 
     this.refresh = this.refresh.bind(this);
+    this.isEnabled = this.isEnabled.bind(this);
+    this.startInstance = this.startInstance.bind(this);
+    this.stopInstance = this.stopInstance.bind(this);
+    this.restartInstance = this.restartInstance.bind(this);
+  }
+
+  componentDidMount() {
+    const { t, dispatch, region } = this.props;
+    dispatch(Actions.setHeader(t('instanceManage'), `/${region.regionId}/instances`));
+
+    this.setInterval(() => {
+      this.refresh();
+    }, 1000);
   }
 
   refresh() {
@@ -28,13 +41,25 @@ class C extends RegionPage {
     return instance.status !== 'deleted' && instance.status !== 'ceased' && instance.status !== 'error';
   }
 
-  componentDidMount() {
-    const { t, dispatch, region } = this.props;
-    dispatch(Actions.setHeader(t('instanceManage'), `/${region.regionId}/instances`));
+  startInstance(e) {
+    e.preventDefault();
 
-    this.setInterval(() => {
-      this.refresh();
-    }, 1000);
+    const { dispatch, region, routerKey, params } = this.props;
+    dispatch(InstanceActions.requestStartInstances(routerKey, region.regionId, [params.instanceId]));
+  }
+
+  stopInstance(e) {
+    e.preventDefault();
+
+    const { dispatch, region, routerKey, params } = this.props;
+    dispatch(InstanceActions.requestStopInstances(routerKey, region.regionId, [params.instanceId]));
+  }
+
+  restartInstance(e) {
+    e.preventDefault();
+
+    const { dispatch, region, routerKey, params } = this.props;
+    dispatch(InstanceActions.requestRestartInstances(routerKey, region.regionId, [params.instanceId]));
   }
 
   render() {
@@ -47,50 +72,109 @@ class C extends RegionPage {
       return <div />;
     }
 
-    let active = 'basic';
+    let active = 'monitor';
     if (_.endsWith(this.props.location.pathname, 'console')) {
       active = 'console';
-    } else if (_.endsWith(this.props.location.pathname, 'monitor')) {
-      active = 'monitor';
     } else if (_.endsWith(this.props.location.pathname, 'output')) {
       active = 'output';
+    } else if (_.endsWith(this.props.location.pathname, 'monitor')) {
+      active = 'monitor';
     }
 
     return (
-      <div className="container-fluid container-limited">
+      <div className="container-fluid container-limited detail">
         <div className="content">
           <div className="clearfix">
-            <div className="header">
-              <ul className="nav-links clearfix">
-                <li>
-                  <h3 className="page-title">
-                    {instance.instanceId}
-                  </h3>
-                </li>
-                <li className={`pull-right ${(active === 'console') ? 'active' : ''}`}>
-                  <Link data-placement="left" to={`/${region.regionId}/instances/${instance.instanceId}/console`}>
-                    {t('pageInstance.console')}
-                  </Link>
-                </li>
-                <li className={`pull-right ${(active === 'output') ? 'active' : ''}`}>
-                  <Link data-placement="left" to={`/${region.regionId}/instances/${instance.instanceId}/output`}>
-                    {t('pageInstance.output')}
-                  </Link>
-                </li>
-                <li className={`pull-right ${(active === 'monitor') ? 'active' : ''}`}>
-                  <Link data-placement="left" to={`/${region.regionId}/instances/${instance.instanceId}/monitor`}>
-                    {t('pageInstance.monitor')}
-                  </Link>
-                </li>
-                <li className={`pull-right ${(active === 'basic') ? 'active' : ''}`}>
-                  <Link data-placement="left" to={`/${region.regionId}/instances/${instance.instanceId}/`}>
-                    {t('pageInstance.basic')}
-                  </Link>
-                </li>
-              </ul>
+
+            <div className="top-area">
+              <div className="nav-text">
+                <i className="light">
+                  {instance.instanceId}
+                </i>
+              </div>
             </div>
-            <div className="prepend-top-10">
-              {React.cloneElement(this.props.children, { instance })}
+
+            <div className="row">
+              <div className="col-md-4 side">
+                <div className="panel panel-default">
+                  <div className="panel-heading">
+                    {t('pageInstance.basic')}
+                    <div className="btn-group pull-right">
+                      <button type="button" className="btn dropdown-toggle" data-toggle="dropdown">
+                        <i className="fa fa-bars"></i>
+                      </button>
+                      <ul className="dropdown-menu">
+                        <li><a href onClick={this.startInstance}>{t('pageInstance.startInstance')}</a></li>
+                        <li><a href onClick={this.stopInstance}>{t('pageInstance.stopInstance')}</a></li>
+                        <li><a href onClick={this.restartInstance}>{t('pageInstance.restartInstance')}</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                  <table className="table">
+                    <tbody>
+                      <tr>
+                        <td>{t('id')}</td>
+                        <td>{instance.instanceId}</td>
+                      </tr>
+                      <tr>
+                        <td>{t('name')}</td>
+                        <td>
+                        {instance.name && <strong>{instance.name}</strong>}
+                        {!instance.name && <i className="text-muted">{t('noName')}</i>}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>{t('description')}</td>
+                        <td>
+                        {instance.description && <strong>{instance.description}</strong>}
+                        {!instance.description && <i className="text-muted">{t('noName')}</i>}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>{t('address')}</td>
+                        <td>
+                        {instance.address && <strong>{instance.address}</strong>}
+                        {!instance.address && <i className="text-muted">{t('noName')}</i>}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>{t('status')}</td>
+                        <td className={`i-status i-status-${instance.status}`}>
+                          <i className="icon"></i>
+                          {t(`instanceStatus.${instance.status}`)}
+                          <br />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>{t('created')}</td>
+                        <td>{instance.created}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div className="col-md-8 tabs">
+                <ul className="nav-links clearfix">
+                  <li className={`pull-left ${(active === 'monitor') ? 'active' : ''}`}>
+                    <Link data-placement="left" to={`/${region.regionId}/instances/${instance.instanceId}/monitor`}>
+                      {t('pageInstance.monitor')}
+                    </Link>
+                  </li>
+                  <li className={`pull-left ${(active === 'output') ? 'active' : ''}`}>
+                    <Link data-placement="left" to={`/${region.regionId}/instances/${instance.instanceId}/output`}>
+                      {t('pageInstance.output')}
+                    </Link>
+                  </li>
+                  <li className={`pull-left ${(active === 'console') ? 'active' : ''}`}>
+                    <Link data-placement="left" to={`/${region.regionId}/instances/${instance.instanceId}/console`}>
+                      {t('pageInstance.console')}
+                    </Link>
+                  </li>
+                </ul>
+                <div className="prepend-top-20">
+                  {React.cloneElement(this.props.children, { instance })}
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -1,5 +1,28 @@
 body {
   &.ui_charcoal {
+    .content-wrapper {
+        .container-fluid {
+            min-height: 500px;
+
+            &.detail {
+                .top-area {
+                    border-bottom: none;
+                }
+
+                .tabs {
+                    @media (min-width: $screen-md-min) {
+                        padding-left: 0px;
+                    }
+
+                    .nav-links li a {
+                        padding-top: 10px;
+                        padding-bottom: 10px;
+                    }
+                }
+            }
+        }
+    }
+
     .page-with-sidebar {
       .nav-sidebar {
         li.active a {
