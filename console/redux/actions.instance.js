@@ -55,7 +55,7 @@ export function requestDescribeInstance(routerKey, regionId, instanceId) {
   return dispatch => {
     return IaaS
     .describeInstances(regionId, {
-      instances: [instanceId],
+      instanceIds: [instanceId],
     })
     .promise
     .then((payload) => {
@@ -84,10 +84,10 @@ export function requestCreateInstances(routerKey, regionId, params) {
   };
 }
 
-export function requestStartInstance(routerKey, regionId, instanceId) {
+export function requestStartInstances(routerKey, regionId, instanceIds) {
   return dispatch => {
     return IaaS
-    .startInstances(regionId, [instanceId])
+    .startInstances(regionId, instanceIds)
     .promise
     .then(() => {
     })
@@ -97,10 +97,23 @@ export function requestStartInstance(routerKey, regionId, instanceId) {
   };
 }
 
-export function requestStopInstance(routerKey, regionId, instanceId) {
+export function requestStopInstances(routerKey, regionId, instanceIds) {
   return dispatch => {
     return IaaS
-    .stopInstances(regionId, [instanceId])
+    .stopInstances(regionId, instanceIds)
+    .promise
+    .then(() => {
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
+export function requestRestartInstances(routerKey, regionId, instanceIds) {
+  return dispatch => {
+    return IaaS
+    .restartInstances(regionId, instanceIds)
     .promise
     .then(() => {
     })

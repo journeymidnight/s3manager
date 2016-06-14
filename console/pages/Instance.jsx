@@ -11,11 +11,16 @@ class C extends RegionPage {
     super(props);
 
     this.refresh = this.refresh.bind(this);
-    this.startInstance = this.startInstance.bind(this);
-    this.stopInstance = this.stopInstance.bind(this);
   }
 
   refresh() {
+    const { dispatch, region, routerKey, params } = this.props;
+
+    const instanceId = params.instanceId;
+    dispatch(InstanceActions.requestDescribeInstance(routerKey, region.regionId, instanceId))
+    .then(() => {
+      this.instance = this.props.context.instance;
+    });
   }
 
   isEnabled() {
@@ -26,30 +31,18 @@ class C extends RegionPage {
   componentDidMount() {
     const { t, dispatch, region } = this.props;
     dispatch(Actions.setHeader(t('instanceManage'), `/${region.regionId}/instances`));
-  }
 
-  startInstance() {
-    const { dispatch, region, routerKey } = this.props;
-
-    dispatch(InstanceActions.requestStartInstance(routerKey, region.regionId, this.instanceId));
-  }
-
-  stopInstance() {
-    const { dispatch, region, routerKey } = this.props;
-
-    dispatch(InstanceActions.requestStopInstance(routerKey, region.regionId, this.instanceId));
+    this.setInterval(() => {
+      this.refresh();
+    }, 1000);
   }
 
   render() {
-    const { t, dispatch, region, routerKey, params } = this.props;
+    const { t, region, params } = this.props;
 
     const instance = this.props.context.instance || this.instance;
     if (!instance || instance.instanceId !== params.instanceId) {
-      const instanceId = params.instanceId;
-      dispatch(InstanceActions.requestDescribeInstance(routerKey, region.regionId, instanceId))
-      .then(() => {
-        this.instance = this.props.context.instance;
-      });
+      this.refresh();
 
       return <div />;
     }

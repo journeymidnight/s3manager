@@ -102,6 +102,9 @@ class C extends RegionPage {
     this.onSave = this.onSave.bind(this);
     this.onDelete = this.onDelete.bind(this);
     this.isEnabled = this.isEnabled.bind(this);
+    this.startInstance = this.startInstance.bind(this);
+    this.stopInstance = this.stopInstance.bind(this);
+    this.restartInstance = this.restartInstance.bind(this);
   }
 
   onDelete() {
@@ -141,6 +144,24 @@ class C extends RegionPage {
     return instance.status !== 'deleted' && instance.status !== 'ceased' && instance.status !== 'error';
   }
 
+  startInstance() {
+    const { dispatch, region, routerKey, instance } = this.props;
+
+    dispatch(InstanceActions.requestStartInstances(routerKey, region.regionId, [instance.instanceId]));
+  }
+
+  stopInstance() {
+    const { dispatch, region, routerKey, instance } = this.props;
+
+    dispatch(InstanceActions.requestStopInstances(routerKey, region.regionId, [instance.instanceId]));
+  }
+
+  restartInstance() {
+    const { dispatch, region, routerKey, instance } = this.props;
+
+    dispatch(InstanceActions.requestRestartInstances(routerKey, region.regionId, [instance.instanceId]));
+  }
+
   render() {
     const { t, instance } = this.props;
 
@@ -164,10 +185,21 @@ class C extends RegionPage {
                 {instance.description && <strong>{instance.description}</strong>}
                 {!instance.description && <i className="text-muted">{t('noName')}</i>}
                 </dd>
+                <dt>{t('address')}</dt>
+                <dd>
+                {instance.address && <strong>{instance.address}</strong>}
+                {!instance.address && <i className="text-muted">{t('noName')}</i>}
+                </dd>
                 <dt>{t('status')}</dt>
                 <dd className={`i-status i-status-${instance.status}`}>
                   <i className="icon"></i>
                   {t(`instanceStatus.${instance.status}`)}
+                  <br />
+                  <div className="btn-group btn-group-sm" role="group" >
+                    <button type="button" className="btn btn-default" onClick={this.startInstance}>{t('pageInstance.startInstance')}</button>
+                    <button type="button" className="btn btn-default" onClick={this.stopInstance}>{t('pageInstance.stopInstance')}</button>
+                    <button type="button" className="btn btn-default" onClick={this.restartInstance}>{t('pageInstance.restartInstance')}</button>
+                  </div>
                 </dd>
                 <dt>{t('created')}</dt>
                 <dd>{instance.created}</dd>

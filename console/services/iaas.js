@@ -87,6 +87,11 @@ class IaaS {
       instanceIds,
     });
   }
+  restartInstances(regionId, instanceIds) {
+    return this.call(regionId, 'RestartInstances', {
+      instanceIds,
+    });
+  }
   deleteInstances(regionId, instanceIds) {
     return this.call(regionId, 'DeleteInstances', {
       instanceIds,
