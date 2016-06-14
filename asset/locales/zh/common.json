@@ -141,7 +141,7 @@
         "stopInstance": "关机",
         "restartInstance": "重启",
         "deleteInstance": "删除",
-        "updateInstance": "更新基本信息"
+        "updateInstance": "更新"
     },
 
     "pageInstanceCreate": {

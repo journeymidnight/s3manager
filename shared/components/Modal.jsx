@@ -3,27 +3,66 @@ import { render } from 'react-dom';
 import $ from 'jquery';
 import i18n from '../i18n';
 
-const Modal = (props) => {
-  return (
-    <div className="modal fade" tabIndex="-1" role="dialog" id={props.id}>
-      <div className="modal-dialog">
-        <div className="modal-content">
-          {props.title && <div className="modal-header">
-            <button type="button" className="close" data-dismiss="modal"><span>&times;</span></button>
-            <h4 className="modal-title">{props.title}</h4>
-          </div>}
-          {props.children}
+class Modal extends React.Component {
+
+  constructor(props) {
+    super(props);
+
+    this.show = this.show.bind(this);
+    this.hide = this.hide.bind(this);
+  }
+
+  show() {
+    $(this.refs.modal).modal('show');
+  }
+
+  hide() {
+    $(this.refs.modal).modal('hide');
+  }
+
+  render() {
+    const props = this.props;
+
+    return (
+      <div className="modal fade" tabIndex="-1" role="dialog" id={props.id} ref="modal">
+        <div className="modal-dialog">
+          <div className="modal-content">
+            {props.title && <div className="modal-header">
+              <button type="button" className="close" data-dismiss="modal"><span>&times;</span></button>
+              <h4 className="modal-title">{props.title}</h4>
+            </div>}
+            {props.children}
+          </div>
         </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
 Modal.propTypes = {
   id: React.PropTypes.string,
   title: React.PropTypes.string,
   children: React.PropTypes.element.isRequired,
 };
+
+function injectModal(id, modal) {
+  const dest = document.createElement('div');
+  document.body.appendChild(dest);
+  render(modal, dest);
+
+  return $(`#${id}`).modal('show');
+}
+
+export function popModal(title, children) {
+  const id = Math.random().toString(36).slice(2);
+  const modal = (
+    <Modal id={id} title={title}>
+      {children}
+    </Modal>
+  );
+
+  injectModal(id, modal);
+}
 
 export function confirmModal(text, done, cancel) {
   const id = Math.random().toString(36).slice(2);
@@ -41,18 +80,7 @@ export function confirmModal(text, done, cancel) {
     </Modal>
   );
 
-  const dest = document.createElement('div');
-  document.body.appendChild(dest);
-  render(modal, dest);
-
-  $(`#${id}`)
-  .modal('show')
-  .on('hidden.bs.modal', (e) => {
-    e.preventDefault();
-    // if (cancel) {
-    //   cancel();
-    // }
-  });
+  injectModal(id, modal);
 }
 
 export function alertModal(text) {
@@ -70,10 +98,7 @@ export function alertModal(text) {
     </Modal>
   );
 
-  const dest = document.createElement('div');
-  document.body.appendChild(dest);
-  render(modal, dest);
-  $(`#${id}`).modal('show');
+  injectModal(id, modal);
 }
 
 export default Modal;
