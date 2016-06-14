@@ -2,9 +2,9 @@ import React from 'react';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
 import RegionPage, { attach } from '../../shared/pages/RegionPage';
-import * as NetworkActions from '../redux/actions.network';
+import * as InstanceActions from '../redux/actions.instance';
 
-let NetworkDeleteForm = (props) => {
+let InstanceDeleteForm = (props) => {
   const {
     handleSubmit,
     submitting,
@@ -19,18 +19,18 @@ let NetworkDeleteForm = (props) => {
   );
 };
 
-NetworkDeleteForm.propTypes = {
+InstanceDeleteForm.propTypes = {
   handleSubmit: React.PropTypes.func.isRequired,
   submitting: React.PropTypes.bool.isRequired,
   t: React.PropTypes.any,
 };
 
-NetworkDeleteForm = reduxForm({
-  form: 'NetworkDeleteForm',
+InstanceDeleteForm = reduxForm({
+  form: 'InstanceDeleteForm',
   fields: [],
-})(translate()(NetworkDeleteForm));
+})(translate()(InstanceDeleteForm));
 
-let NetworkUpdateForm = (props) => {
+let InstanceUpdateForm = (props) => {
   const { fields:
     { name, description },
     handleSubmit,
@@ -72,7 +72,7 @@ let NetworkUpdateForm = (props) => {
   );
 };
 
-NetworkUpdateForm.propTypes = {
+InstanceUpdateForm.propTypes = {
   fields: React.PropTypes.object.isRequired,
   error: React.PropTypes.string,
   invalid: React.PropTypes.bool,
@@ -83,16 +83,16 @@ NetworkUpdateForm.propTypes = {
   t: React.PropTypes.any,
 };
 
-NetworkUpdateForm.validate = () => {
+InstanceUpdateForm.validate = () => {
   const errors = {};
   return errors;
 };
 
-NetworkUpdateForm = reduxForm({
+InstanceUpdateForm = reduxForm({
   form: 'KeyPairForm',
   fields: ['name', 'description'],
-  validate: NetworkUpdateForm.validate,
-})(translate()(NetworkUpdateForm));
+  validate: InstanceUpdateForm.validate,
+})(translate()(InstanceUpdateForm));
 
 class C extends RegionPage {
 
@@ -101,16 +101,17 @@ class C extends RegionPage {
 
     this.onSave = this.onSave.bind(this);
     this.onDelete = this.onDelete.bind(this);
+    this.isEnabled = this.isEnabled.bind(this);
   }
 
   onDelete() {
     const { dispatch, region, routerKey } = this.props;
-    const { network } = this.props;
+    const { instance } = this.props;
 
     return new Promise((resolve, reject) => {
-      dispatch(NetworkActions.requestDeleteNetworks(routerKey, region.regionId, [network.networkId]))
+      dispatch(InstanceActions.requestDeleteInstances(routerKey, region.regionId, [instance.instanceId]))
       .then(() => {
-        dispatch(NetworkActions.requestDescribeNetwork(routerKey, region.regionId, network.networkId));
+        dispatch(InstanceActions.requestDescribeInstance(routerKey, region.regionId, instance.instanceId));
         resolve();
       }).catch(() => {
         reject();
@@ -120,13 +121,13 @@ class C extends RegionPage {
 
   onSave(values) {
     const { dispatch, region, routerKey } = this.props;
-    const { network } = this.props;
+    const { instance } = this.props;
 
     return new Promise((resolve, reject) => {
       const name = values.name;
       const description = values.description;
 
-      dispatch(NetworkActions.requestModifyNetworkAttributes(routerKey, region.regionId, network.networkId, name, description))
+      dispatch(InstanceActions.requestModifyInstanceAttributes(routerKey, region.regionId, instance.instanceId, name, description))
       .then(() => {
         resolve();
       }).catch(() => {
@@ -135,62 +136,57 @@ class C extends RegionPage {
     });
   }
 
-  notDeleted() {
-    const { network } = this.props;
-    return network.status !== 'deleted' && network.status !== 'ceased';
+  isEnabled() {
+    const { instance } = this.props;
+    return instance.status !== 'deleted' && instance.status !== 'ceased' && instance.status !== 'error';
   }
 
   render() {
-    const { t, network } = this.props;
+    const { t, instance } = this.props;
 
     return (
       <div className="content">
         <div className="clearfix">
           <div className="panel panel-default">
-            <div className="panel-heading">{t('pageNetwork.basic')}</div>
+            <div className="panel-heading">{t('pageInstance.basic')}</div>
             <div className="panel-body">
 
               <dl className="dl-horizontal">
                 <dt>{t('id')}</dt>
-                <dd>{network.networkId}</dd>
+                <dd>{instance.instanceId}</dd>
                 <dt>{t('name')}</dt>
                 <dd>
-                {network.name && <strong>{network.name}</strong>}
-                {!network.name && <i className="text-muted">{t('noName')}</i>}
+                {instance.name && <strong>{instance.name}</strong>}
+                {!instance.name && <i className="text-muted">{t('noName')}</i>}
                 </dd>
                 <dt>{t('description')}</dt>
                 <dd>
-                {network.description && <strong>{network.description}</strong>}
-                {!network.description && <i className="text-muted">{t('noName')}</i>}
-                </dd>
-                <dt>{t('pageNetwork.externalGatewayIp')}</dt>
-                <dd>
-                {network.externalGatewayIp && <strong>{network.externalGatewayIp}</strong>}
-                {!network.externalGatewayIp && <i className="text-muted">{t('noName')}</i>}
+                {instance.description && <strong>{instance.description}</strong>}
+                {!instance.description && <i className="text-muted">{t('noName')}</i>}
                 </dd>
                 <dt>{t('status')}</dt>
-                <dd className={`i-status i-status-${network.status}`}>
+                <dd className={`i-status i-status-${instance.status}`}>
                   <i className="icon"></i>
-                  {t(`networkStatus.${network.status}`)}
+                  {t(`instanceStatus.${instance.status}`)}
                 </dd>
                 <dt>{t('created')}</dt>
-                <dd>{network.created}</dd>
+                <dd>{instance.created}</dd>
               </dl>
 
             </div>
           </div>
 
-          {this.notDeleted() && <div className="panel panel-primary">
-            <div className="panel-heading">{t('pageNetwork.updateNetwork')}</div>
+          {this.isEnabled() && <div className="panel panel-primary">
+            <div className="panel-heading">{t('pageInstance.updateInstance')}</div>
             <div className="panel-body">
-              <NetworkUpdateForm onSubmit={this.onSave} initialValues={network} />
+              <InstanceUpdateForm onSubmit={this.onSave} initialValues={instance} />
             </div>
           </div>}
 
-          {this.notDeleted() && <div className="panel panel-danger">
-            <div className="panel-heading">{t('pageNetwork.deleteNetwork')}</div>
+          {this.isEnabled() && <div className="panel panel-danger">
+            <div className="panel-heading">{t('pageInstance.deleteInstance')}</div>
             <div className="panel-body">
-              <NetworkDeleteForm onSubmit={this.onDelete} />
+              <InstanceDeleteForm onSubmit={this.onDelete} />
             </div>
           </div>}
         </div>

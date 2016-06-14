@@ -1,24 +1,31 @@
 import React from 'react';
+import { Link } from 'react-router';
+import _ from 'lodash';
 import RegionPage, { attach } from '../../shared/pages/RegionPage';
+import * as Actions from '../redux/actions';
 import * as InstanceActions from '../redux/actions.instance';
 
 class C extends RegionPage {
 
   constructor(props) {
     super(props);
+
+    this.refresh = this.refresh.bind(this);
     this.startInstance = this.startInstance.bind(this);
     this.stopInstance = this.stopInstance.bind(this);
   }
 
+  refresh() {
+  }
+
+  isEnabled() {
+    const { instance } = this.instance;
+    return instance.status !== 'deleted' && instance.status !== 'ceased' && instance.status !== 'error';
+  }
+
   componentDidMount() {
-    const { dispatch, region, routerKey, params } = this.props;
-
-    this.instanceId = params.instanceId;
-    dispatch(InstanceActions.requestDescribeInstance(routerKey, region.regionId, this.instanceId));
-
-    this.setInterval(() => {
-      dispatch(InstanceActions.requestDescribeInstance(routerKey, region.regionId, this.instanceId));
-    }, 2000);
+    const { t, dispatch, region } = this.props;
+    dispatch(Actions.setHeader(t('instanceManage'), `/${region.regionId}/instances`));
   }
 
   startInstance() {
@@ -34,101 +41,63 @@ class C extends RegionPage {
   }
 
   render() {
-    const { t } = this.props;
-    const instance = this.props.context.instance;
+    const { t, dispatch, region, routerKey, params } = this.props;
 
-    if (!instance) {
+    const instance = this.props.context.instance || this.instance;
+    if (!instance || instance.instanceId !== params.instanceId) {
+      const instanceId = params.instanceId;
+      dispatch(InstanceActions.requestDescribeInstance(routerKey, region.regionId, instanceId))
+      .then(() => {
+        this.instance = this.props.context.instance;
+      });
+
       return <div />;
+    }
+
+    let active = 'basic';
+    if (_.endsWith(this.props.location.pathname, 'console')) {
+      active = 'console';
+    } else if (_.endsWith(this.props.location.pathname, 'monitor')) {
+      active = 'monitor';
+    } else if (_.endsWith(this.props.location.pathname, 'output')) {
+      active = 'output';
     }
 
     return (
       <div className="container-fluid container-limited">
         <div className="content">
           <div className="clearfix">
-            <h3 className="page-title">
-              {t('networkManage')}
-            </h3>
-            <hr />
-            <div className="row with-info">
-              <div className="col-md-4 info">
-                <div className="panel panel-default">
-                  <div className="panel-heading">基本信息</div>
-                  <div className="panel-body">
-                    <dl className="dl-horizontal">
-                      <dt>ID</dt>
-                      <dd>{instance.instanceId}</dd>
-                      <dt>名称</dt>
-                      <dd>{instance.name}</dd>
-                      <dt>状态</dt>
-                      <dd>
-                        <span className={`i-status i-status-${instance.status}`}>
-                          <i className="icon"></i>
-                          {t(`instanceStatus.${instance.status}`)}
-                        </span>
-                      </dd>
-                      <dt>描述</dt>
-                      <dd></dd>
-                      <dt>状态</dt>
-                      <dd className="running">运行中</dd>
-                      <dt>创建时间</dt>
-                      <dd className="time">2015-12-22 16:59:26</dd>
-                      <dt>创建于</dt>
-                      <dd className="time">5 个月前</dd>
-                    </dl>
-                  </div>
-                </div>
-                <div className="panel panel-default">
-                  <div className="panel-heading">基本信息</div>
-                  <div className="panel-body">
-                    <button type="button" className="btn" disabled={instance.status !== 'stopped'} onClick={this.startInstance}>
-                      开机
-                    </button>
-                    <button type="button" className="btn" disabled={instance.status !== 'active'} onClick={this.stopInstance}>
-                      关机
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <div className="col-md-8">
-                <ul className="nav-links">
-                  <li className="home active">
-                    <a data-placement="right" href="#">{t('pageNetwork.subnet')}</a>
-                  </li>
-                  <li className="">
-                    <a data-placement="right" href="#">{t('pageNetwork.router')}</a>
-                  </li>
-                </ul>
-                <table className="table">
-                  <thead>
-                    <tr>
-                      <th>#</th>
-                      <th>First Name</th>
-                      <th>Last Name</th>
-                      <th>Username</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <th scope="row">1</th>
-                      <td>Mark</td>
-                      <td>Otto</td>
-                      <td>@mdo</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">2</th>
-                      <td>Jacob</td>
-                      <td>Thornton</td>
-                      <td>@fat</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">3</th>
-                      <td>Larry</td>
-                      <td>the Bird</td>
-                      <td>@twitter</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+            <div className="header">
+              <ul className="nav-links clearfix">
+                <li>
+                  <h3 className="page-title">
+                    {instance.instanceId}
+                  </h3>
+                </li>
+                <li className={`pull-right ${(active === 'console') ? 'active' : ''}`}>
+                  <Link data-placement="left" to={`/${region.regionId}/instances/${instance.instanceId}/console`}>
+                    {t('pageInstance.console')}
+                  </Link>
+                </li>
+                <li className={`pull-right ${(active === 'output') ? 'active' : ''}`}>
+                  <Link data-placement="left" to={`/${region.regionId}/instances/${instance.instanceId}/output`}>
+                    {t('pageInstance.output')}
+                  </Link>
+                </li>
+                <li className={`pull-right ${(active === 'monitor') ? 'active' : ''}`}>
+                  <Link data-placement="left" to={`/${region.regionId}/instances/${instance.instanceId}/monitor`}>
+                    {t('pageInstance.monitor')}
+                  </Link>
+                </li>
+                <li className={`pull-right ${(active === 'basic') ? 'active' : ''}`}>
+                  <Link data-placement="left" to={`/${region.regionId}/instances/${instance.instanceId}/`}>
+                    {t('pageInstance.basic')}
+                  </Link>
+                </li>
+              </ul>
+            </div>
+            <div className="prepend-top-10">
+              {React.cloneElement(this.props.children, { instance })}
             </div>
           </div>
         </div>

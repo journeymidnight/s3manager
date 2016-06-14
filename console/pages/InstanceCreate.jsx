@@ -1,6 +1,7 @@
 import React from 'react';
 import RegionPage, { attach } from '../../shared/pages/RegionPage';
 import InstanceCreateForm from '../forms/InstanceCreateForm';
+import * as Actions from '../redux/actions';
 import * as InstanceActions from '../redux/actions.instance';
 
 class C extends RegionPage {
@@ -11,8 +12,13 @@ class C extends RegionPage {
   }
 
   componentDidMount() {
-    const { dispatch, region, routerKey } = this.props;
-    dispatch(InstanceActions.requestDescribePrerequisites(routerKey, region.regionId));
+    const { t, dispatch, region, routerKey } = this.props;
+
+    dispatch(Actions.setHeader(t('instanceManage'), `/${region.regionId}/instances`));
+    dispatch(InstanceActions.requestDescribePrerequisites(routerKey, region.regionId)).
+    then(() => {
+      dispatch(Actions.extendContext({ initialized: true }, routerKey));
+    });
   }
 
   onSubmit(values) {
@@ -31,21 +37,46 @@ class C extends RegionPage {
         instanceTypeId,
         subnetId,
         count,
+        loginMode: 'password',
+        loginPassword: 'P4ssw0rd!@#!#!@#!@#',
       }))
       .then(() => {
         resolve();
-      }).catch((error) => {
-        reject({ _error: error.message });
+      }).catch(() => {
+        reject();
       });
     });
   }
 
-  render() {
-    const { imageSet, instanceTypeSet, subnetSet } = this.props.context;
-    if (!(imageSet && instanceTypeSet && subnetSet)) {
-      return <div />;
-    }
+  renderAfterInitialized() {
     const { t } = this.props;
+    const { subnetSet, instanceTypeSet, imageSet } = this.props.context;
+
+    let hint = undefined;
+    if (imageSet.length === 0) {
+      hint = t('pageInstanceCreate.imageNotFound');
+    }
+    if (instanceTypeSet.length === 0) {
+      hint = t('pageInstanceCreate.instanceNotFound');
+    }
+    if (subnetSet.length === 0) {
+      hint = t('pageInstanceCreate.subnetNotFound');
+    }
+
+    if (hint) {
+      return (
+        <div>
+          {hint}
+        </div>
+      );
+    }
+
+    const initialValues = {
+      imageId: imageSet[0].imageId,
+      subnetId: subnetSet[0].subnetId,
+      instanceTypeId: instanceTypeSet[0].instanceTypeId,
+      count: 1,
+    };
     return (
       <div className="container-fluid container-limited">
         <div className="content">
@@ -53,7 +84,14 @@ class C extends RegionPage {
             <h3 className="page-title">
               {t('pageInstanceCreate.createInstance')}
             </h3>
-            <InstanceCreateForm onSubmit={this.onSubmit} {...this.props.context} />
+            <hr />
+            <InstanceCreateForm
+              onSubmit={this.onSubmit}
+              subnetSet={subnetSet}
+              instanceTypeSet={instanceTypeSet}
+              imageSet={imageSet}
+              initialValues={initialValues}
+            />
           </div>
         </div>
       </div>

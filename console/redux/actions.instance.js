@@ -37,10 +37,10 @@ export function requestDescribePrerequisites(routerKey, regionId) {
   };
 }
 
-export function requestDescribeInstances(routerKey, regionId) {
+export function requestDescribeInstances(routerKey, regionId, filters) {
   return dispatch => {
     return IaaS
-    .describeInstances(regionId)
+    .describeInstances(regionId, filters)
     .promise
     .then((payload) => {
       dispatch(extendContext(payload, routerKey));
@@ -103,6 +103,34 @@ export function requestStopInstance(routerKey, regionId, instanceId) {
     .stopInstances(regionId, [instanceId])
     .promise
     .then(() => {
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
+export function requestDeleteInstances(routerKey, regionId, instanceIds) {
+  return dispatch => {
+    return IaaS
+    .deleteInstances(regionId, instanceIds)
+    .promise
+    .then(() => {
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
+export function requestModifyInstanceAttributes(routerKey, regionId, instanceId, name, description) {
+  return dispatch => {
+    return IaaS
+    .modifyInstanceAttributes(regionId, instanceId, name, description)
+    .promise
+    .then(() => {
+      dispatch(notify(i18n.t('updateSuccessed')));
+      return dispatch(requestDescribeInstance(routerKey, regionId, instanceId));
     })
     .catch((error) => {
       dispatch(notifyAlert(error.message));

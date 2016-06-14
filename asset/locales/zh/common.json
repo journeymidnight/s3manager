@@ -97,13 +97,22 @@
         "stopping": "关闭中",
         "restarting": "重启中",
         "scheduling": "调度中",
+        "error": "状态异常",
         "deleted": "已删除",
-        "ceased": "物理删除",
-        "error": "状态异常"
+        "ceased": "物理删除"
     },
 
     "pageNetworkCreate": {
         "createNetwork": "添加私有网络"
+    },
+
+    "pageInstance": {
+        "basic": "基本信息",
+        "monitor": "监控",
+        "output": "启动日志",
+        "console": "VNC",
+        "updateInstance": "更新基本信息",
+        "deleteInstance": "删除云主机"
     },
 
     "pageInstanceCreate": {
