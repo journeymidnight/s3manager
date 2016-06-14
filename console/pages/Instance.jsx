@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import _ from 'lodash';
 import RegionPage, { attach } from '../../shared/pages/RegionPage';
+import { confirmModal } from '../../shared/components/Modal';
 import * as Actions from '../redux/actions';
 import * as InstanceActions from '../redux/actions.instance';
 
@@ -68,8 +69,11 @@ class C extends RegionPage {
   deleteInstance(e) {
     e.preventDefault();
 
-    const { dispatch, region, routerKey, params } = this.props;
-    dispatch(InstanceActions.requestDeleteInstances(routerKey, region.regionId, [params.instanceId]));
+    const { t, dispatch, region, routerKey, params } = this.props;
+
+    confirmModal(t('confirmDelete'), () => {
+      dispatch(InstanceActions.requestDeleteInstances(routerKey, region.regionId, [params.instanceId]));
+    });
   }
 
   render() {

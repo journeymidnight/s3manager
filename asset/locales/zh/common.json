@@ -82,6 +82,10 @@
 
     "allAvaliableStatus": "可用资源",
 
+    "closeModal": "关闭",
+    "confirmModal": "确认",
+    "confirmDelete": "确认删除吗?",
+
     "networkStatus": {
         "pending": "准备中",
         "active": "运行中",
