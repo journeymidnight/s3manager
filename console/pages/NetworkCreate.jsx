@@ -44,10 +44,13 @@ class C extends RegionPage {
       <div className="container-fluid container-limited">
         <div className="content">
           <div className="clearfix">
-            <h3 className="page-title">
-              {t('pageNetworkCreate.createNetwork')}
-            </h3>
-            <hr />
+            <div className="top-area append-bottom-20">
+              <div className="nav-text">
+                <span className="light">
+                  {t('pageNetworkCreate.createNetwork')}
+                </span>
+              </div>
+            </div>
             <NetworkCreateForm onSubmit={this.onSubmit} initialValues={initialValues} />
           </div>
         </div>

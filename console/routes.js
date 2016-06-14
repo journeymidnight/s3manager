@@ -9,7 +9,6 @@ import KeyPair from './pages/KeyPair.jsx';
 import KeyPairs from './pages/KeyPairs.jsx';
 import KeyPairCreate from './pages/KeyPairCreate.jsx';
 import Network from './pages/Network.jsx';
-import NetworkTabBasic from './pages/NetworkTabBasic.jsx';
 import NetworkTabRouter from './pages/NetworkTabRouter.jsx';
 import NetworkTabSubnets from './pages/NetworkTabSubnets.jsx';
 import Networks from './pages/Networks.jsx';
@@ -81,7 +80,7 @@ export default function configureRoutes(store) {
             <IndexRoute component={Networks} />
             <Route path="create" component={NetworkCreate} />
             <Route path=":networkId" component={Network} >
-              <IndexRoute component={NetworkTabBasic} />
+              <IndexRoute component={NetworkTabRouter} />
               <Route path="router" component={NetworkTabRouter} />
               <Route path="subnets" component={NetworkTabSubnets} />
             </Route>
