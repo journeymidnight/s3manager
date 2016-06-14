@@ -29,8 +29,8 @@ class C extends RegionPage {
       }))
       .then(() => {
         resolve();
-      }).catch((error) => {
-        reject({ _error: error.message });
+      }).catch(() => {
+        reject();
       });
     });
   }

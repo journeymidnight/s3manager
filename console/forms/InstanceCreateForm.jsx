@@ -42,7 +42,7 @@ const F = (props) => {
             {props.instanceTypeSet.map((instanceType) => {
               return (
                 <option key={instanceType.instanceTypeId} value={instanceType.instanceTypeId}>
-                  {instanceType.instanceTypeId} {instanceType.vcpus} CPU {instanceType.memory}MB 内存
+                  {instanceType.vcpus} CPU {instanceType.memory}MB 内存
                 </option>
               );
             })}
@@ -99,7 +99,6 @@ F.propTypes = {
 
 F.validate = values => {
   const errors = {};
-  errors.name = Validations.required(values.name);
   errors.imageId = Validations.required(values.imageId);
   errors.instanceTypeId = Validations.required(values.instanceTypeId);
   errors.subnetId = Validations.required(values.subnetId);

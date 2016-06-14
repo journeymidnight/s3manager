@@ -16,11 +16,6 @@ class C extends RegionPage {
   refresh() {
   }
 
-  notDeleted() {
-    const { network } = this.network;
-    return network.status !== 'deleted' && network.status !== 'ceased';
-  }
-
   componentDidMount() {
     const { t, dispatch, region } = this.props;
     dispatch(Actions.setHeader(t('networkManage'), `/${region.regionId}/networks`));

@@ -211,63 +211,61 @@ class C extends RegionPage {
   renderAfterInitialized() {
     const { t } = this.props;
     return (
-      <div className="container-fluid container-limited">
-        <div className="content">
-          <div className="clearfix">
-            <div className="top-area">
-              <div className="nav-text">
-                <span className="light">
-                  {t('subnetManageDescription')}
-                </span>
-              </div>
-              <div className="nav-controls">
-                <a className="btn btn-new" href onClick={this.onShowCreatePanel}>
-                  <i className="fa fa-plus"></i>&nbsp;{t('create')}
+      <div className="content">
+        <div className="clearfix">
+          <div className="top-area">
+            <div className="nav-text">
+              <span className="light">
+                {t('subnetManageDescription')}
+              </span>
+            </div>
+            <div className="nav-controls">
+              <a className="btn btn-new" href onClick={this.onShowCreatePanel}>
+                <i className="fa fa-plus"></i>&nbsp;{t('create')}
+              </a>
+            </div>
+          </div>
+          {this.state.showCreatePanel && <div className="panel panel-primary">
+            <div className="panel-heading">{t('pageNetwork.createSubnet')}</div>
+            <div className="panel-body">
+              <SubnetCreateForm onSubmit={this.onCreateSubnet} />
+            </div>
+          </div>}
+          <div className="gray-content-block second-block">
+            <div className={Object.keys(this.props.context.selected).length > 0 ? 'hidden' : ''}>
+              <div className="filter-item inline">
+                <a className="btn btn-default" onClick={this.onRefresh({}, false)}>
+                  <i className={`fa fa-refresh ${this.props.context.loading ? 'fa-spin' : ''}`}></i>
                 </a>
               </div>
-            </div>
-            {this.state.showCreatePanel && <div className="panel panel-primary">
-              <div className="panel-heading">{t('pageNetwork.createSubnet')}</div>
-              <div className="panel-body">
-                <SubnetCreateForm onSubmit={this.onCreateSubnet} />
-              </div>
-            </div>}
-            <div className="gray-content-block second-block">
-              <div className={Object.keys(this.props.context.selected).length > 0 ? 'hidden' : ''}>
-                <div className="filter-item inline">
-                  <a className="btn btn-default" onClick={this.onRefresh({}, false)}>
-                    <i className={`fa fa-refresh ${this.props.context.loading ? 'fa-spin' : ''}`}></i>
-                  </a>
-                </div>
-                <div className="pull-right">
-                  <div className="dropdown inline prepend-left-10">
-                    <button className="dropdown-toggle btn" data-toggle="dropdown" type="button">
-                      <span className="light"></span> {this.props.context.reverse ? t('lastCreated') : t('firstCreated')}
-                      <b className="caret"></b></button>
-                    <ul className="dropdown-menu dropdown-menu-align-right dropdown-select dropdown-menu-selectable">
-                      <li><a className={this.props.context.reverse ? 'is-active' : ''} href onClick={this.onRefresh({ reverse: true })}>{t('lastCreated')}</a></li>
-                      <li><a className={this.props.context.reverse ? '' : 'is-active'} href onClick={this.onRefresh({ reverse: false })}>{t('firstCreated')}</a></li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              <div className={Object.keys(this.props.context.selected).length > 0 ? '' : 'hidden'}>
-                <div className="filter-item inline">
-                  <SubnetsDeleteForm onSubmit={this.onDelete} />
+              <div className="pull-right">
+                <div className="dropdown inline prepend-left-10">
+                  <button className="dropdown-toggle btn" data-toggle="dropdown" type="button">
+                    <span className="light"></span> {this.props.context.reverse ? t('lastCreated') : t('firstCreated')}
+                    <b className="caret"></b></button>
+                  <ul className="dropdown-menu dropdown-menu-align-right dropdown-select dropdown-menu-selectable">
+                    <li><a className={this.props.context.reverse ? 'is-active' : ''} href onClick={this.onRefresh({ reverse: true })}>{t('lastCreated')}</a></li>
+                    <li><a className={this.props.context.reverse ? '' : 'is-active'} href onClick={this.onRefresh({ reverse: false })}>{t('firstCreated')}</a></li>
+                  </ul>
                 </div>
               </div>
             </div>
-            <div className="table-holder">
-              {this.renderTable() || <div className="nothing-here-block">{t('nothingHere')}</div>}
+            <div className={Object.keys(this.props.context.selected).length > 0 ? '' : 'hidden'}>
+              <div className="filter-item inline">
+                <SubnetsDeleteForm onSubmit={this.onDelete} />
+              </div>
             </div>
-            {this.props.context.total > 0 && (
-              <Pagination
-                onRefresh={this.onRefresh}
-                currentPage={this.props.context.currentPage}
-                totalPage={this.props.context.totalPage}
-              />
-            )}
           </div>
+          <div className="table-holder">
+            {this.renderTable() || <div className="nothing-here-block">{t('nothingHere')}</div>}
+          </div>
+          {this.props.context.total > 0 && (
+            <Pagination
+              onRefresh={this.onRefresh}
+              currentPage={this.props.context.currentPage}
+              totalPage={this.props.context.totalPage}
+            />
+          )}
         </div>
       </div>
     );
