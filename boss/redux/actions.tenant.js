@@ -3,10 +3,10 @@ import { notifyAlert, notify, extendContext } from './actions';
 import BOSS from '../services/boss';
 import i18n from '../../shared/i18n';
 
-export function requestDescribeTenants(routerKey) {
+export function requestDescribeTenants(routerKey, filters) {
   return dispatch => {
     return BOSS
-    .describeTenants()
+    .describeTenants(filters)
     .promise
     .then((payload) => {
       dispatch(extendContext(payload, routerKey));
@@ -107,6 +107,21 @@ export function requestDescribeTenantRoles(tenantId) {
       dispatch(extendContext({
         roles: payload,
       }));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
+export function requestDeleteTenants(routerKey, tenantIds) {
+  return dispatch => {
+    return BOSS
+    .deleteTenants(tenantIds)
+    .promise
+    .then((payload) => {
+      dispatch(notify(i18n.t('deleteSuccess')));
+      dispatch(extendContext(payload, routerKey));
     })
     .catch((error) => {
       dispatch(notifyAlert(error.message));

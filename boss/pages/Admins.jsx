@@ -6,7 +6,7 @@ class C extends Page {
 
   componentDidMount() {
     const { t, dispatch } = this.props;
-    dispatch(Actions.setHeader(t('networkManage'), '/networks'));
+    dispatch(Actions.setHeader(t('adminManage'), '/admins'));
   }
 
   render() {

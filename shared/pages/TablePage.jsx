@@ -47,7 +47,7 @@ class C extends Page {
       searchWord: this.props.context.searchWord,
     };
 
-    dispatch(this.refreshAction(filters))
+    dispatch(this.refreshAction(routerKey, filters))
     .then(() => {
       dispatch(Actions.extendContext({ loading: false, initialized: true }, routerKey));
     });

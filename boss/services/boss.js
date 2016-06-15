@@ -11,6 +11,9 @@ class Boss {
   describeTenants(filters = {}) {
     return this.call('describeTenants', filters);
   }
+  deleteTenants(filters = {}) {
+    return this.call('deleteTenants', filters);
+  }
   createTenant(tenant) {
     return this.call('createTenant', tenant);
   }

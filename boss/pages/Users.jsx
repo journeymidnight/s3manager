@@ -1,6 +1,6 @@
+import _ from 'lodash';
 import React from 'react';
 import { Link } from 'react-router';
-import _ from 'lodash';
 import { attach } from '../../shared/pages/Page';
 import TablePage from '../../shared/pages/TablePage';
 import ButtonForm from '../../shared/forms/ButtonForm';
@@ -22,7 +22,7 @@ class C extends TablePage {
     this.initTable();
   }
 
-  refreshAction(filters) {
+  refreshAction(routerKey, filters) {
     return Actions.requestDescribeUsers(filters);
   }
 

@@ -1,67 +1,128 @@
+import _ from 'lodash';
 import React from 'react';
 import { Link } from 'react-router';
-import Page, { attach } from '../../shared/pages/Page';
+import { attach } from '../../shared/pages/Page';
+import TablePage from '../../shared/pages/TablePage';
+import ButtonForm from '../../shared/forms/ButtonForm';
 import * as TenantActions from '../redux/actions.tenant';
+import * as Actions from '../redux/actions';
 
-class C extends Page {
+class C extends TablePage {
 
-  componentDidMount() {
-    const { dispatch, routerKey } = this.props;
-    dispatch(TenantActions.requestDescribeTenants(routerKey));
+  constructor(props) {
+    super(props);
+
+    this.onDelete = this.onDelete.bind(this);
   }
 
-  render() {
-    const tenants = this.props.context.tenantSet && this.props.context.tenantSet.map((tenant) => {
-      return (
-        <tr key={tenant.tenantId}>
-          <td>{tenant.tenantId}</td>
-          <td>
-            <Link to={`/tenants/${tenant.tenantId}`}>
-              <strong>
-                {tenant.name}
-              </strong>
-            </Link>
-          </td>
-          <td>{tenant.description}</td>
-          <td className="light">{tenant.created}</td>
-        </tr>
-      );
+  componentDidMount() {
+    const { t, dispatch } = this.props;
+    dispatch(Actions.setHeader(t('tenantManage'), '/tenants'));
+
+    this.initTable();
+  }
+
+  refreshAction(routerKey, filters) {
+    return TenantActions.requestDescribeTenants(routerKey, filters);
+  }
+
+  onDelete() {
+    const { dispatch, routerKey } = this.props;
+    const tenantIds = _.keys(this.props.context.selected);
+
+    return new Promise((resolve, reject) => {
+      dispatch(TenantActions.requestDeleteTenants(routerKey, tenantIds))
+      .then(() => {
+        resolve();
+        this.onRefresh({}, false)();
+      }).catch(() => {
+        reject();
+      });
     });
+  }
+
+  renderTable() {
+    const { t } = this.props;
+    return this.props.context.total > 0 && this.props.context.tenantSet.length > 0 && (
+      <table className="table">
+        <thead>
+          <tr>
+            <th width="40">
+              <input type="checkbox" className="selected" onChange={this.onSelectAll(this.props.context.tenantSet.map((u) => { return u.tenantId; }))} />
+            </th>
+            <th width="150">{t('id')}</th>
+            <th>{t('name')}</th>
+            <th width="200">{t('created')}</th>
+          </tr>
+        </thead>
+        <tbody>
+        {this.props.context.tenantSet.map((tenant) => {
+          return (
+            <tr key={tenant.tenantId}>
+              <td>
+                <input type="checkbox" className="selected" onChange={this.onSelect(tenant.tenantId)} checked={this.props.context.selected[tenant.tenantId] === true} />
+              </td>
+              <td>
+                <Link to={`/tenants/${tenant.tenantId}`}>
+                  {tenant.tenantId}
+                </Link>
+              </td>
+              <td><strong>{tenant.name}</strong></td>
+              <td className="light">{tenant.created}</td>
+            </tr>
+          );
+        })}
+        </tbody>
+      </table>
+    );
+  }
+
+  renderHeader() {
     const { t } = this.props;
     return (
-      <div className="container-fluid container-limited">
-        <div className="content">
-          <div className="clearfix">
-            <h3 className="page-title">
-              {t('tenantManage')}
-            </h3>
-            <div className="top-area">
-              <div className="nav-text">
-                <p className="light">
-                  {t('tenantManageDescription')}
-                </p>
-              </div>
-              <div className="nav-controls">
-                <Link className="btn btn-new" to="/tenants/create">
-                  <i className="fa fa-plus"></i>&nbsp;{t('create')}
-                </Link>
-              </div>
+      <div className="top-area">
+        <div className="nav-text">
+          <span className="light">
+            {t('tenantManageDescription')}
+          </span>
+        </div>
+        <div className="nav-controls">
+          <Link className="btn btn-new" to="/tenants/create">
+            <i className="fa fa-plus"></i>&nbsp;{t('create')}
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  renderFilters() {
+    const { t } = this.props;
+    return (
+      <div className="gray-content-block second-block">
+        <div className={Object.keys(this.props.context.selected).length > 0 ? 'hidden' : ''}>
+          <div className="filter-item inline">
+            <a className="btn btn-default" onClick={this.onRefresh({}, false)}>
+              <i className={`fa fa-refresh ${this.props.context.loading ? 'fa-spin' : ''}`}></i>
+            </a>
+          </div>
+          <div className="filter-item inline">
+            <input type="search" ref="search" placeholder={t('filterByIdorName')} className="form-control" onKeyPress={this.onSearchKeyPress} />
+          </div>
+          <div className="pull-right">
+            <div className="dropdown inline prepend-left-10">
+              <button className="dropdown-toggle btn" data-toggle="dropdown" type="button">
+                <span className="light"></span> {this.props.context.reverse ? t('lastCreated') : t('firstCreated')}
+                <b className="caret"></b></button>
+              <ul className="dropdown-menu dropdown-menu-align-right dropdown-select dropdown-menu-selectable">
+                <li><a className={this.props.context.reverse ? 'is-active' : ''} href onClick={this.onRefresh({ reverse: true })}>{t('lastCreated')}</a></li>
+                <li><a className={this.props.context.reverse ? '' : 'is-active'} href onClick={this.onRefresh({ reverse: false })}>{t('firstCreated')}</a></li>
+              </ul>
             </div>
-            <div className="table-holder">
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>{t('id')}</th>
-                    <th>{t('name')}</th>
-                    <th>{t('description')}</th>
-                    <th>{t('created')}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                {tenants}
-                </tbody>
-              </table>
-            </div>
+          </div>
+        </div>
+        <div className={Object.keys(this.props.context.selected).length > 0 ? '' : 'hidden'}>
+          <div className="filter-item inline">
+            <ButtonForm onSubmit={this.onDelete} text={t('delete')} type="btn-danger" />
           </div>
         </div>
       </div>
