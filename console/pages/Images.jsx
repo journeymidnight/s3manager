@@ -22,7 +22,7 @@ class C extends RegionPage {
     const { t, dispatch, region, routerKey } = this.props;
     dispatch(Actions.setHeader(t('imageManage'), `/${region.regionId}/images`));
     dispatch(Actions.extendContext({
-      status: ['pending', 'active'],
+      status: ['pending', 'active', 'deleted', 'ceased'],
       selected: {
       },
       currentPage: 1,
@@ -155,6 +155,9 @@ class C extends RegionPage {
                       <div className="dropdown-content">
                         <ul>
                         {[{
+                          status: ['pending', 'active', 'deleted', 'ceased'],
+                          name: t('allAvaliableStatus'),
+                        }, {
                           status: ['pending'],
                           name: t('imageStatus.pending'),
                         }, {
