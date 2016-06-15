@@ -153,6 +153,7 @@
     },
 
     "pageTenant": {
+        "basic": "基本信息",
         "authorizedUsers": "授权用户"
     },
 

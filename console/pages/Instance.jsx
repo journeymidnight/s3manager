@@ -1,8 +1,8 @@
+import _ from 'lodash';
 import React from 'react';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
 import { Link } from 'react-router';
-import _ from 'lodash';
 import RegionPage, { attach } from '../../shared/pages/RegionPage';
 import Modal, { confirmModal } from '../../shared/components/Modal';
 import * as Actions from '../redux/actions';

@@ -8,6 +8,8 @@ import Logout from './pages/Logout.jsx';
 import Tenants from './pages/Tenants.jsx';
 import TenantCreate from './pages/TenantCreate.jsx';
 import Tenant from './pages/Tenant.jsx';
+import TenantTabBasic from './pages/TenantTabBasic.jsx';
+import TenantTabUsers from './pages/TenantTabUsers.jsx';
 import Users from './pages/Users.jsx';
 import UserCreate from './pages/UserCreate.jsx';
 import User from './pages/User.jsx';
@@ -55,7 +57,11 @@ export default function configureRoutes(store) {
         <Route path="tenants" >
           <IndexRoute component={Tenants} />
           <Route path="create" component={TenantCreate} />
-          <Route path=":tenantId" component={Tenant} />
+          <Route path=":tenantId" component={Tenant} >
+            <IndexRoute component={TenantTabBasic} />
+            <Route path="basic" component={TenantTabBasic} />
+            <Route path="users" component={TenantTabUsers} />
+          </Route>
         </Route>
         <Route path="users" >
           <IndexRoute component={Users} />

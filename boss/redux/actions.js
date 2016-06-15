@@ -131,7 +131,7 @@ export function requestDescribeUser(userId) {
   return dispatch => {
     return BOSS
     .describeUsers({
-      users: [userId],
+      userIds: [userId],
     })
     .promise
     .then((data) => {

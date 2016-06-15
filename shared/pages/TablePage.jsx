@@ -20,18 +20,20 @@ class C extends Page {
   refreshAction() {
   }
 
-  initTable(initStatus = ['pending', 'active']) {
+  initTable(options) {
     const { dispatch, routerKey } = this.props;
 
-    dispatch(Actions.extendContext({
-      status: initStatus,
+    const context = {
+      status: ['pending', 'active'],
       selected: {
       },
       currentPage: 1,
       size: 20,
       reverse: true,
       searchWord: null,
-    }, routerKey));
+      isTabPage: false,
+    };
+    dispatch(Actions.extendContext(Object.assign(context, options), routerKey));
 
     setTimeout(this.onRefresh(), 100);
   }
@@ -125,28 +127,36 @@ class C extends Page {
     return <div />;
   }
 
+  renderPagination() {
+    return (
+      <div>
+        {this.props.context.total > 0 && (
+          <Pagination
+            onRefresh={this.onRefresh}
+            currentPage={this.props.context.currentPage}
+            totalPage={this.props.context.totalPage}
+          />
+        )}
+      </div>
+    );
+  }
+
   renderAfterInitialized() {
     const { t } = this.props;
+    const { isTabPage } = this.props.context;
     return (
-      <div className="container-fluid container-limited">
+      <div className={isTabPage ? '' : 'container-fluid container-limited'}>
         <div className="content">
           <div className="clearfix">
 
             {this.renderHeader()}
-
             {this.renderFilters()}
 
             <div className="table-holder">
               {this.renderTable() || <div className="nothing-here-block">{t('nothingHere')}</div>}
             </div>
 
-            {this.props.context.total > 0 && (
-              <Pagination
-                onRefresh={this.onRefresh}
-                currentPage={this.props.context.currentPage}
-                totalPage={this.props.context.totalPage}
-              />
-            )}
+            {this.renderPagination()}
           </div>
         </div>
       </div>

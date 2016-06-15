@@ -37,10 +37,10 @@ class Boss {
       role,
     });
   }
-  deleteTenantRole(tenantId, userId) {
+  deleteTenantRole(tenantId, userIds) {
     return this.call('deleteTenantRole', {
       tenantId,
-      userId,
+      userIds,
     });
   }
   describeUsers(filters = {}) {

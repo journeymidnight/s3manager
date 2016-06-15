@@ -21,7 +21,7 @@ export function requestDescribeAssignedQuotas(regionId) {
   return dispatch => {
     return BOSS
     .describeTenantQuotas({
-      regions: [regionId],
+      regionIds: [regionId],
     })
     .promise
     .then((payload) => {
@@ -39,8 +39,8 @@ export function requestDescribeTenantQuota(regionId, tenantId) {
   return dispatch => {
     return BOSS
     .describeTenantQuotas({
-      regions: [regionId],
-      tenants: [tenantId],
+      regionIds: [regionId],
+      tenantIds: [tenantId],
     })
     .promise
     .then((payload) => {

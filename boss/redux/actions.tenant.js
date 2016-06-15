@@ -21,7 +21,7 @@ export function requestDescribeTenant(tenantId) {
   return dispatch => {
     return BOSS
     .describeTenants({
-      tenants: [tenantId],
+      tenantIds: [tenantId],
     })
     .promise
     .then((payload) => {
@@ -84,10 +84,10 @@ export function requestCreateTenantRole(tenantId, userId, role) {
   };
 }
 
-export function requestDeleteTenantRole(tenantId, userId) {
+export function requestDeleteTenantRole(tenantId, userIds) {
   return (dispatch) => {
     return BOSS
-    .deleteTenantRole(tenantId, userId)
+    .deleteTenantRole(tenantId, userIds)
     .promise
     .then(() => {
       dispatch(notify(i18n.t('deleteSuccessed')));
@@ -104,9 +104,7 @@ export function requestDescribeTenantRoles(tenantId) {
     .describeTenantRoles(tenantId)
     .promise
     .then((payload) => {
-      dispatch(extendContext({
-        roles: payload,
-      }));
+      dispatch(extendContext(payload));
     })
     .catch((error) => {
       dispatch(notifyAlert(error.message));

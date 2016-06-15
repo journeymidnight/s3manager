@@ -163,7 +163,7 @@ describe('UserActions', () => {
 
     const scope2 = mockRequest
     .post('/p/api/describeUsers', {
-      users: [userId],
+      userIds: [userId],
     })
     .reply(200, {
       data: rep,
