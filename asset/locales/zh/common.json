@@ -74,6 +74,9 @@
     "imageManage": "映像",
     "imageManageDescription": "为 Linux 云主机提供 映像。",
 
+    "instanceTypeManage": "主机配置",
+    "instanceTypeManageDescription": "为 Linux 云主机提供 主机配置。",
+
     "tenantManage": "租户管理",
     "tenantManageDescription": "可根据不同的企业或团队划分独立的租户, 分配相应的资源配额。",
 
@@ -210,6 +213,7 @@
     },
 
     "sidebarInstance": "云主机",
+    "sidebarInstanceType": "主机配置",
     "sidebarVolume": "云硬盘",
     "sidebarNetwork": "私有网络",
     "sidebarSnapshot": "快照备份",

@@ -73,8 +73,8 @@ class IaaS {
       description,
     });
   }
-  describeInstanceTypes(regionId) {
-    return this.call(regionId, 'DescribeInstanceTypes', {});
+  describeInstanceTypes(regionId, filter = {}) {
+    return this.call(regionId, 'DescribeInstanceTypes', filter);
   }
   describeInstances(regionId, filter = {}) {
     return this.call(regionId, 'DescribeInstances', filter);
