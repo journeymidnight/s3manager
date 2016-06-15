@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router';
 import Page, { attach } from '../../shared/pages/Page';
 import TenantQuotaForm from '../forms/TenantQuotaForm';
 import * as RegionActions from '../redux/actions.region';
@@ -67,11 +66,15 @@ class C extends Page {
       <div className="container-fluid container-limited">
         <div className="content">
           <div className="clearfix">
-            <ol className="breadcrumb">
-              <li><Link to="/regions">{t('regionManage')}</Link></li>
-              <li><Link to={`/regions/${region.regionId}`}>{region.name}</Link></li>
-              <li className="active">{t('create')}</li>
-            </ol>
+
+            <div className="top-area append-bottom-20">
+              <div className="nav-text">
+                <span className="light">
+                  {t('create')}
+                </span>
+              </div>
+            </div>
+
             <TenantQuotaForm onSubmit={this.onSubmit} initialValues={this.defaultTenantQuota} />
           </div>
         </div>

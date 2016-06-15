@@ -55,15 +55,14 @@ export default function configureRoutes(store) {
           <Route path=":regionId" component={Region} >
             <IndexRoute component={RegionTabBasic} />
             <Route path="basic" component={RegionTabBasic} />
-            <Route path="tenants">
-              <IndexRoute component={RegionTabTenants} />
-              <Route path=":tenantId" component={TenantQuota} >
-                <Route path="create" component={TenantQuotaCreate} />
-              </Route>
-            </Route>
+            <Route path="tenants" component={RegionTabTenants} />
             <Route path="images" component={RegionTabImages} />
             <Route path="instance_types" component={RegionTabInstanceTypes} />
           </Route>
+        </Route>
+        <Route path="q/:regionId" >
+          <Route path="create" component={TenantQuotaCreate} />
+          <Route path=":tenantId" component={TenantQuota} />
         </Route>
         <Route path="tenants" >
           <IndexRoute component={Tenants} />
