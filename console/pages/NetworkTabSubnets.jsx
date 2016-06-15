@@ -53,7 +53,8 @@ class C extends RegionPage {
   }
 
   componentDidMount() {
-    const { dispatch, routerKey } = this.props;
+    const { t, dispatch, region, routerKey } = this.props;
+    dispatch(Actions.setHeader(t('networkManage'), `/${region.regionId}/networks`));
 
     dispatch(Actions.extendContext({
       selected: {

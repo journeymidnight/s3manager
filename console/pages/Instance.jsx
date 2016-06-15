@@ -279,7 +279,7 @@ class C extends RegionPage {
                     </Link>
                   </li>
                 </ul>
-                <div className="prepend-top-20">
+                <div>
                   {React.cloneElement(this.props.children, { instance })}
                 </div>
               </div>}
