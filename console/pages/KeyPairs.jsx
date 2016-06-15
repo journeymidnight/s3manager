@@ -51,7 +51,7 @@ class C extends RegionPage {
     const { t, dispatch, region, routerKey } = this.props;
     dispatch(Actions.setHeader(t('keyPairManage'), `/${region.regionId}/key_pairs`));
     dispatch(Actions.extendContext({
-      status: ['pending', 'active'],
+      status: ['active', 'deleted'],
       selected: {
       },
       currentPage: 1,
@@ -204,6 +204,9 @@ class C extends RegionPage {
                       <div className="dropdown-content">
                         <ul>
                         {[{
+                          status: ['active', 'deleted'],
+                          name: t('allAvaliableStatus'),
+                        }, {
                           status: ['active'],
                           name: t('keyPairStatus.active'),
                         }, {

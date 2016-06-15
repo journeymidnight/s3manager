@@ -4,7 +4,7 @@ import _ from 'lodash';
 import RegionPage, { attach } from '../../shared/pages/RegionPage';
 import Pagination from '../../shared/components/Pagination';
 import * as Actions from '../redux/actions';
-import * as ImageActions from '../redux/actions.image';
+import * as InstanceTypeActions from '../redux/actions.instance_type';
 
 class C extends RegionPage {
 
@@ -20,9 +20,8 @@ class C extends RegionPage {
 
   componentDidMount() {
     const { t, dispatch, region, routerKey } = this.props;
-    dispatch(Actions.setHeader(t('imageManage'), `/${region.regionId}/images`));
+    dispatch(Actions.setHeader(t('instanceTypeManage'), `/${region.regionId}/instance_types`));
     dispatch(Actions.extendContext({
-      status: ['pending', 'active', 'deleted', 'ceased'],
       selected: {
       },
       currentPage: 1,
@@ -40,11 +39,10 @@ class C extends RegionPage {
     const filters = {
       offset: (this.props.context.currentPage - 1) * this.props.context.size,
       limit: this.props.context.size,
-      status: this.props.context.status,
       reverse: this.props.context.reverse,
       searchWord: this.props.context.searchWord,
     };
-    dispatch(ImageActions.requestDescribeImages(routerKey, region.regionId, filters))
+    dispatch(InstanceTypeActions.requestDescribeInstanceTypes(routerKey, region.regionId, filters))
       .then(() => {
         dispatch(Actions.extendContext({ loading: false, initialized: true }, routerKey));
       });
@@ -73,9 +71,9 @@ class C extends RegionPage {
     return (e) => {
       const selected = this.props.context.selected;
       if (e.target.checked) {
-        selected[item.imageId] = true;
+        selected[item.instanceTypeId] = true;
       } else {
-        delete selected[item.imageId];
+        delete selected[item.instanceTypeId];
       }
 
       const { dispatch, routerKey } = this.props;
@@ -85,11 +83,11 @@ class C extends RegionPage {
 
   onSelectAll(e) {
     const selected = this.props.context.selected;
-    this.props.context.imageSet.forEach((item) => {
+    this.props.context.instanceTypeSet.forEach((item) => {
       if (e.target.checked) {
-        selected[item.imageId] = true;
+        selected[item.instanceTypeId] = true;
       } else {
-        delete selected[item.imageId];
+        delete selected[item.instanceTypeId];
       }
     });
 
@@ -108,21 +106,21 @@ class C extends RegionPage {
   }
 
   renderAfterInitialized() {
-    const images = this.props.context.imageSet && this.props.context.imageSet.map((image) => {
+    const instanceTypes = this.props.context.instanceTypeSet && this.props.context.instanceTypeSet.map((instanceType) => {
       return (
-        <tr key={image.imageId}>
+        <tr key={instanceType.instanceTypeId}>
           <td>
-            <input type="checkbox" className="selected" onChange={this.onSelect(image)} checked={this.props.context.selected[image.imageId] === true} />
+            <input type="checkbox" className="selected" onChange={this.onSelect(instanceType)} checked={this.props.context.selected[instanceType.instanceTypeId] === true} />
           </td>
-          <td>{image.imageId}</td>
+          <td>{instanceType.instanceTypeId}</td>
           <td>
-            <Link to={`/${this.props.region.regionId}/images/${image.imageId}`}>
+            <Link to={`/${this.props.region.regionId}/instanceTypes/${instanceType.instanceTypeId}`}>
               <strong>
-                {image.name}
+                {instanceType.name}
               </strong>
             </Link>
           </td>
-          <td className="light">{image.created}</td>
+          <td className="light">{instanceType.created}</td>
         </tr>
       );
     });
@@ -134,7 +132,7 @@ class C extends RegionPage {
             <div className="top-area">
               <div className="nav-text">
                 <p className="light">
-                  {t('imageManageDescription')}
+                  {t('instanceTypeManageDescription')}
                 </p>
               </div>
             </div>
@@ -144,48 +142,6 @@ class C extends RegionPage {
                   <a className="btn btn-default" onClick={this.onRefresh({}, false)}>
                     <i className={`fa fa-refresh ${this.props.context.loading ? 'fa-spin' : ''}`}></i>
                   </a>
-                </div>
-                <div className="filter-item inline labels-filter">
-                  <div className="dropdown">
-                    <button className="dropdown-menu-toggle" data-toggle="dropdown" type="button">
-                      <span className="dropdown-toggle-text">{t('status')}</span>
-                      <i className="fa fa-chevron-down"></i>
-                    </button>
-                    <div className="dropdown-menu dropdown-select dropdown-menu-selectable">
-                      <div className="dropdown-content">
-                        <ul>
-                        {[{
-                          status: ['pending', 'active', 'deleted', 'ceased'],
-                          name: t('allAvaliableStatus'),
-                        }, {
-                          status: ['pending'],
-                          name: t('imageStatus.pending'),
-                        }, {
-                          status: ['active'],
-                          name: t('imageStatus.active'),
-                        }, {
-                          status: ['deleted'],
-                          name: t('imageStatus.deleted'),
-                        }, {
-                          status: ['ceased'],
-                          name: t('imageStatus.ceased'),
-                        }].map((filter) => {
-                          return (
-                            <li key={filter.name}>
-                              <a
-                                className={this.props.context.status.toString() === filter.status.toString() ? 'is-active' : ''}
-                                href
-                                onClick={this.onRefresh({ status: filter.status })}
-                              >
-                                {filter.name}
-                              </a>
-                            </li>
-                          );
-                        })}
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
                 </div>
                 <div className="filter-item inline">
                   <input type="search" ref="search" placeholder={t('filterByIdorName')} className="form-control" onKeyPress={this.onSearchKeyPress} />
@@ -216,7 +172,7 @@ class C extends RegionPage {
                   </tr>
                 </thead>
                 <tbody>
-                  {images}
+                  {instanceTypes}
                 </tbody>
               </table>
             </div>

@@ -51,7 +51,7 @@ class C extends RegionPage {
     const { t, dispatch, region, routerKey } = this.props;
     dispatch(Actions.setHeader(t('eipManage'), `/${region.regionId}/eips`));
     dispatch(Actions.extendContext({
-      status: ['pending', 'active'],
+      status: ['active', 'associated', 'deleted', 'ceased'],
       selected: {
       },
       currentPage: 1,
@@ -207,6 +207,9 @@ class C extends RegionPage {
                       <div className="dropdown-content">
                         <ul>
                         {[{
+                          status: ['active', 'associated', 'deleted', 'ceased'],
+                          name: t('allAvaliableStatus'),
+                        }, {
                           status: ['active'],
                           name: t('eipStatus.active'),
                         }, {
