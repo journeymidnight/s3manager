@@ -149,7 +149,10 @@
     },
 
     "pageRegion": {
-        "assignedTenants": "分配租户"
+        "basic": "基本信息",
+        "assignedTenants": "分配租户",
+        "instanceTypes": "主机配置",
+        "images": "映像"
     },
 
     "pageTenant": {

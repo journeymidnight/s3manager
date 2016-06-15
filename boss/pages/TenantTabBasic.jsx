@@ -40,7 +40,6 @@ class C extends Page {
     return (
       <div className="panel panel-default prepend-top-20">
         <div className="panel-heading">{t('settings')}</div>
-        <div className="errors-holder"></div>
         <div className="panel-body">
           <TenantForm initialValues={tenant} onSubmit={this.onSave} />
         </div>

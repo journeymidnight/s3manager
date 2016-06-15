@@ -275,6 +275,10 @@ header.navbar-gitlab .container-fluid {
     }
     .nav-links {
         width: 30%;
+
+        @media (max-width: $screen-sm-max) {
+          width: 100%;
+        }
     }
 }
 

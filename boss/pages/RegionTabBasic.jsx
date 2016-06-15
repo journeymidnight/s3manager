@@ -1,15 +1,15 @@
 import React from 'react';
-import Page, { attach } from '../../shared/pages/Page';
-import * as RegionActions from '../redux/actions.region';
+import Page, { attach } from '../../shared/pages/RegionPage';
 import * as Actions from '../redux/actions';
 import RegionForm from '../forms/RegionForm';
+import * as RegionActions from '../redux/actions.region';
 
 class C extends Page {
 
   constructor(props) {
     super(props);
 
-    this.onSubmit = this.onSubmit.bind(this);
+    this.onSave = this.onSave.bind(this);
   }
 
   componentDidMount() {
@@ -17,17 +17,16 @@ class C extends Page {
     dispatch(Actions.setHeader(t('regionManage'), '/regions'));
   }
 
-  onSubmit(values, dispatch) {
+  onSave(values, dispatch) {
     return new Promise((resolve, reject) => {
-      const regionId = values.regionId;
       const name = values.name;
       const publicEndpoint = values.publicEndpoint;
       const manageEndpoint = values.manageEndpoint;
       const manageKey = values.manageKey;
       const manageSecret = values.manageSecret;
 
-      dispatch(RegionActions.requestCreateRegion({
-        regionId,
+      dispatch(RegionActions.requestModifyRegion({
+        regionId: this.props.region2.regionId,
         name,
         publicEndpoint,
         manageEndpoint,
@@ -43,22 +42,12 @@ class C extends Page {
   }
 
   render() {
-    const { t } = this.props;
+    const { t, region2 } = this.props;
     return (
-      <div className="container-fluid container-limited">
-        <div className="content">
-          <div className="clearfix">
-
-            <div className="top-area append-bottom-20">
-              <div className="nav-text">
-                <span className="light">
-                  {t('create') + t('region')}
-                </span>
-              </div>
-            </div>
-
-            <RegionForm onSubmit={this.onSubmit} />
-          </div>
+      <div className="panel panel-default prepend-top-20">
+        <div className="panel-heading">{t('settings')}</div>
+        <div className="panel-body">
+          <RegionForm initialValues={region2} onSubmit={this.onSave} isUpdate />
         </div>
       </div>
     );

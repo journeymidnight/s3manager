@@ -28,8 +28,8 @@ class C extends Page {
       }))
       .then(() => {
         resolve();
-      }).catch((error) => {
-        reject({ _error: error.message });
+      }).catch(() => {
+        reject();
       });
     });
   }

@@ -19,6 +19,10 @@ import Admin from './pages/Admin.jsx';
 import Regions from './pages/Regions.jsx';
 import RegionCreate from './pages/RegionCreate.jsx';
 import Region from './pages/Region.jsx';
+import RegionTabBasic from './pages/RegionTabBasic.jsx';
+import RegionTabImages from './pages/RegionTabImages.jsx';
+import RegionTabInstanceTypes from './pages/RegionTabInstanceTypes.jsx';
+import RegionTabTenants from './pages/RegionTabTenants.jsx';
 import TenantQuotaCreate from './pages/TenantQuotaCreate.jsx';
 import TenantQuota from './pages/TenantQuota.jsx';
 import Profile from './pages/Profile.jsx';
@@ -48,10 +52,17 @@ export default function configureRoutes(store) {
         <Route path="regions" >
           <IndexRoute component={Regions} />
           <Route path="create" component={RegionCreate} />
-          <Route path=":regionId" >
-            <IndexRoute component={Region} />
-            <Route path="create" component={TenantQuotaCreate} />
-            <Route path=":tenantId" component={TenantQuota} />
+          <Route path=":regionId" component={Region} >
+            <IndexRoute component={RegionTabBasic} />
+            <Route path="basic" component={RegionTabBasic} />
+            <Route path="tenants">
+              <IndexRoute component={RegionTabTenants} />
+              <Route path=":tenantId" component={TenantQuota} >
+                <Route path="create" component={TenantQuotaCreate} />
+              </Route>
+            </Route>
+            <Route path="images" component={RegionTabImages} />
+            <Route path="instance_types" component={RegionTabInstanceTypes} />
           </Route>
         </Route>
         <Route path="tenants" >

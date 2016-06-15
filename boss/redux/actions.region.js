@@ -72,7 +72,7 @@ export function requestDescribeRegion(regionId) {
   return dispatch => {
     return BOSS
     .describeRegions({
-      regions: [regionId],
+      regionIds: [regionId],
     })
     .promise
     .then((data) => {

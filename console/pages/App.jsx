@@ -46,7 +46,6 @@ App.propTypes = {
   env: React.PropTypes.object.isRequired,
   context: React.PropTypes.object,
   t: React.PropTypes.any,
-  routing: React.PropTypes.object,
   region: React.PropTypes.object,
   params: React.PropTypes.object,
 };
@@ -56,7 +55,6 @@ function mapStateToProps(state) {
     auth: state.auth,
     env: state.env,
     context: state.context,
-    routing: state.routing,
     region: state.region,
   };
 }
