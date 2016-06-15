@@ -3,7 +3,8 @@ import React from 'react';
 import { Link } from 'react-router';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
-import { tenantRoleAdmin, tenantRoleUser } from '../services/boss';
+import Select from 'react-select';
+import BOSS, { tenantRoleAdmin, tenantRoleUser } from '../services/boss';
 import { attach } from '../../shared/pages/Page';
 import ButtonForm from '../../shared/forms/ButtonForm';
 import TablePage from '../../shared/pages/TablePage';
@@ -11,30 +12,69 @@ import * as Validations from '../../shared/utils/validations';
 import * as Actions from '../redux/actions';
 import * as TenantActions from '../redux/actions.tenant';
 
-const F = (props) => {
-  const { fields:
-    { email, role },
-    handleSubmit,
-    submitting,
-  } = props;
-  const { t } = props;
-  return (
-    <form className="form-inline" onSubmit={handleSubmit}>
-      <div className="form-group append-right-5">
-        <input type="email" className="form-control" placeholder={t('formUserSelectForm.typeEmail')} {...email} />
-      </div>
-      <div className="form-group append-right-5">
-        <select className="form-control" {...role}>
-          <option value={tenantRoleAdmin.toString()}>{t('tenantRoleAdmin')}</option>
-          <option value={tenantRoleUser.toString()}>{t('tenantRoleUser')}</option>
-        </select>
-      </div>
-      <button type="submit" className="btn btn-save" disabled={email.error || submitting}>
-        {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('create')}
-      </button>
-    </form>
-  );
-};
+class F extends React.Component {
+
+  constructor(props) {
+    super(props);
+
+    this.onBlur = this.onBlur.bind(this);
+  }
+
+  onBlur() {
+    this.props.fields.email.onBlur(this.props.fields.email.value);
+  }
+
+  getOptions(input, callback) {
+    BOSS
+    .describeUsers({
+      searchWord: input,
+    })
+    .promise
+    .then((payload) => {
+      callback(null, {
+        options: payload.userSet.map((user) => {
+          return {
+            value: user.email,
+            label: user.email,
+          };
+        }),
+      });
+    })
+    .catch(() => {
+    });
+  }
+
+  render() {
+    const { fields:
+      { email, role },
+      handleSubmit,
+      submitting,
+    } = this.props;
+    const { t } = this.props;
+    return (
+      <form className="form-inline" onSubmit={handleSubmit}>
+        <div className="form-group append-right-5" style={{ width: '200px' }}>
+          <Select.Async
+            placeholder={t('formUserSelectForm.typeEmail')}
+            loadOptions={this.getOptions}
+            noResultsText={t('nothingHere')}
+            {...email}
+            onBlur={this.onBlur}
+          />
+        </div>
+        <div className="form-group append-right-5">
+          <select className="form-control" {...role}>
+            <option value={tenantRoleAdmin.toString()}>{t('tenantRoleAdmin')}</option>
+            <option value={tenantRoleUser.toString()}>{t('tenantRoleUser')}</option>
+          </select>
+        </div>
+        <button type="submit" className="btn btn-save" disabled={email.error || submitting}>
+          {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('create')}
+        </button>
+      </form>
+    );
+  }
+}
 
 F.validate = values => {
   const errors = {};
