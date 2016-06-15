@@ -1,6 +1,7 @@
-@import "gitlab/application";
-@import "pace";
-@import "login";
+@import "./gitlab/application";
+@import "./pace";
+@import "./header";
+@import "./login";
 
 body {
     font-family: Arial, "Hiragino Sans GB", "Microsoft YaHei", STHeiti, "WenQuanYi Micro Hei", SimSun, sans-serif;

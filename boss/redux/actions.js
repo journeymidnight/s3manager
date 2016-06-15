@@ -12,6 +12,18 @@ export function extendContext(payload, routerKey = undefined) {
   };
 }
 
+export function setHeader(title, link) {
+  return {
+    type: ActionTypes.EXTEND_CONTEXT,
+    payload: {
+      header: {
+        title,
+        link,
+      },
+    },
+  };
+}
+
 export function cleanNotify() {
   return extendContext({
     notify: null,

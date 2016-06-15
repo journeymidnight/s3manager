@@ -160,8 +160,8 @@
         "basic": "基本信息",
         "subnets": "子网",
         "router": "路由",
-        "updateNetwork": "更新基本信息",
-        "deleteNetwork": "删除私有网络",
+        "updateNetwork": "更新",
+        "deleteNetwork": "删除",
         "externalGatewayIp": "出口网关 IP",
         "createSubnet": "添加子网"
     },

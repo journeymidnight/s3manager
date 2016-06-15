@@ -15,6 +15,7 @@ class C extends React.Component {
   }
   render() {
     const { t } = this.props;
+    const { header } = this.props.context;
     return (
       <header className="header-expanded navbar navbar-fixed-top navbar-gitlab">
         <div className="container-fluid">
@@ -42,6 +43,10 @@ class C extends React.Component {
             </div>
             <h1 className="title">
               <Link to="/">{t('boss')}</Link>
+              {header && header.title && ' · '}
+              {header && header.title &&
+                <Link className="project-item-select-holder" to={header.link}>{header.title}</Link>
+              }
             </h1>
           </div>
         </div>
@@ -52,13 +57,15 @@ class C extends React.Component {
 
 C.propTypes = {
   dispatch: React.PropTypes.func.isRequired,
-  auth: React.PropTypes.object,
   t: React.PropTypes.any,
+  auth: React.PropTypes.object,
+  context: React.PropTypes.object,
 };
 
 function mapStateToProps(state) {
   return {
     auth: state.auth,
+    context: state.context,
   };
 }
 

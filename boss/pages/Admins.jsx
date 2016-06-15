@@ -1,10 +1,12 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { translate } from 'react-i18next';
+import Page, { attach } from '../../shared/pages/RegionPage';
+import * as Actions from '../redux/actions';
 
-class C extends React.Component {
+class C extends Page {
 
   componentDidMount() {
+    const { t, dispatch } = this.props;
+    dispatch(Actions.setHeader(t('networkManage'), '/networks'));
   }
 
   render() {
@@ -15,16 +17,4 @@ class C extends React.Component {
   }
 }
 
-C.propTypes = {
-  dispatch: React.PropTypes.func.isRequired,
-  context: React.PropTypes.object,
-  t: React.PropTypes.any,
-};
-
-function mapStateToProps(state) {
-  return {
-    context: state.context,
-  };
-}
-
-export default connect(mapStateToProps)(translate()(C));
+export default attach(C);

@@ -43,6 +43,11 @@ class Boss {
   describeUsers(filters = {}) {
     return this.call('describeUsers', filters);
   }
+  deleteUsers(userIds) {
+    return this.call('deleteUsers', {
+      userIds,
+    });
+  }
   createUser(user) {
     return this.call('createUser', user);
   }

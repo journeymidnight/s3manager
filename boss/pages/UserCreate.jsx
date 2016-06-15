@@ -6,8 +6,15 @@ import UserForm from '../forms/UserForm';
 
 class C extends React.Component {
 
-  componentDidMount() {
+  constructor(props) {
+    super(props);
+
     this.onSubmit = this.onSubmit.bind(this);
+  }
+
+  componentDidMount() {
+    const { t, dispatch } = this.props;
+    dispatch(Actions.setHeader(t('userManage'), '/users'));
   }
 
   onSubmit(values, dispatch) {
@@ -35,10 +42,15 @@ class C extends React.Component {
       <div className="container-fluid container-limited">
         <div className="content">
           <div className="clearfix">
-            <h3 className="page-title">
-              {t('create') + t('user')}
-            </h3>
-            <hr />
+
+            <div className="top-area append-bottom-20">
+              <div className="nav-text">
+                <span className="light">
+                  {t('create') + t('user')}
+                </span>
+              </div>
+            </div>
+
             <UserForm onSubmit={this.onSubmit} />
           </div>
         </div>
