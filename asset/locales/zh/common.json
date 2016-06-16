@@ -54,6 +54,8 @@
     "createFailed": "添加失败。",
     "updateFailed": "保存失败。",
     "nothingHere": "没有任何数据。",
+    "noAnyAvailableRegions": "当前没有任何相关联的集群信息，请联系管理员分配集群配额。",
+    "relogin": "点击重新登录",
 
     "instanceManage": "云主机管理",
     "instanceManageDescription": "添加、删除和修改云主机信息。",

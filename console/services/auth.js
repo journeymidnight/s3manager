@@ -1,10 +1,11 @@
 import { call } from '../../shared/services/api';
 
 class Auth {
-  authorize(email, password) {
+  authorize(email, password, tenantId) {
     return call('post', '/api/iam/authorize', {
       email,
       password,
+      tenantId,
     });
   }
   describeContext(token) {
