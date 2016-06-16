@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router';
 import Page, { attach } from '../../shared/pages/Page';
 import TenantQuotaForm from '../forms/TenantQuotaForm';
 import * as RegionActions from '../redux/actions.region';
@@ -11,6 +10,7 @@ class C extends Page {
 
     this.regionId = params.regionId;
     this.tenantId = params.tenantId;
+
     dispatch(RegionActions.requestDescribeRegion(this.regionId));
     dispatch(RegionActions.requestDescribeTenantQuota(this.regionId, this.tenantId));
 
@@ -47,8 +47,6 @@ class C extends Page {
   }
 
   render() {
-    const { t } = this.props;
-
     const region = this.props.context.region;
     const quota = this.props.context.quota;
     if (region === undefined || quota === undefined) {
@@ -59,11 +57,16 @@ class C extends Page {
       <div className="container-fluid container-limited">
         <div className="content">
           <div className="clearfix">
-            <ol className="breadcrumb">
-              <li><Link to="/regions">{t('regionManage')}</Link></li>
-              <li className="active">{t('create')}</li>
-            </ol>
-            <TenantQuotaForm onSubmit={this.onSubmit} isUpdate initialValues={quota} />
+
+            <div className="top-area append-bottom-20">
+              <div className="nav-text">
+                <span className="light">
+                  {this.tenantId}
+                </span>
+              </div>
+            </div>
+
+            <TenantQuotaForm onSubmit={this.onSubmit} initialValues={quota} isUpdate />
           </div>
         </div>
       </div>

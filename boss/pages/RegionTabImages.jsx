@@ -6,14 +6,11 @@ class C extends Page {
 
   componentDidMount() {
     const { t, dispatch } = this.props;
-    dispatch(Actions.setHeader(t('adminManage'), '/admins'));
+    dispatch(Actions.setHeader(t('regionManage'), '/regions'));
   }
 
   render() {
-    return (
-      <div>
-      </div>
-    );
+    return <div />;
   }
 }
 

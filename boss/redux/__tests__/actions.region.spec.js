@@ -176,7 +176,7 @@ describe('RegionActions', () => {
 
     const scope2 = mockRequest
     .post('/p/api/describeRegions', {
-      regions: [regionId],
+      regionIds: [regionId],
     })
     .reply(200, {
       data: rep,

@@ -5,11 +5,39 @@ import { translate } from 'react-i18next';
 // this shoule be class
 class C extends React.Component {
 
+  constructor(props) {
+    super(props);
+
+    this.timers = [];
+  }
+
   componentDidMount() {
   }
 
-  render() {
+  componentWillUnmount() {
+    this.timers.forEach((timer) => {
+      clearInterval(timer);
+    });
+  }
+
+  setInterval(callback, interval) {
+    const timer = setInterval(() => {
+      callback();
+    }, interval);
+
+    this.timers.push(timer);
+  }
+
+  renderAfterInitialized() {
     return <div />;
+  }
+
+  render() {
+    if (!this.props.context || !this.props.context.initialized) {
+      return <div />;
+    }
+
+    return this.renderAfterInitialized();
   }
 }
 

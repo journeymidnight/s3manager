@@ -1,44 +1,98 @@
+import _ from 'lodash';
 import React from 'react';
 import { Link } from 'react-router';
-import Page, { attach } from '../../shared/pages/Page';
+import Page, { attach } from '../../shared/pages/RegionPage';
+import * as Actions from '../redux/actions';
 import * as RegionActions from '../redux/actions.region';
-import RegionForm from '../forms/RegionForm';
 
 class C extends Page {
 
   componentDidMount() {
-    const { params, dispatch } = this.props;
-
-    this.regionId = params.regionId;
-    dispatch(RegionActions.requestDescribeRegion(this.regionId));
-    dispatch(RegionActions.requestDescribeAssignedQuotas(this.regionId));
-
-    this.onSave = this.onSave.bind(this);
+    const { t, dispatch } = this.props;
+    dispatch(Actions.setHeader(t('regionManage'), '/regions'));
   }
 
-  onSave(values, dispatch) {
-    return new Promise((resolve, reject) => {
-      const name = values.name;
-      const publicEndpoint = values.publicEndpoint;
-      const manageEndpoint = values.manageEndpoint;
-      const manageKey = values.manageKey;
-      const manageSecret = values.manageSecret;
-
-      dispatch(RegionActions.requestModifyRegion({
-        regionId: this.regionId,
-        name,
-        publicEndpoint,
-        manageEndpoint,
-        manageKey,
-        manageSecret,
-      }))
-      .then(() => {
-        resolve();
-      }).catch(() => {
-        reject();
-      });
+  refresh() {
+    const { params, dispatch } = this.props;
+    this.regionId = params.regionId;
+    dispatch(RegionActions.requestDescribeRegion(this.regionId))
+    .then(() => {
+      this.region = this.props.context.region;
     });
   }
+
+  render() {
+    const { t, params } = this.props;
+
+    const region = this.props.context.region || this.region;
+    if (!region || region.regionId !== params.regionId) {
+      this.refresh();
+
+      return <div />;
+    }
+
+    let active = 'basic';
+    if (_.endsWith(this.props.location.pathname, 'tenants')) {
+      active = 'tenants';
+    } else if (_.endsWith(this.props.location.pathname, 'images')) {
+      active = 'images';
+    } else if (_.endsWith(this.props.location.pathname, 'instance_types')) {
+      active = 'instanceTypes';
+    } else if (_.endsWith(this.props.location.pathname, 'basic')) {
+      active = 'basic';
+    }
+
+    return (
+      <div className="container-fluid container-limited detail">
+        <div className="content">
+          <div className="clearfix">
+
+            <div className="top-area">
+              <div className="nav-text">
+                <i className="light">
+                  {region.regionId}
+                </i>
+              </div>
+
+              <ul className="nav-links pull-right">
+                <li className={`pull-right ${(active === 'images') ? 'active' : ''}`}>
+                  <Link data-placement="left" to={`/regions/${region.regionId}/images`}>
+                    {t('pageRegion.images')}
+                  </Link>
+                </li>
+                <li className={`pull-right ${(active === 'tenants') ? 'active' : ''}`}>
+                  <Link data-placement="left" to={`/regions/${region.regionId}/tenants`}>
+                    {t('pageRegion.assignedTenants')}
+                  </Link>
+                </li>
+                <li className={`pull-right ${(active === 'instanceTypes') ? 'active' : ''}`}>
+                  <Link data-placement="left" to={`/regions/${region.regionId}/instance_types`}>
+                    {t('pageRegion.instanceTypes')}
+                  </Link>
+                </li>
+                <li className={`pull-right ${(active === 'basic') ? 'active' : ''}`}>
+                  <Link data-placement="left" to={`/regions/${region.regionId}/basic`}>
+                    {t('pageRegion.basic')}
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              {React.cloneElement(this.props.children, { region2: region })}
+            </div>
+
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
+
+export default attach(C);
+
+/*
+    dispatch(RegionActions.requestDescribeAssignedQuotas(this.regionId));
 
   render() {
     const { t } = this.props;
@@ -96,7 +150,6 @@ class C extends Page {
               <div className="panel-heading">{t('settings')}</div>
               <div className="errors-holder"></div>
               <div className="panel-body">
-                <RegionForm initialValues={region} onSubmit={this.onSave} isUpdate />
               </div>
             </div>
             <div className="panel panel-default">
@@ -116,7 +169,4 @@ class C extends Page {
       </div>
     );
   }
-
-}
-
-export default attach(C);
+*/

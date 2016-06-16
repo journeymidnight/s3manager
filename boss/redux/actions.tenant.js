@@ -3,10 +3,10 @@ import { notifyAlert, notify, extendContext } from './actions';
 import BOSS from '../services/boss';
 import i18n from '../../shared/i18n';
 
-export function requestDescribeTenants(routerKey) {
+export function requestDescribeTenants(routerKey, filters) {
   return dispatch => {
     return BOSS
-    .describeTenants()
+    .describeTenants(filters)
     .promise
     .then((payload) => {
       dispatch(extendContext(payload, routerKey));
@@ -21,7 +21,7 @@ export function requestDescribeTenant(tenantId) {
   return dispatch => {
     return BOSS
     .describeTenants({
-      tenants: [tenantId],
+      tenantIds: [tenantId],
     })
     .promise
     .then((payload) => {
@@ -84,10 +84,10 @@ export function requestCreateTenantRole(tenantId, userId, role) {
   };
 }
 
-export function requestDeleteTenantRole(tenantId, userId) {
+export function requestDeleteTenantRole(tenantId, userIds) {
   return (dispatch) => {
     return BOSS
-    .deleteTenantRole(tenantId, userId)
+    .deleteTenantRole(tenantId, userIds)
     .promise
     .then(() => {
       dispatch(notify(i18n.t('deleteSuccessed')));
@@ -104,9 +104,22 @@ export function requestDescribeTenantRoles(tenantId) {
     .describeTenantRoles(tenantId)
     .promise
     .then((payload) => {
-      dispatch(extendContext({
-        roles: payload,
-      }));
+      dispatch(extendContext(payload));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
+export function requestDeleteTenants(routerKey, tenantIds) {
+  return dispatch => {
+    return BOSS
+    .deleteTenants(tenantIds)
+    .promise
+    .then((payload) => {
+      dispatch(notify(i18n.t('deleteSuccess')));
+      dispatch(extendContext(payload, routerKey));
     })
     .catch((error) => {
       dispatch(notifyAlert(error.message));

@@ -1,6 +1,8 @@
-@import "gitlab/application";
-@import "pace";
-@import "login";
+@import "../../node_modules/react-select/scss/default";
+@import "./gitlab/application";
+@import "./pace";
+@import "./header";
+@import "./login";
 
 body {
     font-family: Arial, "Hiragino Sans GB", "Microsoft YaHei", STHeiti, "WenQuanYi Micro Hei", SimSun, sans-serif;
@@ -269,6 +271,13 @@ header.navbar-gitlab .container-fluid {
           input {
             width: 300px;
           }
+        }
+    }
+    .nav-links {
+        width: 30%;
+
+        @media (max-width: $screen-sm-max) {
+          width: 100%;
         }
     }
 }

@@ -11,6 +11,9 @@ class Boss {
   describeTenants(filters = {}) {
     return this.call('describeTenants', filters);
   }
+  deleteTenants(filters = {}) {
+    return this.call('deleteTenants', filters);
+  }
   createTenant(tenant) {
     return this.call('createTenant', tenant);
   }
@@ -34,14 +37,19 @@ class Boss {
       role,
     });
   }
-  deleteTenantRole(tenantId, userId) {
+  deleteTenantRole(tenantId, userIds) {
     return this.call('deleteTenantRole', {
       tenantId,
-      userId,
+      userIds,
     });
   }
   describeUsers(filters = {}) {
     return this.call('describeUsers', filters);
+  }
+  deleteUsers(userIds) {
+    return this.call('deleteUsers', {
+      userIds,
+    });
   }
   createUser(user) {
     return this.call('createUser', user);

@@ -7,6 +7,7 @@ const F = (props) => {
   const { fields:
     { username, email, password },
     handleSubmit,
+    resetForm,
     submitting,
     submitFailed,
   } = props;
@@ -38,10 +39,9 @@ const F = (props) => {
         <button type="submit" className="btn btn-save" disabled={submitting}>
           {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('update')}
         </button>
-        &nbsp;
-        <a className="btn btn-cancel" href="/tenants">
-          {t('cancel')}
-        </a>
+        <button type="button" className="btn pull-right" disabled={submitting} onClick={resetForm}>
+          {t('reset')}
+        </button>
       </div>
     </form>
   );
@@ -59,6 +59,7 @@ F.propTypes = {
   fields: React.PropTypes.object.isRequired,
   error: React.PropTypes.string,
   handleSubmit: React.PropTypes.func.isRequired,
+  resetForm: React.PropTypes.func.isRequired,
   submitting: React.PropTypes.bool.isRequired,
   submitFailed: React.PropTypes.bool.isRequired,
   t: React.PropTypes.any,
