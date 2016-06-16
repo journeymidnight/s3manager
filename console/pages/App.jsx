@@ -5,6 +5,7 @@ import ConsoleHeader from '../components/ConsoleHeader.jsx';
 import ConsoleSidebar from '../components/ConsoleSidebar.jsx';
 import Notify from '../../shared/components/Notify.jsx';
 import Home from '../pages/Home';
+import NoAnyRegions from '../pages/NoAnyRegions';
 
 class App extends React.Component {
 
@@ -12,7 +13,11 @@ class App extends React.Component {
   }
 
   render() {
-    const { t, region, params } = this.props;
+    const { t, region, regions, params } = this.props;
+    if (regions && regions.length === 0) {
+      return <NoAnyRegions />;
+    }
+
     if (!region) {
       return <Home params={this.props.params} />;
     } else if (params.regionId && region.regionId !== params.regionId) {
@@ -48,6 +53,7 @@ App.propTypes = {
   t: React.PropTypes.any,
   routing: React.PropTypes.object,
   region: React.PropTypes.object,
+  regions: React.PropTypes.array,
   params: React.PropTypes.object,
 };
 
@@ -58,6 +64,7 @@ function mapStateToProps(state) {
     context: state.context,
     routing: state.routing,
     region: state.region,
+    regions: state.regions,
   };
 }
 

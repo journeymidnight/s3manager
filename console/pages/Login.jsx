@@ -1,24 +1,30 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import * as Actions from '../redux/actions';
-import Header from '../../shared/components/Header';
 import { push } from 'react-router-redux';
+import Page, { attach } from '../../shared/pages/RegionPage';
+import Header from '../../shared/components/Header';
+import * as Actions from '../redux/actions';
 import Auth from '../services/auth';
 import Notify from '../../shared/components/Notify.jsx';
 import LoginForm from '../../shared/forms/LoginForm';
 
-class C extends React.Component {
+class C extends Page {
 
-  componentDidMount() {
+  constructor(props) {
+    super(props);
+
     this.onSubmit = this.onSubmit.bind(this);
+    this.initialValues = {};
   }
 
   onSubmit(values, dispatch) {
+    this.initialValues = values;
+
     return new Promise((resolve, reject) => {
       const email = values.email;
       const password = values.password;
+      const tenantId = values.tenantId;
 
-      Auth.authorize(email, password)
+      Auth.authorize(email, password, tenantId)
       .promise
       .then((token) => {
         Auth.describeContext(token.token)
@@ -34,12 +40,21 @@ class C extends React.Component {
         });
       }).catch((error) => {
         reject();
-        dispatch(Actions.notifyAlert(error.message));
+        if (error.retCode === 1402) {
+          dispatch(Actions.extendContext({
+            tenantSet: error.data.tenantSet,
+          }));
+        } else {
+          dispatch(Actions.notifyAlert(error.message));
+        }
       });
     });
   }
 
   render() {
+    if (this.props.context.tenantSet && this.props.context.tenantSet.length > 0 && !this.initialValues.tenantId) {
+      this.initialValues.tenantId = this.props.context.tenantSet[0].tenantId;
+    }
     return (
       <div className="login-page">
         <Header />
@@ -65,7 +80,7 @@ class C extends React.Component {
                         </h3>
                       </div>
                       <div className="login-body">
-                        <LoginForm onSubmit={this.onSubmit} />
+                        <LoginForm onSubmit={this.onSubmit} tenants={this.props.context.tenantSet} initialValues={this.initialValues} />
                       </div>
                     </div>
                   </div>
@@ -79,14 +94,4 @@ class C extends React.Component {
   }
 }
 
-C.propTypes = {
-  auth: React.PropTypes.object,
-};
-
-function mapStateToProps(state) {
-  return {
-    auth: state.auth,
-  };
-}
-
-export default connect(mapStateToProps)(C);
+export default attach(C);
