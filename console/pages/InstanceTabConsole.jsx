@@ -1,8 +1,8 @@
 import React from 'react';
-import RegionPage, { attach } from '../../shared/pages/RegionPage';
+import Page, { attach } from '../../shared/pages/Page';
 import * as Actions from '../redux/actions';
 
-class C extends RegionPage {
+class C extends Page {
   render() {
     return (
       <div />

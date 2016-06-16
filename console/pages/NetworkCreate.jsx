@@ -1,10 +1,10 @@
 import React from 'react';
-import RegionPage, { attach } from '../../shared/pages/RegionPage';
+import Page, { attach } from '../../shared/pages/Page';
 import NetworkCreateForm from '../forms/NetworkCreateForm';
 import * as Actions from '../redux/actions';
 import * as NetworkActions from '../redux/actions.network';
 
-class C extends RegionPage {
+class C extends Page {
 
   constructor(props) {
     super(props);

@@ -2,7 +2,7 @@ import React from 'react';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
 import _ from 'lodash';
-import RegionPage, { attach } from '../../shared/pages/RegionPage';
+import Page, { attach } from '../../shared/pages/Page';
 import Pagination from '../../shared/components/Pagination';
 import SubnetCreateForm from '../forms/SubnetCreateForm';
 import * as Actions from '../redux/actions';
@@ -34,7 +34,7 @@ SubnetsDeleteForm = reduxForm({
   fields: [],
 })(translate()(SubnetsDeleteForm));
 
-class C extends RegionPage {
+class C extends Page {
 
   constructor(props) {
     super(props);

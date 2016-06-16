@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router';
-import RegionPage, { attach } from '../../shared/pages/RegionPage';
+import Page, { attach } from '../../shared/pages/Page';
 
-class C extends RegionPage {
+class C extends Page {
 
   componentDidMount() {
   }

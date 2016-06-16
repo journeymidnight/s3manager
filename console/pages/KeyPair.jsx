@@ -1,5 +1,5 @@
 import React from 'react';
-import RegionPage, { attach } from '../../shared/pages/RegionPage';
+import Page, { attach } from '../../shared/pages/Page';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
 import * as Actions from '../redux/actions';
@@ -95,7 +95,7 @@ KeyPairUpdateForm = reduxForm({
   validate: KeyPairUpdateForm.validate,
 })(translate()(KeyPairUpdateForm));
 
-class C extends RegionPage {
+class C extends Page {
 
   constructor(props) {
     super(props);
