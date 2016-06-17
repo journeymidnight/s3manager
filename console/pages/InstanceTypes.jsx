@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router';
 import _ from 'lodash';
-import RegionPage, { attach } from '../../shared/pages/RegionPage';
+import Page, { attach } from '../../shared/pages/Page';
 import Pagination from '../../shared/components/Pagination';
 import * as Actions from '../redux/actions';
 import * as InstanceTypeActions from '../redux/actions.instance_type';
 
-class C extends RegionPage {
+class C extends Page {
 
   constructor(props) {
     super(props);

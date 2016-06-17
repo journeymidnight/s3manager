@@ -1,10 +1,10 @@
 import React from 'react';
-import RegionPage, { attach } from '../../shared/pages/RegionPage';
+import Page, { attach } from '../../shared/pages/Page';
 import InstanceCreateForm from '../forms/InstanceCreateForm';
 import * as Actions from '../redux/actions';
 import * as InstanceActions from '../redux/actions.instance';
 
-class C extends RegionPage {
+class C extends Page {
 
   constructor(props) {
     super(props);

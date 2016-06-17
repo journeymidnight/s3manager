@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router';
-import RegionPage, { attach } from '../../shared/pages/RegionPage';
+import Page, { attach } from '../../shared/pages/Page';
 import EipForm from '../forms/EipForm';
 import * as EipActions from '../redux/actions.eip';
 
-class C extends RegionPage {
+class C extends Page {
 
   constructor(props) {
     super(props);

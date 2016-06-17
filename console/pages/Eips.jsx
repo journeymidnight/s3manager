@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import _ from 'lodash';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
-import RegionPage, { attach } from '../../shared/pages/RegionPage';
+import Page, { attach } from '../../shared/pages/Page';
 import Pagination from '../../shared/components/Pagination';
 import * as Actions from '../redux/actions';
 import * as EipActions from '../redux/actions.eip';
@@ -34,7 +34,7 @@ const DeleteEipsForm = reduxForm({
   fields: [],
 })(translate()(F));
 
-class C extends RegionPage {
+class C extends Page {
 
   constructor(props) {
     super(props);

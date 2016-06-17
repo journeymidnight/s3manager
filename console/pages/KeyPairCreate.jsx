@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router';
-import RegionPage, { attach } from '../../shared/pages/RegionPage';
+import Page, { attach } from '../../shared/pages/Page';
 import KeyPairForm from '../forms/KeyPairForm';
 import * as KeyPairActions from '../redux/actions.key_pair';
 
-class C extends RegionPage {
+class C extends Page {
 
   constructor(props) {
     super(props);

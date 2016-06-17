@@ -1,6 +1,6 @@
 import React from 'react';
 import { push } from 'react-router-redux';
-import Page, { attach } from '../../shared/pages/RegionPage';
+import Page, { attach } from '../../shared/pages/Page';
 import Header from '../../shared/components/Header';
 import * as Actions from '../redux/actions';
 import Auth from '../services/auth';

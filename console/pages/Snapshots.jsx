@@ -1,7 +1,7 @@
 import React from 'react';
-import RegionPage, { attach } from '../../shared/pages/RegionPage';
+import Page, { attach } from '../../shared/pages/Page';
 
-class C extends RegionPage {
+class C extends Page {
 
   componentDidMount() {
   }

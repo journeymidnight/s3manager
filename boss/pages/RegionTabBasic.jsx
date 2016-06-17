@@ -1,5 +1,5 @@
 import React from 'react';
-import Page, { attach } from '../../shared/pages/RegionPage';
+import Page, { attach } from '../../shared/pages/Page';
 import * as Actions from '../redux/actions';
 import RegionForm from '../forms/RegionForm';
 import * as RegionActions from '../redux/actions.region';
