@@ -32,6 +32,9 @@
     "subnet": "子网",
     "router": "路由器",
     "count": "数量",
+    "memory": "内存大小(MB)",
+    "vcpus": "CPU核数",
+    "disk": "系统盘(GB)",
     "address": "IP 地址",
 
     "lastCreated": "最新创建",
@@ -202,13 +205,13 @@
     "formTenantQuotaForm": {
         "tenantId": "租户ID",
         "quotaInstances": "云主机",
-        "quotaCPU": "vCPU",
-        "quotaMemory": "内存(GB)",
+        "quotaVCPUs": "vCPU",
+        "quotaMemory": "内存(MB)",
         "quotaImages": "镜像",
         "quotaEIPs": "公网 IP",
-        "quotaVolumes": "云硬盘",
+        "quotaVolumes": "云硬盘个数",
         "quotaVolumeSize": "云硬盘容量(GB)",
-        "quotaKeypairs": "SSH 密钥"
+        "quotaKeyPairs": "SSH 密钥"
     },
 
     "sidebarInstance": "云主机",

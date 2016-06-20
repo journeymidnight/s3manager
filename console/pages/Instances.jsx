@@ -59,6 +59,10 @@ class C extends TablePage {
             <th width="150">{t('id')}</th>
             <th>{t('name')}</th>
             <th>{t('status')}</th>
+            <th>{t('vcpus')}</th>
+            <th>{t('memory')}</th>
+            <th>{t('disk')}</th>
+            <th>{t('address')}</th>
             <th width="200">{t('created')}</th>
           </tr>
         </thead>
@@ -82,6 +86,10 @@ class C extends TablePage {
                 <i className="icon"></i>
                 {t(`instanceStatus.${instance.status}`)}
               </td>
+              <td>{instance.currentVCPUs}</td>
+              <td>{instance.currentMemory}</td>
+              <td>{instance.currentDisk}</td>
+              <td>{instance.address}</td>
               <td className="light">{instance.created}</td>
             </tr>
           );

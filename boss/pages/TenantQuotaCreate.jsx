@@ -14,13 +14,13 @@ class C extends Page {
     this.onSubmit = this.onSubmit.bind(this);
     this.defaultTenantQuota = {
       quotaInstances: 2,
-      quotaCPU: 8,
+      quotaVCPUs: 8,
       quotaMemory: 16,
       quotaImages: 2,
       quotaEIPs: 1,
       quotaVolumes: 2,
       quotaVolumeSize: 100,
-      quotaKeypairs: 2,
+      quotaKeyPairs: 2,
     };
   }
 
@@ -28,23 +28,23 @@ class C extends Page {
     return new Promise((resolve, reject) => {
       const tenantId = values.tenantId;
       const quotaInstances = parseInt(values.quotaInstances, 10);
-      const quotaCPU = parseInt(values.quotaCPU, 10);
+      const quotaVCPUs = parseInt(values.quotaVCPUs, 10);
       const quotaMemory = parseInt(values.quotaMemory, 10);
       const quotaImages = parseInt(values.quotaImages, 10);
       const quotaEIPs = parseInt(values.quotaEIPs, 10);
       const quotaVolumes = parseInt(values.quotaVolumes, 10);
       const quotaVolumeSize = parseInt(values.quotaVolumeSize, 10);
-      const quotaKeypairs = parseInt(values.quotaKeypairs, 10);
+      const quotaKeyPairs = parseInt(values.quotaKeyPairs, 10);
 
       dispatch(RegionActions.requestAssignTenantQuota(this.regionId, tenantId, {
         quotaInstances,
-        quotaCPU,
+        quotaVCPUs,
         quotaMemory,
         quotaImages,
         quotaEIPs,
         quotaVolumes,
         quotaVolumeSize,
-        quotaKeypairs,
+        quotaKeyPairs,
       }))
       .then(() => {
         resolve();
