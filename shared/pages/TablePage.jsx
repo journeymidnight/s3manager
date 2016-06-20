@@ -36,6 +36,8 @@ class C extends Page {
     dispatch(Actions.extendContext(Object.assign(context, options), routerKey));
 
     setTimeout(this.onRefresh(), 100);
+
+    this.setInterval(this.onRefresh(), 2000);
   }
 
   refresh() {
@@ -128,13 +130,14 @@ class C extends Page {
   }
 
   renderPagination() {
+    const { offset, limit, total } = this.props.context;
     return (
       <div>
         {this.props.context.total > 0 && (
           <Pagination
             onRefresh={this.onRefresh}
-            currentPage={this.props.context.currentPage}
-            totalPage={this.props.context.totalPage}
+            currentPage={parseInt(offset / limit, 10) + 1}
+            totalPage={parseInt((total - 1) / limit, 10) + 1}
           />
         )}
       </div>

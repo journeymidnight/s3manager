@@ -309,3 +309,8 @@ header.navbar-gitlab .container-fluid {
         padding-top: 10px;
     }
 }
+
+body.modal-open {
+    overflow-y: auto !important;
+    padding-right: 0 !important;
+}
