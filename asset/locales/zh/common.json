@@ -32,9 +32,8 @@
     "subnet": "子网",
     "router": "路由器",
     "count": "数量",
-    "memory": "内存大小(MB)",
-    "vcpus": "CPU核数",
-    "disk": "系统盘(GB)",
+    "memory": "内存",
+    "vcpus": "CPU 核数",
     "address": "IP 地址",
 
     "lastCreated": "最新创建",

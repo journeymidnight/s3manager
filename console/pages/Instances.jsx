@@ -3,8 +3,9 @@ import moment from 'moment';
 import React from 'react';
 import { Link } from 'react-router';
 import { attach } from '../../shared/pages/Page';
+import { confirmModal } from '../../shared/components/Modal';
 import TablePage from '../../shared/pages/TablePage';
-import ButtonForm from '../../shared/forms/ButtonForm';
+import { buttonForm } from '../../shared/forms/ButtonForm';
 import * as Actions from '../redux/actions';
 import * as InstanceActions from '../redux/actions.instance';
 
@@ -15,7 +16,11 @@ class C extends TablePage {
     super(props);
 
     this.refresh = this.refresh.bind(this);
+    this.batchActions = this.batchActions.bind(this);
     this.onDelete = this.onDelete.bind(this);
+    this.onStart = this.onStart.bind(this);
+    this.onStop = this.onStop.bind(this);
+    this.onRestart = this.onRestart.bind(this);
     this.onSearchKeyPress = this.onSearchKeyPress.bind(this);
   }
 
@@ -33,12 +38,12 @@ class C extends TablePage {
     return InstanceActions.requestDescribeInstances(routerKey, region.regionId, filters);
   }
 
-  onDelete() {
+  batchActions(action) {
     const { dispatch, region, routerKey } = this.props;
     const instanceIds = _.keys(this.props.context.selected);
 
     return new Promise((resolve, reject) => {
-      dispatch(InstanceActions.requestDeleteInstances(routerKey, region.regionId, instanceIds))
+      dispatch(action(routerKey, region.regionId, instanceIds))
       .then(() => {
         resolve();
         this.onRefresh({}, false)();
@@ -46,6 +51,26 @@ class C extends TablePage {
         reject();
       });
     });
+  }
+
+  onDelete() {
+    const { t } = this.props;
+
+    confirmModal(t('confirmDelete'), () => {
+      return this.batchActions(InstanceActions.requestDeleteInstances);
+    });
+  }
+
+  onStart() {
+    return this.batchActions(InstanceActions.requestStartInstances);
+  }
+
+  onStop() {
+    return this.batchActions(InstanceActions.requestStopInstances);
+  }
+
+  onRestart() {
+    return this.batchActions(InstanceActions.requestRestartInstances);
   }
 
   renderTable() {
@@ -87,7 +112,7 @@ class C extends TablePage {
                 {t(`instanceStatus.${instance.status}`)}
               </td>
               <td>{instance.currentVCPUs}</td>
-              <td>{instance.currentMemory}</td>
+              <td>{instance.currentMemory} MB</td>
               <td>{instance.address}</td>
               <td>{moment.utc(instance.created).local().format('YYYY-MM-DD HH:mm:ss')}</td>
             </tr>
@@ -200,7 +225,16 @@ class C extends TablePage {
         </div>
         <div className={Object.keys(this.props.context.selected).length > 0 ? '' : 'hidden'}>
           <div className="filter-item inline">
-            <ButtonForm onSubmit={this.onDelete} text={t('delete')} type="btn-danger" />
+            {buttonForm({ onSubmit: this.onStart, text: t('pageInstance.startInstance') })}
+          </div>
+          <div className="filter-item inline">
+            {buttonForm({ onSubmit: this.onRestart, text: t('pageInstance.restartInstance') })}
+          </div>
+          <div className="filter-item inline">
+            {buttonForm({ onSubmit: this.onStop, text: t('pageInstance.stopInstance') })}
+          </div>
+          <div className="filter-item inline pull-right">
+            {React.cloneElement(buttonForm(), { onSubmit: this.onDelete, text: t('delete'), type: 'btn-danger' })}
           </div>
         </div>
       </div>
