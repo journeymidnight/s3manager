@@ -91,7 +91,7 @@
         "pending": "准备中",
         "active": "运行中",
         "deleted": "已删除",
-        "ceased": "物理删除"
+        "ceased": "已删除"
     },
 
     "instanceStatus": {
@@ -104,7 +104,7 @@
         "scheduling": "调度中",
         "error": "状态异常",
         "deleted": "已删除",
-        "ceased": "物理删除"
+        "ceased": "已删除"
     },
 
     "keyPairStatus": {
@@ -116,14 +116,14 @@
         "active": "运行中",
         "associated": "已关联",
         "deleted": "已删除",
-        "ceased": "物理删除"
+        "ceased": "已删除"
     },
 
     "imageStatus": {
         "pending": "准备中",
         "active": "运行中",
         "deleted": "已删除",
-        "ceased": "物理删除"
+        "ceased": "已删除"
     },
 
     "pageNetworkCreate": {
