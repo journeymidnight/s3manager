@@ -1,6 +1,7 @@
+import _ from 'lodash';
+import moment from 'moment';
 import React from 'react';
 import { Link } from 'react-router';
-import _ from 'lodash';
 import { attach } from '../../shared/pages/Page';
 import TablePage from '../../shared/pages/TablePage';
 import ButtonForm from '../../shared/forms/ButtonForm';
@@ -61,7 +62,6 @@ class C extends TablePage {
             <th>{t('status')}</th>
             <th>{t('vcpus')}</th>
             <th>{t('memory')}</th>
-            <th>{t('disk')}</th>
             <th>{t('address')}</th>
             <th width="200">{t('created')}</th>
           </tr>
@@ -88,9 +88,8 @@ class C extends TablePage {
               </td>
               <td>{instance.currentVCPUs}</td>
               <td>{instance.currentMemory}</td>
-              <td>{instance.currentDisk}</td>
               <td>{instance.address}</td>
-              <td className="light">{instance.created}</td>
+              <td>{moment.utc(instance.created).local().format('YYYY-MM-DD HH:mm:ss')}</td>
             </tr>
           );
         })}
