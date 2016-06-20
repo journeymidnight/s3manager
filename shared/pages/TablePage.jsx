@@ -37,10 +37,10 @@ class C extends Page {
 
     setTimeout(this.onRefresh(), 100);
 
-    this.setInterval(this.onRefresh(), 2000);
+    this.setInterval(this.onRefresh({}, true, true), 2000);
   }
 
-  refresh() {
+  refresh(silent = true) {
     const { dispatch, routerKey } = this.props;
 
     const filters = {
@@ -53,13 +53,19 @@ class C extends Page {
 
     dispatch(this.refreshAction(routerKey, filters))
     .then(() => {
-      dispatch(Actions.extendContext({ loading: false, initialized: true }, routerKey));
+      if (!silent) {
+        dispatch(Actions.extendContext({ loading: false, initialized: true }, routerKey));
+      } else {
+        dispatch(Actions.extendContext({ initialized: true }, routerKey));
+      }
     });
 
-    dispatch(Actions.extendContext({ loading: true }, routerKey));
+    if (!silent) {
+      dispatch(Actions.extendContext({ loading: true }, routerKey));
+    }
   }
 
-  onRefresh(overideFilters = {}, firstPage = true) {
+  onRefresh(overideFilters = {}, firstPage = true, silent = false) {
     return (e) => {
       if (e) {
         e.preventDefault();
@@ -68,12 +74,17 @@ class C extends Page {
       if (firstPage) {
         overideFilters.currentPage = 1;
       }
-      overideFilters.selected = {};
+
+      if (!silent) {
+        overideFilters.selected = {};
+      }
 
       const { dispatch, routerKey } = this.props;
       dispatch(Actions.extendContext(overideFilters, routerKey));
 
-      setTimeout(this.refresh, 100);
+      setTimeout(() => {
+        this.refresh(silent);
+      }, 100);
     };
   }
 
