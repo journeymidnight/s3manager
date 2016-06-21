@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import moment from 'moment';
 import React from 'react';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
@@ -80,6 +81,8 @@ class C extends Page {
     this.updateInstance = this.updateInstance.bind(this);
     this.stopInstance = this.stopInstance.bind(this);
     this.restartInstance = this.restartInstance.bind(this);
+    this.resizeInstance = this.resizeInstance.bind(this);
+    this.resetInstance = this.resetInstance.bind(this);
   }
 
   componentDidMount() {
@@ -163,6 +166,20 @@ class C extends Page {
     });
   }
 
+  resetInstance(e) {
+    e.preventDefault();
+
+    const { dispatch, region, routerKey, params } = this.props;
+    dispatch(InstanceActions.requestResetInstances(routerKey, region.regionId, [params.instanceId]));
+  }
+
+  resizeInstance(e) {
+    e.preventDefault();
+
+    const { dispatch, region, routerKey, params } = this.props;
+    dispatch(InstanceActions.requestResizeInstances(routerKey, region.regionId, [params.instanceId]));
+  }
+
   render() {
     const { t, region, params } = this.props;
 
@@ -221,7 +238,7 @@ class C extends Page {
                   <table className="table">
                     <tbody>
                       <tr>
-                        <td>{t('id')}</td>
+                        <td width="100">{t('id')}</td>
                         <td>{instance.instanceId}</td>
                       </tr>
                       <tr>
@@ -239,7 +256,7 @@ class C extends Page {
                         </td>
                       </tr>
                       <tr>
-                        <td>{t('address')}</td>
+                        <td>{t('privateIP')}</td>
                         <td>
                         {instance.address && <strong>{instance.address}</strong>}
                         {!instance.address && <i className="text-muted">{t('noName')}</i>}
@@ -255,11 +272,56 @@ class C extends Page {
                       </tr>
                       <tr>
                         <td>{t('created')}</td>
-                        <td>{instance.created}</td>
+                        <td>{moment.utc(instance.created).local().format('YYYY-MM-DD HH:mm:ss')}</td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
+
+                <div className="panel panel-default">
+                  <div className="panel-heading">
+                    {t('pageInstance.configuration')}
+                    {this.isEnabled(instance) && <div className="btn-group pull-right">
+                      <button type="button" className="btn dropdown-toggle" data-toggle="dropdown">
+                        <i className="fa fa-bars"></i>
+                      </button>
+                      <ul className="dropdown-menu">
+                        <li><a href onClick={this.resizeInstance}>{t('pageInstance.resizeInstance')}</a></li>
+                        <li><a href onClick={this.resetInstance}>{t('pageInstance.resetInstance')}</a></li>
+                      </ul>
+                    </div>}
+                  </div>
+                  <table className="table">
+                    <tbody>
+                      <tr>
+                        <td>{t('image')}</td>
+                        <td>
+                        {instance.image.name}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>{t('vcpus')}</td>
+                        <td>
+                        {instance.currentVCPUs}
+                        {!instance.description && <i className="text-muted">{t('noName')}</i>}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>{t('memory')}</td>
+                        <td>
+                        {instance.currentMemory} MB
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>{t('disk')}</td>
+                        <td>
+                        {instance.currentDisk} GB
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
               </div>
               {this.isEnabled(instance) && <div className="col-md-8 tabs">
                 <ul className="nav-links clearfix">

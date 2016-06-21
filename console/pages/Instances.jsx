@@ -87,7 +87,7 @@ class C extends TablePage {
             <th>{t('status')}</th>
             <th>{t('vcpus')}</th>
             <th>{t('memory')}</th>
-            <th>{t('address')}</th>
+            <th>{t('privateIP')}</th>
             <th width="200">{t('created')}</th>
           </tr>
         </thead>

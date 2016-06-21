@@ -56,6 +56,7 @@ export function requestDescribeInstance(routerKey, regionId, instanceId) {
     return IaaS
     .describeInstances(regionId, {
       instanceIds: [instanceId],
+      verbose: true,
     })
     .promise
     .then((payload) => {
@@ -144,6 +145,32 @@ export function requestModifyInstanceAttributes(routerKey, regionId, instanceId,
     .then(() => {
       dispatch(notify(i18n.t('updateSuccessed')));
       return dispatch(requestDescribeInstance(routerKey, regionId, instanceId));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
+export function requestResetInstances(routerKey, regionId, instanceIds) {
+  return dispatch => {
+    return IaaS
+    .resetInstances(regionId, instanceIds)
+    .promise
+    .then(() => {
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
+export function requestResizeInstances(routerKey, regionId, instanceIds) {
+  return dispatch => {
+    return IaaS
+    .resizeInstances(regionId, instanceIds)
+    .promise
+    .then(() => {
     })
     .catch((error) => {
       dispatch(notifyAlert(error.message));

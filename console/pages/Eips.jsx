@@ -270,7 +270,7 @@ class C extends Page {
                     <th>{t('id')}</th>
                     <th>{t('name')}</th>
                     <th>{t('description')}</th>
-                    <th>{t('address')}</th>
+                    <th>{t('ip')}</th>
                     <th>{t('status')}</th>
                     <th>{t('created')}</th>
                   </tr>
