@@ -28,7 +28,7 @@
     "volume": "硬盘",
     "image": "映像",
     "instance": "云主机",
-    "instanceType": "配置",
+    "instanceType": "主机配置",
     "network": "私有网络",
     "subnet": "子网",
     "router": "路由器",
@@ -36,6 +36,9 @@
     "memory": "内存",
     "vcpus": "CPU 核数",
     "disk": "系统盘",
+    "osFamily": "操作系统发行版",
+    "osPlatform": "操作系统平台",
+    "osProcessorType": "处理器类型",
     "ip": "IP 地址",
     "privateIP": "内网 IP",
     "publicIP": "公网 IP",
@@ -49,6 +52,7 @@
     "createSuccessed": "添加成功。",
     "updateSuccessed": "保存成功。",
     "deleteSuccessed": "删除成功。",
+    "syncSuccessed": "同步成功。",
     "authorizeFailed": "验证失败。",
     "createFailed": "添加失败。",
     "updateFailed": "保存失败。",
@@ -133,6 +137,27 @@
         "ceased": "已删除"
     },
 
+    "osPlatforms": {
+        "linux": "Linux",
+        "windows": "Windows",
+        "unknown": "未知"
+    },
+
+    "osProcessorTypes": {
+        "32": "32 位",
+        "64": "64 位",
+        "unknown": "未知"
+    },
+
+    "osFamilies": {
+        "ubuntu": "Ubuntu",
+        "centos": "CentOS",
+        "debian": "Debian",
+        "fedora": "Fedora",
+        "windows": "Windows",
+        "unknown": "未知"
+    },
+
     "pageNetworkCreate": {
         "createNetwork": "添加私有网络"
     },
@@ -160,7 +185,10 @@
         "basic": "基本信息",
         "assignedTenants": "分配租户",
         "instanceTypes": "主机配置",
-        "images": "映像"
+        "updateQuota": "调整配额",
+        "updateImage": "更新信息",
+        "syncImages": "同步映像",
+        "publicImages": "公共映像"
     },
 
     "pageTenant": {
@@ -205,8 +233,8 @@
     "formRegionForm": {
         "publicEndpoint": "公共接口 URL",
         "manageEndpoint": "管理接口 URL",
-        "manageKey": "管理员账号",
-        "manageSecret": "管理员密码"
+        "manageKey": "管理账号",
+        "manageSecret": "管理密码"
     },
 
     "formTenantQuotaForm": {

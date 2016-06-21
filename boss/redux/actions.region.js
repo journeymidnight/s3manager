@@ -1,9 +1,10 @@
 import { push } from 'react-router-redux';
 import { notify, notifyAlert, extendContext } from './actions';
 import BOSS from '../services/boss';
+import Region from '../services/region';
 import i18n from '../../shared/i18n';
 
-export function requestDescribeRegions(routerKey, filters = {}) {
+export function requestDescribeRegions(routerKey, filters) {
   return dispatch => {
     return BOSS
     .describeRegions(filters)
@@ -107,6 +108,66 @@ export function requestModifyRegion(region) {
     .then(() => {
       dispatch(notify(i18n.t('updateSuccessed')));
       return dispatch(requestDescribeRegion(region.regionId));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
+export function requestDescribeImages(routerKey, regionId, filters) {
+  return (dispatch) => {
+    return Region
+    .describeImages(regionId, filters)
+    .promise
+    .then((payload) => {
+      dispatch(extendContext(payload, routerKey));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
+
+export function requestDeleteImages(routerKey, regionId, imageIds) {
+  return (dispatch) => {
+    return Region
+    .deleteImages(regionId, imageIds)
+    .promise
+    .then(() => {
+      dispatch(notify(i18n.t('deleteSuccessed')));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
+
+export function requestSyncImages(routerKey, regionId) {
+  return (dispatch) => {
+    return Region
+    .syncImages(regionId)
+    .promise
+    .then((payload) => {
+      dispatch(notify(i18n.t('syncSuccessed')));
+      dispatch(extendContext(payload, routerKey));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
+
+export function requestModifyImageAttributes(routerKey, regionId, image) {
+  return (dispatch) => {
+    return Region
+    .modifyImageAttributes(regionId, image)
+    .promise
+    .then(() => {
+      dispatch(notify(i18n.t('updateSuccessed')));
     })
     .catch((error) => {
       dispatch(notifyAlert(error.message));

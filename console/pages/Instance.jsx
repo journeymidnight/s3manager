@@ -1,9 +1,9 @@
 import _ from 'lodash';
 import moment from 'moment';
 import React from 'react';
+import { Link } from 'react-router';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
-import { Link } from 'react-router';
 import Page, { attach } from '../../shared/pages/Page';
 import Modal, { confirmModal } from '../../shared/components/Modal';
 import * as Actions from '../redux/actions';

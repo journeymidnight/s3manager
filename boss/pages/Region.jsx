@@ -55,7 +55,7 @@ class C extends Page {
               <ul className="nav-links pull-right">
                 <li className={`pull-right ${(active === 'images') ? 'active' : ''}`}>
                   <Link data-placement="left" to={`/regions/${region.regionId}/images`}>
-                    {t('pageRegion.images')}
+                    {t('pageRegion.publicImages')}
                   </Link>
                 </li>
                 <li className={`pull-right ${(active === 'instanceTypes') ? 'active' : ''}`}>
