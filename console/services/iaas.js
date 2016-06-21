@@ -23,6 +23,24 @@ class IaaS {
       description,
     });
   }
+  describeVolumes(regionId, filter = {}) {
+    return this.call(regionId, 'DescribeVolumes', filter);
+  }
+  createVolume(regionId, volume) {
+    return this.call(regionId, 'CreateVolumes', volume);
+  }
+  deleteVolumes(regionId, volumeIds) {
+    return this.call(regionId, 'DeleteVolumes', {
+      volumeIds,
+    });
+  }
+  modifyVolumeAttributes(regionId, volumeId, name, description) {
+    return this.call(regionId, 'ModifyVolumeAttributes', {
+      volumeId,
+      name,
+      description,
+    });
+  }
   describeEips(regionId, filter = {}) {
     return this.call(regionId, 'DescribeEips', filter);
   }

@@ -27,6 +27,9 @@ import Eips from './pages/Eips.jsx';
 import EipCreate from './pages/EipCreate.jsx';
 import Images from './pages/Images.jsx';
 import InstanceTypes from './pages/InstanceTypes.jsx';
+import Volumes from './pages/Volumes.jsx';
+import Volume from './pages/Volume.jsx';
+import VolumeCreate from './pages/VolumeCreate.jsx';
 
 export default function configureRoutes(store) {
   function requireAuth(nextState, replace) {
@@ -51,7 +54,11 @@ export default function configureRoutes(store) {
         <Route path="profile" component={Settings} />
         <Route path=":regionId" >
           <IndexRoute component={RegionIndex} />
-          <Route path="volumes" component={Settings} />
+          <Route path="volumes">
+            <IndexRoute component={Volumes} />
+            <Route path="create" component={VolumeCreate} />
+            <Route path=":volumeId" component={Volume} />
+          </Route>
           <Route path="snapshots" >
             <IndexRoute component={Snapshots} />
           </Route>
@@ -76,7 +83,6 @@ export default function configureRoutes(store) {
             <IndexRoute component={KeyPairs} />
             <Route path="create" component={KeyPairCreate} />
             <Route path=":keyPairId" component={KeyPair} />
-            <Route path=":keyPairId/modify" component={KeyPairCreate} />
           </Route>
           <Route path="networks" >
             <IndexRoute component={Networks} />

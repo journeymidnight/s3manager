@@ -79,6 +79,9 @@
     "instanceTypeManage": "主机配置",
     "instanceTypeManageDescription": "为 Linux 云主机提供 主机配置。",
 
+    "volumeManage": "云硬盘",
+    "volumeManageDescription": "为 Linux 云主机提供 云硬盘。",
+
     "tenantManage": "租户管理",
     "tenantManageDescription": "可根据不同的企业或团队划分独立的租户, 分配相应的资源配额。",
 
@@ -129,6 +132,18 @@
     "imageStatus": {
         "pending": "准备中",
         "active": "运行中",
+        "deleted": "已删除",
+        "ceased": "物理删除"
+    },
+
+    "volumeStatus": {
+        "pending": "准备中",
+        "active": "运行中",
+        "attaching": "挂载中",
+        "inuse": "使用中",
+        "backup_ing": "备份中",
+        "backup_restoring": "备份恢复中",
+        "error": "状态异常",
         "deleted": "已删除",
         "ceased": "物理删除"
     },
@@ -185,6 +200,12 @@
         "basic": "基本信息",
         "updateEip": "更新基本信息",
         "releaseEip": "删除公网IP"
+    },
+
+    "pageVolume": {
+        "basic": "基本信息",
+        "updateVolume": "更新基本信息",
+        "releaseVolume": "删除云硬盘"
     },
 
     "formInstanceCreateForm": {
