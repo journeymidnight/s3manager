@@ -53,6 +53,7 @@ class C extends TablePage {
             </th>
             <th width="150">{t('id')}</th>
             <th>{t('name')}</th>
+            <th>{t('formRegionForm.publicEndpoint')}</th>
             <th width="200">{t('created')}</th>
           </tr>
         </thead>
@@ -69,6 +70,7 @@ class C extends TablePage {
                 </Link>
               </td>
               <td><strong>{region.name}</strong></td>
+              <td>{region.publicEndpoint}</td>
               <td>{moment.utc(region.created).local().format('YYYY-MM-DD HH:mm:ss')}</td>
             </tr>
           );

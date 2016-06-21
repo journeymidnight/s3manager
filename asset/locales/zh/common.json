@@ -53,6 +53,7 @@
     "createFailed": "添加失败。",
     "updateFailed": "保存失败。",
     "nothingHere": "没有任何数据。",
+    "notSupportedYet": "暂时不支持此功能。",
     "noAnyAvailableRegions": "当前没有任何相关联的集群信息，请联系管理员分配集群配额。",
     "relogin": "点击重新登录",
 
@@ -202,8 +203,8 @@
     },
 
     "formRegionForm": {
-        "publicEndpoint": "对外接口URL",
-        "manageEndpoint": "管理接口URL",
+        "publicEndpoint": "公共接口 URL",
+        "manageEndpoint": "管理接口 URL",
         "manageKey": "管理员账号",
         "manageSecret": "管理员密码"
     },
