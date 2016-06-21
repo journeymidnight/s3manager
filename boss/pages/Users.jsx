@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import moment from 'moment';
 import React from 'react';
 import { Link } from 'react-router';
 import { attach } from '../../shared/pages/Page';
@@ -70,7 +71,7 @@ class C extends TablePage {
               </td>
               <td><strong>{user.username}</strong></td>
               <td><strong>{user.email}</strong></td>
-              <td>{user.created}</td>
+              <td>{moment.utc(user.created).local().format('YYYY-MM-DD HH:mm:ss')}</td>
             </tr>
           );
         })}

@@ -3,13 +3,13 @@ import { notify, notifyAlert, extendContext } from './actions';
 import BOSS from '../services/boss';
 import i18n from '../../shared/i18n';
 
-export function requestDescribeRegions() {
+export function requestDescribeRegions(routerKey, filters = {}) {
   return dispatch => {
     return BOSS
-    .describeRegions()
+    .describeRegions(filters)
     .promise
     .then((payload) => {
-      dispatch(extendContext(payload));
+      dispatch(extendContext(payload, routerKey));
     })
     .catch((error) => {
       dispatch(notifyAlert(error.message));
