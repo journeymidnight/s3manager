@@ -27,6 +27,7 @@
     "status": "状态",
     "volume": "硬盘",
     "image": "映像",
+    "instance": "云主机",
     "instanceType": "配置",
     "network": "私有网络",
     "subnet": "子网",

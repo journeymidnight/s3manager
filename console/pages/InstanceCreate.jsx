@@ -83,9 +83,7 @@ class C extends Page {
           <div className="clearfix">
             <div className="top-area append-bottom-20">
               <div className="nav-text">
-                <span className="light">
-                  {t('pageInstanceCreate.createInstance')}
-                </span>
+                <span>{t('pageInstanceCreate.createInstance')}</span>
               </div>
             </div>
             <InstanceCreateForm

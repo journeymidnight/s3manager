@@ -69,9 +69,7 @@ class C extends Page {
 
             <div className="top-area append-bottom-20">
               <div className="nav-text">
-                <span className="light">
-                  {t('create')}
-                </span>
+                <span>{t('create')}</span>
               </div>
             </div>
 

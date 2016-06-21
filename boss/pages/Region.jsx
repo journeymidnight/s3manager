@@ -49,9 +49,7 @@ class C extends Page {
 
             <div className="top-area">
               <div className="nav-text">
-                <i className="light">
-                  {region.regionId}
-                </i>
+                <i>{region.regionId}</i>
               </div>
 
               <ul className="nav-links pull-right">

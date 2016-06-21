@@ -163,9 +163,7 @@ class C extends Page {
 
             <div className="top-area">
               <div className="nav-text">
-                <i className="light">
-                  {network.networkId}
-                </i>
+                <i>{network.networkId}</i>
               </div>
             </div>
 

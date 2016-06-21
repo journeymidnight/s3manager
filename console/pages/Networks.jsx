@@ -187,7 +187,7 @@ class C extends Page {
                 <i className="icon"></i>
                 {t(`networkStatus.${network.status}`)}
               </td>
-              <td className="light">{network.created}</td>
+              <td>{network.created}</td>
             </tr>
           );
         })}
@@ -204,7 +204,7 @@ class C extends Page {
           <div className="clearfix">
             <div className="top-area">
               <div className="nav-text">
-                <span className="light">
+                <span>
                   {t('networkManageDescription')}
                 </span>
               </div>
@@ -270,7 +270,7 @@ class C extends Page {
                 <div className="pull-right">
                   <div className="dropdown inline prepend-left-10">
                     <button className="dropdown-toggle btn" data-toggle="dropdown" type="button">
-                      <span className="light"></span> {this.props.context.reverse ? t('lastCreated') : t('firstCreated')}
+                      {this.props.context.reverse ? t('lastCreated') : t('firstCreated')}
                       <b className="caret"></b></button>
                     <ul className="dropdown-menu dropdown-menu-align-right dropdown-select dropdown-menu-selectable">
                       <li><a className={this.props.context.reverse ? 'is-active' : ''} href onClick={this.onRefresh({ reverse: true })}>{t('lastCreated')}</a></li>

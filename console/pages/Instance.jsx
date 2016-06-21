@@ -206,9 +206,7 @@ class C extends Page {
 
             <div className="top-area">
               <div className="nav-text">
-                <i className="light">
-                  {instance.instanceId}
-                </i>
+                <span>{t('instance')}&nbsp;<i>{instance.instanceId}</i></span>
               </div>
             </div>
 
@@ -251,15 +249,8 @@ class C extends Page {
                       <tr>
                         <td>{t('description')}</td>
                         <td>
-                        {instance.description && <strong>{instance.description}</strong>}
+                        {instance.description && <span>{instance.description}</span>}
                         {!instance.description && <i className="text-muted">{t('noName')}</i>}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>{t('privateIP')}</td>
-                        <td>
-                        {instance.address && <strong>{instance.address}</strong>}
-                        {!instance.address && <i className="text-muted">{t('noName')}</i>}
                         </td>
                       </tr>
                       <tr>
@@ -303,7 +294,6 @@ class C extends Page {
                         <td>{t('vcpus')}</td>
                         <td>
                         {instance.currentVCPUs}
-                        {!instance.description && <i className="text-muted">{t('noName')}</i>}
                         </td>
                       </tr>
                       <tr>
@@ -316,6 +306,19 @@ class C extends Page {
                         <td>{t('disk')}</td>
                         <td>
                         {instance.currentDisk} GB
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>{t('privateIP')}</td>
+                        <td>
+                        {instance.address && <span>{instance.address}</span>}
+                        {!instance.address && <i className="text-muted">{t('noName')}</i>}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>{t('publicIP')}</td>
+                        <td>
+                          <i className="text-muted">{t('noName')}</i>
                         </td>
                       </tr>
                     </tbody>
