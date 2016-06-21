@@ -111,7 +111,7 @@ ImageUpdateForm.validate = () => {
 };
 
 ImageUpdateForm = reduxForm({
-  form: 'KeyPairForm',
+  form: 'ImageUpdateForm',
   fields: ['imageId', 'name', 'description', 'platform', 'osFamily', 'processorType'],
   validate: ImageUpdateForm.validate,
 })(translate()(ImageUpdateForm));

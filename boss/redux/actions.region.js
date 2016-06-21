@@ -174,3 +174,63 @@ export function requestModifyImageAttributes(routerKey, regionId, image) {
     });
   };
 }
+
+
+export function requestDescribeInstanceTypes(routerKey, regionId, filters) {
+  return (dispatch) => {
+    return Region
+    .describeInstanceTypes(regionId, filters)
+    .promise
+    .then((payload) => {
+      dispatch(extendContext(payload, routerKey));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
+
+export function requestGenerateInstanceTypes(routerKey, regionId) {
+  return (dispatch) => {
+    return Region
+    .generateInstanceTypes(regionId)
+    .promise
+    .then(() => {
+      dispatch(notify(i18n.t('updateSuccessed')));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
+
+export function requestDeleteInstanceTypes(routerKey, regionId, instanceTypeIds) {
+  return (dispatch) => {
+    return Region
+    .deleteInstanceTypes(regionId, instanceTypeIds)
+    .promise
+    .then(() => {
+      dispatch(notify(i18n.t('deleteSuccessed')));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
+
+export function requestCreateInstanceType(routerKey, regionId, instanceType) {
+  return dispatch => {
+    return Region
+    .createInstanceType(regionId, instanceType)
+    .promise
+    .then(() => {
+      dispatch(notify(i18n.t('createSuccessed')));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}

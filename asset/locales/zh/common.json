@@ -188,7 +188,9 @@
         "updateQuota": "调整配额",
         "updateImage": "更新信息",
         "syncImages": "同步映像",
-        "publicImages": "公共映像"
+        "publicImages": "公共映像",
+        "createInstanceType": "创建主机配额",
+        "generateInstanceTypes": "自动生成通用配置"
     },
 
     "pageTenant": {

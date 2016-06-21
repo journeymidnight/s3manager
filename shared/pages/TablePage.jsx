@@ -37,7 +37,7 @@ class C extends Page {
 
     setTimeout(this.onRefresh(), 100);
 
-    this.setInterval(this.onRefresh({}, true, true), 2000);
+    this.setInterval(this.onRefresh({}, false, true), 2000);
   }
 
   refresh(silent = true) {
