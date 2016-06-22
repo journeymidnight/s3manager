@@ -26,7 +26,7 @@ const F = (props) => {
 
       <div className="form-actions">
         <button type="submit" className="btn btn-save" disabled={submitting || invalid}>
-          {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('update')}
+          {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('create')}
         </button>
         &nbsp;
         <button type="button" className="btn btn-cancel" disabled={submitting} onClick={resetForm}>

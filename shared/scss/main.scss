@@ -320,3 +320,75 @@ body.modal-open {
     border: 1px solid #efeff1;
     color: #5a5a5a;
 }
+
+form {
+    legend {
+        font-size: inherit;
+        border-bottom: 1px solid #eeeeee;
+        padding: 0 0 5px 5px;
+    }
+    .radio input[type="radio"],
+    .radio-inline input[type="radio"],
+    .checkbox input[type="checkbox"],
+    .checkbox-inline input[type="checkbox"] {
+        position: relative;
+        margin: 0 10px;
+    }
+}
+
+ul.options {
+    margin: 0px;
+    padding: 0px;
+
+    li {
+        @extend .form-control;
+
+        width: inherit;
+        height: inherit;
+        padding: 16px;
+        margin-right: 5px;
+        cursor: pointer;
+        display: inline-block;
+        text-align: center;
+        transition: none;
+        -o-transition: none;
+        -webkit-transition: none;
+
+        &.selected {
+            border: none;
+            background: #2c95c4;
+            color: #fff;
+        }
+    }
+}
+
+ul.options-vertical {
+    margin: 0px;
+    padding: 0px;
+
+    li {
+        @extend .form-control;
+
+        padding-left: 30px;
+        margin-bottom: 5px;
+        cursor: pointer;
+        transition: none;
+        -o-transition: none;
+        -webkit-transition: none;
+
+        &.selected{
+            padding-left: 0px;
+
+            &:before {
+                color: #2faa60;
+                content: "\f00c";
+                font: normal normal normal 14px/1 FontAwesome;
+                font-size: 14px;
+                width: 32px;
+                display: inline-block;
+                text-align: left;
+                padding-left: 10px;
+            }
+        }
+    }
+}

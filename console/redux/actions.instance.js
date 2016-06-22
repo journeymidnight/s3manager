@@ -40,6 +40,19 @@ export function requestDescribePrerequisites(routerKey, regionId) {
       dispatch(extendContext({
         networkSet: payload.networkSet,
       }, routerKey));
+
+      return IaaS
+      .describeKeyPairs(regionId, {
+        status: ['active'],
+        limit: 100,
+        verbose: true,
+      })
+      .promise;
+    })
+    .then((payload) => {
+      dispatch(extendContext({
+        keyPairSet: payload.keyPairSet,
+      }, routerKey));
     })
     .catch((error) => {
       dispatch(notifyAlert(error.message));

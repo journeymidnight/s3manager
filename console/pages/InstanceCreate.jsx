@@ -30,6 +30,9 @@ class C extends Page {
       const imageId = values.imageId;
       const instanceTypeId = values.instanceTypeId;
       const subnetId = values.subnetId;
+      const keyPairId = values.keyPairId;
+      const loginMode = values.loginMode;
+      const loginPassword = values.loginPassword;
       const count = parseInt(values.count, 10) || 1;
 
       dispatch(InstanceActions.requestCreateInstances(routerKey, region.regionId, {
@@ -38,8 +41,9 @@ class C extends Page {
         instanceTypeId,
         subnetId,
         count,
-        loginMode: 'password',
-        loginPassword: 'P4ssw0rd!@#!#!@#!@#',
+        loginMode,
+        loginPassword,
+        keyPairId,
       }))
       .then(() => {
         resolve();
@@ -51,7 +55,7 @@ class C extends Page {
 
   renderAfterInitialized() {
     const { t, region } = this.props;
-    const { networkSet, instanceTypeSet, imageSet } = this.props.context;
+    const { networkSet, instanceTypeSet, imageSet, keyPairSet } = this.props.context;
 
     let hint = undefined;
     if (imageSet.length === 0 || instanceTypeSet.length === 0) {
@@ -79,12 +83,6 @@ class C extends Page {
       );
     }
 
-    const initialValues = {
-      imageId: imageSet[0].imageId,
-      subnetId: networkSet[0].subnets[0].subnetId,
-      instanceTypeId: instanceTypeSet[0].instanceTypeId,
-      count: 1,
-    };
     return (
       <div className="container-fluid container-limited">
         <div className="content">
@@ -99,7 +97,8 @@ class C extends Page {
               networkSet={networkSet}
               instanceTypeSet={instanceTypeSet}
               imageSet={imageSet}
-              initialValues={initialValues}
+              keyPairSet={keyPairSet}
+              region={region}
             />
           </div>
         </div>
