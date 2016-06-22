@@ -25,7 +25,7 @@ const F = (props) => {
       </div>
 
       <div className={submitFailed && cidr.error ? 'form-group has-error' : 'form-group'}>
-        <label className="control-label" >{t('cidr')}</label>
+        <label className="control-label" >{t('pageNetworkCreate.cidr')}</label>
         <div className="col-sm-10">
           <input type="text" className="form-control" {...cidr} />
           {submitFailed && cidr.error && <div className="text-danger"><small>{cidr.error}</small></div>}

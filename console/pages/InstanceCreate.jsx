@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 import Page, { attach } from '../../shared/pages/Page';
 import InstanceCreateForm from '../forms/InstanceCreateForm';
 import * as Actions from '../redux/actions';
@@ -49,31 +50,38 @@ class C extends Page {
   }
 
   renderAfterInitialized() {
-    const { t } = this.props;
-    const { subnetSet, instanceTypeSet, imageSet } = this.props.context;
+    const { t, region } = this.props;
+    const { networkSet, instanceTypeSet, imageSet } = this.props.context;
 
     let hint = undefined;
-    if (imageSet.length === 0) {
-      hint = t('pageInstanceCreate.imageNotFound');
-    }
-    if (instanceTypeSet.length === 0) {
-      hint = t('pageInstanceCreate.instanceNotFound');
-    }
-    if (subnetSet.length === 0) {
-      hint = t('pageInstanceCreate.subnetNotFound');
+    if (imageSet.length === 0 || instanceTypeSet.length === 0) {
+      hint = t('pageInstanceCreate.imageOrInstanceTypeNotFound');
+    } else if (networkSet.length === 0) {
+      hint = (
+        <div>
+          <p>{t('pageInstanceCreate.networkNotFound')}</p>
+          <Link className="btn btn-new" to={`/${region.regionId}/networks/create`}>{t('pageNetworkCreate.createNetwork')}</Link>
+        </div>
+      );
     }
 
     if (hint) {
       return (
-        <div>
-          {hint}
+        <div className="container-fluid container-limited">
+          <div className="content">
+            <div className="clearfix">
+              <div className="alert alert-help prepend-top-default">
+                {hint}
+              </div>
+            </div>
+          </div>
         </div>
       );
     }
 
     const initialValues = {
       imageId: imageSet[0].imageId,
-      subnetId: subnetSet[0].subnetId,
+      subnetId: networkSet[0].subnets[0].subnetId,
       instanceTypeId: instanceTypeSet[0].instanceTypeId,
       count: 1,
     };
@@ -88,7 +96,7 @@ class C extends Page {
             </div>
             <InstanceCreateForm
               onSubmit={this.onSubmit}
-              subnetSet={subnetSet}
+              networkSet={networkSet}
               instanceTypeSet={instanceTypeSet}
               imageSet={imageSet}
               initialValues={initialValues}

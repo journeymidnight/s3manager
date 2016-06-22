@@ -70,11 +70,11 @@ let ImageUpdateForm = (props) => {
         </div>
 
         <div className={submitFailed && osFamily.error ? 'form-group has-error' : 'form-group'}>
-          <label className="control-label" >{t('osProcessorType')}</label>
+          <label className="control-label" >{t('osFamily')}</label>
           <div className="col-sm-10">
             <select className="form-control" {...osFamily} >
               <option value="unknown">{t('osFamilies.unknown')}</option>
-              <option value="centOS">{t('osFamilies.centos')}</option>
+              <option value="centos">{t('osFamilies.centos')}</option>
               <option value="ubuntu">{t('osFamilies.ubuntu')}</option>
               <option value="debian">{t('osFamilies.debian')}</option>
               <option value="fedora">{t('osFamilies.fedora')}</option>
@@ -135,7 +135,7 @@ class C extends TablePage {
     const { t, dispatch } = this.props;
     dispatch(Actions.setHeader(t('regionManage'), '/regions'));
 
-    this.initTable({ isTabPage: true });
+    this.initTable({ status: ['active'], isTabPage: true });
   }
 
   onDelete() {
@@ -213,6 +213,7 @@ class C extends TablePage {
             </th>
             <th width="150">{t('id')}</th>
             <th>{t('name')}</th>
+            <th>{t('status')}</th>
             <th>{t('osFamily')}</th>
             <th>{t('osPlatform')}</th>
             <th>{t('osProcessorType')}</th>
@@ -232,6 +233,10 @@ class C extends TablePage {
                 </a>
               </td>
               <td><strong>{image.name}</strong></td>
+              <td className={`i-status i-status-${image.status}`}>
+                <i className="icon"></i>
+                {t(`imageStatus.${image.status}`)}
+              </td>
               <td>{t(`osFamilies.${image.osFamily}`)}</td>
               <td>{t(`osPlatforms.${image.platform}`)}</td>
               <td>{t(`osProcessorTypes.${image.processorType}`)}</td>
@@ -257,6 +262,42 @@ class C extends TablePage {
             <a className="btn btn-default" onClick={this.onRefresh({}, false)}>
               <i className={`fa fa-refresh ${this.props.context.loading ? 'fa-spin' : ''}`}></i>
             </a>
+          </div>
+          <div className="filter-item inline labels-filter">
+            <div className="dropdown">
+              <button className="dropdown-menu-toggle" data-toggle="dropdown" type="button">
+                <span className="dropdown-toggle-text">{t('status')}</span>
+                <i className="fa fa-chevron-down"></i>
+              </button>
+              <div className="dropdown-menu dropdown-select dropdown-menu-selectable">
+                <div className="dropdown-content">
+                  <ul>
+                  {[{
+                    status: ['pending'],
+                    name: t('imageStatus.pending'),
+                  }, {
+                    status: ['active'],
+                    name: t('imageStatus.active'),
+                  }, {
+                    status: ['deleted', 'ceased'],
+                    name: t('imageStatus.deleted'),
+                  }].map((filter) => {
+                    return (
+                      <li key={filter.name}>
+                        <a
+                          className={this.props.context.status.toString() === filter.status.toString() ? 'is-active' : ''}
+                          href
+                          onClick={this.onRefresh({ status: filter.status })}
+                        >
+                          {filter.name}
+                        </a>
+                      </li>
+                    );
+                  })}
+                  </ul>
+                </div>
+              </div>
+            </div>
           </div>
           <div className="filter-item inline pull-right">
             <button className="btn btn-new" onClick={this.onCreate}>

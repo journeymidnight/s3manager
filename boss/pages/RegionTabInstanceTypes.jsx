@@ -93,7 +93,7 @@ class C extends TablePage {
     const { t, dispatch } = this.props;
     dispatch(Actions.setHeader(t('regionManage'), '/regions'));
 
-    this.initTable({ isTabPage: true });
+    this.initTable({ status: ['active'], isTabPage: true });
   }
 
   onDelete() {
@@ -171,6 +171,7 @@ class C extends TablePage {
             </th>
             <th width="150">{t('id')}</th>
             <th>{t('name')}</th>
+            <th>{t('status')}</th>
             <th>{t('vcpus')}</th>
             <th>{t('memory')}</th>
             <th>{t('disk')}</th>
@@ -190,6 +191,10 @@ class C extends TablePage {
               </td>
               <td>{instanceType.instanceTypeId}</td>
               <td><strong>{instanceType.name}</strong></td>
+              <td className={`i-status i-status-${instanceType.status}`}>
+                <i className="icon"></i>
+                {t(`instanceTypeStatus.${instanceType.status}`)}
+              </td>
               <td>{instanceType.vcpus}</td>
               <td>{instanceType.memory} MB</td>
               <td>{instanceType.disk} GB</td>
@@ -210,6 +215,39 @@ class C extends TablePage {
             <a className="btn btn-default" onClick={this.onRefresh({}, false)}>
               <i className={`fa fa-refresh ${this.props.context.loading ? 'fa-spin' : ''}`}></i>
             </a>
+          </div>
+          <div className="filter-item inline labels-filter">
+            <div className="dropdown">
+              <button className="dropdown-menu-toggle" data-toggle="dropdown" type="button">
+                <span className="dropdown-toggle-text">{t('status')}</span>
+                <i className="fa fa-chevron-down"></i>
+              </button>
+              <div className="dropdown-menu dropdown-select dropdown-menu-selectable">
+                <div className="dropdown-content">
+                  <ul>
+                  {[{
+                    status: ['active'],
+                    name: t('instanceTypeStatus.active'),
+                  }, {
+                    status: ['deleted'],
+                    name: t('instanceTypeStatus.deleted'),
+                  }].map((filter) => {
+                    return (
+                      <li key={filter.name}>
+                        <a
+                          className={this.props.context.status.toString() === filter.status.toString() ? 'is-active' : ''}
+                          href
+                          onClick={this.onRefresh({ status: filter.status })}
+                        >
+                          {filter.name}
+                        </a>
+                      </li>
+                    );
+                  })}
+                  </ul>
+                </div>
+              </div>
+            </div>
           </div>
           <div className="filter-item inline pull-right">
             <a href className="btn btn-new" onClick={this.showCreateModal}>

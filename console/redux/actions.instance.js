@@ -6,7 +6,10 @@ import i18n from '../../shared/i18n';
 export function requestDescribePrerequisites(routerKey, regionId) {
   return dispatch => {
     return IaaS
-    .describeInstanceTypes(regionId)
+    .describeInstanceTypes(regionId, {
+      status: ['active'],
+      limit: 100,
+    })
     .promise
     .then((payload) => {
       dispatch(extendContext({
@@ -14,7 +17,10 @@ export function requestDescribePrerequisites(routerKey, regionId) {
       }, routerKey));
 
       return IaaS
-      .describeImages(regionId)
+      .describeImages(regionId, {
+        status: ['active'],
+        limit: 100,
+      })
       .promise;
     })
     .then((payload) => {
@@ -23,12 +29,16 @@ export function requestDescribePrerequisites(routerKey, regionId) {
       }, routerKey));
 
       return IaaS
-      .describeSubnets(regionId)
+      .describeNetworks(regionId, {
+        status: ['active'],
+        limit: 100,
+        verbose: true,
+      })
       .promise;
     })
     .then((payload) => {
       dispatch(extendContext({
-        subnetSet: payload.subnetSet,
+        networkSet: payload.networkSet,
       }, routerKey));
     })
     .catch((error) => {
