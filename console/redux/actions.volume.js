@@ -47,7 +47,7 @@ export function requestCreateVolume(routerKey, regionId, volume) {
       .then((payload) => {
         dispatch(extendContext({ volume: payload }));
         setTimeout(() => {
-          dispatch(push(`/${regionId}/key_pairs`));
+          dispatch(push(`/${regionId}/volumes`));
           dispatch(notify(i18n.t('createSuccessed')));
         }, 1000);
       })
