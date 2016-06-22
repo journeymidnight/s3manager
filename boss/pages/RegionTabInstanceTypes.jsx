@@ -11,7 +11,7 @@ import * as RegionActions from '../redux/actions.region';
 
 let InstanceTypeCreateForm = (props) => {
   const { fields:
-    { instanceTypeId, name, memory, vcpus, disk },
+    { memory, vcpus, disk },
     handleSubmit,
     submitting,
     submitFailed,
@@ -21,22 +21,6 @@ let InstanceTypeCreateForm = (props) => {
   return (
     <form className="form-horizontal" onSubmit={handleSubmit}>
       <div className="modal-body">
-
-        <div className={submitFailed && instanceTypeId.error ? 'form-group has-error' : 'form-group'}>
-          <label className="control-label" >{t('id')}</label>
-          <div className="col-sm-10">
-            <input type="text" className="form-control" {...instanceTypeId} />
-            {submitFailed && instanceTypeId.error && <div className="text-danger"><small>{instanceTypeId.error}</small></div>}
-          </div>
-        </div>
-
-        <div className={submitFailed && name.error ? 'form-group has-error' : 'form-group'}>
-          <label className="control-label" >{t('name')}</label>
-          <div className="col-sm-10">
-            <input type="text" className="form-control" {...name} />
-            {submitFailed && name.error && <div className="text-danger"><small>{name.error}</small></div>}
-          </div>
-        </div>
 
         <div className={submitFailed && vcpus.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('vcpus')}</label>
@@ -90,7 +74,7 @@ InstanceTypeCreateForm.validate = () => {
 
 InstanceTypeCreateForm = reduxForm({
   form: 'InstanceTypeCreateForm',
-  fields: ['instanceTypeId', 'name', 'vcpus', 'memory', 'disk'],
+  fields: ['vcpus', 'memory', 'disk'],
   validate: InstanceTypeCreateForm.validate,
 })(translate()(InstanceTypeCreateForm));
 
@@ -140,7 +124,11 @@ class C extends TablePage {
     const { dispatch, region2, routerKey } = this.props;
 
     return new Promise((resolve, reject) => {
-      const instanceType = values;
+      const instanceType = {
+        vcpus: parseInt(values.vcpus, 10),
+        memory: parseInt(values.memory, 10),
+        disk: parseInt(values.disk, 10),
+      };
 
       dispatch(RegionActions.requestCreateInstanceType(routerKey, region2.regionId, instanceType))
       .then(() => {

@@ -5,7 +5,7 @@ import { reduxForm } from 'redux-form';
 import { attach } from '../../shared/pages/Page';
 import ButtonForm from '../../shared/forms/ButtonForm';
 import TablePage from '../../shared/pages/TablePage';
-import Modal, { confirmModal } from '../../shared/components/Modal';
+import Modal, { alertModal, confirmModal } from '../../shared/components/Modal';
 import * as Actions from '../redux/actions';
 import * as RegionActions from '../redux/actions.region';
 
@@ -157,17 +157,17 @@ class C extends TablePage {
     });
   }
 
+  onCreate() {
+    alertModal('Use Openstack Horizon or CLI to Upload image.');
+  }
+
   onSync() {
     const { dispatch, region2, routerKey } = this.props;
 
-    return new Promise((resolve, reject) => {
-      dispatch(RegionActions.requestSyncImages(routerKey, region2.regionId))
-      .then(() => {
-        resolve();
-        this.onRefresh({}, false)();
-      }).catch(() => {
-        reject();
-      });
+    dispatch(RegionActions.requestSyncImages(routerKey, region2.regionId))
+    .then(() => {
+      this.onRefresh({}, false)();
+    }).catch(() => {
     });
   }
 
@@ -258,9 +258,14 @@ class C extends TablePage {
               <i className={`fa fa-refresh ${this.props.context.loading ? 'fa-spin' : ''}`}></i>
             </a>
           </div>
-          <div className="pull-right">
-            <button className="btn btn-new" onClick={this.onSync}>
-              <i className="fa fa-retweet"></i>&nbsp;{t('pageRegion.syncImages')}
+          <div className="filter-item inline pull-right">
+            <button className="btn btn-new" onClick={this.onCreate}>
+              <i className="fa fa-plus"></i>&nbsp;{t('create')}
+            </button>
+          </div>
+          <div className="filter-item inline pull-right">
+            <button className="btn btn-info" onClick={this.onSync}>
+              {t('pageRegion.syncImages')}
             </button>
           </div>
         </div>
