@@ -6,6 +6,7 @@ import Modal, { confirmModal } from '../../shared/components/Modal';
 import * as Actions from '../redux/actions';
 import * as VolumeActions from '../redux/actions.volume';
 import * as InstanceActions from '../redux/actions.instance';
+import * as Validations from '../../shared/utils/validations';
 
 let VolumeUpdateForm = (props) => {
   const { fields:
@@ -61,7 +62,7 @@ VolumeUpdateForm = reduxForm({
 
 let VolumeAttachForm = (props) => {
   const { fields:
-    { name, instanceId },
+    { name, instanceId, mountpoint },
     handleSubmit,
     submitting,
     submitFailed,
@@ -74,7 +75,7 @@ let VolumeAttachForm = (props) => {
         <div className={submitFailed && name.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('name')}</label>
           <div className="col-sm-10">
-            <input type="text" className="form-control" {...name} />
+            <input type="text" className="form-control" disabled {...name} />
             {submitFailed && name.error && <div className="text-danger"><small>{name.error}</small></div>}
           </div>
         </div>
@@ -89,11 +90,18 @@ let VolumeAttachForm = (props) => {
             {submitFailed && instanceId.error && <div className="text-danger"><small>{instanceId.error}</small></div>}
           </div>
         </div>
+        <div className={submitFailed && mountpoint.error ? 'form-group has-error' : 'form-group'}>
+          <label className="control-label" >{t('mountpoint')}</label>
+          <div className="col-sm-10">
+            <input type="text" className="form-control" {...mountpoint} />
+            {submitFailed && mountpoint.error && <div className="text-danger"><small>{mountpoint.error}</small></div>}
+          </div>
+        </div>
       </div>
       <div className="modal-footer">
         <button type="button" className="btn btn-default" data-dismiss="modal">{t('closeModal')}</button>
         <button type="submit" className="btn btn-save" disabled={submitting || invalid}>
-          {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('update')}
+          {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('submit')}
         </button>
       </div>
     </form>
@@ -111,16 +119,77 @@ VolumeAttachForm.propTypes = {
   t: React.PropTypes.any,
 };
 
-VolumeAttachForm.validate = () => {
+VolumeAttachForm.validate = (values) => {
   const errors = {};
+  errors.mountpoint = Validations.required(values.mountpoint);
   return errors;
 };
 
 VolumeAttachForm = reduxForm({
   form: 'VolumeAttachForm',
-  fields: ['name', 'instanceId'],
+  fields: ['name', 'instanceId', 'mountpoint'],
   validate: VolumeAttachForm.validate,
 })(translate()(VolumeAttachForm));
+
+let VolumeResizeForm = (props) => {
+  const { fields:
+    { name, size },
+    handleSubmit,
+    submitting,
+    submitFailed,
+    t,
+    invalid,
+  } = props;
+  return (
+    <form className="form-horizontal" onSubmit={handleSubmit}>
+      <div className="modal-body">
+        <div className={submitFailed && name.error ? 'form-group has-error' : 'form-group'}>
+          <label className="control-label" >{t('name')}</label>
+          <div className="col-sm-10">
+            <input type="text" className="form-control" disabled {...name} />
+            {submitFailed && name.error && <div className="text-danger"><small>{name.error}</small></div>}
+          </div>
+        </div>
+      <div className={submitFailed && size.error ? 'form-group has-error' : 'form-group'}>
+        <label className="control-label" >{t('size')}</label>
+        <div className="col-sm-10">
+          <input type="text" className="form-control" {...size} />
+          {submitFailed && size.error && <div className="text-danger"><small>{size.error}</small></div>}
+        </div>
+      </div>
+      </div>
+      <div className="modal-footer">
+        <button type="button" className="btn btn-default" data-dismiss="modal">{t('closeModal')}</button>
+        <button type="submit" className="btn btn-save" disabled={submitting || invalid}>
+          {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('submit')}
+        </button>
+      </div>
+    </form>
+  );
+};
+
+VolumeResizeForm.propTypes = {
+  fields: React.PropTypes.object.isRequired,
+  error: React.PropTypes.string,
+  invalid: React.PropTypes.bool,
+  handleSubmit: React.PropTypes.func.isRequired,
+  submitting: React.PropTypes.bool.isRequired,
+  submitFailed: React.PropTypes.bool.isRequired,
+  availableInstances: React.PropTypes.array,
+  t: React.PropTypes.any,
+};
+
+VolumeResizeForm.validate = (values) => {
+  const errors = {};
+  errors.size = Validations.integer(values.size);
+  return errors;
+};
+
+VolumeResizeForm = reduxForm({
+  form: 'VolumeResizeForm',
+  fields: ['name', 'size'],
+  validate: VolumeResizeForm.validate,
+})(translate()(VolumeResizeForm));
 
 class C extends Page {
 
@@ -134,6 +203,8 @@ class C extends Page {
     this.detachVolume = this.detachVolume.bind(this);
     this.resizeVolume = this.resizeVolume.bind(this);
     this.deleteVolume = this.deleteVolume.bind(this);
+    this.onAttach = this.onAttach.bind(this);
+    this.onResize = this.onResize.bind(this);       
   }
 
   componentDidMount() {
@@ -185,29 +256,72 @@ class C extends Page {
     this.refs.updateModal.show();
   }
 
+  onAttach(values) {
+    const { dispatch, region, routerKey } = this.props;
+    const volume = this.props.context.volume || this.volume;
+
+    return new Promise((resolve, reject) => {
+      const instanceId = values.instanceId;
+      const mountpoint = values.mountpoint;
+
+      dispatch(VolumeActions.requestAttachVolume(routerKey, region.regionId, volume.volumeId, instanceId, mountpoint, 'rw'))
+        .then(() => {
+          resolve();
+          this.refs.attachModal.hide();
+        }).catch(() => {
+          reject();
+        });
+    });
+  }
+
   attachVolume(e) {
     e.preventDefault();
 
     const { t, dispatch, region, routerKey } = this.props;
 
-    dispatch(InstanceActions.requestDescribeInstances(routerKey, region.regionId, { status: ['running', 'stopped'] }))
+    dispatch(InstanceActions.requestDescribeInstances(routerKey, region.regionId, { status: ['active', 'stopped'] }))
       .then(() => {
         if (this.props.context.instanceSet && this.props.context.instanceSet.length) {
           this.refs.attachModal.show();
         } else {
-          dispatch(Actions.notifyAlert(t('noAvailableInstance')));
+          dispatch(Actions.notifyAlert(t('pageVolume.noAvailableInstance')));
         }
       });
   }
 
   detachVolume(e) {
     e.preventDefault();
-    this.refs.updateModal.show();
+    const { t, dispatch, region, routerKey } = this.props;
+    const volume = this.props.context.volume;
+    confirmModal(t('pageVolume.confirmDetachVolume'), () => {
+      dispatch(VolumeActions.requestDetachVolumes(routerKey, region.regionId, [volume.volumeId], 'i-VVyfG7jk')
+      .then(() => {
+          dispatch(requestDescribeVolume(routerKey, region.regionId, volume.volumeId));
+        }));
+    });
+  }
+
+  onResize(values) {
+    const { dispatch, region, routerKey } = this.props;
+    const volume = this.props.context.volume || this.volume;
+
+    return new Promise((resolve, reject) => {
+      const size = Number(values.size);
+
+      dispatch(VolumeActions.requestResizeVolumes(routerKey, region.regionId, [volume.volumeId], size))
+        .then(() => {
+          resolve();
+          this.refs.resizeModal.hide();
+          dispatch(requestDescribeVolume(routerKey, region.regionId, volume.volumeId));
+        }).catch(() => {
+          reject();
+        });
+    });
   }
 
   resizeVolume(e) {
     e.preventDefault();
-    this.refs.updateModal.show();
+    this.refs.resizeModal.show();
   }
 
   deleteVolume(e) {
@@ -225,6 +339,7 @@ class C extends Page {
     const availableInstances = this.props.context.instanceSet;
     const initialValues = {
       instanceId: availableInstances[0].instanceId,
+      name: this.props.context.volume.name
     };
     return (
       <Modal title={t('pageVolume.attachVolume')} ref="attachModal" >
@@ -321,7 +436,10 @@ class C extends Page {
         <Modal title={t('pageVolume.updateVolume')} ref="updateModal" >
           <VolumeUpdateForm onSubmit={this.onUpdate} initialValues={volume} />
         </Modal>
-        {this.props.context.volumeSet && this.props.context.volumeSet.length && this.renderAttachModal()}
+        <Modal title={t('pageVolume.resizeVolume')} ref="resizeModal" >
+          <VolumeResizeForm onSubmit={this.onResize} initialValues={volume} />
+        </Modal>
+        {this.props.context.instanceSet && this.props.context.instanceSet.length && this.renderAttachModal()}
       </div>
     );
   }

@@ -8,6 +8,7 @@
     "login": "登录",
     "cancel": "取消",
     "delete": "删除",
+    "submit": "提交",
 
     "id": "ID",
     "name": "名称",
@@ -33,6 +34,7 @@
     "router": "路由器",
     "count": "数量",
     "address": "IP 地址",
+    "mountpoint": "挂载点",
 
     "paging": {
         "first": "第一页",
@@ -209,8 +211,14 @@
         "attachVolume": "挂载云硬盘",
         "detachVolume": "卸载云硬盘",
         "resizeVolume": "扩容云硬盘",
+        "confirmDetachVolume": "确认要卸载云硬盘吗?",
         "noAvailableInstance": "没有可用的云主机"
     },
+
+    "volumeMountMode": {
+        "rw": "读写"
+    },
+
 
     "formInstanceCreateForm": {
         "count": "主机数量"

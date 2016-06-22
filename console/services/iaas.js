@@ -41,6 +41,26 @@ class IaaS {
       description,
     });
   }
+  attachVolume(regionId, volumeId, instanceId, mountpoint, mode) {
+    return this.call(regionId, 'AttachVolume', {
+      volumeId,
+      instanceId,
+      mountpoint,
+      mode,
+    });
+  }
+  detachVolumes(regionId, volumeIds, instanceId) {
+    return this.call(regionId, 'DetachVolumes', {
+      volumeIds,
+      instanceId,
+    });
+  }
+  resizeVolumes(regionId, volumeIds, size) {
+    return this.call(regionId, 'ResizeVolumes', {
+      volumeIds,
+      size,
+    });
+  }
   describeEips(regionId, filter = {}) {
     return this.call(regionId, 'DescribeEips', filter);
   }

@@ -72,6 +72,49 @@ export function requestModifyVolumeAttributes(routerKey, regionId, volumeId, nam
   };
 }
 
+export function requestAttachVolume(routerKey, regionId, volumeId, instanceId, mountpoint, mode) {
+  return dispatch => {
+    return IaaS
+    .attachVolume(regionId, volumeId, instanceId, mountpoint, mode)
+    .promise
+    .then(() => {
+      dispatch(notify(i18n.t('attachSuccessed')));
+      return dispatch(requestDescribeVolume(routerKey, regionId, volumeId));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
+export function requestDetachVolumes(routerKey, regionId, volumeIds, instanceId) {
+  return dispatch => {
+    return IaaS
+    .detachVolumes(regionId, volumeIds, instanceId)
+    .promise
+    .then(() => {
+      dispatch(notify(i18n.t('detachSuccessed')));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
+export function requestResizeVolumes(routerKey, regionId, volumeIds, size) {
+  return dispatch => {
+    return IaaS
+    .resizeVolumes(regionId, volumeIds, size)
+    .promise
+    .then(() => {
+      dispatch(notify(i18n.t('resizeSuccessed')));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
 export function requestDeleteVolumes(routerKey, regionId, volumeIds) {
   return dispatch => {
     return IaaS
