@@ -82,7 +82,7 @@ class C extends TablePage {
                   <i className="icon"></i>
                   {t(`volumeStatus.${volume.status}`)}
                 </td>
-                <td className="light"><Time value={volume.created} format="YYYY-MM-DD" /></td>
+                <td className="light"><Time value={volume.created} format="YYYY-MM-DD HH:mm:ss" /></td>
               </tr>
             );
           })}
