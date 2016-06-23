@@ -1,6 +1,7 @@
 import React from 'react';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
+import Time from 'react-time';
 import Page, { attach } from '../../shared/pages/Page';
 import Modal, { confirmModal } from '../../shared/components/Modal';
 import * as Actions from '../redux/actions';
@@ -424,7 +425,7 @@ class C extends Page {
                       </tr>
                       <tr>
                         <td>{t('created')}</td>
-                        <td>{volume.created}</td>
+                        <td><Time value={volume.created} format="YYYY-MM-DD" /></td>
                       </tr>
                     </tbody>
                   </table>
