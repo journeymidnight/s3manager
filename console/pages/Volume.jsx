@@ -150,13 +150,13 @@ let VolumeResizeForm = (props) => {
             {submitFailed && name.error && <div className="text-danger"><small>{name.error}</small></div>}
           </div>
         </div>
-      <div className={submitFailed && size.error ? 'form-group has-error' : 'form-group'}>
-        <label className="control-label" >{t('size')}</label>
-        <div className="col-sm-10">
-          <input type="text" className="form-control" {...size} />
-          {submitFailed && size.error && <div className="text-danger"><small>{size.error}</small></div>}
+        <div className={submitFailed && size.error ? 'form-group has-error' : 'form-group'}>
+          <label className="control-label" >{t('size')}</label>
+          <div className="col-sm-10">
+            <input type="text" className="form-control" {...size} />
+            {submitFailed && size.error && <div className="text-danger"><small>{size.error}</small></div>}
+          </div>
         </div>
-      </div>
       </div>
       <div className="modal-footer">
         <button type="button" className="btn btn-default" data-dismiss="modal">{t('closeModal')}</button>
@@ -204,7 +204,7 @@ class C extends Page {
     this.resizeVolume = this.resizeVolume.bind(this);
     this.deleteVolume = this.deleteVolume.bind(this);
     this.onAttach = this.onAttach.bind(this);
-    this.onResize = this.onResize.bind(this);       
+    this.onResize = this.onResize.bind(this);
   }
 
   componentDidMount() {
@@ -294,10 +294,10 @@ class C extends Page {
     const { t, dispatch, region, routerKey } = this.props;
     const volume = this.props.context.volume;
     confirmModal(t('pageVolume.confirmDetachVolume'), () => {
-      dispatch(VolumeActions.requestDetachVolumes(routerKey, region.regionId, [volume.volumeId], 'i-VVyfG7jk')
-      .then(() => {
-          dispatch(requestDescribeVolume(routerKey, region.regionId, volume.volumeId));
-        }));
+      dispatch(VolumeActions.requestDetachVolumes(routerKey, region.regionId, [volume.volumeId], 'i-VVyfG7jk'))
+        .then(() => {
+          dispatch(VolumeActions.requestDescribeVolume(routerKey, region.regionId, volume.volumeId));
+        });
     });
   }
 
@@ -312,7 +312,7 @@ class C extends Page {
         .then(() => {
           resolve();
           this.refs.resizeModal.hide();
-          dispatch(requestDescribeVolume(routerKey, region.regionId, volume.volumeId));
+          dispatch(VolumeActions.requestDescribeVolume(routerKey, region.regionId, volume.volumeId));
         }).catch(() => {
           reject();
         });
@@ -339,7 +339,7 @@ class C extends Page {
     const availableInstances = this.props.context.instanceSet;
     const initialValues = {
       instanceId: availableInstances[0].instanceId,
-      name: this.props.context.volume.name
+      name: this.props.context.volume.name,
     };
     return (
       <Modal title={t('pageVolume.attachVolume')} ref="attachModal" >

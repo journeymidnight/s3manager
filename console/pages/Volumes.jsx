@@ -55,6 +55,8 @@ class C extends TablePage {
             </th>
             <th width="150">{t('id')}</th>
             <th>{t('name')}</th>
+            <th>{t('size')}</th>
+            <th>{t('status')}</th>
             <th width="200">{t('created')}</th>
           </tr>
         </thead>
@@ -65,13 +67,19 @@ class C extends TablePage {
                 <td>
                   <input type="checkbox" className="selected" onChange={this.onSelect(volume.volumeId)} checked={this.props.context.selected[volume.volumeId] === true} />
                 </td>
-                <td>{volume.volumeId}</td>
                 <td>
                   <Link to={`/${this.props.region.regionId}/volumes/${volume.volumeId}`}>
-                    <strong>
-                      {volume.name}
-                    </strong>
+                    {volume.volumeId}
                   </Link>
+                </td>
+                <td>
+                  {volume.name && <strong>{volume.name}</strong>}
+                  {!volume.name && <i className="text-muted">{t('noName')}</i>}
+                </td>
+                <td>{volume.size}G</td>
+                <td className={`i-status i-status-${volume.status}`}>
+                  <i className="icon"></i>
+                  {t(`volumeStatus.${volume.status}`)}
                 </td>
                 <td className="light">{volume.created}</td>
               </tr>
