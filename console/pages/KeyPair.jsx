@@ -2,6 +2,7 @@ import React from 'react';
 import Page, { attach } from '../../shared/pages/Page';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
+import Modal, { confirmModal } from '../../shared/components/Modal';
 import * as Actions from '../redux/actions';
 import * as KeyPairActions from '../redux/actions.key_pair';
 
@@ -101,8 +102,9 @@ class C extends Page {
     super(props);
 
     this.refresh = this.refresh.bind(this);
-    this.onSave = this.onSave.bind(this);
+    this.onUpdate = this.onUpdate.bind(this);
     this.onDelete = this.onDelete.bind(this);
+    this.updateKeyPair = this.updateKeyPair.bind(this);
   }
 
   refresh() {
@@ -113,22 +115,22 @@ class C extends Page {
     return keyPair.status !== 'deleted' && keyPair.status !== 'ceased';
   }
 
-  onDelete() {
-    const { dispatch, region, routerKey } = this.props;
-    const { keyPair } = this.props.context;
+  onDelete(e) {
+    e.preventDefault();
 
-    return new Promise((resolve, reject) => {
-      dispatch(KeyPairActions.requestDeleteKeyPairs(routerKey, region.regionId, [keyPair.keyPairId]))
-        .then(() => {
-          dispatch(KeyPairActions.requestDescribeKeyPair(routerKey, region.regionId, keyPair.keyPairId));
-          resolve();
-        }).catch(() => {
-          reject();
-        });
+    const { t, dispatch, region, routerKey, params } = this.props;
+
+    confirmModal(t('confirmDelete'), () => {
+      dispatch(KeyPairActions.requestDeleteKeyPairs(routerKey, region.regionId, [params.keyPairId]));
     });
   }
 
-  onSave(values) {
+  updateKeyPair(e) {
+    e.preventDefault();
+    this.refs.updateModal.show();
+  }
+
+  onUpdate(values) {
     const { dispatch, region, routerKey } = this.props;
     const { keyPair } = this.props.context;
 
@@ -204,10 +206,7 @@ class C extends Page {
                 </div>
 
                 {this.notDeleted() && <div className="panel panel-primary">
-                  <div className="panel-heading">{t('pageKeyPair.updateKeyPair')}</div>
-                  <div className="panel-body">
-                    <KeyPairUpdateForm onSubmit={this.onSave} initialValues={keyPair} />
-                  </div>
+                  <button onClick={this.updateKeyPair}>update</button>
                 </div>}
 
                 {this.notDeleted() && <div className="panel panel-danger">
@@ -220,6 +219,9 @@ class C extends Page {
             </div>
           </div>
         </div>
+        <Modal title={t('pageInstance.updateInstance')} ref="updateModal" >
+          <KeyPairUpdateForm onSubmit={this.onUpdate} initialValues={keyPair} />
+        </Modal>
       </div>
     );
   }

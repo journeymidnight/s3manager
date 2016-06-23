@@ -183,7 +183,7 @@ class F extends React.Component {
                     <div key={network.networkId}>
                       <div style={{ padding: '6px 0' }}>
                         <i>
-                          <Link to={`/${this.props.region.regionId}/networks/${network.networkId}`}>{network.networkId}</Link>
+                          <Link target="_blank" to={`/${this.props.region.regionId}/networks/${network.networkId}`}>{network.networkId}</Link>
                         </i>
                         &nbsp;<b>{network.name}</b>
                       </div>
