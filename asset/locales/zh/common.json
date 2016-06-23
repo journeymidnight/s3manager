@@ -8,6 +8,7 @@
     "login": "登录",
     "cancel": "取消",
     "delete": "删除",
+    "submit": "提交",
 
     "id": "ID",
     "name": "名称",
@@ -33,6 +34,8 @@
     "router": "路由器",
     "count": "数量",
     "address": "IP 地址",
+    "mountpoint": "挂载点",
+    "size": "大小",
 
     "paging": {
         "first": "第一页",
@@ -56,6 +59,9 @@
     "nothingHere": "没有任何数据。",
     "noAnyAvailableRegions": "当前没有任何相关联的集群信息，请联系管理员分配集群配额。",
     "relogin": "点击重新登录",
+    "attachSuccessed": "挂载成功。",
+    "detachSuccessed": "卸载成功。",
+    "resizeSuccessed": "扩容成功。",
 
     "instanceManage": "云主机管理",
     "instanceManageDescription": "添加、删除和修改云主机信息。",
@@ -78,6 +84,9 @@
 
     "instanceTypeManage": "主机配置",
     "instanceTypeManageDescription": "为 Linux 云主机提供 主机配置。",
+
+    "volumeManage": "云硬盘",
+    "volumeManageDescription": "为 Linux 云主机提供 云硬盘。",
 
     "tenantManage": "租户管理",
     "tenantManageDescription": "可根据不同的企业或团队划分独立的租户, 分配相应的资源配额。",
@@ -129,6 +138,18 @@
     "imageStatus": {
         "pending": "准备中",
         "active": "运行中",
+        "deleted": "已删除",
+        "ceased": "物理删除"
+    },
+
+    "volumeStatus": {
+        "pending": "准备中",
+        "active": "运行中",
+        "attaching": "挂载中",
+        "inuse": "使用中",
+        "backup_ing": "备份中",
+        "backup_restoring": "备份恢复中",
+        "error": "状态异常",
         "deleted": "已删除",
         "ceased": "物理删除"
     },
@@ -186,6 +207,22 @@
         "updateEip": "更新基本信息",
         "releaseEip": "删除公网IP"
     },
+
+    "pageVolume": {
+        "basic": "基本信息",
+        "updateVolume": "更新基本信息",
+        "deleteVolume": "删除云硬盘",
+        "attachVolume": "挂载云硬盘",
+        "detachVolume": "卸载云硬盘",
+        "resizeVolume": "扩容云硬盘",
+        "confirmDetachVolume": "确认要卸载云硬盘吗?",
+        "noAvailableInstance": "没有可用的云主机"
+    },
+
+    "volumeMountMode": {
+        "rw": "读写"
+    },
+
 
     "formInstanceCreateForm": {
         "count": "主机数量"
