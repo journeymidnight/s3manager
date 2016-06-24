@@ -83,6 +83,7 @@ class C extends Page {
     this.restartInstance = this.restartInstance.bind(this);
     this.resizeInstance = this.resizeInstance.bind(this);
     this.resetInstance = this.resetInstance.bind(this);
+    this.connectVNC = this.connectVNC.bind(this);
   }
 
   componentDidMount() {
@@ -173,6 +174,13 @@ class C extends Page {
     dispatch(InstanceActions.requestResetInstances(routerKey, region.regionId, [params.instanceId]));
   }
 
+  connectVNC(e) {
+    e.preventDefault();
+
+    const { dispatch, region, routerKey, params } = this.props;
+    dispatch(InstanceActions.requestConnectVNC(routerKey, region.regionId, params.instanceId));
+  }
+
   resizeInstance(e) {
     e.preventDefault();
 
@@ -208,6 +216,11 @@ class C extends Page {
               <div className="nav-text">
                 <span>{t('instance')}&nbsp;<i>{instance.instanceId}</i></span>
               </div>
+              <div className="nav-controls">
+                {instance.status === 'active' && <a className="btn btn-info pull-right" href onClick={this.connectVNC}>
+                  <i className="fa fa-desktop"></i>&nbsp;{t('pageInstance.connectVNC')}
+                </a>}
+              </div>
             </div>
 
             <div className="row">
@@ -237,7 +250,9 @@ class C extends Page {
                     <tbody>
                       <tr>
                         <td width="100">{t('id')}</td>
-                        <td>{instance.instanceId}</td>
+                        <td>
+                          {instance.instanceId}
+                        </td>
                       </tr>
                       <tr>
                         <td>{t('name')}</td>
@@ -258,7 +273,6 @@ class C extends Page {
                         <td className={`i-status i-status-${instance.status}`}>
                           <i className="icon"></i>
                           {t(`instanceStatus.${instance.status}`)}
-                          <br />
                         </td>
                       </tr>
                       <tr>
@@ -336,11 +350,6 @@ class C extends Page {
                   <li className={`pull-left ${(active === 'output') ? 'active' : ''}`}>
                     <Link data-placement="left" to={`/${region.regionId}/instances/${instance.instanceId}/output`}>
                       {t('pageInstance.output')}
-                    </Link>
-                  </li>
-                  <li className={`pull-left ${(active === 'console') ? 'active' : ''}`}>
-                    <Link data-placement="left" to={`/${region.regionId}/instances/${instance.instanceId}/console`}>
-                      {t('pageInstance.console')}
                     </Link>
                   </li>
                 </ul>

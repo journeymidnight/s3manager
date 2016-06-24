@@ -190,12 +190,16 @@
         "cidr": "初始网段地址"
     },
 
+    "pageVNC": {
+        "sendCtrlAltDel": "发送 Ctrl+Alt+Del"
+    },
+
     "pageInstance": {
         "basic": "基本信息",
         "configuration": "配置",
         "monitor": "监控",
         "output": "启动日志",
-        "console": "VNC",
+        "connectVNC": "连接 VNC",
         "startInstance": "启动",
         "stopInstance": "关机",
         "restartInstance": "重启",

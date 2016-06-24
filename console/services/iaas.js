@@ -157,6 +157,11 @@ class IaaS {
       instanceIds,
     });
   }
+  connectVNC(regionId, instanceId) {
+    return this.call(regionId, 'ConnectVNC', {
+      instanceId,
+    });
+  }
 }
 
 export default new IaaS();

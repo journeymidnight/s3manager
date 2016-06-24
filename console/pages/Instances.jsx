@@ -73,6 +73,15 @@ class C extends TablePage {
     return this.batchActions(InstanceActions.requestRestartInstances);
   }
 
+  connectVNC(instance) {
+    return (e) => {
+      e.preventDefault();
+
+      const { dispatch, region, routerKey } = this.props;
+      dispatch(InstanceActions.requestConnectVNC(routerKey, region.regionId, instance.instanceId));
+    };
+  }
+
   renderTable() {
     const { t } = this.props;
     return this.props.context.total > 0 && this.props.context.instanceSet.length > 0 && (
@@ -102,6 +111,9 @@ class C extends TablePage {
                 <Link to={`/${this.props.region.regionId}/instances/${instance.instanceId}`}>
                   {instance.instanceId}
                 </Link>
+                {instance.status === 'active' && <a className="label label-info pull-right" href onClick={this.connectVNC(instance)}>
+                  <i className="fa fa-desktop"></i>
+                </a>}
               </td>
               <td>
                 {instance.name && <strong>{instance.name}</strong>}

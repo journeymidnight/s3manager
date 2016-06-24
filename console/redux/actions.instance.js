@@ -200,3 +200,30 @@ export function requestResizeInstances(routerKey, regionId, instanceIds) {
     });
   };
 }
+
+export function requestConnectVNC(routerKey, regionId, instanceId) {
+  return dispatch => {
+    return IaaS
+    .connectVNC(regionId, instanceId)
+    .promise
+    .then((payload) => {
+      const top = window.top.outerHeight / 4 + window.top.screenY;
+      const left = window.top.outerWidth / 4 + window.top.screenX;
+      const width = 735;
+      const height = 430;
+
+      const { host, port, token } = payload;
+      const url = `/vnc/${host}/${port}/${token}`;
+      const id = Math.random().toString(36).slice(2);
+
+      const newWindow = window.open(url, id, `height=${height},width=${width},modal=yes,alwaysRaised=yes,top=${top},left=${left}`);
+
+      if (window.focus) {
+        newWindow.focus();
+      }
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}

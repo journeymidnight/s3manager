@@ -13,9 +13,9 @@ import NetworkTabRouter from './pages/NetworkTabRouter.jsx';
 import NetworkTabSubnets from './pages/NetworkTabSubnets.jsx';
 import Networks from './pages/Networks.jsx';
 import NetworkCreate from './pages/NetworkCreate.jsx';
+import VNC from './pages/VNC.jsx';
 import Instance from './pages/Instance.jsx';
 import InstanceTabMonitor from './pages/InstanceTabMonitor.jsx';
-import InstanceTabConsole from './pages/InstanceTabConsole.jsx';
 import InstanceTabOutput from './pages/InstanceTabOutput.jsx';
 import Instances from './pages/Instances.jsx';
 import InstanceCreate from './pages/InstanceCreate.jsx';
@@ -45,6 +45,9 @@ export default function configureRoutes(store) {
     <Route>
       <Route path="/login" component={Login} />
       <Route path="/logout" component={Logout} />
+      <Route path="/vnc" onEnter={requireAuth}>
+        <Route path=":host/:port/:token" component={VNC} />
+      </Route>
       <Route path="/" component={App} onEnter={requireAuth} >
         <IndexRoute component={Home} />
         <Route path="activities" component={Settings} />
@@ -75,7 +78,6 @@ export default function configureRoutes(store) {
             <Route path=":instanceId" component={Instance} >
               <IndexRoute component={InstanceTabMonitor} />
               <Route path="monitor" component={InstanceTabMonitor} />
-              <Route path="console" component={InstanceTabConsole} />
               <Route path="output" component={InstanceTabOutput} />
             </Route>
           </Route>
