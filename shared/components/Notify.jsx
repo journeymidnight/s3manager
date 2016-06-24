@@ -1,24 +1,41 @@
+import $ from 'jquery';
 import React from 'react';
 import { connect } from 'react-redux';
-import $ from 'jquery';
+import * as Actions from '../redux/actions';
 
-const C = (props) => {
-  let notify = <div />;
-  if (props.notify && props.notify.type === 'notice') {
-    notify = <div className="flash-notice">{props.notify.message}</div>;
-    $(window).scrollTop(0);
-  } else if (props.notify && props.notify.type === 'alert') {
-    notify = <div className="flash-alert">{props.notify.message}</div>;
-    $(window).scrollTop(0);
+class C extends React.Component {
+
+  constructor(props) {
+    super(props);
+
+    this.hide = this.hide.bind(this);
   }
-  return (
-    <div className="flash-container">
-      {notify}
-    </div>
-  );
-};
+
+  hide() {
+    const { dispatch } = this.props;
+    dispatch(Actions.cleanNotify());
+  }
+
+  render() {
+    let notify = <div />;
+    if (this.props.notify) {
+      notify = (
+        <div className={`flash-${this.props.notify.type}`}>
+          <button type="button" className="close" onClick={this.hide}><span>&times;</span></button>
+          {this.props.notify.message}
+        </div>);
+      $(window).scrollTop(0);
+    }
+    return (
+      <div className="flash-container">
+        {notify}
+      </div>
+    );
+  }
+}
 
 C.propTypes = {
+  dispatch: React.PropTypes.func.isRequired,
   notify: React.PropTypes.object,
 };
 

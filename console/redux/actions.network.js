@@ -27,11 +27,7 @@ export function requestDescribeNetworks(routerKey, regionId, filters) {
     .describeNetworks(regionId, filters)
     .promise
     .then((payload) => {
-      dispatch(extendContext(Object.assign(payload, {
-        currentPage: parseInt(payload.offset / payload.limit, 10) + 1,
-        size: payload.limit,
-        totalPage: parseInt((payload.total - 1) / payload.limit, 10) + 1,
-      }), routerKey));
+      dispatch(extendContext(payload, routerKey));
     })
     .catch((error) => {
       dispatch(notifyAlert(error.message));

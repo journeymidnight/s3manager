@@ -1,8 +1,9 @@
 import _ from 'lodash';
+import moment from 'moment';
 import React from 'react';
+import { Link } from 'react-router';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
-import { Link } from 'react-router';
 import Page, { attach } from '../../shared/pages/Page';
 import Modal, { confirmModal } from '../../shared/components/Modal';
 import * as Actions from '../redux/actions';
@@ -80,6 +81,9 @@ class C extends Page {
     this.updateInstance = this.updateInstance.bind(this);
     this.stopInstance = this.stopInstance.bind(this);
     this.restartInstance = this.restartInstance.bind(this);
+    this.resizeInstance = this.resizeInstance.bind(this);
+    this.resetInstance = this.resetInstance.bind(this);
+    this.connectVNC = this.connectVNC.bind(this);
   }
 
   componentDidMount() {
@@ -163,6 +167,27 @@ class C extends Page {
     });
   }
 
+  resetInstance(e) {
+    e.preventDefault();
+
+    const { dispatch, region, routerKey, params } = this.props;
+    dispatch(InstanceActions.requestResetInstances(routerKey, region.regionId, [params.instanceId]));
+  }
+
+  connectVNC(e) {
+    e.preventDefault();
+
+    const { dispatch, region, routerKey, params } = this.props;
+    dispatch(InstanceActions.requestConnectVNC(routerKey, region.regionId, params.instanceId));
+  }
+
+  resizeInstance(e) {
+    e.preventDefault();
+
+    const { dispatch, region, routerKey, params } = this.props;
+    dispatch(InstanceActions.requestResizeInstances(routerKey, region.regionId, [params.instanceId]));
+  }
+
   render() {
     const { t, region, params } = this.props;
 
@@ -189,9 +214,12 @@ class C extends Page {
 
             <div className="top-area">
               <div className="nav-text">
-                <i className="light">
-                  {instance.instanceId}
-                </i>
+                <span>{t('instance')}&nbsp;<i>{instance.instanceId}</i></span>
+              </div>
+              <div className="nav-controls">
+                {instance.status === 'active' && <a className="btn btn-info pull-right" href onClick={this.connectVNC}>
+                  <i className="fa fa-desktop"></i>&nbsp;{t('pageInstance.connectVNC')}
+                </a>}
               </div>
             </div>
 
@@ -221,8 +249,10 @@ class C extends Page {
                   <table className="table">
                     <tbody>
                       <tr>
-                        <td>{t('id')}</td>
-                        <td>{instance.instanceId}</td>
+                        <td width="100">{t('id')}</td>
+                        <td>
+                          {instance.instanceId}
+                        </td>
                       </tr>
                       <tr>
                         <td>{t('name')}</td>
@@ -234,15 +264,8 @@ class C extends Page {
                       <tr>
                         <td>{t('description')}</td>
                         <td>
-                        {instance.description && <strong>{instance.description}</strong>}
+                        {instance.description && <span>{instance.description}</span>}
                         {!instance.description && <i className="text-muted">{t('noName')}</i>}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>{t('address')}</td>
-                        <td>
-                        {instance.address && <strong>{instance.address}</strong>}
-                        {!instance.address && <i className="text-muted">{t('noName')}</i>}
                         </td>
                       </tr>
                       <tr>
@@ -250,16 +273,72 @@ class C extends Page {
                         <td className={`i-status i-status-${instance.status}`}>
                           <i className="icon"></i>
                           {t(`instanceStatus.${instance.status}`)}
-                          <br />
                         </td>
                       </tr>
                       <tr>
                         <td>{t('created')}</td>
-                        <td>{instance.created}</td>
+                        <td>{moment.utc(instance.created).local().format('YYYY-MM-DD HH:mm:ss')}</td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
+
+                <div className="panel panel-default">
+                  <div className="panel-heading">
+                    {t('pageInstance.configuration')}
+                    {this.isEnabled(instance) && <div className="btn-group pull-right">
+                      <button type="button" className="btn dropdown-toggle" data-toggle="dropdown">
+                        <i className="fa fa-bars"></i>
+                      </button>
+                      <ul className="dropdown-menu">
+                        <li><a href onClick={this.resizeInstance}>{t('pageInstance.resizeInstance')}</a></li>
+                        <li><a href onClick={this.resetInstance}>{t('pageInstance.resetInstance')}</a></li>
+                      </ul>
+                    </div>}
+                  </div>
+                  <table className="table">
+                    <tbody>
+                      <tr>
+                        <td>{t('image')}</td>
+                        <td>
+                        {instance.image.name}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>{t('vcpus')}</td>
+                        <td>
+                        {instance.currentVCPUs}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>{t('memory')}</td>
+                        <td>
+                        {instance.currentMemory} MB
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>{t('disk')}</td>
+                        <td>
+                        {instance.currentDisk} GB
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>{t('privateIP')}</td>
+                        <td>
+                        {instance.address && <span>{instance.address}</span>}
+                        {!instance.address && <i className="text-muted">{t('noName')}</i>}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>{t('publicIP')}</td>
+                        <td>
+                          <i className="text-muted">{t('noName')}</i>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
               </div>
               {this.isEnabled(instance) && <div className="col-md-8 tabs">
                 <ul className="nav-links clearfix">
@@ -271,11 +350,6 @@ class C extends Page {
                   <li className={`pull-left ${(active === 'output') ? 'active' : ''}`}>
                     <Link data-placement="left" to={`/${region.regionId}/instances/${instance.instanceId}/output`}>
                       {t('pageInstance.output')}
-                    </Link>
-                  </li>
-                  <li className={`pull-left ${(active === 'console') ? 'active' : ''}`}>
-                    <Link data-placement="left" to={`/${region.regionId}/instances/${instance.instanceId}/console`}>
-                      {t('pageInstance.console')}
                     </Link>
                   </li>
                 </ul>

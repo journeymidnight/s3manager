@@ -169,7 +169,7 @@ class C extends Page {
           <td>{eip.description}</td>
           <td>{eip.address}</td>
           <td>{eip.status}</td>
-          <td className="light">{eip.created}</td>
+          <td>{eip.created}</td>
         </tr>
       );
     });
@@ -180,7 +180,7 @@ class C extends Page {
           <div className="clearfix">
             <div className="top-area">
               <div className="nav-text">
-                <p className="light">
+                <p>
                   {t('eipManageDescription')}
                 </p>
               </div>
@@ -245,7 +245,7 @@ class C extends Page {
                 <div className="pull-right">
                   <div className="dropdown inline prepend-left-10">
                     <button className="dropdown-toggle btn" data-toggle="dropdown" type="button">
-                      <span className="light"></span> {this.props.context.reverse ? t('lastCreated') : t('firstCreated')}
+                      {this.props.context.reverse ? t('lastCreated') : t('firstCreated')}
                       <b className="caret"></b></button>
                     <ul className="dropdown-menu dropdown-menu-align-right dropdown-select dropdown-menu-selectable">
                       <li><a className={this.props.context.reverse ? 'is-active' : ''} href onClick={this.onRefresh({ reverse: true })}>{t('lastCreated')}</a></li>
@@ -270,7 +270,7 @@ class C extends Page {
                     <th>{t('id')}</th>
                     <th>{t('name')}</th>
                     <th>{t('description')}</th>
-                    <th>{t('address')}</th>
+                    <th>{t('ip')}</th>
                     <th>{t('status')}</th>
                     <th>{t('created')}</th>
                   </tr>

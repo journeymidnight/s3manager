@@ -20,23 +20,23 @@ class C extends Page {
   onSubmit(values, dispatch) {
     return new Promise((resolve, reject) => {
       const quotaInstances = parseInt(values.quotaInstances, 10);
-      const quotaCPU = parseInt(values.quotaCPU, 10);
+      const quotaVCPUs = parseInt(values.quotaVCPUs, 10);
       const quotaMemory = parseInt(values.quotaMemory, 10);
       const quotaImages = parseInt(values.quotaImages, 10);
       const quotaEIPs = parseInt(values.quotaEIPs, 10);
       const quotaVolumes = parseInt(values.quotaVolumes, 10);
       const quotaVolumeSize = parseInt(values.quotaVolumeSize, 10);
-      const quotaKeypairs = parseInt(values.quotaKeypairs, 10);
+      const quotaKeyPairs = parseInt(values.quotaKeyPairs, 10);
 
       dispatch(RegionActions.requestAssignTenantQuota(this.regionId, this.tenantId, {
         quotaInstances,
-        quotaCPU,
+        quotaVCPUs,
         quotaMemory,
         quotaImages,
         quotaEIPs,
         quotaVolumes,
         quotaVolumeSize,
-        quotaKeypairs,
+        quotaKeyPairs,
       }))
       .then(() => {
         resolve();
@@ -60,9 +60,7 @@ class C extends Page {
 
             <div className="top-area append-bottom-20">
               <div className="nav-text">
-                <span className="light">
-                  {this.tenantId}
-                </span>
+                <span>{this.tenantId}</span>
               </div>
             </div>
 

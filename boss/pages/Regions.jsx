@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import moment from 'moment';
 import React from 'react';
 import { Link } from 'react-router';
 import { attach } from '../../shared/pages/Page';
@@ -52,6 +53,7 @@ class C extends TablePage {
             </th>
             <th width="150">{t('id')}</th>
             <th>{t('name')}</th>
+            <th>{t('formRegionForm.publicEndpoint')}</th>
             <th width="200">{t('created')}</th>
           </tr>
         </thead>
@@ -68,7 +70,8 @@ class C extends TablePage {
                 </Link>
               </td>
               <td><strong>{region.name}</strong></td>
-              <td className="light">{region.created}</td>
+              <td>{region.publicEndpoint}</td>
+              <td>{moment.utc(region.created).local().format('YYYY-MM-DD HH:mm:ss')}</td>
             </tr>
           );
         })}
@@ -82,7 +85,7 @@ class C extends TablePage {
     return (
       <div className="top-area">
         <div className="nav-text">
-          <span className="light">
+          <span>
             {t('regionManageDescription')}
           </span>
         </div>
@@ -111,7 +114,7 @@ class C extends TablePage {
           <div className="pull-right">
             <div className="dropdown inline prepend-left-10">
               <button className="dropdown-toggle btn" data-toggle="dropdown" type="button">
-                <span className="light"></span> {this.props.context.reverse ? t('lastCreated') : t('firstCreated')}
+                {this.props.context.reverse ? t('lastCreated') : t('firstCreated')}
                 <b className="caret"></b></button>
               <ul className="dropdown-menu dropdown-menu-align-right dropdown-select dropdown-menu-selectable">
                 <li><a className={this.props.context.reverse ? 'is-active' : ''} href onClick={this.onRefresh({ reverse: true })}>{t('lastCreated')}</a></li>

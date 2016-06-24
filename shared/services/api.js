@@ -60,11 +60,15 @@ export const call = (method, url, payload, hook) => {
       }
     })
     .catch((error) => {
-      reject({
-        retCode: -1,
-        message: error.data,
-        data: null,
-      });
+      if (error.data.retCode) {
+        reject(error.data);
+      } else {
+        reject({
+          retCode: -1,
+          message: error.data,
+          data: null,
+        });
+      }
     });
   });
 

@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import { attach } from '../../shared/pages/Page';
 import ButtonForm from '../../shared/forms/ButtonForm';
 import TablePage from '../../shared/pages/TablePage';
+import { alertModal } from '../../shared/components/Modal';
 import * as Actions from '../redux/actions';
 import * as RegionActions from '../redux/actions.region';
 
@@ -22,6 +23,10 @@ class C extends TablePage {
   }
 
   onDelete() {
+    const { t } = this.props;
+
+    alertModal(t('notSupportedYet'));
+
     return new Promise((resolve, reject) => {
       reject();
     });
@@ -43,6 +48,12 @@ class C extends TablePage {
             </th>
             <th width="150">{t('id')}</th>
             <th>{t('name')}</th>
+            <th>{t('formTenantQuotaForm.quotaVCPUs')}</th>
+            <th>{t('formTenantQuotaForm.quotaMemory')}</th>
+            <th>{t('formTenantQuotaForm.quotaInstances')}</th>
+            <th>{t('formTenantQuotaForm.quotaVolumes')}</th>
+            <th>{t('formTenantQuotaForm.quotaVolumeSize')}</th>
+            <th>{t('formTenantQuotaForm.quotaEIPs')}</th>
             <th width="100"></th>
           </tr>
         </thead>
@@ -59,6 +70,12 @@ class C extends TablePage {
                 </Link>
               </td>
               <td><strong>{quota.name}</strong></td>
+              <td>{quota.quotaVCPUs}</td>
+              <td>{quota.quotaMemory} MB</td>
+              <td>{quota.quotaInstances}</td>
+              <td>{quota.quotaVolumes}</td>
+              <td>{quota.quotaVolumeSize} GB</td>
+              <td>{quota.quotaEIPs}</td>
               <td>
                 <Link className="btn btn-sm btn-close" to={`/q/${this.props.region2.regionId}/${quota.tenantId}/`}>
                   <i className="fa fa-cog" /> 配置

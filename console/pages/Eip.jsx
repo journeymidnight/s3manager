@@ -195,7 +195,7 @@ class C extends Page {
                         {eip.description && <strong>{eip.description}</strong>}
                         {!eip.description && <i className="text-muted">{t('noName')}</i>}
                       </dd>
-                      <dt>{t('address')}</dt>
+                      <dt>{t('ip')}</dt>
                       <dd>{eip.address}</dd>
                       <dt>{t('status')}</dt>
                       <dd>{eip.status}</dd>

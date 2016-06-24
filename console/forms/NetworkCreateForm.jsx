@@ -25,7 +25,7 @@ const F = (props) => {
       </div>
 
       <div className={submitFailed && cidr.error ? 'form-group has-error' : 'form-group'}>
-        <label className="control-label" >{t('cidr')}</label>
+        <label className="control-label" >{t('pageNetworkCreate.cidr')}</label>
         <div className="col-sm-10">
           <input type="text" className="form-control" {...cidr} />
           {submitFailed && cidr.error && <div className="text-danger"><small>{cidr.error}</small></div>}
@@ -34,7 +34,7 @@ const F = (props) => {
 
       <div className="form-actions">
         <button type="submit" className="btn btn-save" disabled={submitting || invalid}>
-          {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('update')}
+          {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('create')}
         </button>
         &nbsp;
         <button type="button" className="btn btn-cancel" disabled={submitting} onClick={resetForm}>

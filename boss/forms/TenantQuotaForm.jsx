@@ -42,13 +42,13 @@ class F extends React.Component {
       fields: {
         tenantId,
         quotaInstances,
-        quotaCPU,
+        quotaVCPUs,
         quotaMemory,
         quotaImages,
         quotaEIPs,
         quotaVolumes,
         quotaVolumeSize,
-        quotaKeypairs,
+        quotaKeyPairs,
       },
       handleSubmit,
       resetForm,
@@ -81,11 +81,11 @@ class F extends React.Component {
           </div>
         </div>
 
-        <div className={submitFailed && quotaCPU.error ? 'form-group has-error' : 'form-group'}>
-          <label className="control-label" >{t('formTenantQuotaForm.quotaCPU')}</label>
+        <div className={submitFailed && quotaVCPUs.error ? 'form-group has-error' : 'form-group'}>
+          <label className="control-label" >{t('formTenantQuotaForm.quotaVCPUs')}</label>
           <div className="col-sm-10">
-            <input type="number" className="form-control" {...quotaCPU} />
-            {submitFailed && quotaCPU.error && <div className="text-danger"><small>{quotaCPU.error}</small></div>}
+            <input type="number" className="form-control" {...quotaVCPUs} />
+            {submitFailed && quotaVCPUs.error && <div className="text-danger"><small>{quotaVCPUs.error}</small></div>}
           </div>
         </div>
 
@@ -129,11 +129,11 @@ class F extends React.Component {
           </div>
         </div>
 
-        <div className={submitFailed && quotaKeypairs.error ? 'form-group has-error' : 'form-group'}>
-          <label className="control-label" >{t('formTenantQuotaForm.quotaKeypairs')}</label>
+        <div className={submitFailed && quotaKeyPairs.error ? 'form-group has-error' : 'form-group'}>
+          <label className="control-label" >{t('formTenantQuotaForm.quotaKeyPairs')}</label>
           <div className="col-sm-10">
-            <input type="number" className="form-control" {...quotaKeypairs} />
-            {submitFailed && quotaKeypairs.error && <div className="text-danger"><small>{quotaKeypairs.error}</small></div>}
+            <input type="number" className="form-control" {...quotaKeyPairs} />
+            {submitFailed && quotaKeyPairs.error && <div className="text-danger"><small>{quotaKeyPairs.error}</small></div>}
           </div>
         </div>
 
@@ -165,13 +165,13 @@ F.validate = values => {
   const errors = {};
   errors.tenantId = Validations.required(values.tenantId);
   errors.quotaInstances = Validations.required(values.quotaInstances);
-  errors.quotaCPU = Validations.required(values.quotaCPU);
+  errors.quotaVCPUs = Validations.required(values.quotaVCPUs);
   errors.quotaMemory = Validations.required(values.quotaMemory);
   errors.quotaImages = Validations.required(values.quotaImages);
   errors.quotaEIPs = Validations.required(values.quotaEIPs);
   errors.quotaVolumes = Validations.required(values.quotaVolumes);
   errors.quotaVolumeSize = Validations.required(values.quotaVolumeSize);
-  errors.quotaKeypairs = Validations.required(values.quotaKeypairs);
+  errors.quotaKeyPairs = Validations.required(values.quotaKeyPairs);
   return errors;
 };
 
@@ -180,13 +180,13 @@ export default reduxForm({
   fields: [
     'tenantId',
     'quotaInstances',
-    'quotaCPU',
+    'quotaVCPUs',
     'quotaMemory',
     'quotaImages',
     'quotaEIPs',
     'quotaVolumes',
     'quotaVolumeSize',
-    'quotaKeypairs',
+    'quotaKeyPairs',
   ],
   validate: F.validate,
 })(translate()(F));

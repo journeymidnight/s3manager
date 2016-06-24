@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 import Page, { attach } from '../../shared/pages/Page';
 import InstanceCreateForm from '../forms/InstanceCreateForm';
 import * as Actions from '../redux/actions';
@@ -29,6 +30,9 @@ class C extends Page {
       const imageId = values.imageId;
       const instanceTypeId = values.instanceTypeId;
       const subnetId = values.subnetId;
+      const keyPairId = values.keyPairId;
+      const loginMode = values.loginMode;
+      const loginPassword = values.loginPassword;
       const count = parseInt(values.count, 10) || 1;
 
       dispatch(InstanceActions.requestCreateInstances(routerKey, region.regionId, {
@@ -37,8 +41,9 @@ class C extends Page {
         instanceTypeId,
         subnetId,
         count,
-        loginMode: 'password',
-        loginPassword: 'P4ssw0rd!@#!#!@#!@#',
+        loginMode,
+        loginPassword,
+        keyPairId,
       }))
       .then(() => {
         resolve();
@@ -49,51 +54,51 @@ class C extends Page {
   }
 
   renderAfterInitialized() {
-    const { t } = this.props;
-    const { subnetSet, instanceTypeSet, imageSet } = this.props.context;
+    const { t, region } = this.props;
+    const { networkSet, instanceTypeSet, imageSet, keyPairSet } = this.props.context;
 
     let hint = undefined;
-    if (imageSet.length === 0) {
-      hint = t('pageInstanceCreate.imageNotFound');
-    }
-    if (instanceTypeSet.length === 0) {
-      hint = t('pageInstanceCreate.instanceNotFound');
-    }
-    if (subnetSet.length === 0) {
-      hint = t('pageInstanceCreate.subnetNotFound');
-    }
-
-    if (hint) {
-      return (
+    if (imageSet.length === 0 || instanceTypeSet.length === 0) {
+      hint = t('pageInstanceCreate.imageOrInstanceTypeNotFound');
+    } else if (networkSet.length === 0) {
+      hint = (
         <div>
-          {hint}
+          <p>{t('pageInstanceCreate.networkNotFound')}</p>
+          <Link className="btn btn-new" to={`/${region.regionId}/networks/create`}>{t('pageNetworkCreate.createNetwork')}</Link>
         </div>
       );
     }
 
-    const initialValues = {
-      imageId: imageSet[0].imageId,
-      subnetId: subnetSet[0].subnetId,
-      instanceTypeId: instanceTypeSet[0].instanceTypeId,
-      count: 1,
-    };
+    if (hint) {
+      return (
+        <div className="container-fluid container-limited">
+          <div className="content">
+            <div className="clearfix">
+              <div className="alert alert-help prepend-top-default">
+                {hint}
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div className="container-fluid container-limited">
         <div className="content">
           <div className="clearfix">
             <div className="top-area append-bottom-20">
               <div className="nav-text">
-                <span className="light">
-                  {t('pageInstanceCreate.createInstance')}
-                </span>
+                <span>{t('pageInstanceCreate.createInstance')}</span>
               </div>
             </div>
             <InstanceCreateForm
               onSubmit={this.onSubmit}
-              subnetSet={subnetSet}
+              networkSet={networkSet}
               instanceTypeSet={instanceTypeSet}
               imageSet={imageSet}
-              initialValues={initialValues}
+              keyPairSet={keyPairSet}
+              region={region}
             />
           </div>
         </div>

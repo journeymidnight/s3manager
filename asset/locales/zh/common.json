@@ -28,22 +28,25 @@
     "status": "状态",
     "volume": "硬盘",
     "image": "映像",
-    "instanceType": "配置",
+    "instance": "云主机",
+    "instanceType": "主机配置",
     "network": "私有网络",
     "subnet": "子网",
     "router": "路由器",
     "count": "数量",
-    "address": "IP 地址",
+    "memory": "内存",
+    "vcpus": "CPU 核数",
+    "cpuCore": "核",
+    "disk": "系统盘",
+    "osFamily": "操作系统发行版",
+    "osPlatform": "操作系统平台",
+    "osProcessorType": "处理器类型",
+    "ip": "IP 地址",
+    "privateIP": "内网 IP",
+    "publicIP": "公网 IP",
     "mountpoint": "挂载点",
     "size": "大小",
     "instance": "云主机",
-
-    "paging": {
-        "first": "第一页",
-        "prev": "上一页",
-        "next": "下一页",
-        "last": "最后一页"
-    },
 
     "lastCreated": "最新创建",
     "firstCreated": "最早创建",
@@ -54,10 +57,12 @@
     "createSuccessed": "添加成功。",
     "updateSuccessed": "保存成功。",
     "deleteSuccessed": "删除成功。",
+    "syncSuccessed": "同步成功。",
     "authorizeFailed": "验证失败。",
     "createFailed": "添加失败。",
     "updateFailed": "保存失败。",
     "nothingHere": "没有任何数据。",
+    "notSupportedYet": "暂时不支持此功能。",
     "noAnyAvailableRegions": "当前没有任何相关联的集群信息，请联系管理员分配集群配额。",
     "relogin": "点击重新登录",
     "attachSuccessed": "挂载成功。",
@@ -108,7 +113,7 @@
         "pending": "准备中",
         "active": "运行中",
         "deleted": "已删除",
-        "ceased": "物理删除"
+        "ceased": "已删除"
     },
 
     "instanceStatus": {
@@ -121,7 +126,7 @@
         "scheduling": "调度中",
         "error": "状态异常",
         "deleted": "已删除",
-        "ceased": "物理删除"
+        "ceased": "已删除"
     },
 
     "keyPairStatus": {
@@ -133,14 +138,40 @@
         "active": "运行中",
         "associated": "已关联",
         "deleted": "已删除",
-        "ceased": "物理删除"
+        "ceased": "已删除"
+    },
+
+    "instanceTypeStatus": {
+        "active": "可用",
+        "deleted": "已删除"
     },
 
     "imageStatus": {
-        "pending": "准备中",
-        "active": "运行中",
+        "pending": "上传中",
+        "active": "可用",
         "deleted": "已删除",
-        "ceased": "物理删除"
+        "ceased": "已删除"
+    },
+
+    "osPlatforms": {
+        "linux": "Linux",
+        "windows": "Windows",
+        "unknown": "未知"
+    },
+
+    "osProcessorTypes": {
+        "32": "32 位",
+        "64": "64 位",
+        "unknown": "未知"
+    },
+
+    "osFamilies": {
+        "ubuntu": "Ubuntu",
+        "centos": "CentOS",
+        "debian": "Debian",
+        "fedora": "Fedora",
+        "windows": "Windows",
+        "unknown": "未知"
     },
 
     "volumeStatus": {
@@ -156,30 +187,55 @@
     },
 
     "pageNetworkCreate": {
-        "createNetwork": "添加私有网络"
+        "createNetwork": "添加私有网络",
+        "cidr": "初始网段地址"
+    },
+
+    "pageVNC": {
+        "sendCtrlAltDel": "发送 Ctrl+Alt+Del"
     },
 
     "pageInstance": {
         "basic": "基本信息",
+        "configuration": "配置",
         "monitor": "监控",
         "output": "启动日志",
-        "console": "VNC",
+        "connectVNC": "连接 VNC",
         "startInstance": "启动",
         "stopInstance": "关机",
         "restartInstance": "重启",
         "deleteInstance": "删除",
-        "updateInstance": "更新"
+        "updateInstance": "更新",
+        "resizeInstance": "更新配置",
+        "resetInstance": "系统重置"
     },
 
     "pageInstanceCreate": {
-        "createInstance": "添加云主机"
+        "createInstance": "添加云主机",
+        "basic": "基本信息",
+        "hostname": "主机名",
+        "network": "网络设置",
+        "loginMode": "SSH 登录方式",
+        "keyPair": "SSH 密钥",
+        "loginPassword": "密码",
+        "passwordNotValid": "密码不符合规范。",
+        "passwordHint": "密码至少8位，并包括大小写字母及数字。",
+        "instanceType": "选择配置",
+        "image": "选择映像",
+        "imageOrInstanceTypeNotFound": "本区域尚未初始化或者出现异常，请与管理员取得联系。",
+        "networkNotFound": "云主机需要运行在一个二层隔离的私有网络（VPC）中，用户首先需要定义一个私有网络，并配置相关网段信息。"
     },
 
     "pageRegion": {
         "basic": "基本信息",
         "assignedTenants": "分配租户",
         "instanceTypes": "主机配置",
-        "images": "映像"
+        "updateQuota": "调整配额",
+        "updateImage": "更新信息",
+        "syncImages": "同步映像",
+        "publicImages": "公共映像",
+        "createInstanceType": "创建主机配额",
+        "generateInstanceTypes": "自动生成通用配置"
     },
 
     "pageTenant": {
@@ -239,22 +295,22 @@
     },
 
     "formRegionForm": {
-        "publicEndpoint": "对外接口URL",
-        "manageEndpoint": "管理接口URL",
-        "manageKey": "管理员账号",
-        "manageSecret": "管理员密码"
+        "publicEndpoint": "公共接口 URL",
+        "manageEndpoint": "管理接口 URL",
+        "manageKey": "管理账号",
+        "manageSecret": "管理密码"
     },
 
     "formTenantQuotaForm": {
         "tenantId": "租户ID",
         "quotaInstances": "云主机",
-        "quotaCPU": "vCPU",
-        "quotaMemory": "内存(GB)",
+        "quotaVCPUs": "vCPU",
+        "quotaMemory": "内存(MB)",
         "quotaImages": "镜像",
         "quotaEIPs": "公网 IP",
-        "quotaVolumes": "云硬盘",
+        "quotaVolumes": "云硬盘个数",
         "quotaVolumeSize": "云硬盘容量(GB)",
-        "quotaKeypairs": "SSH 密钥"
+        "quotaKeyPairs": "SSH 密钥"
     },
 
     "sidebarInstance": "云主机",
