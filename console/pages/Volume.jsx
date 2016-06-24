@@ -4,6 +4,7 @@ import { reduxForm } from 'redux-form';
 import Time from 'react-time';
 import Page, { attach } from '../../shared/pages/Page';
 import Modal, { confirmModal } from '../../shared/components/Modal';
+import i18n from '../../shared/i18n';
 import * as Actions from '../redux/actions';
 import * as VolumeActions from '../redux/actions.volume';
 import * as InstanceActions from '../redux/actions.instance';
@@ -137,25 +138,23 @@ let VolumeResizeForm = (props) => {
     { name, size },
     handleSubmit,
     submitting,
-    submitFailed,
     t,
     invalid,
   } = props;
   return (
     <form className="form-horizontal" onSubmit={handleSubmit}>
       <div className="modal-body">
-        <div className={submitFailed && name.error ? 'form-group has-error' : 'form-group'}>
+        <div className="form-group">
           <label className="control-label" >{t('name')}</label>
           <div className="col-sm-10">
             <input type="text" className="form-control" disabled {...name} />
-            {submitFailed && name.error && <div className="text-danger"><small>{name.error}</small></div>}
           </div>
         </div>
-        <div className={submitFailed && size.error ? 'form-group has-error' : 'form-group'}>
+        <div className={size.touched && size.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('size')}</label>
           <div className="col-sm-10">
             <input type="text" className="form-control" {...size} />
-            {submitFailed && size.error && <div className="text-danger"><small>{size.error}</small></div>}
+            {size.touched && size.error && <div className="text-danger"><small>{size.error}</small></div>}
           </div>
         </div>
       </div>
@@ -180,9 +179,15 @@ VolumeResizeForm.propTypes = {
   t: React.PropTypes.any,
 };
 
-VolumeResizeForm.validate = (values) => {
+VolumeResizeForm.validate = (values, form) => {
   const errors = {};
-  errors.size = Validations.integer(values.size);
+  const initialSize = form.initialValues.size;
+  let sizeValidationResult = null;
+  sizeValidationResult = Validations.integer(values.size);
+  if (!sizeValidationResult && Number(values.size) <= initialSize) {
+    sizeValidationResult = i18n.t('pageVolume.validateSizeGreatThanInitialSize');
+  }
+  errors.size = sizeValidationResult;
   return errors;
 };
 
@@ -411,8 +416,7 @@ class C extends Page {
                       <tr>
                         <td>{t('size')}</td>
                         <td>
-                        {volume.size && <strong>{volume.size}</strong>}
-                        {!volume.size && <i className="text-muted">{t('noName')}</i>}
+                          <strong>{volume.size}G</strong>
                         </td>
                       </tr>
                       <tr>
@@ -425,7 +429,7 @@ class C extends Page {
                       </tr>
                       <tr>
                         <td>{t('created')}</td>
-                        <td><Time value={volume.created} format="YYYY-MM-DD" /></td>
+                        <td><Time value={volume.created} format="YYYY-MM-DD HH:mm:ss" /></td>
                       </tr>
                     </tbody>
                   </table>

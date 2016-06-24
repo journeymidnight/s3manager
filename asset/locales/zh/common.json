@@ -46,6 +46,7 @@
     "publicIP": "公网 IP",
     "mountpoint": "挂载点",
     "size": "大小",
+    "instance": "云主机",
 
     "lastCreated": "最新创建",
     "firstCreated": "最早创建",
@@ -272,7 +273,8 @@
         "detachVolume": "卸载云硬盘",
         "resizeVolume": "扩容云硬盘",
         "confirmDetachVolume": "确认要卸载云硬盘吗?",
-        "noAvailableInstance": "没有可用的云主机"
+        "noAvailableInstance": "没有可用的云主机",
+        "validateSizeGreatThanInitialSize": "扩容的大小须大于当前大小"
     },
 
     "volumeMountMode": {
