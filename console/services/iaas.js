@@ -162,6 +162,11 @@ class IaaS {
       instanceId,
     });
   }
+  getInstanceOutput(regionId, instanceId) {
+    return this.call(regionId, 'GetInstanceOutput', {
+      instanceId,
+    });
+  }
 }
 
 export default new IaaS();

@@ -111,7 +111,7 @@ class C extends TablePage {
                 <Link to={`/${this.props.region.regionId}/instances/${instance.instanceId}`}>
                   {instance.instanceId}
                 </Link>
-                {instance.status === 'active' && <a className="label label-info pull-right" href onClick={this.connectVNC(instance)}>
+                {instance.status === 'active' && <a className="pull-right" href onClick={this.connectVNC(instance)}>
                   <i className="fa fa-desktop"></i>
                 </a>}
               </td>

@@ -14,11 +14,13 @@ export function requestDescribePrerequisites(routerKey, regionId) {
     .then((payload) => {
       dispatch(extendContext({
         instanceTypeSet: payload.instanceTypeSet,
+        isPublic: true,
       }, routerKey));
 
       return IaaS
       .describeImages(regionId, {
         status: ['active'],
+        isPublic: true,
         limit: 100,
       })
       .promise;
@@ -209,8 +211,8 @@ export function requestConnectVNC(routerKey, regionId, instanceId) {
     .then((payload) => {
       const top = window.top.outerHeight / 4 + window.top.screenY;
       const left = window.top.outerWidth / 4 + window.top.screenX;
-      const width = 735;
-      const height = 430;
+      const width = 737;
+      const height = 425;
 
       const { host, port, token } = payload;
       const url = `/vnc/${host}/${port}/${token}`;
@@ -221,6 +223,21 @@ export function requestConnectVNC(routerKey, regionId, instanceId) {
       if (window.focus) {
         newWindow.focus();
       }
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
+
+export function requestInstanceOutput(routerKey, regionId, instanceId) {
+  return dispatch => {
+    return IaaS
+    .getInstanceOutput(regionId, instanceId)
+    .promise
+    .then((payload) => {
+      dispatch(extendContext(payload, routerKey));
     })
     .catch((error) => {
       dispatch(notifyAlert(error.message));
