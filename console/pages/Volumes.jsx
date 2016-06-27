@@ -18,8 +18,8 @@ class C extends TablePage {
 
 
   componentDidMount() {
-    const { t, dispatch } = this.props;
-    dispatch(Actions.setHeader(t('tenantManage'), '/tenants'));
+    const { t, dispatch, region } = this.props;
+    dispatch(Actions.setHeader(t('volumeManage'), `/${region.regionId}/volumes`));
 
     this.initTable();
   }
@@ -151,11 +151,8 @@ class C extends TablePage {
                         status: ['backup_restoring'],
                         name: t('volumeStatus.backup_restoring'),
                       }, {
-                        status: ['deleted'],
+                        status: ['deleted','ceased'],
                         name: t('volumeStatus.deleted'),
-                      }, {
-                        status: ['ceased'],
-                        name: t('volumeStatus.ceased'),
                       }, {
                         status: ['error'],
                         name: t('volumeStatus.error'),

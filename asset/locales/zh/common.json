@@ -46,7 +46,8 @@
     "publicIP": "公网 IP",
     "mountpoint": "挂载点",
     "size": "大小",
-    "instance": "云主机",
+    "associateInstance": "已绑定云主机",
+    "bandwidth": "带宽",
 
     "lastCreated": "最新创建",
     "firstCreated": "最早创建",
