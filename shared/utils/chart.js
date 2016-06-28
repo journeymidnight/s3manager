@@ -107,8 +107,14 @@ export function generateLineChartConfig(data, cols, yFormat) {
       return `${fmt(currency / 10000 / 10000)}亿元`;
     };
   } else if (yFormat === 'percentage') {
+    config.axis.y.min = 0;
+    config.axis.y.max = 100;
     config.axis.y.tick.format = (d) => {
-      return `${parseInt(d, 10)}%`;
+      if (d >= 0) {
+        return `${parseInt(d, 10)}%`;
+      }
+
+      return '';
     };
   }
 
