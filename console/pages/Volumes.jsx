@@ -151,7 +151,7 @@ class C extends TablePage {
                         status: ['backup_restoring'],
                         name: t('volumeStatus.backup_restoring'),
                       }, {
-                        status: ['deleted','ceased'],
+                        status: ['deleted', 'ceased'],
                         name: t('volumeStatus.deleted'),
                       }, {
                         status: ['error'],

@@ -1,13 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router';
 import _ from 'lodash';
-import { translate } from 'react-i18next';
-import { reduxForm } from 'redux-form';
 import Time from 'react-time';
 import { attach } from '../../shared/pages/Page';
 import TablePage from '../../shared/pages/TablePage';
 import ButtonForm from '../../shared/forms/ButtonForm';
-import Pagination from '../../shared/components/Pagination';
 import * as Actions from '../redux/actions';
 import * as EipActions from '../redux/actions.eip';
 
@@ -53,15 +50,15 @@ class C extends TablePage {
         <thead>
           <tr>
             <th width="40">
-              <input type="checkbox" className="selected" onChange={this.onSelectAll(this.props.context.eipSet.map((u) => { return u.eipId; })) } />
+              <input type="checkbox" className="selected" onChange={this.onSelectAll(this.props.context.eipSet.map((u) => { return u.eipId; }))} />
             </th>
-            <th width="150">{t('id') }</th>
-            <th>{t('name') }</th>
-            <th>{t('bandwidth') }</th>
-            <th>{t('associateInstance') }</th>
-            <th>{t('address') }</th>
-            <th>{t('status') }</th>
-            <th width="200">{t('created') }</th>
+            <th width="150">{t('id')}</th>
+            <th>{t('name')}</th>
+            <th>{t('bandwidth')}</th>
+            <th>{t('associateInstance')}</th>
+            <th>{t('address')}</th>
+            <th>{t('status')}</th>
+            <th width="200">{t('created')}</th>
           </tr>
         </thead>
         <tbody>
@@ -69,7 +66,7 @@ class C extends TablePage {
             return (
               <tr key={eip.eipId}>
                 <td>
-                  <input type="checkbox" className="selected" onChange={this.onSelect(eip.eipId) } checked={this.props.context.selected[eip.eipId] === true} />
+                  <input type="checkbox" className="selected" onChange={this.onSelect(eip.eipId)} checked={this.props.context.selected[eip.eipId] === true} />
                 </td>
                 <td>
                   <Link to={`/${this.props.region.regionId}/eips/${eip.eipId}`}>
@@ -78,21 +75,21 @@ class C extends TablePage {
                 </td>
                 <td>
                   {eip.name && <strong>{eip.name}</strong>}
-                  {!eip.name && <i className="text-muted">{t('noName') }</i>}
+                  {!eip.name && <i className="text-muted">{t('noName')}</i>}
                 </td>
                 <td>{eip.bandwidth}Mb</td>
                 <td>
-                  {eip.resourceId || <i className="text-muted">{t('noName') }</i>}
+                  {eip.resourceId || <i className="text-muted">{t('noName')}</i>}
                 </td>
                 <td>{eip.address}</td>
                 <td className={`i-status i-status-${eip.status}`}>
                   <i className="icon"></i>
-                  {t(`eipStatus.${eip.status}`) }
+                  {t(`eipStatus.${eip.status}`)}
                 </td>
                 <td className="light"><Time value={eip.created} format="YYYY-MM-DD HH:mm:ss" /></td>
               </tr>
             );
-          }) }
+          })}
         </tbody>
       </table>
     );
@@ -104,12 +101,12 @@ class C extends TablePage {
       <div className="top-area">
         <div className="nav-text">
           <span className="light">
-            {t('eipManageDescription') }
+            {t('eipManageDescription')}
           </span>
         </div>
         <div className="nav-controls">
           <Link className="btn btn-new" to={`/${this.props.region.regionId}/eips/create`}>
-            <i className="fa fa-plus"></i>&nbsp; {t('create') }
+            <i className="fa fa-plus"></i>&nbsp; {t('create')}
           </Link>
         </div>
       </div>
@@ -122,14 +119,14 @@ class C extends TablePage {
       <div className="gray-content-block second-block">
         <div className={Object.keys(this.props.context.selected).length > 0 ? 'hidden' : ''}>
           <div className="filter-item inline">
-            <a className="btn btn-default" onClick={this.onRefresh({}, false) }>
+            <a className="btn btn-default" onClick={this.onRefresh({}, false)}>
               <i className={`fa fa-refresh ${this.props.context.loading ? 'fa-spin' : ''}`}></i>
             </a>
           </div>
           <div className="filter-item inline labels-filter">
             <div className="dropdown">
               <button className="dropdown-menu-toggle" data-toggle="dropdown" type="button">
-                <span className="dropdown-toggle-text">{t('status') }</span>
+                <span className="dropdown-toggle-text">{t('status')}</span>
                 <i className="fa fa-chevron-down"></i>
               </button>
               <div className="dropdown-menu dropdown-select dropdown-menu-selectable">
@@ -163,23 +160,23 @@ class C extends TablePage {
             </div>
           </div>
           <div className="filter-item inline">
-            <input type="search" ref="search" placeholder={t('filterByIdorName') } className="form-control" onKeyPress={this.onSearchKeyPress} />
+            <input type="search" ref="search" placeholder={t('filterByIdorName')} className="form-control" onKeyPress={this.onSearchKeyPress} />
           </div>
           <div className="pull-right">
             <div className="dropdown inline prepend-left-10">
               <button className="dropdown-toggle btn" data-toggle="dropdown" type="button">
-                <span className="light"></span> {this.props.context.reverse ? t('lastCreated') : t('firstCreated') }
+                <span className="light"></span> {this.props.context.reverse ? t('lastCreated') : t('firstCreated')}
                 <b className="caret"></b></button>
               <ul className="dropdown-menu dropdown-menu-align-right dropdown-select dropdown-menu-selectable">
-                <li><a className={this.props.context.reverse ? 'is-active' : ''} href onClick={this.onRefresh({ reverse: true }) }>{t('lastCreated') }</a></li>
-                <li><a className={this.props.context.reverse ? '' : 'is-active'} href onClick={this.onRefresh({ reverse: false }) }>{t('firstCreated') }</a></li>
+                <li><a className={this.props.context.reverse ? 'is-active' : ''} href onClick={this.onRefresh({ reverse: true })}>{t('lastCreated')}</a></li>
+                <li><a className={this.props.context.reverse ? '' : 'is-active'} href onClick={this.onRefresh({ reverse: false })}>{t('firstCreated')}</a></li>
               </ul>
             </div>
           </div>
         </div>
         <div className={Object.keys(this.props.context.selected).length > 0 ? '' : 'hidden'}>
           <div className="filter-item inline">
-            <ButtonForm onSubmit={this.onDelete} text={t('delete') } type="btn-danger" />
+            <ButtonForm onSubmit={this.onDelete} text={t('delete')} type="btn-danger" />
           </div>
         </div>
       </div>

@@ -72,6 +72,17 @@ class IaaS {
       eipIds,
     });
   }
+  associateEip(regionId, eipId, instanceId) {
+    return this.call(regionId, 'AssociateEip', {
+      eipId,
+      instanceId,
+    });
+  }
+  dissociateEips(regionId, eipIds) {
+    return this.call(regionId, 'DissociateEips', {
+      eipIds,
+    });
+  }
   modifyEipAttributes(regionId, eipId, name, description) {
     return this.call(regionId, 'ModifyEipAttributes', {
       eipId,

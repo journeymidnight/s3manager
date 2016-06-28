@@ -69,6 +69,8 @@
     "attachSuccessed": "挂载成功。",
     "detachSuccessed": "卸载成功。",
     "resizeSuccessed": "扩容成功。",
+    "dissociateSuccessed": "解绑成功。",
+    "associateSuccessed": "绑定成功。",
 
     "instanceManage": "云主机管理",
     "instanceManageDescription": "添加、删除和修改云主机信息。",
@@ -263,7 +265,11 @@
     "pageEip": {
         "basic": "基本信息",
         "updateEip": "更新基本信息",
-        "releaseEip": "删除公网IP"
+        "deleteEip": "删除公网IP",
+        "associateEip": "绑定公网IP",
+        "dissociateEip": "解绑公网IP",
+        "noAvailableInstance": "没有可用的云主机",
+        "confirmDissociateEip": "确认要解绑公网IP吗?"
     },
 
     "pageVolume": {
