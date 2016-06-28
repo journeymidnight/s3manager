@@ -233,7 +233,7 @@ class C extends TablePage {
             </div>
           </div>
         </div>
-        <div className={Object.keys(this.props.context.selected).length > 0 ? '' : 'hidden'}>
+        {Object.keys(this.props.context.selected).length > 0 && <div>
           <div className="filter-item inline">
             {buttonForm({ onSubmit: this.onStart, text: t('pageInstance.startInstance') })}
           </div>
@@ -246,7 +246,7 @@ class C extends TablePage {
           <div className="filter-item inline pull-right">
             {React.cloneElement(buttonForm(), { onSubmit: this.onDelete, text: t('delete'), type: 'btn-danger' })}
           </div>
-        </div>
+        </div>}
       </div>
     );
   }
