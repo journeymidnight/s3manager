@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
@@ -12,6 +13,10 @@ class C extends React.Component {
   }
 
   componentDidMount() {
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return !_.isEqual(this.props.context, nextProps.context) || !_.isEqual(this.state, nextState);
   }
 
   componentWillUnmount() {

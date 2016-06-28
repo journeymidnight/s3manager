@@ -63,7 +63,7 @@ class C extends Page {
               <i className={`fa fa-refresh ${this.props.context.loading ? 'fa-spin' : ''}`}></i>
             </a>
           </div>
-          {this.props.context.url && <div className="filter-item inline pull-right">
+          {this.props.context.output && this.props.context.url && <div className="filter-item inline pull-right">
             <a className="btn btn-success" onClick={this.download}>
               <i className="fa fa-download"></i>&nbsp;{t('download')}
             </a>

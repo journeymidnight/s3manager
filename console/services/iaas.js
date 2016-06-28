@@ -167,6 +167,13 @@ class IaaS {
       instanceId,
     });
   }
+  getMonitor(regionId, resourceId, metric, period) {
+    return this.call(regionId, 'GetMonitor', {
+      resourceId,
+      metric,
+      period,
+    });
+  }
 }
 
 export default new IaaS();
