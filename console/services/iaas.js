@@ -185,6 +185,16 @@ class IaaS {
       period,
     });
   }
+  describeSnapshots(regionId, filter = {}) {
+    return this.call(regionId, 'DescribeSnapshots', filter);
+  }
+  createSnapshots(regionId, snapshot) {
+    return this.call(regionId, 'CreateSnapshots', snapshot);
+  }
+  deleteSnapshots(regionId, snapshotIds) {
+    return this.call(regionId, 'DeleteSnapshots', {
+      snapshotIds,
+    });
+  }
 }
-
 export default new IaaS();

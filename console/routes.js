@@ -20,7 +20,7 @@ import InstanceTabOutput from './pages/InstanceTabOutput.jsx';
 import Instances from './pages/Instances.jsx';
 import InstanceCreate from './pages/InstanceCreate.jsx';
 import RegionIndex from './pages/RegionIndex.jsx';
-import Snapshots from './pages/Snapshots.jsx';
+import ImagesAndSnapshots from './pages/ImagesAndSnapshots.jsx';
 import Settings from './pages/Settings.jsx';
 import Eip from './pages/Eip.jsx';
 import Eips from './pages/Eips.jsx';
@@ -30,6 +30,9 @@ import InstanceTypes from './pages/InstanceTypes.jsx';
 import Volumes from './pages/Volumes.jsx';
 import Volume from './pages/Volume.jsx';
 import VolumeCreate from './pages/VolumeCreate.jsx';
+import TabPrivateImages from './pages/TabPrivateImages.jsx';
+import TabPublicImages from './pages/TabPublicImages.jsx';
+import TabVolumeSnapshots from './pages/TabVolumeSnapshots.jsx';
 
 export default function configureRoutes(store) {
   function requireAuth(nextState, replace) {
@@ -62,8 +65,11 @@ export default function configureRoutes(store) {
             <Route path="create" component={VolumeCreate} />
             <Route path=":volumeId" component={Volume} />
           </Route>
-          <Route path="snapshots" >
-            <IndexRoute component={Snapshots} />
+          <Route path="images_snapshots" component={ImagesAndSnapshots} >
+            <IndexRoute component={TabPublicImages} />
+            <Route path="public_images" component={TabPublicImages} />
+            <Route path="private_images" component={TabPrivateImages} />
+            <Route path="volume_snapshots" component={TabVolumeSnapshots} />
           </Route>
           <Route path="eips">
             <IndexRoute component={Eips} />
