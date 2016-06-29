@@ -13,11 +13,19 @@ const loggerMiddleware = createLogger();
 export const initialState = {};
 
 export default function configureStore(_initialState = initialState) {
-  const finalCreateStore = compose(
-    applyMiddleware(thunkMiddleware, routerMiddleware, loggerMiddleware),
-    DevTools.instrument(),
-    persistState(window.location.href.match(/[?&]debug_session=([^&]+)\b/))
-  )(createStore);
+  let finalCreateStore;
+
+  if (process.env.NODE_ENV !== 'production') {
+    finalCreateStore = compose(
+      applyMiddleware(thunkMiddleware, routerMiddleware, loggerMiddleware),
+      DevTools.instrument(),
+      persistState(window.location.href.match(/[?&]debug_session=([^&]+)\b/))
+    )(createStore);
+  } else {
+    finalCreateStore = compose(
+      applyMiddleware(thunkMiddleware, routerMiddleware)
+    )(createStore);
+  }
 
   const store = finalCreateStore(rootReducer, _initialState);
   return store;

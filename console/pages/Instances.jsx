@@ -111,7 +111,7 @@ class C extends TablePage {
                 <Link to={`/${this.props.region.regionId}/instances/${instance.instanceId}`}>
                   {instance.instanceId}
                 </Link>
-                {instance.status === 'active' && <a className="label label-info pull-right" href onClick={this.connectVNC(instance)}>
+                {instance.status === 'active' && <a className="pull-right" href onClick={this.connectVNC(instance)}>
                   <i className="fa fa-desktop"></i>
                 </a>}
               </td>
@@ -233,7 +233,7 @@ class C extends TablePage {
             </div>
           </div>
         </div>
-        <div className={Object.keys(this.props.context.selected).length > 0 ? '' : 'hidden'}>
+        {Object.keys(this.props.context.selected).length > 0 && <div>
           <div className="filter-item inline">
             {buttonForm({ onSubmit: this.onStart, text: t('pageInstance.startInstance') })}
           </div>
@@ -246,7 +246,7 @@ class C extends TablePage {
           <div className="filter-item inline pull-right">
             {React.cloneElement(buttonForm(), { onSubmit: this.onDelete, text: t('delete'), type: 'btn-danger' })}
           </div>
-        </div>
+        </div>}
       </div>
     );
   }
