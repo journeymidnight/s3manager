@@ -79,10 +79,13 @@ export function generateLineChartConfig(data, cols, yFormat) {
   };
 
   if (yFormat === 'bytes') {
+    config.axis.y.min = 0;
     config.axis.y.tick.format = (bytes) => {
       const fmt = d3.format('.1f');
 
-      if (bytes < 1024) {
+      if (bytes < 0) {
+        return '';
+      } else if (bytes < 1024) {
         return `${fmt(bytes)}B`;
       } else if (bytes < 1024 * 1024) {
         return `${fmt(bytes / 1024)}kB`;
@@ -93,10 +96,13 @@ export function generateLineChartConfig(data, cols, yFormat) {
       return `${fmt(bytes / 1024 / 1024 / 1024)}GB`;
     };
   } else if (yFormat === 'yuan') {
+    config.axis.y.min = 0;
     config.axis.y.tick.format = (currency) => {
       const fmt = d3.format('.1f');
 
-      if (currency < 1000) {
+      if (currency < 0) {
+        return '';
+      } else if (currency < 1000) {
         return `${fmt(currency)}元`;
       } else if (currency < 10000) {
         return `${fmt(currency / 1000)}千元`;
@@ -110,8 +116,19 @@ export function generateLineChartConfig(data, cols, yFormat) {
     config.axis.y.min = 0;
     config.axis.y.max = 100;
     config.axis.y.tick.format = (d) => {
-      if (d >= 0) {
+      if (d >= 0 && d <= 100) {
         return `${parseInt(d, 10)}%`;
+      }
+
+      return '';
+    };
+  } else {
+    config.axis.y.min = 0;
+    config.axis.y.tick.format = (d) => {
+      const fmt = d3.format('.1f');
+
+      if (d >= 0) {
+        return fmt(d);
       }
 
       return '';
