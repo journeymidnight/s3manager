@@ -78,7 +78,7 @@ class C extends TablePage {
                 <td>{snapshot.size}G</td>
                 <td className={`i-status i-status-${snapshot.status}`}>
                   <i className="icon"></i>
-                  {t(`snapshotStatus.${snapshot.status}`)}
+                  {t(`volumeSnapshotsStatus.${snapshot.status}`)}
                 </td>
                 <td className="light"><Time value={snapshot.created} format="YYYY-MM-DD HH:mm:ss" /></td>
               </tr>

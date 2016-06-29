@@ -93,8 +93,11 @@
     "eipManage": "公网 IP",
     "eipManageDescription": "为 Linux 云主机提供 可以被外网访问的IP地址。",
 
-    "imageManage": "映像",
-    "imageManageDescription": "为 Linux 云主机提供 映像。",
+    "publicImageManage": "公共映像",
+    "publicImageManageDescription": "为 Linux 云主机提供 公共映像。",
+
+    "privateImageManage": "自有映像",
+    "privateImageManageDescription": "为 Linux 云主机提供 自有映像。",
 
     "volumeSnapshotManage": "硬盘备份",
     "volumeSnapshotManageDescription": "为 Linux 云主机提供 硬盘备份。",
