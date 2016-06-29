@@ -48,6 +48,11 @@
     "size": "大小",
     "download": "下载",
     "instance": "云主机",
+    "associateInstance": "已绑定云主机",
+    "bandwidth": "带宽",
+    "public_images": "公共映像",
+    "private_images": "自有映像",
+    "volume_snapshots": "硬盘备份",
 
     "lastCreated": "最新创建",
     "firstCreated": "最早创建",
@@ -69,6 +74,8 @@
     "attachSuccessed": "挂载成功。",
     "detachSuccessed": "卸载成功。",
     "resizeSuccessed": "扩容成功。",
+    "dissociateSuccessed": "解绑成功。",
+    "associateSuccessed": "绑定成功。",
 
     "instanceManage": "云主机管理",
     "instanceManageDescription": "添加、删除和修改云主机信息。",
@@ -86,8 +93,14 @@
     "eipManage": "公网 IP",
     "eipManageDescription": "为 Linux 云主机提供 可以被外网访问的IP地址。",
 
-    "imageManage": "映像",
-    "imageManageDescription": "为 Linux 云主机提供 映像。",
+    "publicImageManage": "公共映像",
+    "publicImageManageDescription": "为 Linux 云主机提供 公共映像。",
+
+    "privateImageManage": "自有映像",
+    "privateImageManageDescription": "为 Linux 云主机提供 自有映像。",
+
+    "volumeSnapshotManage": "硬盘备份",
+    "volumeSnapshotManageDescription": "为 Linux 云主机提供 硬盘备份。",
 
     "instanceTypeManage": "主机配置",
     "instanceTypeManageDescription": "为 Linux 云主机提供 主机配置。",
@@ -152,6 +165,14 @@
         "active": "可用",
         "deleted": "已删除",
         "ceased": "已删除"
+    },
+
+    "volumeSnapshotsStatus": {
+        "pending": "创建中",
+        "active": "可用",
+        "deleted": "已删除",
+        "ceased": "已删除",
+        "error": "状态异常"
     },
 
     "osPlatforms": {
@@ -263,7 +284,11 @@
     "pageEip": {
         "basic": "基本信息",
         "updateEip": "更新基本信息",
-        "releaseEip": "删除公网IP"
+        "deleteEip": "删除公网IP",
+        "associateEip": "绑定公网IP",
+        "dissociateEip": "解绑公网IP",
+        "noAvailableInstance": "没有可用的云主机",
+        "confirmDissociateEip": "确认要解绑公网IP吗?"
     },
 
     "pageVolume": {
@@ -273,6 +298,9 @@
         "attachVolume": "挂载云硬盘",
         "detachVolume": "卸载云硬盘",
         "resizeVolume": "扩容云硬盘",
+        "monitor": "监控",
+        "snapshot": "快照",
+        "createSnapshot": "创建快照",
         "confirmDetachVolume": "确认要卸载云硬盘吗?",
         "noAvailableInstance": "没有可用的云主机",
         "validateSizeGreatThanInitialSize": "扩容的大小须大于当前大小"
@@ -338,9 +366,8 @@
     "sidebarInstanceType": "主机配置",
     "sidebarVolume": "云硬盘",
     "sidebarNetwork": "私有网络",
-    "sidebarSnapshot": "快照备份",
+    "sidebarImagesAndSnapshots": "映像及备份",
     "sidebarEIP": "公网 IP",
-    "sidebarIMAGE": "映像",
     "sidebarKeyPair": "SSH 密钥",
     "sidebarFirewall": "防火墙",
     "sidebarAccessKey": "API 密钥",
