@@ -33,14 +33,12 @@ App.propTypes = {
   t: React.PropTypes.any,
   env: React.PropTypes.object.isRequired,
   auth: React.PropTypes.object,
-  context: React.PropTypes.object,
 };
 
 function mapStateToProps(state) {
   return {
     auth: state.auth,
     env: state.env,
-    context: state.context,
   };
 }
 

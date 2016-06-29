@@ -49,7 +49,6 @@ App.propTypes = {
   children: React.PropTypes.element.isRequired,
   auth: React.PropTypes.object,
   env: React.PropTypes.object.isRequired,
-  context: React.PropTypes.object,
   t: React.PropTypes.any,
   region: React.PropTypes.object,
   regions: React.PropTypes.array,
@@ -60,7 +59,6 @@ function mapStateToProps(state) {
   return {
     auth: state.auth,
     env: state.env,
-    context: state.context,
     region: state.region,
     regions: state.regions,
   };

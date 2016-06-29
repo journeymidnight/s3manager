@@ -46,6 +46,7 @@
     "publicIP": "公网 IP",
     "mountpoint": "挂载点",
     "size": "大小",
+    "download": "下载",
     "instance": "云主机",
 
     "lastCreated": "最新创建",
@@ -311,6 +312,27 @@
         "quotaVolumes": "云硬盘个数",
         "quotaVolumeSize": "云硬盘容量(GB)",
         "quotaKeyPairs": "SSH 密钥"
+    },
+
+    "periods": {
+        "120mins": "最近120分钟",
+        "720mins": "最近720分钟",
+        "48hours": "最近48小时",
+        "14days": "最近7天",
+        "30days": "最近30天"
+    },
+
+    "monitor": {
+        "cpu": "CPU",
+        "memory": "内存",
+        "usage": "已使用",
+        "allocation": "已使用",
+        "capacity": "总容量",
+        "read": "读",
+        "write": "写",
+        "diskUsage": "硬盘使用率",
+        "diskIO": "硬盘吞吐量",
+        "diskIOPS": "硬盘 IOPS"
     },
 
     "sidebarInstance": "云主机",
