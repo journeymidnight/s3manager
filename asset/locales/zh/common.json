@@ -325,7 +325,6 @@
     "monitor": {
         "cpu": "CPU",
         "memory": "内存",
-        "usage": "已使用",
         "allocation": "已使用",
         "capacity": "总容量",
         "read": "读",

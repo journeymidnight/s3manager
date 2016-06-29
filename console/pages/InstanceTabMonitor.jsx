@@ -126,7 +126,6 @@ class C extends Page {
               className="chart"
               config={generateLineChartConfig(this.props.context[`period-${this.state.period}-disk.usage`], {
                 'disk.capacity': { name: t('monitor.capacity') },
-                'disk.usage': { name: t('monitor.usage') },
                 'disk.allocation': { name: t('monitor.allocation') },
               }, 'bytes')}
             />}
