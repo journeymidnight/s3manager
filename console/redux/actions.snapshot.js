@@ -1,4 +1,3 @@
-import { push } from 'react-router-redux';
 import { notify, notifyAlert, extendContext } from './actions';
 import IaaS from '../services/iaas';
 import i18n from '../../shared/i18n';

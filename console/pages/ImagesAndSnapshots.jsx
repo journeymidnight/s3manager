@@ -9,7 +9,7 @@ class C extends Page {
   }
 
   render() {
-    const { t , region } = this.props;
+    const { t, region } = this.props;
 
     let active = 'public_images';
     if (_.endsWith(this.props.location.pathname, 'public_images')) {
@@ -35,7 +35,7 @@ class C extends Page {
                   {t('private_images')}
                 </Link>
               </li>
-               <li className={`pull-left ${(active === 'volume_snapshots') ? 'active' : ''}`}>
+              <li className={`pull-left ${(active === 'volume_snapshots') ? 'active' : ''}`}>
                 <Link data-placement="left" to={`/${region.regionId}/images_snapshots/volume_snapshots`}>
                   {t('volume_snapshots')}
                 </Link>

@@ -96,6 +96,9 @@
     "imageManage": "映像",
     "imageManageDescription": "为 Linux 云主机提供 映像。",
 
+    "volumeSnapshotManage": "硬盘备份",
+    "volumeSnapshotManageDescription": "为 Linux 云主机提供 硬盘备份。",
+
     "instanceTypeManage": "主机配置",
     "instanceTypeManageDescription": "为 Linux 云主机提供 主机配置。",
 
@@ -159,6 +162,14 @@
         "active": "可用",
         "deleted": "已删除",
         "ceased": "已删除"
+    },
+
+    "volumeSnapshotsStatus": {
+        "pending": "创建中",
+        "active": "可用",
+        "deleted": "已删除",
+        "ceased": "已删除",
+        "error": "状态异常"
     },
 
     "osPlatforms": {
