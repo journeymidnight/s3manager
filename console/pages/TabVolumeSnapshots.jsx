@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router';
-import _ from 'lodash';
 import Time from 'react-time';
+import _ from 'lodash';
+import ButtonForm from '../../shared/forms/ButtonForm';
 import { attach } from '../../shared/pages/Page';
 import TablePage from '../../shared/pages/TablePage';
-import ButtonForm from '../../shared/forms/ButtonForm';
 import * as Actions from '../redux/actions';
-import * as VolumeActions from '../redux/actions.volume';
+import * as SnapshotActions from '../redux/actions.snapshot';
 
 class C extends TablePage {
 
@@ -16,25 +16,24 @@ class C extends TablePage {
     this.onDelete = this.onDelete.bind(this);
   }
 
-
   componentDidMount() {
     const { t, dispatch, region } = this.props;
-    dispatch(Actions.setHeader(t('volumeManage'), `/${region.regionId}/volumes`));
+    dispatch(Actions.setHeader(t('volumeSnapshotManage'), `/${region.regionId}/images_snapshots/volume_snapshots`));
 
-    this.initTable();
+    this.initTable({ isTabPage: true });
   }
 
   refreshAction(routerKey, filters) {
     const { region } = this.props;
-    return VolumeActions.requestDescribeVolumes(routerKey, region.regionId, filters);
+    return SnapshotActions.requestDescribeSnapshots(routerKey, region.regionId, filters);
   }
 
   onDelete() {
     const { dispatch, routerKey, region } = this.props;
-    const volumeIds = _.keys(this.props.context.selected);
+    const snapshotIds = _.keys(this.props.context.selected);
 
     return new Promise((resolve, reject) => {
-      dispatch(VolumeActions.requestDeleteVolumes(routerKey, region.regionId, volumeIds))
+      dispatch(SnapshotActions.requestDeleteSnapshots(routerKey, region.regionId, snapshotIds))
         .then(() => {
           resolve();
           this.onRefresh({}, false)();
@@ -44,15 +43,14 @@ class C extends TablePage {
     });
   }
 
-
   renderTable() {
     const { t } = this.props;
-    return this.props.context.total > 0 && this.props.context.volumeSet.length > 0 && (
+    return this.props.context.total > 0 && this.props.context.snapshotSet.length > 0 && (
       <table className="table">
         <thead>
           <tr>
             <th width="40">
-              <input type="checkbox" className="selected" onChange={this.onSelectAll(this.props.context.volumeSet.map((u) => { return u.volumeId; }))} />
+              <input type="checkbox" className="selected" onChange={this.onSelectAll(this.props.context.snapshotSet.map((u) => { return u.snapshotId; }))} />
             </th>
             <th width="150">{t('id')}</th>
             <th>{t('name')}</th>
@@ -62,27 +60,27 @@ class C extends TablePage {
           </tr>
         </thead>
         <tbody>
-          {this.props.context.volumeSet.map((volume) => {
+          {this.props.context.snapshotSet.map((snapshot) => {
             return (
-              <tr key={volume.volumeId}>
+              <tr key={snapshot.snapshotId}>
                 <td>
-                  <input type="checkbox" className="selected" onChange={this.onSelect(volume.volumeId)} checked={this.props.context.selected[volume.volumeId] === true} />
+                  <input type="checkbox" className="selected" onChange={this.onSelect(snapshot.snapshotId)} checked={this.props.context.selected[snapshot.snapshotId] === true} />
                 </td>
                 <td>
-                  <Link to={`/${this.props.region.regionId}/volumes/${volume.volumeId}`}>
-                    {volume.volumeId}
+                  <Link to={`/${this.props.region.regionId}/snapshots/${snapshot.snapshotId}`}>
+                    {snapshot.snapshotId}
                   </Link>
                 </td>
                 <td>
-                  {volume.name && <strong>{volume.name}</strong>}
-                  {!volume.name && <i className="text-muted">{t('noName')}</i>}
+                  {snapshot.name && <strong>{snapshot.name}</strong>}
+                  {!snapshot.name && <i className="text-muted">{t('noName')}</i>}
                 </td>
-                <td>{volume.size}G</td>
-                <td className={`i-status i-status-${volume.status}`}>
+                <td>{snapshot.size}G</td>
+                <td className={`i-status i-status-${snapshot.status}`}>
                   <i className="icon"></i>
-                  {t(`volumeStatus.${volume.status}`)}
+                  {t(`volumeSnapshotsStatus.${snapshot.status}`)}
                 </td>
-                <td className="light"><Time value={volume.created} format="YYYY-MM-DD HH:mm:ss" /></td>
+                <td className="light"><Time value={snapshot.created} format="YYYY-MM-DD HH:mm:ss" /></td>
               </tr>
             );
           })}
@@ -97,13 +95,8 @@ class C extends TablePage {
       <div className="top-area">
         <div className="nav-text">
           <span className="light">
-            {t('volumeManageDescription')}
+            {t('volumeSnapshotManageDescription')}
           </span>
-        </div>
-        <div className="nav-controls">
-          <Link className="btn btn-new" to={`/${this.props.region.regionId}/volumes/create`}>
-            <i className="fa fa-plus"></i>&nbsp; {t('create')}
-          </Link>
         </div>
       </div>
     );
@@ -130,32 +123,20 @@ class C extends TablePage {
                   <ul>
                     {[
                       {
-                        status: ['pending', 'active', 'attaching', 'inuse', 'backup_ing', 'backup_restoring', 'deleted', 'ceased', 'error'],
+                        status: ['pending', 'active', 'deleted', 'ceased', 'error'],
                         name: t('allAvaliableStatus'),
                       }, {
                         status: ['pending'],
-                        name: t('volumeStatus.pending'),
+                        name: t('volumeSnapshotsStatus.pending'),
                       }, {
                         status: ['active'],
-                        name: t('volumeStatus.active'),
-                      }, {
-                        status: ['attaching'],
-                        name: t('volumeStatus.attaching'),
-                      }, {
-                        status: ['inuse'],
-                        name: t('volumeStatus.inuse'),
-                      }, {
-                        status: ['backup_ing'],
-                        name: t('volumeStatus.backup_ing'),
-                      }, {
-                        status: ['backup_restoring'],
-                        name: t('volumeStatus.backup_restoring'),
+                        name: t('volumeSnapshotsStatus.active'),
                       }, {
                         status: ['deleted', 'ceased'],
-                        name: t('volumeStatus.deleted'),
+                        name: t('volumeSnapshotsStatus.deleted'),
                       }, {
                         status: ['error'],
-                        name: t('volumeStatus.error'),
+                        name: t('volumeSnapshotsStatus.error'),
                       }].map((filter) => {
                         return (
                           <li key={filter.name}>
@@ -193,7 +174,6 @@ class C extends TablePage {
       </div>
     );
   }
-
 }
 
 export default attach(C);

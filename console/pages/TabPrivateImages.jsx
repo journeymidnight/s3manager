@@ -1,58 +1,33 @@
 import React from 'react';
-import { Link } from 'react-router';
-import _ from 'lodash';
 import Time from 'react-time';
 import { attach } from '../../shared/pages/Page';
 import TablePage from '../../shared/pages/TablePage';
-import ButtonForm from '../../shared/forms/ButtonForm';
 import * as Actions from '../redux/actions';
-import * as VolumeActions from '../redux/actions.volume';
+import * as ImageActions from '../redux/actions.image';
 
 class C extends TablePage {
 
-  constructor(props) {
-    super(props);
-
-    this.onDelete = this.onDelete.bind(this);
-  }
-
-
   componentDidMount() {
     const { t, dispatch, region } = this.props;
-    dispatch(Actions.setHeader(t('volumeManage'), `/${region.regionId}/volumes`));
+    dispatch(Actions.setHeader(t('privateImageManage'), `/${region.regionId}/images_snapshots/private_images`));
 
-    this.initTable();
+    this.initTable({ isTabPage: true });
   }
 
   refreshAction(routerKey, filters) {
     const { region } = this.props;
-    return VolumeActions.requestDescribeVolumes(routerKey, region.regionId, filters);
+    const requestFilter = Object.assign({}, filters, { isPublic: false });
+    return ImageActions.requestDescribeImages(routerKey, region.regionId, requestFilter);
   }
-
-  onDelete() {
-    const { dispatch, routerKey, region } = this.props;
-    const volumeIds = _.keys(this.props.context.selected);
-
-    return new Promise((resolve, reject) => {
-      dispatch(VolumeActions.requestDeleteVolumes(routerKey, region.regionId, volumeIds))
-        .then(() => {
-          resolve();
-          this.onRefresh({}, false)();
-        }).catch(() => {
-          reject();
-        });
-    });
-  }
-
 
   renderTable() {
     const { t } = this.props;
-    return this.props.context.total > 0 && this.props.context.volumeSet.length > 0 && (
+    return this.props.context.total > 0 && this.props.context.imageSet.length > 0 && (
       <table className="table">
         <thead>
           <tr>
             <th width="40">
-              <input type="checkbox" className="selected" onChange={this.onSelectAll(this.props.context.volumeSet.map((u) => { return u.volumeId; }))} />
+              <input type="checkbox" className="selected" onChange={this.onSelectAll(this.props.context.imageSet.map((u) => { return u.imageId; }))} />
             </th>
             <th width="150">{t('id')}</th>
             <th>{t('name')}</th>
@@ -62,27 +37,23 @@ class C extends TablePage {
           </tr>
         </thead>
         <tbody>
-          {this.props.context.volumeSet.map((volume) => {
+          {this.props.context.imageSet.map((image) => {
             return (
-              <tr key={volume.volumeId}>
+              <tr key={image.imageId}>
                 <td>
-                  <input type="checkbox" className="selected" onChange={this.onSelect(volume.volumeId)} checked={this.props.context.selected[volume.volumeId] === true} />
+                  <input type="checkbox" className="selected" onChange={this.onSelect(image.imageId)} checked={this.props.context.selected[image.imageId] === true} />
                 </td>
+                <td>{image.imageId}</td>
                 <td>
-                  <Link to={`/${this.props.region.regionId}/volumes/${volume.volumeId}`}>
-                    {volume.volumeId}
-                  </Link>
+                  {image.name && <strong>{image.name}</strong>}
+                  {!image.name && <i className="text-muted">{t('noName')}</i>}
                 </td>
-                <td>
-                  {volume.name && <strong>{volume.name}</strong>}
-                  {!volume.name && <i className="text-muted">{t('noName')}</i>}
-                </td>
-                <td>{volume.size}G</td>
-                <td className={`i-status i-status-${volume.status}`}>
+                <td>{image.size}MB</td>
+                <td className={`i-status i-status-${image.status}`}>
                   <i className="icon"></i>
-                  {t(`volumeStatus.${volume.status}`)}
+                  {t(`imageStatus.${image.status}`)}
                 </td>
-                <td className="light"><Time value={volume.created} format="YYYY-MM-DD HH:mm:ss" /></td>
+                <td className="light"><Time value={image.created} format="YYYY-MM-DD HH:mm:ss" /></td>
               </tr>
             );
           })}
@@ -91,19 +62,15 @@ class C extends TablePage {
     );
   }
 
+
   renderHeader() {
     const { t } = this.props;
     return (
       <div className="top-area">
         <div className="nav-text">
           <span className="light">
-            {t('volumeManageDescription')}
+            {t('privateImageManageDescription')}
           </span>
-        </div>
-        <div className="nav-controls">
-          <Link className="btn btn-new" to={`/${this.props.region.regionId}/volumes/create`}>
-            <i className="fa fa-plus"></i>&nbsp; {t('create')}
-          </Link>
         </div>
       </div>
     );
@@ -130,32 +97,17 @@ class C extends TablePage {
                   <ul>
                     {[
                       {
-                        status: ['pending', 'active', 'attaching', 'inuse', 'backup_ing', 'backup_restoring', 'deleted', 'ceased', 'error'],
+                        status: ['pending', 'active', 'deleted', 'ceased'],
                         name: t('allAvaliableStatus'),
                       }, {
                         status: ['pending'],
-                        name: t('volumeStatus.pending'),
+                        name: t('imageStatus.pending'),
                       }, {
                         status: ['active'],
-                        name: t('volumeStatus.active'),
-                      }, {
-                        status: ['attaching'],
-                        name: t('volumeStatus.attaching'),
-                      }, {
-                        status: ['inuse'],
-                        name: t('volumeStatus.inuse'),
-                      }, {
-                        status: ['backup_ing'],
-                        name: t('volumeStatus.backup_ing'),
-                      }, {
-                        status: ['backup_restoring'],
-                        name: t('volumeStatus.backup_restoring'),
+                        name: t('imageStatus.active'),
                       }, {
                         status: ['deleted', 'ceased'],
-                        name: t('volumeStatus.deleted'),
-                      }, {
-                        status: ['error'],
-                        name: t('volumeStatus.error'),
+                        name: t('imageStatus.deleted'),
                       }].map((filter) => {
                         return (
                           <li key={filter.name}>
@@ -185,15 +137,8 @@ class C extends TablePage {
             </div>
           </div>
         </div>
-        <div className={Object.keys(this.props.context.selected).length > 0 ? '' : 'hidden'}>
-          <div className="filter-item inline">
-            <ButtonForm onSubmit={this.onDelete} text={t('delete')} type="btn-danger" />
-          </div>
-        </div>
       </div>
     );
   }
-
 }
-
 export default attach(C);

@@ -115,6 +115,23 @@ export function requestResizeVolumes(routerKey, regionId, volumeIds, size) {
   };
 }
 
+export function requestCreateSnapshots(routerKey, regionId, snapshot) {
+  return dispatch => {
+    return IaaS
+      .createSnapshots(regionId, snapshot)
+      .promise
+      .then((payload) => {
+        dispatch(extendContext({ snapshot: payload }));
+        setTimeout(() => {
+          dispatch(notify(i18n.t('createSuccessed')));
+        }, 1000);
+      })
+      .catch((error) => {
+        dispatch(notifyAlert(error.message));
+      });
+  };
+}
+
 export function requestDeleteVolumes(routerKey, regionId, volumeIds) {
   return dispatch => {
     return IaaS

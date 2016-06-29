@@ -52,17 +52,13 @@ class C extends React.Component {
             <i className="fa fa-exchange fa-fw" />
             <span>{t('sidebarNetwork')}</span>
           </NavLink>
-          <NavLink to={`/${regionId}/snapshots`}>
+          <NavLink to={`/${regionId}/images_snapshots/public_images`}>
             <i className="fa fa-certificate fa-fw" />
-            <span>{t('sidebarSnapshot')}</span>
+            <span>{t('sidebarImagesAndSnapshots')}</span>
           </NavLink>
           <NavLink to={`/${regionId}/eips`}>
             <i className="fa fa-rocket fa-fw" />
             <span>{t('sidebarEIP')}</span>
-          </NavLink>
-          <NavLink to={`/${regionId}/images`}>
-            <i className="fa fa-file-image-o fa-fw" />
-            <span>{t('sidebarIMAGE')}</span>
           </NavLink>
           <NavLink to={`/${regionId}/key_pairs`}>
             <i className="fa fa-key fa-fw" />

@@ -197,6 +197,58 @@ VolumeResizeForm = reduxForm({
   validate: VolumeResizeForm.validate,
 })(translate()(VolumeResizeForm));
 
+let SnapshotCreateForm = (props) => {
+  const { fields:
+    { name },
+    handleSubmit,
+    submitting,
+    submitFailed,
+    t,
+    invalid,
+  } = props;
+  return (
+    <form className="form-horizontal" onSubmit={handleSubmit}>
+      <div className="modal-body">
+
+        <div className={submitFailed && name.error ? 'form-group has-error' : 'form-group'}>
+          <label className="control-label" >{t('name')}</label>
+          <div className="col-sm-10">
+            <input type="text" className="form-control" {...name} />
+            {submitFailed && name.error && <div className="text-danger"><small>{name.error}</small></div>}
+          </div>
+        </div>
+      </div>
+      <div className="modal-footer">
+        <button type="button" className="btn btn-default" data-dismiss="modal">{t('closeModal')}</button>
+        <button type="submit" className="btn btn-save" disabled={submitting || invalid}>
+          {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('create')}
+        </button>
+      </div>
+    </form>
+  );
+};
+
+SnapshotCreateForm.propTypes = {
+  fields: React.PropTypes.object.isRequired,
+  error: React.PropTypes.string,
+  invalid: React.PropTypes.bool,
+  handleSubmit: React.PropTypes.func.isRequired,
+  submitting: React.PropTypes.bool.isRequired,
+  submitFailed: React.PropTypes.bool.isRequired,
+  t: React.PropTypes.any,
+};
+
+SnapshotCreateForm.validate = () => {
+  const errors = {};
+  return errors;
+};
+
+SnapshotCreateForm = reduxForm({
+  form: 'SnapshotCreateForm',
+  fields: ['name'],
+  validate: SnapshotCreateForm.validate,
+})(translate()(SnapshotCreateForm));
+
 class C extends Page {
 
   constructor(props) {
@@ -211,6 +263,8 @@ class C extends Page {
     this.deleteVolume = this.deleteVolume.bind(this);
     this.onAttach = this.onAttach.bind(this);
     this.onResize = this.onResize.bind(this);
+    this.onCreateSnapshot = this.onCreateSnapshot.bind(this);
+    this.createSnapshot = this.createSnapshot.bind(this);
   }
 
   componentDidMount() {
@@ -330,6 +384,31 @@ class C extends Page {
     this.refs.resizeModal.show();
   }
 
+  onCreateSnapshot(values) {
+    const { dispatch, region, routerKey } = this.props;
+    const volume = this.props.context.volume || this.volume;
+
+    return new Promise((resolve, reject) => {
+      const name = values.name;
+      const volumeId = volume.volumeId;
+      const count = 1;
+      const request = { name, volumeId, count };
+
+      dispatch(VolumeActions.requestCreateSnapshots(routerKey, region.regionId, request))
+        .then(() => {
+          resolve();
+          this.refs.snapshotCreateModal.hide();
+        }).catch(() => {
+          reject();
+        });
+    });
+  }
+
+  createSnapshot(e) {
+    e.preventDefault();
+    this.refs.snapshotCreateModal.show();
+  }
+
   deleteVolume(e) {
     e.preventDefault();
 
@@ -391,6 +470,7 @@ class C extends Page {
                         <li><a href onClick={this.attachVolume}>{t('pageVolume.attachVolume')}</a></li>
                         <li><a href onClick={this.detachVolume}>{t('pageVolume.detachVolume')}</a></li>
                         <li><a href onClick={this.resizeVolume}>{t('pageVolume.resizeVolume')}</a></li>
+                        <li><a href onClick={this.createSnapshot}>{t('pageVolume.createSnapshot')}</a></li>
                         <li><a href onClick={this.deleteVolume}>{t('pageVolume.deleteVolume')}</a></li>
                       </ul>
                     </div>}
@@ -443,6 +523,9 @@ class C extends Page {
         </Modal>
         <Modal title={t('pageVolume.resizeVolume')} ref="resizeModal" >
           <VolumeResizeForm onSubmit={this.onResize} initialValues={volume} />
+        </Modal>
+        <Modal title={t('pageVolume.createSnapshot')} ref="snapshotCreateModal" >
+          <SnapshotCreateForm onSubmit={this.onCreateSnapshot} />
         </Modal>
         {this.props.context.instanceSet && this.props.context.instanceSet.length && this.renderAttachModal()}
       </div>

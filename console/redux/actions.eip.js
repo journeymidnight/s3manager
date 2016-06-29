@@ -83,3 +83,32 @@ export function requestReleaseEips(routerKey, regionId, eipIds) {
   };
 }
 
+export function requestAssociateEip(routerKey, regionId, eipId, instanceId) {
+  return dispatch => {
+    return IaaS
+    .associateEip(regionId, eipId, instanceId)
+    .promise
+    .then(() => {
+      dispatch(notify(i18n.t('associateSuccessed')));
+      return dispatch(requestDescribeEip(routerKey, regionId, eipId));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
+export function requestDissociateEips(routerKey, regionId, eipIds) {
+  return dispatch => {
+    return IaaS
+    .dissociateEips(regionId, eipIds)
+    .promise
+    .then(() => {
+      dispatch(notify(i18n.t('dissociateSuccessed')));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
