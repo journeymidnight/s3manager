@@ -14,19 +14,19 @@ class C extends Page {
 
     this.periods = [{
       id: '120mins',
-      name: t('periods.120mins'),
+      name: t('monitor.periods.120mins'),
     }, {
       id: '720mins',
-      name: t('periods.720mins'),
+      name: t('monitor.periods.720mins'),
     }, {
       id: '48hours',
-      name: t('periods.48hours'),
+      name: t('monitor.periods.48hours'),
     }, {
       id: '14days',
-      name: t('periods.14days'),
+      name: t('monitor.periods.14days'),
     }, {
       id: '30days',
-      name: t('periods.30days'),
+      name: t('monitor.periods.30days'),
     }];
 
     this.metrics = [
@@ -97,6 +97,7 @@ class C extends Page {
         <div className="row">
           <div className="col-md-6 chart-panel">
             <span>{t('monitor.cpu')}</span>
+            <span className="pull-right text-muted">{t(`monitor.intervals.${this.state.period}`)}</span>
             {this.props.context[`period-${this.state.period}-instance.cpu`] && <Chart
               className="chart"
               config={generateLineChartConfig(this.props.context[`period-${this.state.period}-instance.cpu`].timeSeries, {
@@ -109,6 +110,7 @@ class C extends Page {
           </div>
           <div className="col-md-6 chart-panel">
             <span>{t('monitor.memory')}</span>
+            <span className="pull-right text-muted">{t(`monitor.intervals.${this.state.period}`)}</span>
             {this.props.context[`period-${this.state.period}-instance.memory`] && <Chart
               className="chart"
               config={generateLineChartConfig(this.props.context[`period-${this.state.period}-instance.memory`].timeSeries, {
@@ -122,6 +124,7 @@ class C extends Page {
           </div>
           <div className="col-md-6 chart-panel">
             <span>{t('monitor.diskUsage')}</span>
+            <span className="pull-right text-muted">{t(`monitor.intervals.${this.state.period}`)}</span>
             {this.props.context[`period-${this.state.period}-instance.disk.usage`] && <Chart
               className="chart"
               config={generateLineChartConfig(this.props.context[`period-${this.state.period}-instance.disk.usage`].timeSeries, {
@@ -135,6 +138,7 @@ class C extends Page {
           </div>
           <div className="col-md-6 chart-panel">
             <span>{t('monitor.diskIO')}</span>
+            <span className="pull-right text-muted">{t(`monitor.intervals.${this.state.period}`)}</span>
             {this.props.context[`period-${this.state.period}-instance.disk.io`] && <Chart
               className="chart"
               config={generateLineChartConfig(this.props.context[`period-${this.state.period}-instance.disk.io`].timeSeries, {
@@ -148,6 +152,7 @@ class C extends Page {
           </div>
           <div className="col-md-6 chart-panel">
             <span>{t('monitor.diskIOPS')}</span>
+            <span className="pull-right text-muted">{t(`monitor.intervals.${this.state.period}`)}</span>
             {this.props.context[`period-${this.state.period}-instance.disk.iops`] && <Chart
               className="chart"
               config={generateLineChartConfig(this.props.context[`period-${this.state.period}-instance.disk.iops`].timeSeries, {
