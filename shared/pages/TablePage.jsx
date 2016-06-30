@@ -90,7 +90,7 @@ class C extends Page {
 
   onSelect(id) {
     return (e) => {
-      const selected = this.props.context.selected;
+      const selected = Object.assign({}, this.props.context.selected);
       if (e.target.checked) {
         selected[id] = true;
       } else {
@@ -104,7 +104,7 @@ class C extends Page {
 
   onSelectAll(ids) {
     return (e) => {
-      const selected = this.props.context.selected;
+      const selected = Object.assign({}, this.props.context.selected);
       ids.forEach((id) => {
         if (e.target.checked) {
           selected[id] = true;

@@ -8,7 +8,7 @@ export function requestGetMonitor(routerKey, regionId, resourceId, metric, perio
     .promise
     .then((payload) => {
       const d = {};
-      d[`period-${payload.period}-${payload.metric}`] = payload.data;
+      d[`period-${payload.period}-${payload.metric}`] = payload;
 
       dispatch(extendContext(d, routerKey));
     })
