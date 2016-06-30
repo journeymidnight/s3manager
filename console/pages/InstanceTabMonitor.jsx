@@ -30,11 +30,11 @@ class C extends Page {
     }];
 
     this.metrics = [
-      'cpu',
-      'memory',
-      'disk.io',
-      'disk.iops',
-      'disk.usage',
+      'instance.cpu',
+      'instance.memory',
+      'instance.disk.io',
+      'instance.disk.iops',
+      'instance.disk.usage',
     ];
 
     this.state = {
@@ -97,65 +97,65 @@ class C extends Page {
         <div className="row">
           <div className="col-md-6 chart-panel">
             <span>{t('monitor.cpu')}</span>
-            {this.props.context[`period-${this.state.period}-cpu`] && <Chart
+            {this.props.context[`period-${this.state.period}-instance.cpu`] && <Chart
               className="chart"
-              config={generateLineChartConfig(this.props.context[`period-${this.state.period}-cpu`], {
-                cpu_util: { name: t('monitor.cpu') },
+              config={generateLineChartConfig(this.props.context[`period-${this.state.period}-instance.cpu`].timeSeries, {
+                usage: { name: t('monitor.usage') },
               }, 'percentage')}
             />}
-            {!this.props.context[`period-${this.state.period}-cpu`] && <div className="chart loading">
+            {!this.props.context[`period-${this.state.period}-instance.cpu`] && <div className="chart loading">
               <i className="fa fa-refresh fa-spin"></i>
             </div>}
           </div>
           <div className="col-md-6 chart-panel">
             <span>{t('monitor.memory')}</span>
-            {this.props.context[`period-${this.state.period}-memory`] && <Chart
+            {this.props.context[`period-${this.state.period}-instance.memory`] && <Chart
               className="chart"
-              config={generateLineChartConfig(this.props.context[`period-${this.state.period}-memory`], {
-                memory: { name: t('monitor.memory') },
-                'memory.usage': { name: t('monitor.usage') },
+              config={generateLineChartConfig(this.props.context[`period-${this.state.period}-instance.memory`].timeSeries, {
+                total: { name: t('monitor.total') },
+                used: { name: t('monitor.used') },
               }, 'percentage')}
             />}
-            {!this.props.context[`period-${this.state.period}-memory`] && <div className="chart loading">
+            {!this.props.context[`period-${this.state.period}-instance.memory`] && <div className="chart loading">
               <i className="fa fa-refresh fa-spin"></i>
             </div>}
           </div>
           <div className="col-md-6 chart-panel">
             <span>{t('monitor.diskUsage')}</span>
-            {this.props.context[`period-${this.state.period}-disk.usage`] && <Chart
+            {this.props.context[`period-${this.state.period}-instance.disk.usage`] && <Chart
               className="chart"
-              config={generateLineChartConfig(this.props.context[`period-${this.state.period}-disk.usage`], {
-                'disk.capacity': { name: t('monitor.capacity') },
-                'disk.allocation': { name: t('monitor.allocation') },
+              config={generateLineChartConfig(this.props.context[`period-${this.state.period}-instance.disk.usage`].timeSeries, {
+                total: { name: t('monitor.total') },
+                used: { name: t('monitor.used') },
               }, 'bytes')}
             />}
-            {!this.props.context[`period-${this.state.period}-disk.usage`] && <div className="chart loading">
+            {!this.props.context[`period-${this.state.period}-instance.disk.usage`] && <div className="chart loading">
               <i className="fa fa-refresh fa-spin"></i>
             </div>}
           </div>
           <div className="col-md-6 chart-panel">
             <span>{t('monitor.diskIO')}</span>
-            {this.props.context[`period-${this.state.period}-disk.io`] && <Chart
+            {this.props.context[`period-${this.state.period}-instance.disk.io`] && <Chart
               className="chart"
-              config={generateLineChartConfig(this.props.context[`period-${this.state.period}-disk.io`], {
-                'disk.read.bytes.rate': { name: t('monitor.read') },
-                'disk.write.bytes.rate': { name: t('monitor.write') },
+              config={generateLineChartConfig(this.props.context[`period-${this.state.period}-instance.disk.io`].timeSeries, {
+                read: { name: t('monitor.read') },
+                write: { name: t('monitor.write') },
               }, 'bytes')}
             />}
-            {!this.props.context[`period-${this.state.period}-disk.io`] && <div className="chart loading">
+            {!this.props.context[`period-${this.state.period}-instance.disk.io`] && <div className="chart loading">
               <i className="fa fa-refresh fa-spin"></i>
             </div>}
           </div>
           <div className="col-md-6 chart-panel">
             <span>{t('monitor.diskIOPS')}</span>
-            {this.props.context[`period-${this.state.period}-disk.iops`] && <Chart
+            {this.props.context[`period-${this.state.period}-instance.disk.iops`] && <Chart
               className="chart"
-              config={generateLineChartConfig(this.props.context[`period-${this.state.period}-disk.iops`], {
-                'disk.read.requests.rate': { name: t('monitor.read') },
-                'disk.write.requests.rate': { name: t('monitor.write') },
+              config={generateLineChartConfig(this.props.context[`period-${this.state.period}-instance.disk.iops`].timeSeries, {
+                read: { name: t('monitor.read') },
+                write: { name: t('monitor.write') },
               })}
             />}
-            {!this.props.context[`period-${this.state.period}-disk.iops`] && <div className="chart loading">
+            {!this.props.context[`period-${this.state.period}-instance.disk.iops`] && <div className="chart loading">
               <i className="fa fa-refresh fa-spin"></i>
             </div>}
           </div>

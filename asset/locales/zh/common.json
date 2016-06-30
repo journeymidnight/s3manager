@@ -353,10 +353,13 @@
     "monitor": {
         "cpu": "CPU",
         "memory": "内存",
-        "allocation": "已使用",
-        "capacity": "总容量",
+        "usage": "使用率",
+        "used": "已使用",
+        "total": "总容量",
         "read": "读",
         "write": "写",
+        "in": "进",
+        "out": "出",
         "diskUsage": "硬盘使用率",
         "diskIO": "硬盘吞吐量",
         "diskIOPS": "硬盘 IOPS"
