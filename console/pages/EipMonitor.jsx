@@ -30,9 +30,8 @@ class C extends Page {
     }];
 
     this.metrics = [
-      'volume.io',
-      'volume.iops',
-      'volume.usage',
+      'eip.traffic',
+      'eip.packets',
     ];
 
     this.state = {
@@ -44,7 +43,7 @@ class C extends Page {
 
   componentDidMount() {
     const { t, dispatch, region } = this.props;
-    dispatch(Actions.setHeader(t('volumeManage'), `/${region.regionId}/volumes`));
+    dispatch(Actions.setHeader(t('eipManage'), `/${region.regionId}/eips`));
 
     this.refresh('120mins')();
   }
@@ -55,10 +54,10 @@ class C extends Page {
         e.preventDefault();
       }
 
-      const { dispatch, region, routerKey, volume } = this.props;
+      const { dispatch, region, routerKey, eip } = this.props;
 
       this.metrics.forEach((metric) => {
-        dispatch(MonitorActions.requestGetMonitor(routerKey, region.regionId, volume.volumeId, metric, period))
+        dispatch(MonitorActions.requestGetMonitor(routerKey, region.regionId, eip.eipId, metric, period))
         .then(() => {
           dispatch(Actions.extendContext({ loading: false }, routerKey));
         });
@@ -94,41 +93,28 @@ class C extends Page {
         </div>
         <div className="row">
           <div className="col-md-6 chart-panel">
-            <span>{t('monitor.diskUsage')}</span>
-            {this.props.context[`period-${this.state.period}-volume.usage`] && <Chart
+            <span>{t('monitor.eipTraffic')}</span>
+            {this.props.context[`period-${this.state.period}-eip.traffic`] && <Chart
               className="chart"
-              config={generateLineChartConfig(this.props.context[`period-${this.state.period}-volume.usage`].timeSeries, {
-                total: { name: t('monitor.total') },
-                used: { name: t('monitor.used') },
-              }, 'bytes')}
+              config={generateLineChartConfig(this.props.context[`period-${this.state.period}-eip.traffic`].timeSeries, {
+                in: { name: t('monitor.in') },
+                out: { name: t('monitor.out') },
+              }, 'bps')}
             />}
-            {!this.props.context[`period-${this.state.period}-volume.usage`] && <div className="chart loading">
+            {!this.props.context[`period-${this.state.period}-eip.traffic`] && <div className="chart loading">
               <i className="fa fa-refresh fa-spin"></i>
             </div>}
           </div>
           <div className="col-md-6 chart-panel">
-            <span>{t('monitor.diskIO')}</span>
-            {this.props.context[`period-${this.state.period}-volume.io`] && <Chart
+            <span>{t('monitor.eipPackets')}</span>
+            {this.props.context[`period-${this.state.period}-eip.packets`] && <Chart
               className="chart"
-              config={generateLineChartConfig(this.props.context[`period-${this.state.period}-volume.io`].timeSeries, {
-                read: { name: t('monitor.read') },
-                write: { name: t('monitor.write') },
-              }, 'bytes')}
+              config={generateLineChartConfig(this.props.context[`period-${this.state.period}-eip.packets`].timeSeries, {
+                in: { name: t('monitor.in') },
+                out: { name: t('monitor.out') },
+              }, 'packets/s')}
             />}
-            {!this.props.context[`period-${this.state.period}-volume.io`] && <div className="chart loading">
-              <i className="fa fa-refresh fa-spin"></i>
-            </div>}
-          </div>
-          <div className="col-md-6 chart-panel">
-            <span>{t('monitor.diskIOPS')}</span>
-            {this.props.context[`period-${this.state.period}-volume.iops`] && <Chart
-              className="chart"
-              config={generateLineChartConfig(this.props.context[`period-${this.state.period}-volume.iops`].timeSeries, {
-                read: { name: t('monitor.read') },
-                write: { name: t('monitor.write') },
-              })}
-            />}
-            {!this.props.context[`period-${this.state.period}-volume.iops`] && <div className="chart loading">
+            {!this.props.context[`period-${this.state.period}-eip.packets`] && <div className="chart loading">
               <i className="fa fa-refresh fa-spin"></i>
             </div>}
           </div>
