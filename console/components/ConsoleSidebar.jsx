@@ -52,7 +52,7 @@ class C extends React.Component {
             <i className="fa fa-exchange fa-fw" />
             <span>{t('sidebarNetwork')}</span>
           </NavLink>
-          <NavLink to={`/${regionId}/images_snapshots/public_images`}>
+          <NavLink to={`/${regionId}/images_snapshots`}>
             <i className="fa fa-certificate fa-fw" />
             <span>{t('sidebarImagesAndSnapshots')}</span>
           </NavLink>

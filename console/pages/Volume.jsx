@@ -3,8 +3,9 @@ import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
 import Time from 'react-time';
 import Page, { attach } from '../../shared/pages/Page';
-import Modal, { confirmModal } from '../../shared/components/Modal';
 import i18n from '../../shared/i18n';
+import Modal, { confirmModal } from '../../shared/components/Modal';
+import VolumeMonitor from './VolumeMonitor';
 import * as Actions from '../redux/actions';
 import * as VolumeActions from '../redux/actions.volume';
 import * as InstanceActions from '../redux/actions.instance';
@@ -514,6 +515,9 @@ class C extends Page {
                     </tbody>
                   </table>
                 </div>
+              </div>
+              <div className="col-md-8">
+                <VolumeMonitor volume={volume} />
               </div>
             </div>
           </div>

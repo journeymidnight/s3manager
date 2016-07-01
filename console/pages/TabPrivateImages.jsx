@@ -111,7 +111,11 @@ class C extends TablePage {
                       }].map((filter) => {
                         return (
                           <li key={filter.name}>
-                            <a className={this.props.context.status.toString() === filter.status.toString() ? 'is-active' : ''} href onClick={this.onRefresh({ status: filter.status })}>
+                            <a
+                              className={this.props.context.status.toString() === filter.status.toString() ? 'is-active' : ''}
+                              href
+                              onClick={this.onRefresh({ status: filter.status })}
+                            >
                               {filter.name}
                             </a>
                           </li>

@@ -4,6 +4,7 @@ import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
 import Time from 'react-time';
 import Modal, { confirmModal } from '../../shared/components/Modal';
+import EipMonitor from './EipMonitor';
 import * as Actions from '../redux/actions';
 import * as EipActions from '../redux/actions.eip';
 import * as InstanceActions from '../redux/actions.instance';
@@ -342,6 +343,9 @@ class C extends Page {
                     </tbody>
                   </table>
                 </div>
+              </div>
+              <div className="col-md-8">
+                <EipMonitor eip={eip} />
               </div>
             </div>
           </div>

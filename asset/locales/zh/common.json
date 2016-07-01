@@ -371,7 +371,9 @@
         "out": "出",
         "diskUsage": "硬盘使用率",
         "diskIO": "硬盘吞吐量",
-        "diskIOPS": "硬盘 IOPS"
+        "diskIOPS": "硬盘 IOPS",
+        "eipTraffic": "流量",
+        "eipPackets": "数据包"
     },
 
     "sidebarInstance": "云主机",
