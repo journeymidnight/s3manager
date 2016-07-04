@@ -32,6 +32,7 @@ import VolumeCreate from './pages/VolumeCreate.jsx';
 import TabPrivateImages from './pages/TabPrivateImages.jsx';
 import TabPublicImages from './pages/TabPublicImages.jsx';
 import TabVolumeSnapshots from './pages/TabVolumeSnapshots.jsx';
+import Activities from './pages/Activities.jsx';
 
 export default function configureRoutes(store) {
   function requireAuth(nextState, replace) {
@@ -52,7 +53,6 @@ export default function configureRoutes(store) {
       </Route>
       <Route path="/" component={App} onEnter={requireAuth} >
         <IndexRoute component={Home} />
-        <Route path="activities" component={Settings} />
         <Route path="access_keys" component={Settings} />
         <Route path="usage" component={Settings} />
         <Route path="settings" component={Settings} />
@@ -100,6 +100,7 @@ export default function configureRoutes(store) {
             </Route>
           </Route>
           <Route path="firewalls" component={Settings} />
+          <Route path="activities" component={Activities} />
         </Route>
       </Route>
     </Route >

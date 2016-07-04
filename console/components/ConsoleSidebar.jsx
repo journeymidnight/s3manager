@@ -68,6 +68,10 @@ class C extends React.Component {
             <i className="fa fa-shield fa-fw" />
             <span>{t('sidebarFirewall')}</span>
           </NavLink>
+          <NavLink to={`/${regionId}/activities`}>
+            <i className="fa fa-sticky-note fa-fw" />
+            <span>{t('sidebarActivity')}</span>
+          </NavLink>
           <li className="separate-item" />
           <li>
             <h5>Global</h5>
@@ -75,10 +79,6 @@ class C extends React.Component {
           <NavLink to="/access_keys">
             <i className="fa fa-code fa-fw" />
             <span>{t('sidebarAccessKey')}</span>
-          </NavLink>
-          <NavLink to="/activities">
-            <i className="fa fa-sticky-note fa-fw" />
-            <span>{t('sidebarActivity')}</span>
           </NavLink>
           <NavLink to="/usage">
             <i className="fa fa-pie-chart fa-fw" />
