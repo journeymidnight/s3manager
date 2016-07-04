@@ -74,6 +74,8 @@
     "attachSuccessed": "挂载成功。",
     "detachSuccessed": "卸载成功。",
     "resizeSuccessed": "扩容成功。",
+    "resetPending": "正在更新系统配置...",
+    "resizePending": "正在重置系统...",
     "dissociateSuccessed": "解绑成功。",
     "associateSuccessed": "绑定成功。",
 
@@ -226,6 +228,7 @@
         "startInstance": "启动",
         "stopInstance": "关机",
         "restartInstance": "重启",
+        "stopInstanceFirst": "请先关闭云主机。",
         "deleteInstance": "删除",
         "updateInstance": "更新",
         "resizeInstance": "更新配置",

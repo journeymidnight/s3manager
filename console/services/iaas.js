@@ -153,14 +153,18 @@ class IaaS {
       instanceIds,
     });
   }
-  resetInstances(regionId, instanceIds) {
+  resetInstances(regionId, instanceIds, loginMode, loginPassword, keyPairId) {
     return this.call(regionId, 'ResetInstances', {
       instanceIds,
+      loginMode,
+      loginPassword,
+      keyPairId,
     });
   }
-  resizeInstances(regionId, instanceIds) {
+  resizeInstances(regionId, instanceIds, instanceTypeId) {
     return this.call(regionId, 'ResizeInstances', {
       instanceIds,
+      instanceTypeId,
     });
   }
   deleteInstances(regionId, instanceIds) {

@@ -5,9 +5,12 @@ import { Link } from 'react-router';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
 import Page, { attach } from '../../shared/pages/Page';
-import Modal, { confirmModal } from '../../shared/components/Modal';
+import Modal, { alertModal, confirmModal } from '../../shared/components/Modal';
+import InstanceResetForm from '../forms/InstanceResetForm';
+import InstanceResizeForm from '../forms/InstanceResizeForm';
 import * as Actions from '../redux/actions';
 import * as InstanceActions from '../redux/actions.instance';
+
 
 let InstanceUpdateForm = (props) => {
   const { fields:
@@ -64,7 +67,7 @@ InstanceUpdateForm.validate = () => {
 };
 
 InstanceUpdateForm = reduxForm({
-  form: 'KeyPairForm',
+  form: 'InstanceUpdateForm',
   fields: ['name', 'description'],
   validate: InstanceUpdateForm.validate,
 })(translate()(InstanceUpdateForm));
@@ -74,6 +77,8 @@ class C extends Page {
   constructor(props) {
     super(props);
 
+    this.onResize = this.onResize.bind(this);
+    this.onReset = this.onReset.bind(this);
     this.onUpdate = this.onUpdate.bind(this);
     this.refresh = this.refresh.bind(this);
     this.deleteInstance = this.deleteInstance.bind(this);
@@ -167,11 +172,64 @@ class C extends Page {
     });
   }
 
+  onReset(values) {
+    const { dispatch, region, routerKey, params } = this.props;
+
+    return new Promise((resolve, reject) => {
+      const loginMode = values.loginMode;
+      const loginPassword = values.loginPassword;
+      const keyPairId = values.keyPairId;
+
+      dispatch(InstanceActions.requestResetInstances(routerKey, region.regionId, [params.instanceId], loginMode, loginPassword, keyPairId))
+      .then(() => {
+        resolve();
+        this.refs.resetModal.hide();
+      }).catch(() => {
+        reject();
+      });
+    });
+  }
+
   resetInstance(e) {
     e.preventDefault();
 
+    const { t } = this.props;
+    const instance = this.props.context.instance || this.instance;
+    if (instance.status !== 'stopped') {
+      alertModal(t('pageInstance.stopInstanceFirst'));
+      return;
+    }
+
+    this.refs.resetModal.show();
+  }
+
+  onResize(values) {
     const { dispatch, region, routerKey, params } = this.props;
-    dispatch(InstanceActions.requestResetInstances(routerKey, region.regionId, [params.instanceId]));
+
+    return new Promise((resolve, reject) => {
+      const instanceTypeId = values.instanceTypeId;
+
+      dispatch(InstanceActions.requestResizeInstances(routerKey, region.regionId, [params.instanceId], instanceTypeId))
+      .then(() => {
+        resolve();
+        this.refs.resizeModal.hide();
+      }).catch(() => {
+        reject();
+      });
+    });
+  }
+
+  resizeInstance(e) {
+    e.preventDefault();
+
+    const { t } = this.props;
+    const instance = this.props.context.instance || this.instance;
+    if (instance.status !== 'stopped') {
+      alertModal(t('pageInstance.stopInstanceFirst'));
+      return;
+    }
+
+    this.refs.resizeModal.show();
   }
 
   connectVNC(e) {
@@ -179,13 +237,6 @@ class C extends Page {
 
     const { dispatch, region, routerKey, params } = this.props;
     dispatch(InstanceActions.requestConnectVNC(routerKey, region.regionId, params.instanceId));
-  }
-
-  resizeInstance(e) {
-    e.preventDefault();
-
-    const { dispatch, region, routerKey, params } = this.props;
-    dispatch(InstanceActions.requestResizeInstances(routerKey, region.regionId, [params.instanceId]));
   }
 
   render() {
@@ -362,6 +413,12 @@ class C extends Page {
         </div>
         <Modal title={t('pageInstance.updateInstance')} ref="updateModal" >
           <InstanceUpdateForm onSubmit={this.onUpdate} initialValues={instance} />
+        </Modal>
+        <Modal title={t('pageInstance.resetInstance')} ref="resetModal" >
+          <InstanceResetForm onSubmit={this.onReset} instance={instance} region={region} />
+        </Modal>
+        <Modal title={t('pageInstance.resizeInstance')} ref="resizeModal" >
+          <InstanceResizeForm onSubmit={this.onResize} instance={instance} region={region} />
         </Modal>
       </div>
     );
