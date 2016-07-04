@@ -25,7 +25,6 @@ import Settings from './pages/Settings.jsx';
 import Eip from './pages/Eip.jsx';
 import Eips from './pages/Eips.jsx';
 import EipCreate from './pages/EipCreate.jsx';
-import InstanceTypes from './pages/InstanceTypes.jsx';
 import Volumes from './pages/Volumes.jsx';
 import Volume from './pages/Volume.jsx';
 import VolumeCreate from './pages/VolumeCreate.jsx';
@@ -75,7 +74,6 @@ export default function configureRoutes(store) {
             <Route path="create" component={EipCreate} />
             <Route path=":eipId" component={Eip} />
           </Route>
-          <Route path="instance_types" component={InstanceTypes} />
           <Route path="instances" >
             <IndexRoute component={Instances} />
             <Route path="create" component={InstanceCreate} />

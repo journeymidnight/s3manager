@@ -40,10 +40,6 @@ class C extends React.Component {
             <i className="fa fa-server fa-fw" />
             <span>{t('sidebarInstance')}</span>
           </NavLink>
-          <NavLink to={`/${regionId}/instance_types`}>
-            <i className="fa fa-cogs fa-fw" />
-            <span>{t('sidebarInstanceType')}</span>
-          </NavLink>
           <NavLink to={`/${regionId}/volumes`}>
             <i className="fa fa-hdd-o fa-fw" />
             <span>{t('sidebarVolume')}</span>
