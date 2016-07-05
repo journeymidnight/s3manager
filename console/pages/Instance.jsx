@@ -5,9 +5,15 @@ import { Link } from 'react-router';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
 import Page, { attach } from '../../shared/pages/Page';
-import Modal, { confirmModal } from '../../shared/components/Modal';
+import Modal, { alertModal, confirmModal } from '../../shared/components/Modal';
+import InstanceResetForm from '../forms/InstanceResetForm';
+import InstanceResizeForm from '../forms/InstanceResizeForm';
+import InstanceEipForm from '../forms/InstanceEipForm';
+import InstanceCaptureForm from '../forms/InstanceCaptureForm';
+import * as EipActions from '../redux/actions.eip';
 import * as Actions from '../redux/actions';
 import * as InstanceActions from '../redux/actions.instance';
+
 
 let InstanceUpdateForm = (props) => {
   const { fields:
@@ -64,7 +70,7 @@ InstanceUpdateForm.validate = () => {
 };
 
 InstanceUpdateForm = reduxForm({
-  form: 'KeyPairForm',
+  form: 'InstanceUpdateForm',
   fields: ['name', 'description'],
   validate: InstanceUpdateForm.validate,
 })(translate()(InstanceUpdateForm));
@@ -74,6 +80,10 @@ class C extends Page {
   constructor(props) {
     super(props);
 
+    this.onCaptureInstance = this.onCaptureInstance.bind(this);
+    this.onAssociateEip = this.onAssociateEip.bind(this);
+    this.onResize = this.onResize.bind(this);
+    this.onReset = this.onReset.bind(this);
     this.onUpdate = this.onUpdate.bind(this);
     this.refresh = this.refresh.bind(this);
     this.deleteInstance = this.deleteInstance.bind(this);
@@ -84,6 +94,9 @@ class C extends Page {
     this.resizeInstance = this.resizeInstance.bind(this);
     this.resetInstance = this.resetInstance.bind(this);
     this.connectVNC = this.connectVNC.bind(this);
+    this.associateEip = this.associateEip.bind(this);
+    this.dissociateEip = this.dissociateEip.bind(this);
+    this.captureInstance = this.captureInstance.bind(this);
   }
 
   componentDidMount() {
@@ -167,11 +180,120 @@ class C extends Page {
     });
   }
 
+  onReset(values) {
+    const { dispatch, region, routerKey, params } = this.props;
+
+    return new Promise((resolve, reject) => {
+      const loginMode = values.loginMode;
+      const loginPassword = values.loginPassword;
+      const keyPairId = values.keyPairId;
+
+      dispatch(InstanceActions.requestResetInstances(routerKey, region.regionId, [params.instanceId], loginMode, loginPassword, keyPairId))
+      .then(() => {
+        resolve();
+        this.refs.resetModal.hide();
+      }).catch(() => {
+        reject();
+      });
+    });
+  }
+
   resetInstance(e) {
     e.preventDefault();
 
+    const { t } = this.props;
+    const instance = this.props.context.instance || this.instance;
+    if (instance.status !== 'stopped') {
+      alertModal(t('pageInstance.stopInstanceFirst'));
+      return;
+    }
+
+    this.refs.resetModal.show();
+  }
+
+  onAssociateEip(values) {
     const { dispatch, region, routerKey, params } = this.props;
-    dispatch(InstanceActions.requestResetInstances(routerKey, region.regionId, [params.instanceId]));
+
+    return new Promise((resolve, reject) => {
+      const eipId = values.eipId;
+
+      dispatch(EipActions.requestAssociateEip(routerKey, region.regionId, eipId, params.instanceId))
+      .then(() => {
+        resolve();
+        this.refs.eipModal.hide();
+      }).catch(() => {
+        reject();
+      });
+    });
+  }
+
+  associateEip(e) {
+    e.preventDefault();
+
+    this.refs.eipModal.show();
+  }
+
+  dissociateEip(e) {
+    e.preventDefault();
+
+    const { dispatch, region, routerKey, params } = this.props;
+    const instance = this.props.context.instance || this.instance;
+
+    dispatch(EipActions.requestDissociateEips(routerKey, region.regionId, [instance.eipId], params.instanceId))
+    .then(() => {
+    }).catch(() => {
+    });
+  }
+
+  onCaptureInstance(values) {
+    const { dispatch, region, routerKey, params } = this.props;
+
+    return new Promise((resolve, reject) => {
+      const name = values.name;
+
+      dispatch(InstanceActions.requestCaptureInstance(routerKey, region.regionId, params.instanceId, name))
+      .then(() => {
+        resolve();
+        this.refs.captureModal.hide();
+      }).catch(() => {
+        reject();
+      });
+    });
+  }
+
+  captureInstance(e) {
+    e.preventDefault();
+
+    this.refs.captureModal.show();
+  }
+
+  onResize(values) {
+    const { dispatch, region, routerKey, params } = this.props;
+
+    return new Promise((resolve, reject) => {
+      const instanceTypeId = values.instanceTypeId;
+
+      dispatch(InstanceActions.requestResizeInstances(routerKey, region.regionId, [params.instanceId], instanceTypeId))
+      .then(() => {
+        resolve();
+        this.refs.resizeModal.hide();
+      }).catch(() => {
+        reject();
+      });
+    });
+  }
+
+  resizeInstance(e) {
+    e.preventDefault();
+
+    const { t } = this.props;
+    const instance = this.props.context.instance || this.instance;
+    if (instance.status !== 'stopped') {
+      alertModal(t('pageInstance.stopInstanceFirst'));
+      return;
+    }
+
+    this.refs.resizeModal.show();
   }
 
   connectVNC(e) {
@@ -179,13 +301,6 @@ class C extends Page {
 
     const { dispatch, region, routerKey, params } = this.props;
     dispatch(InstanceActions.requestConnectVNC(routerKey, region.regionId, params.instanceId));
-  }
-
-  resizeInstance(e) {
-    e.preventDefault();
-
-    const { dispatch, region, routerKey, params } = this.props;
-    dispatch(InstanceActions.requestResizeInstances(routerKey, region.regionId, [params.instanceId]));
   }
 
   render() {
@@ -293,6 +408,9 @@ class C extends Page {
                       <ul className="dropdown-menu">
                         <li><a href onClick={this.resizeInstance}>{t('pageInstance.resizeInstance')}</a></li>
                         <li><a href onClick={this.resetInstance}>{t('pageInstance.resetInstance')}</a></li>
+                        <li><a href onClick={this.associateEip}>{t('pageInstance.associateEip')}</a></li>
+                        <li><a href onClick={this.dissociateEip}>{t('pageInstance.dissociateEip')}</a></li>
+                        <li><a href onClick={this.captureInstance}>{t('pageInstance.captureInstance')}</a></li>
                       </ul>
                     </div>}
                   </div>
@@ -332,7 +450,8 @@ class C extends Page {
                       <tr>
                         <td>{t('publicIP')}</td>
                         <td>
-                          <i className="text-muted">{t('noName')}</i>
+                          {instance.eip && <span>{instance.eip.address}</span>}
+                          {!instance.eip && <i className="text-muted">{t('noName')}</i>}
                         </td>
                       </tr>
                     </tbody>
@@ -362,6 +481,18 @@ class C extends Page {
         </div>
         <Modal title={t('pageInstance.updateInstance')} ref="updateModal" >
           <InstanceUpdateForm onSubmit={this.onUpdate} initialValues={instance} />
+        </Modal>
+        <Modal title={t('pageInstance.resetInstance')} ref="resetModal" >
+          <InstanceResetForm onSubmit={this.onReset} instance={instance} region={region} />
+        </Modal>
+        <Modal title={t('pageInstance.resizeInstance')} ref="resizeModal" >
+          <InstanceResizeForm onSubmit={this.onResize} instance={instance} region={region} />
+        </Modal>
+        <Modal title={t('pageInstance.associateEip')} ref="eipModal" >
+          <InstanceEipForm onSubmit={this.onAssociateEip} instance={instance} region={region} />
+        </Modal>
+        <Modal title={t('pageInstance.captureInstance')} ref="captureModal" >
+          <InstanceCaptureForm onSubmit={this.onCaptureInstance} instance={instance} region={region} />
         </Modal>
       </div>
     );

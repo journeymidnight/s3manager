@@ -193,12 +193,12 @@ class C extends Page {
       const instanceId = values.instanceId;
 
       dispatch(EipActions.requestAssociateEip(routerKey, region.regionId, eip.eipId, instanceId))
-        .then(() => {
-          resolve();
-          this.refs.associateModal.hide();
-        }).catch(() => {
-          reject();
-        });
+      .then(() => {
+        resolve();
+        this.refs.associateModal.hide();
+      }).catch(() => {
+        reject();
+      });
     });
   }
 
@@ -278,9 +278,7 @@ class C extends Page {
           <div className="clearfix">
             <div className="top-area">
               <div className="nav-text">
-                <i className="light">
-                  {eip.eipId}
-                </i>
+                <span>{t('eip')}&nbsp;<i>{eip.eipId}</i></span>
               </div>
             </div>
 
@@ -325,7 +323,7 @@ class C extends Page {
                         </td>
                       </tr>
                       <tr>
-                        <td>{t('address')}</td>
+                        <td>{t('ip')}</td>
                         <td>{eip.address}</td>
                       </tr>
                       <tr>

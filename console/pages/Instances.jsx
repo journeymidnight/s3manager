@@ -4,8 +4,8 @@ import React from 'react';
 import { Link } from 'react-router';
 import { attach } from '../../shared/pages/Page';
 import { confirmModal } from '../../shared/components/Modal';
-import TablePage from '../../shared/pages/TablePage';
 import { buttonForm } from '../../shared/forms/ButtonForm';
+import TablePage from '../../shared/pages/TablePage';
 import * as Actions from '../redux/actions';
 import * as InstanceActions from '../redux/actions.instance';
 

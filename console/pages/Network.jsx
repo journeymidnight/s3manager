@@ -1,3 +1,4 @@
+import moment from 'moment';
 import React from 'react';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
@@ -77,6 +78,8 @@ class C extends Page {
     this.refresh = this.refresh.bind(this);
     this.deleteNetwork = this.deleteNetwork.bind(this);
     this.updateNetwork = this.updateNetwork.bind(this);
+    this.setExternalGateway = this.setExternalGateway.bind(this);
+    this.unsetExternalGateway = this.unsetExternalGateway.bind(this);
   }
 
   componentDidMount() {
@@ -122,6 +125,20 @@ class C extends Page {
         reject();
       });
     });
+  }
+
+  setExternalGateway(e) {
+    e.preventDefault();
+
+    const { dispatch, region, routerKey, params } = this.props;
+    dispatch(NetworkActions.requestSetExternalGateway(routerKey, region.regionId, [params.networkId]));
+  }
+
+  unsetExternalGateway(e) {
+    e.preventDefault();
+
+    const { dispatch, region, routerKey, params } = this.props;
+    dispatch(NetworkActions.requestUnsetExternalGateway(routerKey, region.regionId, [params.networkId]));
   }
 
   updateNetwork(e) {
@@ -178,6 +195,8 @@ class C extends Page {
                       </button>
                       <ul className="dropdown-menu">
                         <li><a href onClick={this.updateNetwork}>{t('pageNetwork.updateNetwork')}</a></li>
+                        <li><a href onClick={this.setExternalGateway}>{t('pageNetwork.setExternalGateway')}</a></li>
+                        <li><a href onClick={this.unsetExternalGateway}>{t('pageNetwork.unsetExternalGateway')}</a></li>
                         <li><a href onClick={this.deleteNetwork}>{t('pageNetwork.deleteNetwork')}</a></li>
                       </ul>
                     </div>}
@@ -224,7 +243,7 @@ class C extends Page {
                       </tr>
                       <tr>
                         <td>{t('created')}</td>
-                        <td>{network.created}</td>
+                        <td>{moment.utc(network.created).local().format('YYYY-MM-DD HH:mm:ss')}</td>
                       </tr>
                     </tbody>
                   </table>

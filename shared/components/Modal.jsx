@@ -10,14 +10,29 @@ class Modal extends React.Component {
 
     this.show = this.show.bind(this);
     this.hide = this.hide.bind(this);
+    this.state = {
+      hidden: !props.pop,
+    };
+  }
+
+  componentDidMount() {
+    $(this.refs.modal).on('hidden.bs.modal', () => {
+      this.setState({ hidden: true });
+    });
+
+    if (this.props.pop) {
+      this.show();
+    }
   }
 
   show() {
     $(this.refs.modal).modal('show');
+    this.setState({ hidden: false });
   }
 
   hide() {
     $(this.refs.modal).modal('hide');
+    this.setState({ hidden: true });
   }
 
   render() {
@@ -31,7 +46,7 @@ class Modal extends React.Component {
               <button type="button" className="close" data-dismiss="modal"><span>&times;</span></button>
               <h4 className="modal-title">{props.title}</h4>
             </div>}
-            {props.children}
+            {!this.state.hidden && props.children}
           </div>
         </div>
       </div>
@@ -42,63 +57,48 @@ class Modal extends React.Component {
 Modal.propTypes = {
   id: React.PropTypes.string,
   title: React.PropTypes.string,
+  pop: React.PropTypes.any,
   children: React.PropTypes.element.isRequired,
 };
 
-function injectModal(id, modal) {
+function injectModal(modal) {
   const dest = document.createElement('div');
   document.body.appendChild(dest);
   render(modal, dest);
-
-  return $(`#${id}`).modal('show');
 }
 
 export function popModal(title, children) {
   const id = Math.random().toString(36).slice(2);
-  const modal = (
-    <Modal id={id} title={title}>
-      {children}
-    </Modal>
-  );
+  const modal = <Modal id={id} title={title} pop >{children}</Modal>;
 
-  injectModal(id, modal);
+  injectModal(modal);
 }
 
 export function confirmModal(text, done, cancel) {
-  const id = Math.random().toString(36).slice(2);
-  const modal = (
-    <Modal id={id}>
-      <div>
-        <div className="modal-body">
-          {text}
-        </div>
-        <div className="modal-footer">
-          <button type="button" className="btn btn-default" data-dismiss="modal" onClick={cancel}>{i18n.t('closeModal')}</button>
-          <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={done}>{i18n.t('confirmModal')}</button>
-        </div>
+  popModal('', (
+    <div>
+      <div className="modal-body">
+        {text}
       </div>
-    </Modal>
-  );
-
-  injectModal(id, modal);
+      <div className="modal-footer">
+        <button type="button" className="btn btn-default" data-dismiss="modal" onClick={cancel}>{i18n.t('closeModal')}</button>
+        <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={done}>{i18n.t('confirmModal')}</button>
+      </div>
+    </div>
+  ));
 }
 
 export function alertModal(text) {
-  const id = Math.random().toString(36).slice(2);
-  const modal = (
-    <Modal id={id}>
-      <div>
-        <div className="modal-body">
-          {text}
-        </div>
-        <div className="modal-footer">
-          <button type="button" className="btn btn-primary" data-dismiss="modal">{i18n.t('confirmModal')}</button>
-        </div>
+  popModal('', (
+    <div>
+      <div className="modal-body">
+        {text}
       </div>
-    </Modal>
-  );
-
-  injectModal(id, modal);
+      <div className="modal-footer">
+        <button type="button" className="btn btn-primary" data-dismiss="modal">{i18n.t('confirmModal')}</button>
+      </div>
+    </div>
+  ));
 }
 
 export default Modal;

@@ -8,6 +8,7 @@ export function requestDescribeEip(routerKey, regionId, eipId) {
     return IaaS
     .describeEips(regionId, {
       eipIds: [eipId],
+      verbose: true,
     })
     .promise
     .then((payload) => {

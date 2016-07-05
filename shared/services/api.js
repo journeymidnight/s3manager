@@ -50,7 +50,7 @@ export const call = (method, url, payload, hook) => {
           resolve(data.data);
         } else {
           const _ = require('lodash');
-          if (data.retCode === 1200 && !_.endsWith(url, 'authorize')) {
+          if (data.retCode === 4101 && !_.endsWith(url, 'authorize')) {
             store.remove('token');
             window.location.reload();
             return;
