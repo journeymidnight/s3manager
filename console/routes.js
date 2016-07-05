@@ -25,13 +25,13 @@ import Settings from './pages/Settings.jsx';
 import Eip from './pages/Eip.jsx';
 import Eips from './pages/Eips.jsx';
 import EipCreate from './pages/EipCreate.jsx';
-import InstanceTypes from './pages/InstanceTypes.jsx';
 import Volumes from './pages/Volumes.jsx';
 import Volume from './pages/Volume.jsx';
 import VolumeCreate from './pages/VolumeCreate.jsx';
 import TabPrivateImages from './pages/TabPrivateImages.jsx';
 import TabPublicImages from './pages/TabPublicImages.jsx';
 import TabVolumeSnapshots from './pages/TabVolumeSnapshots.jsx';
+import Activities from './pages/Activities.jsx';
 
 export default function configureRoutes(store) {
   function requireAuth(nextState, replace) {
@@ -52,7 +52,6 @@ export default function configureRoutes(store) {
       </Route>
       <Route path="/" component={App} onEnter={requireAuth} >
         <IndexRoute component={Home} />
-        <Route path="activities" component={Settings} />
         <Route path="access_keys" component={Settings} />
         <Route path="usage" component={Settings} />
         <Route path="settings" component={Settings} />
@@ -75,7 +74,6 @@ export default function configureRoutes(store) {
             <Route path="create" component={EipCreate} />
             <Route path=":eipId" component={Eip} />
           </Route>
-          <Route path="instance_types" component={InstanceTypes} />
           <Route path="instances" >
             <IndexRoute component={Instances} />
             <Route path="create" component={InstanceCreate} />
@@ -100,6 +98,7 @@ export default function configureRoutes(store) {
             </Route>
           </Route>
           <Route path="firewalls" component={Settings} />
+          <Route path="activities" component={Activities} />
         </Route>
       </Route>
     </Route >
