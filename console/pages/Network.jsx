@@ -1,3 +1,4 @@
+import moment from 'moment';
 import React from 'react';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
@@ -224,7 +225,7 @@ class C extends Page {
                       </tr>
                       <tr>
                         <td>{t('created')}</td>
-                        <td>{network.created}</td>
+                        <td>{moment.utc(network.created).local().format('YYYY-MM-DD HH:mm:ss')}</td>
                       </tr>
                     </tbody>
                   </table>
