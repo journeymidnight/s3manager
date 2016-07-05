@@ -210,5 +210,8 @@ class IaaS {
       snapshotIds,
     });
   }
+  describeJobs(regionId, filter = {}) {
+    return this.call(regionId, 'DescribeJobs', filter);
+  }
 }
 export default new IaaS();

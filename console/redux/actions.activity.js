@@ -1,10 +1,10 @@
 import { notifyAlert, extendContext } from './actions';
 import IaaS from '../services/iaas';
 
-export function requestDescribeInstanceTypes(routerKey, regionId, filters) {
+export function requestDescribeJobs(routerKey, regionId, filters) {
   return dispatch => {
     return IaaS
-      .describeInstanceTypes(regionId, filters)
+      .describeJobs(regionId, filters)
       .promise
       .then((payload) => {
         dispatch(extendContext(Object.assign(payload, {
@@ -18,3 +18,4 @@ export function requestDescribeInstanceTypes(routerKey, regionId, filters) {
       });
   };
 }
+
