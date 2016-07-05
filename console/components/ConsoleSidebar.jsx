@@ -60,10 +60,10 @@ class C extends React.Component {
             <i className="fa fa-key fa-fw" />
             <span>{t('sidebarKeyPair')}</span>
           </NavLink>
-          <NavLink to={`/${regionId}/firewalls`}>
+          {/* <NavLink to={`/${regionId}/firewalls`}>
             <i className="fa fa-shield fa-fw" />
             <span>{t('sidebarFirewall')}</span>
-          </NavLink>
+          </NavLink>*/}
           <NavLink to={`/${regionId}/activities`}>
             <i className="fa fa-sticky-note fa-fw" />
             <span>{t('sidebarActivity')}</span>
