@@ -5,6 +5,8 @@ import Time from 'react-time';
 import { attach } from '../../shared/pages/Page';
 import TablePage from '../../shared/pages/TablePage';
 import ButtonForm from '../../shared/forms/ButtonForm';
+import StatusFilter from '../../shared/components/StatusFilter';
+import TimeSorter from '../../shared/components/TimeSorter';
 import * as Actions from '../redux/actions';
 import * as VolumeActions from '../redux/actions.volume';
 
@@ -111,6 +113,35 @@ class C extends TablePage {
 
   renderFilters() {
     const { t } = this.props;
+    const statusOption = [
+      {
+        status: ['pending', 'active', 'attaching', 'inuse', 'backup_ing', 'backup_restoring', 'deleted', 'ceased', 'error'],
+        name: t('allAvaliableStatus'),
+      }, {
+        status: ['pending'],
+        name: t('volumeStatus.pending'),
+      }, {
+        status: ['active'],
+        name: t('volumeStatus.active'),
+      }, {
+        status: ['attaching'],
+        name: t('volumeStatus.attaching'),
+      }, {
+        status: ['inuse'],
+        name: t('volumeStatus.inuse'),
+      }, {
+        status: ['backup_ing'],
+        name: t('volumeStatus.backup_ing'),
+      }, {
+        status: ['backup_restoring'],
+        name: t('volumeStatus.backup_restoring'),
+      }, {
+        status: ['deleted', 'ceased'],
+        name: t('volumeStatus.deleted'),
+      }, {
+        status: ['error'],
+        name: t('volumeStatus.error'),
+      }];
     return (
       <div className="gray-content-block second-block">
         <div className={Object.keys(this.props.context.selected).length > 0 ? 'hidden' : ''}>
@@ -120,73 +151,13 @@ class C extends TablePage {
             </a>
           </div>
           <div className="filter-item inline labels-filter">
-            <div className="dropdown">
-              <button className="dropdown-menu-toggle" data-toggle="dropdown" type="button">
-                <span className="dropdown-toggle-text">{t('status')}</span>
-                <i className="fa fa-chevron-down"></i>
-              </button>
-              <div className="dropdown-menu dropdown-select dropdown-menu-selectable">
-                <div className="dropdown-content">
-                  <ul>
-                    {[
-                      {
-                        status: ['pending', 'active', 'attaching', 'inuse', 'backup_ing', 'backup_restoring', 'deleted', 'ceased', 'error'],
-                        name: t('allAvaliableStatus'),
-                      }, {
-                        status: ['pending'],
-                        name: t('volumeStatus.pending'),
-                      }, {
-                        status: ['active'],
-                        name: t('volumeStatus.active'),
-                      }, {
-                        status: ['attaching'],
-                        name: t('volumeStatus.attaching'),
-                      }, {
-                        status: ['inuse'],
-                        name: t('volumeStatus.inuse'),
-                      }, {
-                        status: ['backup_ing'],
-                        name: t('volumeStatus.backup_ing'),
-                      }, {
-                        status: ['backup_restoring'],
-                        name: t('volumeStatus.backup_restoring'),
-                      }, {
-                        status: ['deleted', 'ceased'],
-                        name: t('volumeStatus.deleted'),
-                      }, {
-                        status: ['error'],
-                        name: t('volumeStatus.error'),
-                      }].map((filter) => {
-                        return (
-                          <li key={filter.name}>
-                            <a
-                              className={this.props.context.status.toString() === filter.status.toString() ? 'is-active' : ''}
-                              href
-                              onClick={this.onRefresh({ status: filter.status })}
-                            >
-                              {filter.name}
-                            </a>
-                          </li>
-                        );
-                      })}
-                  </ul>
-                </div>
-              </div>
-            </div>
+            <StatusFilter statusOption={statusOption} filterStatus={this.props.context.status} onRefresh={this.onRefresh} />
           </div>
           <div className="filter-item inline">
             <input type="search" ref="search" placeholder={t('filterByIdorName')} className="form-control" onKeyPress={this.onSearchKeyPress} />
           </div>
           <div className="pull-right">
-            <div className="dropdown inline prepend-left-10">
-              <button className="dropdown-toggle btn" data-toggle="dropdown" type="button">
-                <span className="light"></span> {this.props.context.reverse ? t('lastCreated') : t('firstCreated')}
-                <b className="caret"></b></button>
-              <ul className="dropdown-menu dropdown-menu-align-right dropdown-select dropdown-menu-selectable">
-                <li><a className={this.props.context.reverse ? 'is-active' : ''} href onClick={this.onRefresh({ reverse: true })}>{t('lastCreated')}</a></li>
-                <li><a className={this.props.context.reverse ? '' : 'is-active'} href onClick={this.onRefresh({ reverse: false })}>{t('firstCreated')}</a></li>
-              </ul>
-            </div>
+            <TimeSorter isReverse={this.props.context.reverse} onRefresh={this.onRefresh} />
           </div>
         </div>
         <div className={Object.keys(this.props.context.selected).length > 0 ? '' : 'hidden'}>

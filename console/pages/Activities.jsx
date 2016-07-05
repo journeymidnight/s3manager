@@ -4,6 +4,7 @@ import { attach } from '../../shared/pages/Page';
 import TablePage from '../../shared/pages/TablePage';
 import ButtonForm from '../../shared/forms/ButtonForm';
 import StatusFilter from '../../shared/components/StatusFilter';
+import TimeSorter from '../../shared/components/TimeSorter';
 import * as Actions from '../redux/actions';
 import * as ActivityActions from '../redux/actions.activity';
 
@@ -95,15 +96,7 @@ class C extends TablePage {
             <input type="search" ref="search" placeholder={t('filterByIdorName')} className="form-control" onKeyPress={this.onSearchKeyPress} />
           </div>
           <div className="pull-right">
-            <div className="dropdown inline prepend-left-10">
-              <button className="dropdown-toggle btn" data-toggle="dropdown" type="button">
-                <span className="light"></span> {this.props.context.reverse ? t('lastCreated') : t('firstCreated')}
-                <b className="caret"></b></button>
-              <ul className="dropdown-menu dropdown-menu-align-right dropdown-select dropdown-menu-selectable">
-                <li><a className={this.props.context.reverse ? 'is-active' : ''} href onClick={this.onRefresh({ reverse: true })}>{t('lastCreated')}</a></li>
-                <li><a className={this.props.context.reverse ? '' : 'is-active'} href onClick={this.onRefresh({ reverse: false })}>{t('firstCreated')}</a></li>
-              </ul>
-            </div>
+            <TimeSorter isReverse={this.props.context.reverse} onRefresh={this.onRefresh} />
           </div>
         </div>
         <div className={Object.keys(this.props.context.selected).length > 0 ? '' : 'hidden'}>
