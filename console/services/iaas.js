@@ -177,6 +177,12 @@ class IaaS {
       instanceTypeId,
     });
   }
+  captureInstance(regionId, instanceId, name) {
+    return this.call(regionId, 'CaptureInstance', {
+      instanceId,
+      name,
+    });
+  }
   deleteInstances(regionId, instanceIds) {
     return this.call(regionId, 'DeleteInstances', {
       instanceIds,

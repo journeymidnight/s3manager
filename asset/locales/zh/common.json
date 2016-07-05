@@ -77,6 +77,7 @@
     "resizeSuccessed": "扩容成功。",
     "resetPending": "正在更新系统配置...",
     "resizePending": "正在重置系统...",
+    "capturePending": "正在生成映像...",
     "dissociateSuccessed": "解绑成功。",
     "associateSuccessed": "绑定成功。",
 
@@ -244,6 +245,7 @@
         "updateInstance": "更新",
         "resizeInstance": "更新配置",
         "resetInstance": "系统重置",
+        "captureInstance": "生成自有映像",
         "associateEip": "绑定公网IP",
         "dissociateEip": "解绑公网IP"
     },

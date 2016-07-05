@@ -245,3 +245,17 @@ export function requestInstanceOutput(routerKey, regionId, instanceId) {
     });
   };
 }
+
+export function requestCaptureInstance(routerKey, regionId, instanceId, name) {
+  return dispatch => {
+    return IaaS
+    .captureInstance(regionId, instanceId, name)
+    .promise
+    .then(() => {
+      dispatch(notify(i18n.t('capturePending')));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}

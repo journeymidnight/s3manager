@@ -9,6 +9,7 @@ import Modal, { alertModal, confirmModal } from '../../shared/components/Modal';
 import InstanceResetForm from '../forms/InstanceResetForm';
 import InstanceResizeForm from '../forms/InstanceResizeForm';
 import InstanceEipForm from '../forms/InstanceEipForm';
+import InstanceCaptureForm from '../forms/InstanceCaptureForm';
 import * as EipActions from '../redux/actions.eip';
 import * as Actions from '../redux/actions';
 import * as InstanceActions from '../redux/actions.instance';
@@ -79,6 +80,7 @@ class C extends Page {
   constructor(props) {
     super(props);
 
+    this.onCaptureInstance = this.onCaptureInstance.bind(this);
     this.onAssociateEip = this.onAssociateEip.bind(this);
     this.onResize = this.onResize.bind(this);
     this.onReset = this.onReset.bind(this);
@@ -94,6 +96,7 @@ class C extends Page {
     this.connectVNC = this.connectVNC.bind(this);
     this.associateEip = this.associateEip.bind(this);
     this.dissociateEip = this.dissociateEip.bind(this);
+    this.captureInstance = this.captureInstance.bind(this);
   }
 
   componentDidMount() {
@@ -242,6 +245,28 @@ class C extends Page {
     });
   }
 
+  onCaptureInstance(values) {
+    const { dispatch, region, routerKey, params } = this.props;
+
+    return new Promise((resolve, reject) => {
+      const name = values.name;
+
+      dispatch(InstanceActions.requestCaptureInstance(routerKey, region.regionId, params.instanceId, name))
+      .then(() => {
+        resolve();
+        this.refs.captureModal.hide();
+      }).catch(() => {
+        reject();
+      });
+    });
+  }
+
+  captureInstance(e) {
+    e.preventDefault();
+
+    this.refs.captureModal.show();
+  }
+
   onResize(values) {
     const { dispatch, region, routerKey, params } = this.props;
 
@@ -385,6 +410,7 @@ class C extends Page {
                         <li><a href onClick={this.resetInstance}>{t('pageInstance.resetInstance')}</a></li>
                         <li><a href onClick={this.associateEip}>{t('pageInstance.associateEip')}</a></li>
                         <li><a href onClick={this.dissociateEip}>{t('pageInstance.dissociateEip')}</a></li>
+                        <li><a href onClick={this.captureInstance}>{t('pageInstance.captureInstance')}</a></li>
                       </ul>
                     </div>}
                   </div>
@@ -464,6 +490,9 @@ class C extends Page {
         </Modal>
         <Modal title={t('pageInstance.associateEip')} ref="eipModal" >
           <InstanceEipForm onSubmit={this.onAssociateEip} instance={instance} region={region} />
+        </Modal>
+        <Modal title={t('pageInstance.captureInstance')} ref="captureModal" >
+          <InstanceCaptureForm onSubmit={this.onCaptureInstance} instance={instance} region={region} />
         </Modal>
       </div>
     );
