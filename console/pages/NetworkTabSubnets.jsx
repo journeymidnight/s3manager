@@ -34,6 +34,7 @@ class C extends TablePage {
 
     this.initTable({
       status: ['active'],
+      isTabPage: true,
     });
   }
 
