@@ -120,3 +120,31 @@ export function requestCreateSubnet(routerKey, regionId, subnet) {
     });
   };
 }
+
+export function requestSetExternalGateway(routerKey, regionId, networkIds) {
+  return dispatch => {
+    return IaaS
+    .setExternalGateway(regionId, networkIds)
+    .promise
+    .then(() => {
+      dispatch(notify(i18n.t('updateSuccessed')));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
+export function requestUnsetExternalGateway(routerKey, regionId, networkIds) {
+  return dispatch => {
+    return IaaS
+    .unsetExternalGateway(regionId, networkIds)
+    .promise
+    .then(() => {
+      dispatch(notify(i18n.t('updateSuccessed')));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}

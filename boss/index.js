@@ -1,7 +1,8 @@
 import './scss/sub.scss';
 
 import Auth from './services/auth';
-import configureStore from './redux/store';
+import rootReducer from './redux/reducers';
+import configureStore from '../shared/redux/store';
 import configureRoutes from './routes';
 
 import bootstrap from '../shared/bootstrap';
@@ -10,7 +11,7 @@ bootstrap((token, state, callback) => {
   document.title = `${state.env.appName} | Boss`;
   window.$('body').toggleClass('ui_charcoal ui_boss');
 
-  let store = configureStore(state);
+  let store = configureStore(rootReducer, state);
   let routes = configureRoutes(store);
 
   if (token) {
@@ -19,7 +20,7 @@ bootstrap((token, state, callback) => {
     .then((context) => {
       state.auth = context.auth;
 
-      store = configureStore(state);
+      store = configureStore(rootReducer, state);
       routes = configureRoutes(store);
       callback(store, routes);
     })

@@ -47,7 +47,6 @@ export function requestDescribePrerequisites(routerKey, regionId) {
       .describeKeyPairs(regionId, {
         status: ['active'],
         limit: 100,
-        verbose: true,
       })
       .promise;
     })
@@ -177,12 +176,13 @@ export function requestModifyInstanceAttributes(routerKey, regionId, instanceId,
   };
 }
 
-export function requestResetInstances(routerKey, regionId, instanceIds) {
+export function requestResetInstances(routerKey, regionId, instanceIds, loginMode, loginPassword, keyPairId) {
   return dispatch => {
     return IaaS
-    .resetInstances(regionId, instanceIds)
+    .resetInstances(regionId, instanceIds, loginMode, loginPassword, keyPairId)
     .promise
     .then(() => {
+      dispatch(notify(i18n.t('resetPending')));
     })
     .catch((error) => {
       dispatch(notifyAlert(error.message));
@@ -190,12 +190,13 @@ export function requestResetInstances(routerKey, regionId, instanceIds) {
   };
 }
 
-export function requestResizeInstances(routerKey, regionId, instanceIds) {
+export function requestResizeInstances(routerKey, regionId, instanceIds, instanceTypeId) {
   return dispatch => {
     return IaaS
-    .resizeInstances(regionId, instanceIds)
+    .resizeInstances(regionId, instanceIds, instanceTypeId)
     .promise
     .then(() => {
+      dispatch(notify(i18n.t('resizePending')));
     })
     .catch((error) => {
       dispatch(notifyAlert(error.message));
@@ -238,6 +239,20 @@ export function requestInstanceOutput(routerKey, regionId, instanceId) {
     .promise
     .then((payload) => {
       dispatch(extendContext(payload, routerKey));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
+export function requestCaptureInstance(routerKey, regionId, instanceId, name) {
+  return dispatch => {
+    return IaaS
+    .captureInstance(regionId, instanceId, name)
+    .promise
+    .then(() => {
+      dispatch(notify(i18n.t('capturePending')));
     })
     .catch((error) => {
       dispatch(notifyAlert(error.message));

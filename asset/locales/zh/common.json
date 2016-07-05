@@ -42,6 +42,7 @@
     "osPlatform": "操作系统平台",
     "osProcessorType": "处理器类型",
     "ip": "IP 地址",
+    "eip": "公网 IP",
     "privateIP": "内网 IP",
     "publicIP": "公网 IP",
     "mountpoint": "挂载点",
@@ -74,6 +75,9 @@
     "attachSuccessed": "挂载成功。",
     "detachSuccessed": "卸载成功。",
     "resizeSuccessed": "扩容成功。",
+    "resetPending": "正在更新系统配置...",
+    "resizePending": "正在重置系统...",
+    "capturePending": "正在生成映像...",
     "dissociateSuccessed": "解绑成功。",
     "associateSuccessed": "绑定成功。",
 
@@ -91,7 +95,7 @@
     "keyPairManageDescription": "为 Linux 云主机提供 SSH 公钥/私钥验证身份。",
     
     "eipManage": "公网 IP",
-    "eipManageDescription": "为 Linux 云主机提供 可以被外网访问的IP地址。",
+    "eipManageDescription": "为 Linux 云主机提供 可以被公网访问的IP地址。",
 
     "publicImageManage": "公共映像",
     "publicImageManageDescription": "为 Linux 云主机提供 公共映像。",
@@ -236,10 +240,14 @@
         "startInstance": "启动",
         "stopInstance": "关机",
         "restartInstance": "重启",
+        "stopInstanceFirst": "请先关闭云主机。",
         "deleteInstance": "删除",
         "updateInstance": "更新",
         "resizeInstance": "更新配置",
-        "resetInstance": "系统重置"
+        "resetInstance": "系统重置",
+        "captureInstance": "生成自有映像",
+        "associateEip": "绑定公网IP",
+        "dissociateEip": "解绑公网IP"
     },
 
     "pageInstanceCreate": {
@@ -280,8 +288,10 @@
         "subnets": "子网",
         "router": "路由",
         "updateNetwork": "更新",
+        "setExternalGateway": "开通公网网关",
+        "unsetExternalGateway": "关闭公网网关",
         "deleteNetwork": "删除",
-        "externalGatewayIp": "出口网关 IP",
+        "externalGatewayIp": "公网网关 IP",
         "createSubnet": "添加子网"
     },
 

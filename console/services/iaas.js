@@ -110,6 +110,16 @@ class IaaS {
   createNetwork(regionId, network) {
     return this.call(regionId, 'CreateNetwork', network);
   }
+  setExternalGateway(regionId, networkIds) {
+    return this.call(regionId, 'SetExternalGateway', {
+      networkIds,
+    });
+  }
+  unsetExternalGateway(regionId, networkIds) {
+    return this.call(regionId, 'UnsetExternalGateway', {
+      networkIds,
+    });
+  }
   deleteNetworks(regionId, networkIds) {
     return this.call(regionId, 'DeleteNetworks', {
       networkIds,
@@ -153,14 +163,24 @@ class IaaS {
       instanceIds,
     });
   }
-  resetInstances(regionId, instanceIds) {
+  resetInstances(regionId, instanceIds, loginMode, loginPassword, keyPairId) {
     return this.call(regionId, 'ResetInstances', {
       instanceIds,
+      loginMode,
+      loginPassword,
+      keyPairId,
     });
   }
-  resizeInstances(regionId, instanceIds) {
+  resizeInstances(regionId, instanceIds, instanceTypeId) {
     return this.call(regionId, 'ResizeInstances', {
       instanceIds,
+      instanceTypeId,
+    });
+  }
+  captureInstance(regionId, instanceId, name) {
+    return this.call(regionId, 'CaptureInstance', {
+      instanceId,
+      name,
     });
   }
   deleteInstances(regionId, instanceIds) {
