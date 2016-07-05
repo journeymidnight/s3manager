@@ -243,7 +243,9 @@
         "deleteInstance": "删除",
         "updateInstance": "更新",
         "resizeInstance": "更新配置",
-        "resetInstance": "系统重置"
+        "resetInstance": "系统重置",
+        "associateEip": "绑定公网IP",
+        "dissociateEip": "解绑公网IP"
     },
 
     "pageInstanceCreate": {

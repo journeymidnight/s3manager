@@ -193,12 +193,12 @@ class C extends Page {
       const instanceId = values.instanceId;
 
       dispatch(EipActions.requestAssociateEip(routerKey, region.regionId, eip.eipId, instanceId))
-        .then(() => {
-          resolve();
-          this.refs.associateModal.hide();
-        }).catch(() => {
-          reject();
-        });
+      .then(() => {
+        resolve();
+        this.refs.associateModal.hide();
+      }).catch(() => {
+        reject();
+      });
     });
   }
 

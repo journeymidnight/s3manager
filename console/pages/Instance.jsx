@@ -8,6 +8,8 @@ import Page, { attach } from '../../shared/pages/Page';
 import Modal, { alertModal, confirmModal } from '../../shared/components/Modal';
 import InstanceResetForm from '../forms/InstanceResetForm';
 import InstanceResizeForm from '../forms/InstanceResizeForm';
+import InstanceEipForm from '../forms/InstanceEipForm';
+import * as EipActions from '../redux/actions.eip';
 import * as Actions from '../redux/actions';
 import * as InstanceActions from '../redux/actions.instance';
 
@@ -77,6 +79,7 @@ class C extends Page {
   constructor(props) {
     super(props);
 
+    this.onAssociateEip = this.onAssociateEip.bind(this);
     this.onResize = this.onResize.bind(this);
     this.onReset = this.onReset.bind(this);
     this.onUpdate = this.onUpdate.bind(this);
@@ -89,6 +92,8 @@ class C extends Page {
     this.resizeInstance = this.resizeInstance.bind(this);
     this.resetInstance = this.resetInstance.bind(this);
     this.connectVNC = this.connectVNC.bind(this);
+    this.associateEip = this.associateEip.bind(this);
+    this.dissociateEip = this.dissociateEip.bind(this);
   }
 
   componentDidMount() {
@@ -201,6 +206,40 @@ class C extends Page {
     }
 
     this.refs.resetModal.show();
+  }
+
+  onAssociateEip(values) {
+    const { dispatch, region, routerKey, params } = this.props;
+
+    return new Promise((resolve, reject) => {
+      const eipId = values.eipId;
+
+      dispatch(EipActions.requestAssociateEip(routerKey, region.regionId, eipId, params.instanceId))
+      .then(() => {
+        resolve();
+        this.refs.eipModal.hide();
+      }).catch(() => {
+        reject();
+      });
+    });
+  }
+
+  associateEip(e) {
+    e.preventDefault();
+
+    this.refs.eipModal.show();
+  }
+
+  dissociateEip(e) {
+    e.preventDefault();
+
+    const { dispatch, region, routerKey, params } = this.props;
+    const instance = this.props.context.instance || this.instance;
+
+    dispatch(EipActions.requestDissociateEips(routerKey, region.regionId, [instance.eipId], params.instanceId))
+    .then(() => {
+    }).catch(() => {
+    });
   }
 
   onResize(values) {
@@ -344,6 +383,8 @@ class C extends Page {
                       <ul className="dropdown-menu">
                         <li><a href onClick={this.resizeInstance}>{t('pageInstance.resizeInstance')}</a></li>
                         <li><a href onClick={this.resetInstance}>{t('pageInstance.resetInstance')}</a></li>
+                        <li><a href onClick={this.associateEip}>{t('pageInstance.associateEip')}</a></li>
+                        <li><a href onClick={this.dissociateEip}>{t('pageInstance.dissociateEip')}</a></li>
                       </ul>
                     </div>}
                   </div>
@@ -420,6 +461,9 @@ class C extends Page {
         </Modal>
         <Modal title={t('pageInstance.resizeInstance')} ref="resizeModal" >
           <InstanceResizeForm onSubmit={this.onResize} instance={instance} region={region} />
+        </Modal>
+        <Modal title={t('pageInstance.associateEip')} ref="eipModal" >
+          <InstanceEipForm onSubmit={this.onAssociateEip} instance={instance} region={region} />
         </Modal>
       </div>
     );
