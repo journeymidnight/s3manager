@@ -20,7 +20,9 @@ class C extends TablePage {
     const { t, dispatch, region } = this.props;
     dispatch(Actions.setHeader(t('eipManage'), `/${region.regionId}/eips`));
 
-    this.initTable();
+    this.initTable({
+      status: ['active', 'associated'],
+    });
   }
 
   refreshAction(routerKey, filters) {
@@ -134,16 +136,13 @@ class C extends TablePage {
                   <ul>
                     {[
                       {
-                        status: ['active', 'associated', 'deleted', 'ceased'],
+                        status: ['active', 'associated'],
                         name: t('allAvaliableStatus'),
-                      }, {
-                        status: ['active'],
-                        name: t('eipStatus.active'),
                       }, {
                         status: ['associated'],
                         name: t('eipStatus.associated'),
                       }, {
-                        status: ['ceased', 'deleted'],
+                        status: ['deleted'],
                         name: t('eipStatus.deleted'),
                       }].map((filter) => {
                         return (

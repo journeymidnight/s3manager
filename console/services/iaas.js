@@ -110,6 +110,16 @@ class IaaS {
   createNetwork(regionId, network) {
     return this.call(regionId, 'CreateNetwork', network);
   }
+  setExternalGateway(regionId, networkIds) {
+    return this.call(regionId, 'SetExternalGateway', {
+      networkIds,
+    });
+  }
+  unsetExternalGateway(regionId, networkIds) {
+    return this.call(regionId, 'UnsetExternalGateway', {
+      networkIds,
+    });
+  }
   deleteNetworks(regionId, networkIds) {
     return this.call(regionId, 'DeleteNetworks', {
       networkIds,

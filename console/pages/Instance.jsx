@@ -383,7 +383,8 @@ class C extends Page {
                       <tr>
                         <td>{t('publicIP')}</td>
                         <td>
-                          <i className="text-muted">{t('noName')}</i>
+                          {instance.eip && <span>{instance.eip.address}</span>}
+                          {!instance.eip && <i className="text-muted">{t('noName')}</i>}
                         </td>
                       </tr>
                     </tbody>

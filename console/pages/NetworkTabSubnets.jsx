@@ -15,13 +15,9 @@ class C extends TablePage {
   constructor(props) {
     super(props);
 
-    this.refresh = this.refresh.bind(this);
-    this.onSelect = this.onSelect.bind(this);
-    this.onSelectAll = this.onSelectAll.bind(this);
     this.onDelete = this.onDelete.bind(this);
-    this.onRefresh = this.onRefresh.bind(this);
     this.onCreateSubnet = this.onCreateSubnet.bind(this);
-    this.onShowCreatePanel = this.onShowCreatePanel.bind(this);
+    this.showCreatePanel = this.showCreatePanel.bind(this);
 
     this.state = {
       showCreatePanel: false,
@@ -82,7 +78,7 @@ class C extends TablePage {
     });
   }
 
-  onShowCreatePanel(e) {
+  showCreatePanel(e) {
     e.preventDefault();
     this.setState({ showCreatePanel: true });
   }
@@ -132,7 +128,7 @@ class C extends TablePage {
             </span>
           </div>
           <div className="nav-controls">
-            <a className="btn btn-new" href onClick={this.onShowCreatePanel}>
+            <a className="btn btn-new" href onClick={this.showCreatePanel}>
               <i className="fa fa-plus"></i>&nbsp;{t('create')}
             </a>
           </div>
