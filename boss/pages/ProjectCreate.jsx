@@ -1,8 +1,8 @@
 import React from 'react';
 import Page, { attach } from '../../shared/pages/Page';
-import * as TenantActions from '../redux/actions.tenant';
+import * as ProjectActions from '../redux/actions.project';
 import * as Actions from '../redux/actions';
-import TenantForm from '../forms/TenantForm';
+import ProjectForm from '../forms/ProjectForm';
 
 class C extends Page {
 
@@ -14,7 +14,7 @@ class C extends Page {
 
   componentDidMount() {
     const { t, dispatch } = this.props;
-    dispatch(Actions.setHeader(t('tenantManage'), '/tenants'));
+    dispatch(Actions.setHeader(t('projectManage'), '/projects'));
   }
 
   onSubmit(values, dispatch) {
@@ -22,7 +22,7 @@ class C extends Page {
       const name = values.name;
       const description = values.description;
 
-      dispatch(TenantActions.requestCreateTenant({
+      dispatch(ProjectActions.requestCreateProject({
         name,
         description,
       }))
@@ -43,11 +43,11 @@ class C extends Page {
 
             <div className="top-area append-bottom-20">
               <div className="nav-text">
-                <span>{t('create') + t('tenant')}</span>
+                <span>{t('create') + t('project')}</span>
               </div>
             </div>
 
-            <TenantForm onSubmit={this.onSubmit} />
+            <ProjectForm onSubmit={this.onSubmit} />
           </div>
         </div>
       </div>

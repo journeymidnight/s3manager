@@ -1,6 +1,6 @@
 import React from 'react';
 import Page, { attach } from '../../shared/pages/Page';
-import TenantQuotaForm from '../forms/TenantQuotaForm';
+import ProjectQuotaForm from '../forms/ProjectQuotaForm';
 import * as RegionActions from '../redux/actions.region';
 
 class C extends Page {
@@ -9,16 +9,24 @@ class C extends Page {
     const { params, dispatch } = this.props;
 
     this.regionId = params.regionId;
-    this.tenantId = params.tenantId;
-
     dispatch(RegionActions.requestDescribeRegion(this.regionId));
-    dispatch(RegionActions.requestDescribeTenantQuota(this.regionId, this.tenantId));
 
     this.onSubmit = this.onSubmit.bind(this);
+    this.defaultProjectQuota = {
+      quotaInstances: 2,
+      quotaVCPUs: 8,
+      quotaMemory: 16,
+      quotaImages: 2,
+      quotaEIPs: 1,
+      quotaVolumes: 2,
+      quotaVolumeSize: 100,
+      quotaKeyPairs: 2,
+    };
   }
 
   onSubmit(values, dispatch) {
     return new Promise((resolve, reject) => {
+      const projectId = values.projectId;
       const quotaInstances = parseInt(values.quotaInstances, 10);
       const quotaVCPUs = parseInt(values.quotaVCPUs, 10);
       const quotaMemory = parseInt(values.quotaMemory, 10);
@@ -28,7 +36,7 @@ class C extends Page {
       const quotaVolumeSize = parseInt(values.quotaVolumeSize, 10);
       const quotaKeyPairs = parseInt(values.quotaKeyPairs, 10);
 
-      dispatch(RegionActions.requestAssignTenantQuota(this.regionId, this.tenantId, {
+      dispatch(RegionActions.requestAssignProjectQuota(this.regionId, projectId, {
         quotaInstances,
         quotaVCPUs,
         quotaMemory,
@@ -47,9 +55,10 @@ class C extends Page {
   }
 
   render() {
+    const { t } = this.props;
+
     const region = this.props.context.region;
-    const quota = this.props.context.quota;
-    if (region === undefined || quota === undefined) {
+    if (region === undefined) {
       return <div />;
     }
 
@@ -60,11 +69,11 @@ class C extends Page {
 
             <div className="top-area append-bottom-20">
               <div className="nav-text">
-                <span>{this.tenantId}</span>
+                <span>{t('create')}</span>
               </div>
             </div>
 
-            <TenantQuotaForm onSubmit={this.onSubmit} initialValues={quota} isUpdate />
+            <ProjectQuotaForm onSubmit={this.onSubmit} initialValues={this.defaultProjectQuota} />
           </div>
         </div>
       </div>

@@ -5,12 +5,12 @@ import * as Validations from '../utils/validations';
 
 const F = (props) => {
   const { fields:
-    { email, password, tenantId },
+    { email, password, projectId },
     error,
     handleSubmit,
     submitting,
     submitFailed,
-    tenants,
+    projects,
   } = props;
   const { t } = props;
   return (
@@ -28,14 +28,14 @@ const F = (props) => {
         <input type="password" className="form-control" {...password} />
         {submitFailed && password.error && <div className="text-danger"><small>{password.error}</small></div>}
       </div>
-      {tenants && <div className={submitFailed && tenantId.error ? 'form-group has-error' : 'form-group'}>
-        <label className="control-label" >{t('tenant')}</label>
-        <select className="form-control" {...tenantId}>
-          {tenants.map((tenant) => {
-            return <option value={tenant.tenantId} key={tenant.tenantId}>{tenant.name}</option>;
+      {projects && <div className={submitFailed && projectId.error ? 'form-group has-error' : 'form-group'}>
+        <label className="control-label" >{t('project')}</label>
+        <select className="form-control" {...projectId}>
+          {projects.map((project) => {
+            return <option value={project.projectId} key={project.projectId}>{project.name}</option>;
           })}
         </select>
-        {submitFailed && tenantId.error && <div className="text-danger"><small>{tenantId.error}</small></div>}
+        {submitFailed && projectId.error && <div className="text-danger"><small>{projectId.error}</small></div>}
       </div>}
       <div className="prepend-top-20">
         <button type="submit" className="btn btn-create" disabled={submitting}>
@@ -59,12 +59,12 @@ F.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
   submitFailed: React.PropTypes.bool.isRequired,
-  tenants: React.PropTypes.any,
+  projects: React.PropTypes.any,
   t: React.PropTypes.any,
 };
 
 export default reduxForm({
   form: 'LoginForm',
-  fields: ['email', 'password', 'tenantId'],
+  fields: ['email', 'password', 'projectId'],
   validate: F.validate,
 })(translate()(F));

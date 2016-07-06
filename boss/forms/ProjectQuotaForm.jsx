@@ -14,21 +14,21 @@ class F extends React.Component {
   }
 
   onBlur() {
-    this.props.fields.tenantId.onBlur(this.props.fields.tenantId.value);
+    this.props.fields.projectId.onBlur(this.props.fields.projectId.value);
   }
 
   getOptions(input, callback) {
     BOSS
-    .describeTenants({
+    .describeProjects({
       searchWord: input,
     })
     .promise
     .then((payload) => {
       callback(null, {
-        options: payload.tenantSet.map((tenant) => {
+        options: payload.projectSet.map((project) => {
           return {
-            value: tenant.tenantId,
-            label: `${tenant.name} (${tenant.tenantId})`,
+            value: project.projectId,
+            label: `${project.name} (${project.projectId})`,
           };
         }),
       });
@@ -40,7 +40,7 @@ class F extends React.Component {
   render() {
     const {
       fields: {
-        tenantId,
+        projectId,
         quotaInstances,
         quotaVCPUs,
         quotaMemory,
@@ -59,22 +59,22 @@ class F extends React.Component {
     } = this.props;
     return (
       <form className="form-horizontal" onSubmit={handleSubmit}>
-        <div className={submitFailed && tenantId.error ? 'form-group has-error' : 'form-group'}>
-          <label className="control-label" >{t('formTenantQuotaForm.tenantId')}</label>
+        <div className={submitFailed && projectId.error ? 'form-group has-error' : 'form-group'}>
+          <label className="control-label" >{t('formProjectQuotaForm.projectId')}</label>
           <div className="col-sm-10">
             <Select.Async
               loadOptions={this.getOptions}
               noResultsText={t('nothingHere')}
               disabled={isUpdate}
-              {...tenantId}
+              {...projectId}
               onBlur={this.onBlur}
             />
-            {submitFailed && tenantId.error && <div className="text-danger"><small>{tenantId.error}</small></div>}
+            {submitFailed && projectId.error && <div className="text-danger"><small>{projectId.error}</small></div>}
           </div>
         </div>
 
         <div className={submitFailed && quotaInstances.error ? 'form-group has-error' : 'form-group'}>
-          <label className="control-label" >{t('formTenantQuotaForm.quotaInstances')}</label>
+          <label className="control-label" >{t('formProjectQuotaForm.quotaInstances')}</label>
           <div className="col-sm-10">
             <input type="number" className="form-control" {...quotaInstances} />
             {submitFailed && quotaInstances.error && <div className="text-danger"><small>{quotaInstances.error}</small></div>}
@@ -82,7 +82,7 @@ class F extends React.Component {
         </div>
 
         <div className={submitFailed && quotaVCPUs.error ? 'form-group has-error' : 'form-group'}>
-          <label className="control-label" >{t('formTenantQuotaForm.quotaVCPUs')}</label>
+          <label className="control-label" >{t('formProjectQuotaForm.quotaVCPUs')}</label>
           <div className="col-sm-10">
             <input type="number" className="form-control" {...quotaVCPUs} />
             {submitFailed && quotaVCPUs.error && <div className="text-danger"><small>{quotaVCPUs.error}</small></div>}
@@ -90,7 +90,7 @@ class F extends React.Component {
         </div>
 
         <div className={submitFailed && quotaMemory.error ? 'form-group has-error' : 'form-group'}>
-          <label className="control-label" >{t('formTenantQuotaForm.quotaMemory')}</label>
+          <label className="control-label" >{t('formProjectQuotaForm.quotaMemory')}</label>
           <div className="col-sm-10">
             <input type="number" className="form-control" {...quotaMemory} />
             {submitFailed && quotaMemory.error && <div className="text-danger"><small>{quotaMemory.error}</small></div>}
@@ -98,7 +98,7 @@ class F extends React.Component {
         </div>
 
         <div className={submitFailed && quotaImages.error ? 'form-group has-error' : 'form-group'}>
-          <label className="control-label" >{t('formTenantQuotaForm.quotaImages')}</label>
+          <label className="control-label" >{t('formProjectQuotaForm.quotaImages')}</label>
           <div className="col-sm-10">
             <input type="number" className="form-control" {...quotaImages} />
             {submitFailed && quotaImages.error && <div className="text-danger"><small>{quotaImages.error}</small></div>}
@@ -106,7 +106,7 @@ class F extends React.Component {
         </div>
 
         <div className={submitFailed && quotaEIPs.error ? 'form-group has-error' : 'form-group'}>
-          <label className="control-label" >{t('formTenantQuotaForm.quotaEIPs')}</label>
+          <label className="control-label" >{t('formProjectQuotaForm.quotaEIPs')}</label>
           <div className="col-sm-10">
             <input type="number" className="form-control" {...quotaEIPs} />
             {submitFailed && quotaEIPs.error && <div className="text-danger"><small>{quotaEIPs.error}</small></div>}
@@ -114,7 +114,7 @@ class F extends React.Component {
         </div>
 
         <div className={submitFailed && quotaVolumes.error ? 'form-group has-error' : 'form-group'}>
-          <label className="control-label" >{t('formTenantQuotaForm.quotaVolumes')}</label>
+          <label className="control-label" >{t('formProjectQuotaForm.quotaVolumes')}</label>
           <div className="col-sm-10">
             <input type="number" className="form-control" {...quotaVolumes} />
             {submitFailed && quotaVolumes.error && <div className="text-danger"><small>{quotaVolumes.error}</small></div>}
@@ -122,7 +122,7 @@ class F extends React.Component {
         </div>
 
         <div className={submitFailed && quotaVolumeSize.error ? 'form-group has-error' : 'form-group'}>
-          <label className="control-label" >{t('formTenantQuotaForm.quotaVolumeSize')}</label>
+          <label className="control-label" >{t('formProjectQuotaForm.quotaVolumeSize')}</label>
           <div className="col-sm-10">
             <input type="number" className="form-control" {...quotaVolumeSize} />
             {submitFailed && quotaVolumeSize.error && <div className="text-danger"><small>{quotaVolumeSize.error}</small></div>}
@@ -130,7 +130,7 @@ class F extends React.Component {
         </div>
 
         <div className={submitFailed && quotaKeyPairs.error ? 'form-group has-error' : 'form-group'}>
-          <label className="control-label" >{t('formTenantQuotaForm.quotaKeyPairs')}</label>
+          <label className="control-label" >{t('formProjectQuotaForm.quotaKeyPairs')}</label>
           <div className="col-sm-10">
             <input type="number" className="form-control" {...quotaKeyPairs} />
             {submitFailed && quotaKeyPairs.error && <div className="text-danger"><small>{quotaKeyPairs.error}</small></div>}
@@ -163,7 +163,7 @@ F.propTypes = {
 
 F.validate = values => {
   const errors = {};
-  errors.tenantId = Validations.required(values.tenantId);
+  errors.projectId = Validations.required(values.projectId);
   errors.quotaInstances = Validations.required(values.quotaInstances);
   errors.quotaVCPUs = Validations.required(values.quotaVCPUs);
   errors.quotaMemory = Validations.required(values.quotaMemory);
@@ -176,9 +176,9 @@ F.validate = values => {
 };
 
 export default reduxForm({
-  form: 'TenantForm',
+  form: 'ProjectForm',
   fields: [
-    'tenantId',
+    'projectId',
     'quotaInstances',
     'quotaVCPUs',
     'quotaMemory',

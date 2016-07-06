@@ -39,34 +39,34 @@ class C extends TablePage {
 
   renderTable() {
     const { t } = this.props;
-    return this.props.context.total > 0 && this.props.context.tenantQuotaSet.length > 0 && (
+    return this.props.context.total > 0 && this.props.context.projectQuotaSet.length > 0 && (
       <table className="table">
         <thead>
           <tr>
             <th width="40">
-              <input type="checkbox" className="selected" onChange={this.onSelectAll(this.props.context.tenantQuotaSet.map((u) => { return u.tenantId; }))} />
+              <input type="checkbox" className="selected" onChange={this.onSelectAll(this.props.context.projectQuotaSet.map((u) => { return u.projectId; }))} />
             </th>
             <th width="150">{t('id')}</th>
             <th>{t('name')}</th>
-            <th>{t('formTenantQuotaForm.quotaVCPUs')}</th>
-            <th>{t('formTenantQuotaForm.quotaMemory')}</th>
-            <th>{t('formTenantQuotaForm.quotaInstances')}</th>
-            <th>{t('formTenantQuotaForm.quotaVolumes')}</th>
-            <th>{t('formTenantQuotaForm.quotaVolumeSize')}</th>
-            <th>{t('formTenantQuotaForm.quotaEIPs')}</th>
+            <th>{t('formProjectQuotaForm.quotaVCPUs')}</th>
+            <th>{t('formProjectQuotaForm.quotaMemory')}</th>
+            <th>{t('formProjectQuotaForm.quotaInstances')}</th>
+            <th>{t('formProjectQuotaForm.quotaVolumes')}</th>
+            <th>{t('formProjectQuotaForm.quotaVolumeSize')}</th>
+            <th>{t('formProjectQuotaForm.quotaEIPs')}</th>
             <th width="100"></th>
           </tr>
         </thead>
         <tbody>
-        {this.props.context.tenantQuotaSet.map((quota) => {
+        {this.props.context.projectQuotaSet.map((quota) => {
           return (
-            <tr key={quota.tenantId}>
+            <tr key={quota.projectId}>
               <td>
-                <input type="checkbox" className="selected" onChange={this.onSelect(quota.tenantId)} checked={this.props.context.selected[quota.tenantId] === true} />
+                <input type="checkbox" className="selected" onChange={this.onSelect(quota.projectId)} checked={this.props.context.selected[quota.projectId] === true} />
               </td>
               <td>
-                <Link to={`/tenants/${quota.tenantId}`}>
-                  {quota.tenantId}
+                <Link to={`/projects/${quota.projectId}`}>
+                  {quota.projectId}
                 </Link>
               </td>
               <td><strong>{quota.name}</strong></td>
@@ -77,7 +77,7 @@ class C extends TablePage {
               <td>{quota.quotaVolumeSize} GB</td>
               <td>{quota.quotaEIPs}</td>
               <td>
-                <Link className="btn btn-sm btn-close" to={`/q/${this.props.region2.regionId}/${quota.tenantId}/`}>
+                <Link className="btn btn-sm btn-close" to={`/q/${this.props.region2.regionId}/${quota.projectId}/`}>
                   <i className="fa fa-cog" /> 配置
                 </Link>
               </td>

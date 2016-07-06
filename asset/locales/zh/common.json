@@ -21,7 +21,7 @@
     "role": "角色",
     "settings": "设置",
     "region": "区域",
-    "tenant": "租户",
+    "project": "项目",
     "user": "用户",
     "admin": "管理员",
     "cidr": "网段地址",
@@ -112,11 +112,11 @@
     "volumeManage": "云硬盘",
     "volumeManageDescription": "为 Linux 云主机提供 云硬盘。",
 
-    "tenantManage": "租户管理",
-    "tenantManageDescription": "可根据不同的企业或团队划分独立的租户, 分配相应的资源配额。",
+    "projectManage": "项目管理",
+    "projectManageDescription": "可根据不同的企业或团队划分独立的项目, 分配相应的资源配额。",
 
     "regionManage": "区域管理",
-    "regionManageDescription": "一个区域即独立完整的IaaS集群，包含OpenStack，Ceph及所有服务组建。可为租户分配不同区域不同配额的云资源，并统一管理。",
+    "regionManageDescription": "一个区域即独立完整的IaaS集群，包含OpenStack，Ceph及所有服务组建。可为项目分配不同区域不同配额的云资源，并统一管理。",
 
     "activityManage": "操作日志",
     "activityManageDescription": "记录用户的操作。",
@@ -124,8 +124,8 @@
     "accessKeyManage": "API密钥",
     "accessKeyManageDescription": "为用户提供API安全凭证。",
 
-    "tenantRoleAdmin": "管理账号",
-    "tenantRoleUser": "使用账户",
+    "projectRoleAdmin": "管理账号",
+    "projectRoleUser": "使用账户",
 
     "allAvaliableStatus": "可用资源",
 
@@ -271,7 +271,7 @@
 
     "pageRegion": {
         "basic": "基本信息",
-        "assignedTenants": "分配租户",
+        "assignedProjects": "分配项目",
         "instanceTypes": "主机配置",
         "updateQuota": "调整配额",
         "updateImage": "更新信息",
@@ -281,7 +281,7 @@
         "generateInstanceTypes": "自动生成通用配置"
     },
 
-    "pageTenant": {
+    "pageProject": {
         "basic": "基本信息",
         "authorizedUsers": "授权用户"
     },
@@ -357,8 +357,8 @@
         "manageSecret": "管理密码"
     },
 
-    "formTenantQuotaForm": {
-        "tenantId": "租户ID",
+    "formProjectQuotaForm": {
+        "projectId": "项目ID",
         "quotaInstances": "云主机",
         "quotaVCPUs": "vCPU",
         "quotaMemory": "内存(MB)",
@@ -415,7 +415,7 @@
     "sidebarActivity": "操作日志",
     "sidebarUsage": "资源概览",
     "sidebarRegion": "区域",
-    "sidebarTenant": "租户",
+    "sidebarProject": "项目",
     "sidebarUser": "用户",
     "sidebarAdmin": "管理员",
 

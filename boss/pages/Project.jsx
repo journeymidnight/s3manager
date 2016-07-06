@@ -3,29 +3,29 @@ import React from 'react';
 import { Link } from 'react-router';
 import Page, { attach } from '../../shared/pages/Page';
 import * as Actions from '../redux/actions';
-import * as TenantActions from '../redux/actions.tenant';
+import * as ProjectActions from '../redux/actions.project';
 
 class C extends Page {
 
   componentDidMount() {
     const { t, dispatch } = this.props;
-    dispatch(Actions.setHeader(t('tenantManage'), '/tenants'));
+    dispatch(Actions.setHeader(t('projectManage'), '/projects'));
   }
 
   refresh() {
     const { params, dispatch } = this.props;
-    this.tenantId = params.tenantId;
-    dispatch(TenantActions.requestDescribeTenant(this.tenantId))
+    this.projectId = params.projectId;
+    dispatch(ProjectActions.requestDescribeProject(this.projectId))
     .then(() => {
-      this.tenant = this.props.context.tenant;
+      this.project = this.props.context.project;
     });
   }
 
   render() {
     const { t, params } = this.props;
 
-    const tenant = this.props.context.tenant || this.tenant;
-    if (!tenant || tenant.tenantId !== params.tenantId) {
+    const project = this.props.context.project || this.project;
+    if (!project || project.projectId !== params.projectId) {
       this.refresh();
 
       return <div />;
@@ -45,25 +45,25 @@ class C extends Page {
 
             <div className="top-area">
               <div className="nav-text">
-                <i>{tenant.tenantId}</i>
+                <i>{project.projectId}</i>
               </div>
 
               <ul className="nav-links pull-right">
                 <li className={`pull-right ${(active === 'users') ? 'active' : ''}`}>
-                  <Link data-placement="left" to={`/tenants/${tenant.tenantId}/users`}>
-                    {t('pageTenant.authorizedUsers')}
+                  <Link data-placement="left" to={`/projects/${project.projectId}/users`}>
+                    {t('pageProject.authorizedUsers')}
                   </Link>
                 </li>
                 <li className={`pull-right ${(active === 'basic') ? 'active' : ''}`}>
-                  <Link data-placement="left" to={`/tenants/${tenant.tenantId}/basic`}>
-                    {t('pageTenant.basic')}
+                  <Link data-placement="left" to={`/projects/${project.projectId}/basic`}>
+                    {t('pageProject.basic')}
                   </Link>
                 </li>
               </ul>
             </div>
 
             <div>
-              {React.cloneElement(this.props.children, { tenant })}
+              {React.cloneElement(this.props.children, { project })}
             </div>
 
           </div>
