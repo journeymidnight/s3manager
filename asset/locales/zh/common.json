@@ -54,6 +54,8 @@
     "public_images": "公共映像",
     "private_images": "自有映像",
     "volume_snapshots": "硬盘备份",
+    "access_key": "密钥Key",
+    "access_secret": "密钥Secret",
 
     "lastCreated": "最新创建",
     "firstCreated": "最早创建",
@@ -224,6 +226,11 @@
         "finished": "已完成",
         "error": "状态异常"
     },    
+
+    "accessKeyStatus": {
+        "active": "运行中",
+        "deleted": "已删除"
+    },
 
     "pageNetworkCreate": {
         "createNetwork": "添加私有网络",
