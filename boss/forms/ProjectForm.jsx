@@ -57,7 +57,7 @@ F.validate = values => {
 };
 
 export default reduxForm({
-  form: 'TenantForm',
+  form: 'ProjectForm',
   fields: ['name', 'description'],
   validate: F.validate,
 })(translate()(F));

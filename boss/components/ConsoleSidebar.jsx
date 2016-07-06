@@ -35,9 +35,9 @@ class C extends React.Component {
             <i className="fa fa-codepen fa-fw" />
             <span>{t('sidebarRegion')}</span>
           </NavLink>
-          <NavLink to="/tenants">
+          <NavLink to="/projects">
             <i className="fa fa-cube fa-fw" />
-            <span>{t('sidebarTenant')}</span>
+            <span>{t('sidebarProject')}</span>
           </NavLink>
           <NavLink to="/users">
             <i className="fa fa-user fa-fw" />

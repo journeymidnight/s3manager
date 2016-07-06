@@ -223,15 +223,15 @@ describe('RegionActions', () => {
     // TODO
   });
 
-  it('#requestDescribeTenantQuota', () => {
+  it('#requestDescribeProjectQuota', () => {
     // TODO
   });
 
-  it('#requestAssignTenantQuota', () => {
+  it('#requestAssignProjectQuota', () => {
     // TODO
   });
 
-  it('#requestDeleteTenantQuota', () => {
+  it('#requestDeleteProjectQuota', () => {
     // TODO
   });
 });

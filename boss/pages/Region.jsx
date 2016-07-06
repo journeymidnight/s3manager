@@ -32,8 +32,8 @@ class C extends Page {
     }
 
     let active = 'basic';
-    if (_.endsWith(this.props.location.pathname, 'tenants')) {
-      active = 'tenants';
+    if (_.endsWith(this.props.location.pathname, 'projects')) {
+      active = 'projects';
     } else if (_.endsWith(this.props.location.pathname, 'images')) {
       active = 'images';
     } else if (_.endsWith(this.props.location.pathname, 'instance_types')) {
@@ -63,9 +63,9 @@ class C extends Page {
                     {t('pageRegion.instanceTypes')}
                   </Link>
                 </li>
-                <li className={`pull-right ${(active === 'tenants') ? 'active' : ''}`}>
-                  <Link data-placement="left" to={`/regions/${region.regionId}/tenants`}>
-                    {t('pageRegion.assignedTenants')}
+                <li className={`pull-right ${(active === 'projects') ? 'active' : ''}`}>
+                  <Link data-placement="left" to={`/regions/${region.regionId}/projects`}>
+                    {t('pageRegion.assignedProjects')}
                   </Link>
                 </li>
                 <li className={`pull-right ${(active === 'basic') ? 'active' : ''}`}>

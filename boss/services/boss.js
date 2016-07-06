@@ -1,28 +1,28 @@
 import { call as rawCall } from '../../shared/services/api';
 
-export const tenantRoleAdmin = 1;
-export const tenantRoleUser = 2;
+export const projectRoleAdmin = 1;
+export const projectRoleUser = 2;
 
 class Boss {
   call(action, params) {
     const payload = Object.assign({}, params);
     return rawCall('post', `/api/${action}`, payload);
   }
-  describeTenants(filters = {}) {
-    return this.call('describeTenants', filters);
+  describeProjects(filters = {}) {
+    return this.call('describeProjects', filters);
   }
-  deleteTenants(filters = {}) {
-    return this.call('deleteTenants', filters);
+  deleteProjects(filters = {}) {
+    return this.call('deleteProjects', filters);
   }
-  createTenant(tenant) {
-    return this.call('createTenant', tenant);
+  createProject(project) {
+    return this.call('createProject', project);
   }
-  modifyTenant(tenant) {
-    return this.call('modifyTenantAttributes', tenant);
+  modifyProject(project) {
+    return this.call('modifyProjectAttributes', project);
   }
-  describeTenantRoles(tenantId) {
-    return this.call('describeTenantRoles', {
-      tenantId,
+  describeProjectRoles(projectId) {
+    return this.call('describeProjectRoles', {
+      projectId,
     });
   }
   describeUserRoles(userId) {
@@ -30,16 +30,16 @@ class Boss {
       userId,
     });
   }
-  createTenantRole(tenantId, userId, role) {
-    return this.call('createTenantRole', {
-      tenantId,
+  createProjectRole(projectId, userId, role) {
+    return this.call('createProjectRole', {
+      projectId,
       userId,
       role,
     });
   }
-  deleteTenantRole(tenantId, userIds) {
-    return this.call('deleteTenantRole', {
-      tenantId,
+  deleteProjectRole(projectId, userIds) {
+    return this.call('deleteProjectRole', {
+      projectId,
       userIds,
     });
   }
@@ -66,13 +66,13 @@ class Boss {
   modifyRegion(region) {
     return this.call('modifyRegionAttributes', region);
   }
-  describeTenantQuotas(filters = {}) {
-    return this.call('describeTenantQuotas', filters);
+  describeProjectQuotas(filters = {}) {
+    return this.call('describeProjectQuotas', filters);
   }
-  assignTenantQuota(regionId, tenantId, quota) {
-    return this.call('assignTenantQuota', {
+  assignProjectQuota(regionId, projectId, quota) {
+    return this.call('assignProjectQuota', {
       regionId,
-      tenantId,
+      projectId,
       ...quota,
     });
   }

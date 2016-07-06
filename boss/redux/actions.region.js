@@ -21,7 +21,7 @@ export function requestDescribeRegions(routerKey, filters) {
 export function requestDescribeAssignedQuotas(regionId) {
   return dispatch => {
     return BOSS
-    .describeTenantQuotas({
+    .describeProjectQuotas({
       regionId,
     })
     .promise
@@ -34,17 +34,17 @@ export function requestDescribeAssignedQuotas(regionId) {
   };
 }
 
-export function requestDescribeTenantQuota(regionId, tenantId) {
+export function requestDescribeProjectQuota(regionId, projectId) {
   return dispatch => {
     return BOSS
-    .describeTenantQuotas({
+    .describeProjectQuotas({
       regionId,
-      tenantIds: [tenantId],
+      projectIds: [projectId],
     })
     .promise
     .then((payload) => {
       dispatch(extendContext({
-        quota: payload.tenantQuotaSet[0],
+        quota: payload.projectQuotaSet[0],
       }));
     })
     .catch((error) => {
@@ -53,10 +53,10 @@ export function requestDescribeTenantQuota(regionId, tenantId) {
   };
 }
 
-export function requestAssignTenantQuota(regionId, tenantId, quota) {
+export function requestAssignProjectQuota(regionId, projectId, quota) {
   return dispatch => {
     return BOSS
-    .assignTenantQuota(regionId, tenantId, quota)
+    .assignProjectQuota(regionId, projectId, quota)
     .promise
     .then(() => {
       dispatch(notify(i18n.t('updateSuccessed')));

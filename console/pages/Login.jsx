@@ -22,9 +22,9 @@ class C extends Page {
     return new Promise((resolve, reject) => {
       const email = values.email;
       const password = values.password;
-      const tenantId = values.tenantId;
+      const projectId = values.projectId;
 
-      Auth.authorize(email, password, tenantId)
+      Auth.authorize(email, password, projectId)
       .promise
       .then((token) => {
         Auth.describeContext(token.token)
@@ -42,7 +42,7 @@ class C extends Page {
         reject();
         if (error.retCode === 1402) {
           dispatch(Actions.extendContext({
-            tenantSet: error.data.tenantSet,
+            projectSet: error.data.projectSet,
           }));
         } else {
           dispatch(Actions.notifyAlert(error.message));
@@ -52,8 +52,8 @@ class C extends Page {
   }
 
   render() {
-    if (this.props.context.tenantSet && this.props.context.tenantSet.length > 0 && !this.initialValues.tenantId) {
-      this.initialValues.tenantId = this.props.context.tenantSet[0].tenantId;
+    if (this.props.context.projectSet && this.props.context.projectSet.length > 0 && !this.initialValues.projectId) {
+      this.initialValues.projectId = this.props.context.projectSet[0].projectId;
     }
     return (
       <div className="login-page">
@@ -80,7 +80,7 @@ class C extends Page {
                         </h3>
                       </div>
                       <div className="login-body">
-                        <LoginForm onSubmit={this.onSubmit} tenants={this.props.context.tenantSet} initialValues={this.initialValues} />
+                        <LoginForm onSubmit={this.onSubmit} projects={this.props.context.projectSet} initialValues={this.initialValues} />
                       </div>
                     </div>
                   </div>
