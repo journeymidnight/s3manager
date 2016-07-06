@@ -92,9 +92,9 @@ export default function configureRoutes(store) {
             <IndexRoute component={Networks} />
             <Route path="create" component={NetworkCreate} />
             <Route path=":networkId" component={Network} >
-              <IndexRoute component={NetworkTabRouter} />
-              <Route path="router" component={NetworkTabRouter} />
+              <IndexRoute component={NetworkTabSubnets} />
               <Route path="subnets" component={NetworkTabSubnets} />
+              <Route path="router" component={NetworkTabRouter} />
             </Route>
           </Route>
           <Route path="firewalls" component={Settings} />
