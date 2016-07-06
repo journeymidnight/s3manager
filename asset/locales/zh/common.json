@@ -406,7 +406,7 @@
     "sidebarFirewall": "防火墙",
     "sidebarAccessKey": "API 密钥",
     "sidebarActivity": "操作日志",
-    "sidebarUsage": "资源使用",
+    "sidebarUsage": "资源概览",
     "sidebarRegion": "区域",
     "sidebarTenant": "租户",
     "sidebarUser": "用户",
