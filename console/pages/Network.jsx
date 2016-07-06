@@ -180,7 +180,7 @@ class C extends Page {
 
             <div className="top-area">
               <div className="nav-text">
-                <i>{network.networkId}</i>
+                <span>{t('network')}&nbsp;<i>{network.networkId}</i></span>
               </div>
             </div>
 
@@ -251,16 +251,16 @@ class C extends Page {
               </div>
               {this.isEnabled(network) && <div className="col-md-8 tabs">
                 <ul className="nav-links clearfix">
-                  <li className={`pull-left ${(active === 'router') ? 'active' : ''}`}>
-                    <Link data-placement="left" to={`/${region.regionId}/networks/${network.networkId}/router`}>
-                      {t('pageNetwork.router')}
-                    </Link>
-                  </li>
                   <li className={`pull-left ${(active === 'subnets') ? 'active' : ''}`}>
                     <Link data-placement="left" to={`/${region.regionId}/networks/${network.networkId}/subnets`}>
                       {t('pageNetwork.subnets')}
                     </Link>
                   </li>
+                  {network.externalGatewayIp && <li className={`pull-left ${(active === 'router') ? 'active' : ''}`}>
+                    <Link data-placement="left" to={`/${region.regionId}/networks/${network.networkId}/router`}>
+                      {t('pageNetwork.router')}
+                    </Link>
+                  </li>}
                 </ul>
                 <div>
                   {React.cloneElement(this.props.children, { network })}

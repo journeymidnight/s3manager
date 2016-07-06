@@ -18,6 +18,20 @@ class Auth {
       regionId,
     });
   }
+  createAccessKey(name, description) {
+    return call('post', '/api/iam/createAccessKey', {
+      name,
+      description,
+    });
+  }
+  describeAccessKeys(filter = {}) {
+    return call('post', '/api/iam/describeAccessKeys', filter);
+  }
+  deleteAccessKeys(accessKeys) {
+    return call('post', '/api/iam/deleteAccessKeys', {
+      accessKeys,
+    });
+  }
 }
 
 export default new Auth();
