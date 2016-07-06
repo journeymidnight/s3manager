@@ -2,7 +2,7 @@ import React from 'react';
 import Page, { attach } from '../../shared/pages/Page';
 import AccessKeyForm from '../forms/AccessKeyForm';
 import * as Actions from '../redux/actions';
-import * as AccessKeyActions from '../redux/actions.access_keys';
+import * as AccessKeyActions from '../redux/actions.access_key';
 
 class C extends Page {
 

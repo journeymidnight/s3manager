@@ -8,7 +8,7 @@ import ButtonForm from '../../shared/forms/ButtonForm';
 import StatusFilter from '../../shared/components/StatusFilter';
 import TimeSorter from '../../shared/components/TimeSorter';
 import * as Actions from '../redux/actions';
-import * as AccessKeyActions from '../redux/actions.access_keys';
+import * as AccessKeyActions from '../redux/actions.access_key';
 
 class C extends TablePage {
 

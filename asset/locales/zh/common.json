@@ -336,6 +336,18 @@
         "validateSizeGreatThanInitialSize": "扩容的大小须大于当前大小"
     },
 
+    "pageUsage": {
+        "eips": "公网IP",
+        "key_pairs": "SSH 密钥",
+        "instances": "云主机",
+        "vcpus": "vCPU",
+        "snapshots": "快照",
+        "volumes": "云硬盘个数",
+        "memory": "内存(MB)",
+        "images": "镜像",
+        "volume_size": "云硬盘容量(GB)"
+    },
+
     "pageAccessKeyCreate": {
         "createAccessKey": "添加API密钥"
     },
