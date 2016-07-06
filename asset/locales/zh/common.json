@@ -121,6 +121,9 @@
     "activityManage": "操作日志",
     "activityManageDescription": "记录用户的操作。",
 
+    "accessKeyManage": "API密钥",
+    "accessKeyManageDescription": "为用户提供API安全凭证。",
+
     "tenantRoleAdmin": "管理账号",
     "tenantRoleUser": "使用账户",
 
@@ -324,6 +327,10 @@
         "confirmDetachVolume": "确认要卸载云硬盘吗?",
         "noAvailableInstance": "没有可用的云主机",
         "validateSizeGreatThanInitialSize": "扩容的大小须大于当前大小"
+    },
+
+    "pageAccessKeyCreate": {
+        "createAccessKey": "添加API密钥"
     },
 
     "volumeMountMode": {
