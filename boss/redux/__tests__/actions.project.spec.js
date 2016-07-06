@@ -1,30 +1,30 @@
 import expect from 'expect';
 import nock from 'nock';
-import * as TenantActions from '../actions.tenant';
+import * as ProjectActions from '../actions.project';
 import * as ActionTypes from '../constants';
 import { mockStore, mockRequest } from '../../../shared/__tests__/mock';
 import i18n from '../../../shared/i18n';
 
-const tenantId = 'idA';
+const projectId = 'idA';
 const name = 'nameA';
 const description = 'descriptionA';
 
-describe('TenantActions', () => {
+describe('ProjectActions', () => {
   afterEach(() => {
     nock.cleanAll();
   });
 
-  it('#requestDescribeTenants', (done) => {
+  it('#requestDescribeProjects', (done) => {
     const rep = {
       totalCount: 9,
-      tenantSet: [{
-        tenantId,
+      projectSet: [{
+        projectId,
         name,
       }],
     };
 
     const scope = mockRequest
-    .post('/p/api/describeTenants', {
+    .post('/p/api/describeProjects', {
     })
     .reply(200, {
       data: rep,
@@ -41,7 +41,7 @@ describe('TenantActions', () => {
     const store = mockStore();
 
     return store
-    .dispatch(TenantActions.requestDescribeTenants())
+    .dispatch(ProjectActions.requestDescribeProjects())
     .then(() => {
       scope.isDone();
       expect(store.getActions()).toEqual(expectedActions);
@@ -49,9 +49,9 @@ describe('TenantActions', () => {
     });
   });
 
-  it('#requestCreateTenantError', (done) => {
+  it('#requestCreateProjectError', (done) => {
     const scope = mockRequest
-    .post('/p/api/createTenant', {
+    .post('/p/api/createProject', {
       name,
     })
     .reply(200, {
@@ -62,7 +62,7 @@ describe('TenantActions', () => {
     const store = mockStore();
 
     return store
-    .dispatch(TenantActions.requestCreateTenant({
+    .dispatch(ProjectActions.requestCreateProject({
       name,
       description,
     }))
@@ -82,15 +82,15 @@ describe('TenantActions', () => {
     });
   });
 
-  it('#requestCreateTenant', (done) => {
+  it('#requestCreateProject', (done) => {
     const scope = mockRequest
-    .post('/p/api/createTenant', {
+    .post('/p/api/createProject', {
       name,
       description,
     })
     .reply(200, {
       data: {
-        tenantId: name,
+        projectId: name,
       },
       retCode: 0,
       message: null,
@@ -99,7 +99,7 @@ describe('TenantActions', () => {
     const store = mockStore();
 
     return store
-    .dispatch(TenantActions.requestCreateTenant({
+    .dispatch(ProjectActions.requestCreateProject({
       name,
       description,
     }))
@@ -107,7 +107,7 @@ describe('TenantActions', () => {
       scope.isDone();
       expect(store.getActions()).toEqual([{
         payload: {
-          tenant: {
+          project: {
             id: name,
           },
         },
@@ -116,7 +116,7 @@ describe('TenantActions', () => {
       }, {
         payload: {
           args: [
-            '/tenants',
+            '/projects',
           ],
           method: 'push',
         },
@@ -135,9 +135,9 @@ describe('TenantActions', () => {
     });
   });
 
-  it('#requestModifyTenant', (done) => {
+  it('#requestModifyProject', (done) => {
     const scope = mockRequest
-    .post('/p/api/modifyTenantAttributes', {
+    .post('/p/api/modifyProjectAttributes', {
       name,
       description,
     })
@@ -149,14 +149,14 @@ describe('TenantActions', () => {
 
     const rep = {
       totalCount: 9,
-      tenantSet: [{
-        tenantId,
+      projectSet: [{
+        projectId,
         name,
       }],
     };
 
     const scope2 = mockRequest
-    .post('/p/api/describeTenants', {
+    .post('/p/api/describeProjects', {
     })
     .reply(200, {
       data: rep,
@@ -175,8 +175,8 @@ describe('TenantActions', () => {
       routerKey: undefined,
     }, {
       payload: {
-        tenant: {
-          tenantId,
+        project: {
+          projectId,
           name,
         },
       },
@@ -187,7 +187,7 @@ describe('TenantActions', () => {
     const store = mockStore();
 
     return store
-    .dispatch(TenantActions.requestModifyTenant({
+    .dispatch(ProjectActions.requestModifyProject({
       name,
       description,
     }))
@@ -203,15 +203,15 @@ describe('TenantActions', () => {
     // TODO
   });
 
-  it('#requestDescribeTenantRoles', () => {
+  it('#requestDescribeProjectRoles', () => {
     // TODO
   });
 
-  it('#requestCreateTenantRole', () => {
+  it('#requestCreateProjectRole', () => {
     // TODO
   });
 
-  it('#requestDeleteTenantRole', () => {
+  it('#requestDeleteProjectRole', () => {
     // TODO
   });
 });

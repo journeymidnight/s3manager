@@ -4,13 +4,13 @@ import { Link } from 'react-router';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
 import Select from 'react-select';
-import BOSS, { tenantRoleAdmin, tenantRoleUser } from '../services/boss';
+import BOSS, { projectRoleAdmin, projectRoleUser } from '../services/boss';
 import { attach } from '../../shared/pages/Page';
 import ButtonForm from '../../shared/forms/ButtonForm';
 import TablePage from '../../shared/pages/TablePage';
 import * as Validations from '../../shared/utils/validations';
 import * as Actions from '../redux/actions';
-import * as TenantActions from '../redux/actions.tenant';
+import * as ProjectActions from '../redux/actions.project';
 
 class F extends React.Component {
 
@@ -64,8 +64,8 @@ class F extends React.Component {
         </div>
         <div className="form-group append-right-5">
           <select className="form-control" {...role}>
-            <option value={tenantRoleAdmin.toString()}>{t('tenantRoleAdmin')}</option>
-            <option value={tenantRoleUser.toString()}>{t('tenantRoleUser')}</option>
+            <option value={projectRoleAdmin.toString()}>{t('projectRoleAdmin')}</option>
+            <option value={projectRoleUser.toString()}>{t('projectRoleUser')}</option>
           </select>
         </div>
         <button type="submit" className="btn btn-save" disabled={email.error || submitting}>
@@ -94,7 +94,7 @@ F.propTypes = {
 export const UserSelectForm = reduxForm({
   form: 'UserSelectForm',
   fields: ['email', 'role'],
-  initialValues: { role: tenantRoleUser.toString() },
+  initialValues: { role: projectRoleUser.toString() },
   validate: F.validate,
 })(translate()(F));
 
@@ -109,13 +109,13 @@ class C extends TablePage {
 
   componentDidMount() {
     const { t, dispatch } = this.props;
-    dispatch(Actions.setHeader(t('tenantManage'), '/tenants'));
+    dispatch(Actions.setHeader(t('projectManage'), '/projects'));
 
     this.initTable({ isTabPage: true });
   }
 
   onCreateRole(values) {
-    const { tenant, dispatch } = this.props;
+    const { project, dispatch } = this.props;
 
     return new Promise((resolve, reject) => {
       const email = values.email;
@@ -124,7 +124,7 @@ class C extends TablePage {
       dispatch(Actions.requestUserByEmail(email))
       .then((user) => {
         if (user) {
-          dispatch(TenantActions.requestCreateTenantRole(tenant.tenantId, user.userId, role))
+          dispatch(ProjectActions.requestCreateProjectRole(project.projectId, user.userId, role))
           .then(() => {
             resolve();
             this.onRefresh({}, false)();
@@ -143,11 +143,11 @@ class C extends TablePage {
   }
 
   onDelete() {
-    const { dispatch, tenant } = this.props;
+    const { dispatch, project } = this.props;
     const userIds = _.keys(this.props.context.selected);
 
     return new Promise((resolve, reject) => {
-      dispatch(TenantActions.requestDeleteTenantRole(tenant.tenantId, userIds))
+      dispatch(ProjectActions.requestDeleteProjectRole(project.projectId, userIds))
       .then(() => {
         resolve();
         this.onRefresh({}, false)();
@@ -158,8 +158,8 @@ class C extends TablePage {
   }
 
   refreshAction() {
-    const { tenant } = this.props;
-    return TenantActions.requestDescribeTenantRoles(tenant.tenantId);
+    const { project } = this.props;
+    return ProjectActions.requestDescribeProjectRoles(project.projectId);
   }
 
   renderTable() {
@@ -192,8 +192,8 @@ class C extends TablePage {
               <td><strong>{role.username}</strong></td>
               <td>{role.email}</td>
               <td>
-              {role.role === tenantRoleAdmin && t('tenantRoleAdmin')}
-              {role.role === tenantRoleUser && t('tenantRoleUser')}
+              {role.role === projectRoleAdmin && t('projectRoleAdmin')}
+              {role.role === projectRoleUser && t('projectRoleUser')}
               </td>
             </tr>
           );

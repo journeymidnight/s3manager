@@ -5,7 +5,7 @@ import { Link } from 'react-router';
 import { attach } from '../../shared/pages/Page';
 import TablePage from '../../shared/pages/TablePage';
 import ButtonForm from '../../shared/forms/ButtonForm';
-import * as TenantActions from '../redux/actions.tenant';
+import * as ProjectActions from '../redux/actions.project';
 import * as Actions from '../redux/actions';
 
 class C extends TablePage {
@@ -18,21 +18,21 @@ class C extends TablePage {
 
   componentDidMount() {
     const { t, dispatch } = this.props;
-    dispatch(Actions.setHeader(t('tenantManage'), '/tenants'));
+    dispatch(Actions.setHeader(t('projectManage'), '/projects'));
 
     this.initTable();
   }
 
   refreshAction(routerKey, filters) {
-    return TenantActions.requestDescribeTenants(routerKey, filters);
+    return ProjectActions.requestDescribeProjects(routerKey, filters);
   }
 
   onDelete() {
     const { dispatch, routerKey } = this.props;
-    const tenantIds = _.keys(this.props.context.selected);
+    const projectIds = _.keys(this.props.context.selected);
 
     return new Promise((resolve, reject) => {
-      dispatch(TenantActions.requestDeleteTenants(routerKey, tenantIds))
+      dispatch(ProjectActions.requestDeleteProjects(routerKey, projectIds))
       .then(() => {
         resolve();
         this.onRefresh({}, false)();
@@ -44,12 +44,12 @@ class C extends TablePage {
 
   renderTable() {
     const { t } = this.props;
-    return this.props.context.total > 0 && this.props.context.tenantSet.length > 0 && (
+    return this.props.context.total > 0 && this.props.context.projectSet.length > 0 && (
       <table className="table">
         <thead>
           <tr>
             <th width="40">
-              <input type="checkbox" className="selected" onChange={this.onSelectAll(this.props.context.tenantSet.map((u) => { return u.tenantId; }))} />
+              <input type="checkbox" className="selected" onChange={this.onSelectAll(this.props.context.projectSet.map((u) => { return u.projectId; }))} />
             </th>
             <th width="150">{t('id')}</th>
             <th>{t('name')}</th>
@@ -57,19 +57,19 @@ class C extends TablePage {
           </tr>
         </thead>
         <tbody>
-        {this.props.context.tenantSet.map((tenant) => {
+        {this.props.context.projectSet.map((project) => {
           return (
-            <tr key={tenant.tenantId}>
+            <tr key={project.projectId}>
               <td>
-                <input type="checkbox" className="selected" onChange={this.onSelect(tenant.tenantId)} checked={this.props.context.selected[tenant.tenantId] === true} />
+                <input type="checkbox" className="selected" onChange={this.onSelect(project.projectId)} checked={this.props.context.selected[project.projectId] === true} />
               </td>
               <td>
-                <Link to={`/tenants/${tenant.tenantId}`}>
-                  {tenant.tenantId}
+                <Link to={`/projects/${project.projectId}`}>
+                  {project.projectId}
                 </Link>
               </td>
-              <td><strong>{tenant.name}</strong></td>
-              <td>{moment.utc(tenant.created).local().format('YYYY-MM-DD HH:mm:ss')}</td>
+              <td><strong>{project.name}</strong></td>
+              <td>{moment.utc(project.created).local().format('YYYY-MM-DD HH:mm:ss')}</td>
             </tr>
           );
         })}
@@ -84,11 +84,11 @@ class C extends TablePage {
       <div className="top-area">
         <div className="nav-text">
           <span>
-            {t('tenantManageDescription')}
+            {t('projectManageDescription')}
           </span>
         </div>
         <div className="nav-controls">
-          <Link className="btn btn-new" to="/tenants/create">
+          <Link className="btn btn-new" to="/projects/create">
             <i className="fa fa-plus"></i>&nbsp;{t('create')}
           </Link>
         </div>

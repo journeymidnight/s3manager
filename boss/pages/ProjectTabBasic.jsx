@@ -1,8 +1,8 @@
 import React from 'react';
 import Page, { attach } from '../../shared/pages/Page';
 import * as Actions from '../redux/actions';
-import TenantForm from '../forms/TenantForm';
-import * as TenantActions from '../redux/actions.tenant';
+import ProjectForm from '../forms/ProjectForm';
+import * as ProjectActions from '../redux/actions.project';
 
 class C extends Page {
 
@@ -14,7 +14,7 @@ class C extends Page {
 
   componentDidMount() {
     const { t, dispatch } = this.props;
-    dispatch(Actions.setHeader(t('tenantManage'), '/tenants'));
+    dispatch(Actions.setHeader(t('projectManage'), '/projects'));
   }
 
   onSave(values, dispatch) {
@@ -22,8 +22,8 @@ class C extends Page {
       const name = values.name;
       const description = values.description;
 
-      dispatch(TenantActions.requestModifyTenant({
-        tenantId: this.props.tenant.tenantId,
+      dispatch(ProjectActions.requestModifyProject({
+        projectId: this.props.project.projectId,
         name,
         description,
       }))
@@ -36,12 +36,12 @@ class C extends Page {
   }
 
   render() {
-    const { t, tenant } = this.props;
+    const { t, project } = this.props;
     return (
       <div className="panel panel-default prepend-top-20">
         <div className="panel-heading">{t('settings')}</div>
         <div className="panel-body">
-          <TenantForm initialValues={tenant} onSubmit={this.onSave} />
+          <ProjectForm initialValues={project} onSubmit={this.onSave} />
         </div>
       </div>
     );
