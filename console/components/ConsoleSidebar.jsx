@@ -60,13 +60,17 @@ class C extends React.Component {
             <i className="fa fa-key fa-fw" />
             <span>{t('sidebarKeyPair')}</span>
           </NavLink>
-          <NavLink to={`/${regionId}/firewalls`}>
+          {/* <NavLink to={`/${regionId}/firewalls`}>
             <i className="fa fa-shield fa-fw" />
             <span>{t('sidebarFirewall')}</span>
-          </NavLink>
+          </NavLink>*/}
           <NavLink to={`/${regionId}/activities`}>
             <i className="fa fa-sticky-note fa-fw" />
             <span>{t('sidebarActivity')}</span>
+          </NavLink>
+          <NavLink to={`/${regionId}/usage`}>
+            <i className="fa fa-pie-chart fa-fw" />
+            <span>{t('sidebarUsage')}</span>
           </NavLink>
           <li className="separate-item" />
           <li>
@@ -75,10 +79,6 @@ class C extends React.Component {
           <NavLink to="/access_keys">
             <i className="fa fa-code fa-fw" />
             <span>{t('sidebarAccessKey')}</span>
-          </NavLink>
-          <NavLink to="/usage">
-            <i className="fa fa-pie-chart fa-fw" />
-            <span>{t('sidebarUsage')}</span>
           </NavLink>
         </ul>
         <div className="collapse-nav">

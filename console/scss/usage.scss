@@ -1,0 +1,50 @@
+.usage-panel-container{
+
+    .resource-usage-panel {
+        height: 120px;
+        width: 400px;
+        border: 1px solid #e5e5e5;
+        margin-top: 15px;
+        margin-bottom: 15px;
+        margin-left: auto;
+        margin-right: auto;
+
+        .usage-title{
+            height: 40px;
+            line-height: 40px;
+            background-color: #fafafa;
+            border-bottom: 1px solid #e5e5e5;
+            font-size: 18px;
+
+            > span{
+                margin-left: 10px;                
+            }
+        }
+
+        .usage-chart{
+            width: 80%;
+            float: left;
+            height: 80px;
+
+            > .progress{
+                margin-top: 28px;
+                margin-left: 10px;           
+            }
+        }
+
+        .usage-data{
+            width: 20%;
+            float: left;
+            height: 80px;
+            font-size: 20px;
+            font-weight: 700;
+
+            > span{
+                line-height: 76px;
+                margin-left: 18px;               
+            }
+        }
+    }
+}
+
+

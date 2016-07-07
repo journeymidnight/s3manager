@@ -32,6 +32,9 @@ import TabPrivateImages from './pages/TabPrivateImages.jsx';
 import TabPublicImages from './pages/TabPublicImages.jsx';
 import TabVolumeSnapshots from './pages/TabVolumeSnapshots.jsx';
 import Activities from './pages/Activities.jsx';
+import Usage from './pages/Usage.jsx';
+import AccessKeyCreate from './pages/AccessKeyCreate.jsx';
+import AccessKeys from './pages/AccessKeys.jsx';
 
 export default function configureRoutes(store) {
   function requireAuth(nextState, replace) {
@@ -52,8 +55,10 @@ export default function configureRoutes(store) {
       </Route>
       <Route path="/" component={App} onEnter={requireAuth} >
         <IndexRoute component={Home} />
-        <Route path="access_keys" component={Settings} />
-        <Route path="usage" component={Settings} />
+        <Route path="access_keys">
+          <IndexRoute component={AccessKeys} />
+          <Route path="create" component={AccessKeyCreate} />
+        </Route>
         <Route path="settings" component={Settings} />
         <Route path="profile" component={Settings} />
         <Route path=":regionId" >
@@ -99,6 +104,7 @@ export default function configureRoutes(store) {
           </Route>
           <Route path="firewalls" component={Settings} />
           <Route path="activities" component={Activities} />
+          <Route path="usage" component={Usage} />
         </Route>
       </Route>
     </Route >

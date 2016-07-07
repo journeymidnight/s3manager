@@ -219,5 +219,8 @@ class IaaS {
   describeJobs(regionId, filter = {}) {
     return this.call(regionId, 'DescribeJobs', filter);
   }
+  describeQuotas(regionId) {
+    return this.call(regionId, 'DescribeQuotas');
+  }
 }
 export default new IaaS();
