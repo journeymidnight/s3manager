@@ -36,6 +36,10 @@ class C extends React.Component {
           <li>
             <h5>{regionName}</h5>
           </li>
+          <NavLink to={`/${regionId}/usage`}>
+            <i className="fa fa-pie-chart fa-fw" />
+            <span>{t('sidebarUsage')}</span>
+          </NavLink>
           <NavLink to={`/${regionId}/instances`}>
             <i className="fa fa-server fa-fw" />
             <span>{t('sidebarInstance')}</span>
@@ -67,10 +71,6 @@ class C extends React.Component {
           <NavLink to={`/${regionId}/activities`}>
             <i className="fa fa-sticky-note fa-fw" />
             <span>{t('sidebarActivity')}</span>
-          </NavLink>
-          <NavLink to={`/${regionId}/usage`}>
-            <i className="fa fa-pie-chart fa-fw" />
-            <span>{t('sidebarUsage')}</span>
           </NavLink>
           <li className="separate-item" />
           <li>
