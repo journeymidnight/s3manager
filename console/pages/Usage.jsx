@@ -23,48 +23,29 @@ class C extends Page {
     for (let i = 0; i < rowCount; i++) {
       usagePanelRows.push(
         <div className="row" key={i}>
-          <div className="col-md-6 usage-panel-container">
-            <div className="resource-usage-panel">
-              <div className="usage-title">
-                <span>{t(`pageUsage.${resourceList[i * 2]}`)}</span>
-              </div>
-              <div className="usage-chart">
-                <div className="progress">
-                  <div
-                    className="progress-bar"
-                    role="progressbar"
-                    aria-valuemin="0"
-                    aria-valuemax="100"
-                    style={{ width: `${usage[resourceList[i * 2]] * 100 / total[resourceList[i * 2]]}%` }}
-                  />
+          {resourceList.slice(i * 2, i * 2 + 2).map((resource) => {
+            return (<div className="col-md-6 usage-panel-container" key={resource}>
+              <div className="resource-usage-panel">
+                <div className="usage-title">
+                  <span>{t(`pageUsage.${resource}`)}</span>
+                </div>
+                <div className="usage-chart">
+                  <div className="progress">
+                    <div
+                      className="progress-bar"
+                      role="progressbar"
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+                      style={{ width: `${usage[resource] * 100 / total[resource]}%` }}
+                    />
+                  </div>
+                </div>
+                <div className="usage-data">
+                  <span>{usage[resource]}/{total[resource]}</span>
                 </div>
               </div>
-              <div className="usage-data">
-                <span>{usage[resourceList[i * 2]]}/{total[resourceList[i * 2]]}</span>
-              </div>
-            </div>
-          </div>
-          {!(resourceList.length % 2 !== 0 && i === rowCount - 1) && <div className="col-md-6 usage-panel-container">
-            <div className="resource-usage-panel">
-              <div className="usage-title">
-                <span>{t(`pageUsage.${resourceList[i * 2 + 1]}`)}</span>
-              </div>
-              <div className="usage-chart">
-                <div className="progress">
-                  <div
-                    className="progress-bar"
-                    role="progressbar"
-                    aria-valuemin="0"
-                    aria-valuemax="100"
-                    style={{ width: `${usage[resourceList[i * 2 + 1]] * 100 / total[resourceList[i * 2 + 1]]}%` }}
-                  />
-                </div>
-              </div>
-              <div className="usage-data">
-                <span>{usage[resourceList[i * 2 + 1]]}/{total[resourceList[i * 2 + 1]]}</span>
-              </div>
-            </div>
-          </div>}
+            </div>);
+          })}
         </div>
       );
     }
