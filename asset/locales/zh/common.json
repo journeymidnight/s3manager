@@ -354,6 +354,18 @@
         "createAccessKey": "添加API密钥"
     },
 
+    "pageVolumeCreate": {
+        "createVolume": "添加云硬盘"
+    },
+
+    "pageEipCreate": {
+        "createEip": "添加公网IP"
+    },
+
+    "pageKeyPairCreate": {
+        "createKeyPair": "添加SSH 密钥"
+    },
+
     "volumeMountMode": {
         "rw": "读写"
     },
