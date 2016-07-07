@@ -126,6 +126,8 @@
     "accessKeyManage": "API密钥",
     "accessKeyManageDescription": "为用户提供API安全凭证。",
 
+    "usageManage": "资源概览",
+
     "projectRoleAdmin": "管理账号",
     "projectRoleUser": "使用账户",
 
@@ -343,7 +345,7 @@
         "vcpus": "vCPU",
         "snapshots": "快照",
         "volumes": "云硬盘个数",
-        "memory": "内存(MB)",
+        "memory": "内存(GB)",
         "images": "镜像",
         "volume_size": "云硬盘容量(GB)"
     },

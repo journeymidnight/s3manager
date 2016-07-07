@@ -6,20 +6,32 @@ import * as QuotaActions from '../redux/actions.quota';
 class C extends Page {
 
   componentDidMount() {
-    const { routerKey, dispatch, region } = this.props;
+    const { t, routerKey, dispatch, region } = this.props;
+
+    dispatch(Actions.setHeader(t('usageManage'), `/${region.regionId}/usage`));
     dispatch(QuotaActions.requestDescribeQuotas(region.regionId))
       .then(() => {
         dispatch(Actions.extendContext({ initialized: true }, routerKey));
       });
   }
 
-  renderAfterInitialized() {
+  formatUsageDate(usage, total, resource) {
+    let result;
+    if (resource === 'memory') {
+      result = <span>{Math.ceil(usage[resource] / 1024)}/{parseInt(total[resource] / 1024, 10)}</span>;
+    } else {
+      result = <span>{usage[resource]}/{total[resource]}</span>;
+    }
+    return result;
+  }
+
+  buildUsagePanelRows() {
     const { t, context } = this.props;
     const total = context.total;
     const usage = context.usage;
-    const resourceList = Object.keys(total);
+    const resourceList = ['instances', 'vcpus', 'memory', 'volumes', 'volume_size', 'snapshots', 'images', 'eips', 'key_pairs'];
     const rowCount = resourceList.length % 2 === 0 ? parseInt(resourceList.length / 2, 10) : parseInt(resourceList.length / 2, 10) + 1;
-    let usagePanelRows = [];
+    const usagePanelRows = [];
     for (let i = 0; i < rowCount; i++) {
       usagePanelRows.push(
         <div className="row" key={i}>
@@ -41,7 +53,7 @@ class C extends Page {
                   </div>
                 </div>
                 <div className="usage-data">
-                  <span>{usage[resource]}/{total[resource]}</span>
+                  <span>{this.formatUsageDate(usage, total, resource)}</span>
                 </div>
               </div>
             </div>);
@@ -49,12 +61,15 @@ class C extends Page {
         </div>
       );
     }
+    return usagePanelRows;
+  }
 
+  renderAfterInitialized() {
     return (
       <div className="container-fluid container-limited">
         <div className="content">
           <div className="clearfix">
-            {usagePanelRows}
+            {this.buildUsagePanelRows()}
           </div>
         </div>
       </div>
