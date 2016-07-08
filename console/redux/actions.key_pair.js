@@ -6,18 +6,13 @@ import i18n from '../../shared/i18n';
 export function requestDescribeKeyPair(routerKey, regionId, keyPairId) {
   return dispatch => {
     return IaaS
-    .describeKeyPairs(regionId, {
-      keyPairIds: [keyPairId],
-    })
-    .promise
-    .then((payload) => {
-      dispatch(extendContext({
-        keyPair: payload.keyPairSet[0],
-      }, routerKey));
-    })
-    .catch((error) => {
-      dispatch(notifyAlert(error.message));
-    });
+      .describeKeyPairs(regionId, { keyPairIds: [keyPairId] })
+      .promise
+      .then((payload) => {
+        dispatch(extendContext({ keyPair: payload.keyPairSet[0] }, routerKey));
+      }).catch((error) => {
+        dispatch(notifyAlert(error.message));
+      });
   };
 }
 
@@ -78,6 +73,7 @@ export function requestDeleteKeyPairs(routerKey, regionId, keyPairIds) {
     .deleteKeyPairs(regionId, keyPairIds)
     .promise
     .then(() => {
+      dispatch(push(`/${regionId}/key_pairs`));
       dispatch(notify(i18n.t('deleteSuccessed')));
     })
     .catch((error) => {

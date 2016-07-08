@@ -48,7 +48,7 @@
     "mountpoint": "挂载点",
     "size": "大小",
     "download": "下载",
-    "instance": "云主机",
+    "key_pair": "SSH 密钥",
     "associateInstance": "已绑定云主机",
     "bandwidth": "带宽",
     "public_images": "公共映像",
