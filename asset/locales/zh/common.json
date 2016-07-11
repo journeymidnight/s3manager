@@ -48,7 +48,7 @@
     "mountpoint": "挂载点",
     "size": "大小",
     "download": "下载",
-    "instance": "云主机",
+    "key_pair": "SSH 密钥",
     "associateInstance": "已绑定云主机",
     "bandwidth": "带宽",
     "public_images": "公共映像",
@@ -125,6 +125,8 @@
 
     "accessKeyManage": "API密钥",
     "accessKeyManageDescription": "为用户提供API安全凭证。",
+
+    "usageManage": "资源概览",
 
     "projectRoleAdmin": "管理账号",
     "projectRoleUser": "使用账户",
@@ -343,13 +345,25 @@
         "vcpus": "vCPU",
         "snapshots": "快照",
         "volumes": "云硬盘个数",
-        "memory": "内存(MB)",
+        "memory": "内存(GB)",
         "images": "镜像",
         "volume_size": "云硬盘容量(GB)"
     },
 
     "pageAccessKeyCreate": {
         "createAccessKey": "添加API密钥"
+    },
+
+    "pageVolumeCreate": {
+        "createVolume": "添加云硬盘"
+    },
+
+    "pageEipCreate": {
+        "createEip": "添加公网IP"
+    },
+
+    "pageKeyPairCreate": {
+        "createKeyPair": "添加SSH 密钥"
     },
 
     "volumeMountMode": {

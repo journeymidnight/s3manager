@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router';
 import Page, { attach } from '../../shared/pages/Page';
 import KeyPairForm from '../forms/KeyPairForm';
 import * as KeyPairActions from '../redux/actions.key_pair';
@@ -42,10 +41,11 @@ class C extends Page {
       <div className="container-fluid container-limited">
         <div className="content">
           <div className="clearfix">
-            <ol className="breadcrumb">
-              <li><Link to={`/${this.props.region.regionId}/key_pairs`}>{t('keyPairManage')}</Link></li>
-              <li className="active">{t('create')}</li>
-            </ol>
+            <div className="top-area append-bottom-20">
+              <div className="nav-text">
+                <span>{t('pageKeyPairCreate.createKeyPair')}</span>
+              </div>
+            </div>
             <KeyPairForm onSubmit={this.onSubmit} />
             <iframe className="hide" src={keyPairDownloadUrl} />
           </div>
