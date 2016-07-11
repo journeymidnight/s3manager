@@ -3,6 +3,6 @@ import i18n from '../i18n';
 
 describe('i18n', () => {
   it('#appName', () => {
-    expect(i18n.t('appName')).toEqual('LeStack');
+    expect(i18n.t('appName')).toEqual('LeCloud');
   });
 });
