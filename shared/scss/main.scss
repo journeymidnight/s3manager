@@ -21,8 +21,8 @@ header.navbar-empty .center-logo {
     margin: 9px 0;
 
     img {
-        width: 40px;
-        height: 40px;
+        width: inherit;
+        height: 36px;
     }
 }
 
@@ -210,11 +210,17 @@ header.navbar-gitlab .container-fluid {
   }
 }
 
-.header-logo {
-  a h3 {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
+.sidebar-wrapper {
+    .header-logo {
+        a img {
+            width: 32px;
+            height: 32px;
+        }
+        a h3 {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+    }
 }
 
 .row.with-info {

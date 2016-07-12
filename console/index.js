@@ -9,6 +9,7 @@ import bootstrap from '../shared/bootstrap';
 
 bootstrap((token, state, callback) => {
   document.title = state.env.appName;
+  window.$('body').toggleClass('ui_charcoal ui_console');
 
   let store = configureStore(rootReducer, state);
   let routes = configureRoutes(store);

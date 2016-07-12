@@ -1,0 +1,33 @@
+header.navbar-gitlab {
+    z-index: 10000;
+    margin-left: 0;
+    background: #0e90d2;
+    border-bottom: none;
+
+    .container-fluid {
+        .navbar-brand {
+            padding: 9px 15px;
+            height: $header-height;
+
+            img {
+                height: 28px;
+            }
+        }
+
+        .header-content {
+
+            .title a {
+                color: #fff;
+            }
+
+            .title,
+            .navbar-toggle,
+            .navbar-nav > li > a {
+                color: #fff;
+                height: $header-height;
+                line-height: $header-height;
+                padding: 0px 10px;
+            }
+        }
+    }
+}

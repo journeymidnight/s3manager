@@ -22,7 +22,7 @@ class C extends React.Component {
       <div className="nicescroll sidebar-wrapper" tabIndex="0">
         <div className="header-logo">
           <Link to="/">
-            <img width="32" height="32" src="/asset/logo.svg" alt="logo" />
+            <img src="/asset/logo.white.svg" alt="logo" />
           </Link>
           <Link className="gitlab-text-container-link" to="/">
             <div className="gitlab-text-container">

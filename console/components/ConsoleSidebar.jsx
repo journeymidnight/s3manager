@@ -19,23 +19,19 @@ class C extends React.Component {
   render() {
     const { t } = this.props;
     const regionId = this.props.region.regionId;
-    const regionName = this.props.region.name;
     return (
       <div className="nicescroll sidebar-wrapper" tabIndex="0">
         <div className="header-logo">
           <Link to="/">
-            <img width="32" height="32" src="/asset/logo.svg" alt="logo" />
+            <img src="/asset/plato.white.svg" alt="logo" />
           </Link>
           <Link className="gitlab-text-container-link" to="/">
             <div className="gitlab-text-container">
-              <h3>{this.props.env.appName}</h3>
+              <h3>计算服务</h3>
             </div>
           </Link>
         </div>
         <ul className="nav nav-sidebar">
-          <li>
-            <h5>{regionName}</h5>
-          </li>
           <NavLink to={`/${regionId}/usage`}>
             <i className="fa fa-pie-chart fa-fw" />
             <span>{t('sidebarUsage')}</span>
@@ -71,14 +67,6 @@ class C extends React.Component {
           <NavLink to={`/${regionId}/activities`}>
             <i className="fa fa-sticky-note fa-fw" />
             <span>{t('sidebarActivity')}</span>
-          </NavLink>
-          <li className="separate-item" />
-          <li>
-            <h5>Global</h5>
-          </li>
-          <NavLink to="/access_keys">
-            <i className="fa fa-code fa-fw" />
-            <span>{t('sidebarAccessKey')}</span>
           </NavLink>
         </ul>
         <div className="collapse-nav">
