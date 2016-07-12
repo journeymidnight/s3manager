@@ -302,6 +302,7 @@
         "updateNetwork": "更新",
         "setExternalGateway": "开通公网网关",
         "unsetExternalGateway": "关闭公网网关",
+        "portForwarding": "端口转发",
         "deleteNetwork": "删除",
         "externalGatewayIp": "公网网关 IP",
         "createSubnet": "添加子网"

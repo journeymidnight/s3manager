@@ -166,11 +166,11 @@ class C extends Page {
       return <div />;
     }
 
-    let active = 'router';
+    let active = 'subnets';
     if (_.endsWith(this.props.location.pathname, 'subnets')) {
       active = 'subnets';
-    } else if (_.endsWith(this.props.location.pathname, 'router')) {
-      active = 'router';
+    } else if (_.endsWith(this.props.location.pathname, 'port-forwarding')) {
+      active = 'portForwarding';
     }
 
     return (
@@ -256,9 +256,9 @@ class C extends Page {
                       {t('pageNetwork.subnets')}
                     </Link>
                   </li>
-                  {network.externalGatewayIp && <li className={`pull-left ${(active === 'router') ? 'active' : ''}`}>
-                    <Link data-placement="left" to={`/${region.regionId}/networks/${network.networkId}/router`}>
-                      {t('pageNetwork.router')}
+                  {network.externalGatewayIp && <li className={`pull-left ${(active === 'portForwarding') ? 'active' : ''}`}>
+                    <Link data-placement="left" to={`/${region.regionId}/networks/${network.networkId}/port-forwarding`}>
+                      {t('pageNetwork.portForwarding')}
                     </Link>
                   </li>}
                 </ul>
