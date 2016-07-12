@@ -6,8 +6,11 @@ header.navbar-gitlab {
 
     .container-fluid {
         .navbar-brand {
-            padding: 9px 15px;
+            padding: 9px 20px;
+            margin-left: -20px;
+            background: #0d85bf;
             height: $header-height;
+            width: $sidebar_collapsed_width;
 
             img {
                 height: 28px;
@@ -15,7 +18,7 @@ header.navbar-gitlab {
         }
 
         .header-content {
-            float: right;
+            margin-left: $sidebar_collapsed_width;
 
             .title a {
                 color: #fff;
@@ -41,18 +44,32 @@ header.navbar-gitlab {
                 }
             }
 
+            .navbar-left {
+                .navbar-nav > li > a {
+                    padding: 0px 20px;
+                }
+            }
+
+            .dropdown-menu {
+                margin-top: 0px;
+            }
+
             .nav .open > a,
             .nav .open > a:hover,
             .nav .open > a:focus {
                 background: #0d85bf;
             }
 
-            ul.nav li.dropdown:hover > ul.dropdown-menu {
-                display: block;
-                left: inherit;
-                right: 0;
+            .navbar-collapse {
+                ul.nav li.dropdown:hover > ul.dropdown-menu {
+                    left: inherit;
+                    right: 0;
+                }
             }
 
+            ul.nav li.dropdown:hover > ul.dropdown-menu {
+                display: block;
+            }
             @media (min-width: 979px) {
                 ul.nav li.dropdown:hover > ul.dropdown-menu {
                     display: block;

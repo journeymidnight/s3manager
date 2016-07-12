@@ -21,9 +21,6 @@ class C extends React.Component {
         <div className="container-fluid">
           <div className="header-content">
             <button className="navbar-toggle" type="button">
-              <span className="sr-only">
-                Toggle navigation
-              </span>
               <i className="fa fa-bars">
               </i>
             </button>
