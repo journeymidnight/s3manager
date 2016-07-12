@@ -18,7 +18,7 @@ class C extends React.Component {
 
   render() {
     const { t } = this.props;
-    const regionId = this.props.region.regionId;
+    const regionId = 'a' || this.props.region.regionId;
     return (
       <div className="nicescroll sidebar-wrapper" tabIndex="0">
         <div className="header-logo">
@@ -60,10 +60,6 @@ class C extends React.Component {
             <i className="fa fa-key fa-fw" />
             <span>{t('sidebarKeyPair')}</span>
           </NavLink>
-          {/* <NavLink to={`/${regionId}/firewalls`}>
-            <i className="fa fa-shield fa-fw" />
-            <span>{t('sidebarFirewall')}</span>
-          </NavLink>*/}
           <NavLink to={`/${regionId}/activities`}>
             <i className="fa fa-sticky-note fa-fw" />
             <span>{t('sidebarActivity')}</span>
@@ -82,19 +78,19 @@ class C extends React.Component {
 
 C.propTypes = {
   dispatch: React.PropTypes.func.isRequired,
-  auth: React.PropTypes.object,
   env: React.PropTypes.object,
   t: React.PropTypes.any,
   routing: React.PropTypes.object,
   region: React.PropTypes.object,
+  service: React.PropTypes.object,
 };
 
 function mapStateToProps(state) {
   return {
-    auth: state.auth,
     env: state.env,
     routing: state.routing,
     region: state.region,
+    service: state.service,
   };
 }
 

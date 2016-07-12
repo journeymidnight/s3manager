@@ -39,7 +39,7 @@ import AccessKeys from './pages/AccessKeys.jsx';
 
 export default function configureRoutes(store) {
   function requireAuth(nextState, replace) {
-    if (!store.getState().auth) {
+    if (!store.getState().global || !store.getState().global.auth) {
       replace({
         pathname: '/login',
         state: { nextPathname: nextState.location.pathname },
@@ -62,50 +62,52 @@ export default function configureRoutes(store) {
         </Route>
         <Route path="settings" component={Settings} />
         <Route path="profile" component={Settings} />
-        <Route path=":regionId" >
-          <IndexRoute component={RegionIndex} />
-          <Route path="volumes">
-            <IndexRoute component={Volumes} />
-            <Route path="create" component={VolumeCreate} />
-            <Route path=":volumeId" component={Volume} />
-          </Route>
-          <Route path="images_snapshots" component={ImagesAndSnapshots} >
-            <IndexRoute component={TabPublicImages} />
-            <Route path="public_images" component={TabPublicImages} />
-            <Route path="private_images" component={TabPrivateImages} />
-            <Route path="volume_snapshots" component={TabVolumeSnapshots} />
-          </Route>
-          <Route path="eips">
-            <IndexRoute component={Eips} />
-            <Route path="create" component={EipCreate} />
-            <Route path=":eipId" component={Eip} />
-          </Route>
-          <Route path="instances" >
-            <IndexRoute component={Instances} />
-            <Route path="create" component={InstanceCreate} />
-            <Route path=":instanceId" component={Instance} >
-              <IndexRoute component={InstanceTabMonitor} />
-              <Route path="monitor" component={InstanceTabMonitor} />
-              <Route path="output" component={InstanceTabOutput} />
+        <Route path="lcs" >
+          <Route path=":regionId" >
+            <IndexRoute component={RegionIndex} />
+            <Route path="overview" component={Usage} />
+            <Route path="instances" >
+              <IndexRoute component={Instances} />
+              <Route path="create" component={InstanceCreate} />
+              <Route path=":instanceId" component={Instance} >
+                <IndexRoute component={InstanceTabMonitor} />
+                <Route path="monitor" component={InstanceTabMonitor} />
+                <Route path="output" component={InstanceTabOutput} />
+              </Route>
             </Route>
-          </Route>
-          <Route path="key_pairs" >
-            <IndexRoute component={KeyPairs} />
-            <Route path="create" component={KeyPairCreate} />
-            <Route path=":keyPairId" component={KeyPair} />
-          </Route>
-          <Route path="networks" >
-            <IndexRoute component={Networks} />
-            <Route path="create" component={NetworkCreate} />
-            <Route path=":networkId" component={Network} >
-              <IndexRoute component={NetworkTabSubnets} />
-              <Route path="subnets" component={NetworkTabSubnets} />
-              <Route path="port-forwarding" component={NetworkTabPortForwarding} />
+            <Route path="volumes">
+              <IndexRoute component={Volumes} />
+              <Route path="create" component={VolumeCreate} />
+              <Route path=":volumeId" component={Volume} />
             </Route>
+            <Route path="images_snapshots" component={ImagesAndSnapshots} >
+              <IndexRoute component={TabPublicImages} />
+              <Route path="public_images" component={TabPublicImages} />
+              <Route path="private_images" component={TabPrivateImages} />
+              <Route path="volume_snapshots" component={TabVolumeSnapshots} />
+            </Route>
+            <Route path="eips">
+              <IndexRoute component={Eips} />
+              <Route path="create" component={EipCreate} />
+              <Route path=":eipId" component={Eip} />
+            </Route>
+            <Route path="key_pairs" >
+              <IndexRoute component={KeyPairs} />
+              <Route path="create" component={KeyPairCreate} />
+              <Route path=":keyPairId" component={KeyPair} />
+            </Route>
+            <Route path="networks" >
+              <IndexRoute component={Networks} />
+              <Route path="create" component={NetworkCreate} />
+              <Route path=":networkId" component={Network} >
+                <IndexRoute component={NetworkTabSubnets} />
+                <Route path="subnets" component={NetworkTabSubnets} />
+                <Route path="port-forwarding" component={NetworkTabPortForwarding} />
+              </Route>
+            </Route>
+            <Route path="firewalls" component={Settings} />
+            <Route path="activities" component={Activities} />
           </Route>
-          <Route path="firewalls" component={Settings} />
-          <Route path="activities" component={Activities} />
-          <Route path="overview" component={Usage} />
         </Route>
       </Route>
       <Route path="*" component={NotFound} />

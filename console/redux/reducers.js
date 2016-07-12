@@ -8,10 +8,11 @@ export const constReducer = (state = {}) => {
   return state;
 };
 
-export const regionsReducer = (state = [], action) => {
+export const serviceReducer = (state = null, action) => {
   switch (action.type) {
-    case ActionTypes.AUTH_LOGIN:
-      return action.context.regionSet;
+    case ActionTypes.SELECT_SERVICE:
+      store.set('service', action.service);
+      return action.service;
 
     default:
       return state;
@@ -29,11 +30,11 @@ export const regionReducer = (state = null, action) => {
   }
 };
 
-export const authReducer = (state = null, action) => {
+export const globalReducer = (state = null, action) => {
   switch (action.type) {
     case ActionTypes.AUTH_LOGIN:
       store.set('token', action.token);
-      return action.context.auth;
+      return action.context;
 
     case ActionTypes.AUTH_LOGOUT:
       store.remove('token');
@@ -46,11 +47,11 @@ export const authReducer = (state = null, action) => {
 
 const reducers = combineReducers({
   env: constReducer,
-  auth: authReducer,
+  global: globalReducer,
   routing: routerReducer,
   form: formReducer,
-  regions: regionsReducer,
   region: regionReducer,
+  service: serviceReducer,
   header: constReducer,
   context: constReducer,
 });

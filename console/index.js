@@ -18,8 +18,7 @@ bootstrap((token, state, callback) => {
     Auth.describeContext(token.token)
     .promise
     .then((context) => {
-      state.auth = context.auth;
-      state.regions = context.regionSet;
+      state.global = context;
 
       store = configureStore(rootReducer, state);
       routes = configureRoutes(store);
