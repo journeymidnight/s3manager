@@ -8,7 +8,7 @@ class C extends React.Component {
     const $ = require('jquery');
 
     $('.navbar-toggle').click(() => {
-      $('.header-content .navbar-left').toggle();
+      $('.navbar-brand').toggle();
       $('.header-content .navbar-collapse').toggle();
       $('.navbar-toggle').toggleClass('active');
     });
@@ -73,8 +73,43 @@ class C extends React.Component {
                 </li>
                 <li>
                   <Link to="/profile">
-                    <i className="fa fa-user fa-fw"></i>
+                    piaoyuankui
+                    <i data-target=".js-dropdown-menu-projects" data-toggle="dropdown" className="fa fa-chevron-down dropdown-toggle-caret js-projects-dropdown-toggle" />
                   </Link>
+                  <div className="js-dropdown-menu-projects">
+                    <div className="dropdown-menu">
+                      <div className="dropdown-title">
+                        <span>{t('selectRegion')}</span>
+                        <button className="dropdown-title-button dropdown-menu-close" aria-label="Close" type="button">
+                          <i className="fa fa-times dropdown-menu-close-icon"></i>
+                        </button>
+                      </div>
+                      <div className="dropdown-content">
+                        <ul>
+                          <li><Link to="/profile">profile</Link></li>
+                          <li><Link to="/billing">billing</Link></li>
+                          <li><Link to="/logout">logout</Link></li>
+                        </ul>
+                      </div>
+                      <div className="dropdown-loading">
+                        <i className="fa fa-spinner fa-spin"></i>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li className="dropdown">
+                  <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button">
+                    piaoyuankui <span className="caret"></span>
+                  </a>
+                  <ul className="dropdown-menu dropdown-menu-right">
+                    <li><a href="#">Action</a></li>
+                    <li><a href="#">Another action</a></li>
+                    <li><a href="#">Something else here</a></li>
+                    <li role="separator" className="divider"></li>
+                    <li><a href="#">Separated link</a></li>
+                    <li role="separator" className="divider"></li>
+                    <li><a href="#">One more separated link</a></li>
+                  </ul>
                 </li>
                 <li>
                   <Link className="logout" to="/logout">
