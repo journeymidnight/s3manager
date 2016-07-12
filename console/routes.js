@@ -5,6 +5,8 @@ import App from './pages/App.jsx';
 import Home from './pages/Home.jsx';
 import Login from './pages/Login.jsx';
 import Logout from './pages/Logout.jsx';
+import RegionIndex from './pages/RegionIndex.jsx';
+import NotFound from './pages/NotFound.jsx';
 import KeyPair from './pages/KeyPair.jsx';
 import KeyPairs from './pages/KeyPairs.jsx';
 import KeyPairCreate from './pages/KeyPairCreate.jsx';
@@ -19,7 +21,6 @@ import InstanceTabMonitor from './pages/InstanceTabMonitor.jsx';
 import InstanceTabOutput from './pages/InstanceTabOutput.jsx';
 import Instances from './pages/Instances.jsx';
 import InstanceCreate from './pages/InstanceCreate.jsx';
-import RegionIndex from './pages/RegionIndex.jsx';
 import ImagesAndSnapshots from './pages/ImagesAndSnapshots.jsx';
 import Settings from './pages/Settings.jsx';
 import Eip from './pages/Eip.jsx';
@@ -107,6 +108,7 @@ export default function configureRoutes(store) {
           <Route path="overview" component={Usage} />
         </Route>
       </Route>
+      <Route path="*" component={NotFound} />
     </Route >
   );
 }

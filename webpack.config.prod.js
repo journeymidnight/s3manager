@@ -33,6 +33,5 @@ function generateConfig(module) {
 
 module.exports = [
   generateConfig('boss'),
-  generateConfig('region'),
   generateConfig('console'),
 ];
