@@ -8,7 +8,7 @@ class C extends Page {
   componentDidMount() {
     const { t, routerKey, dispatch, region } = this.props;
 
-    dispatch(Actions.setHeader(t('usageManage'), `/${region.regionId}/usage`));
+    dispatch(Actions.setHeader(t('usageManage'), `/${region.regionId}/overview`));
     dispatch(QuotaActions.requestDescribeQuotas(region.regionId))
       .then(() => {
         dispatch(Actions.extendContext({ initialized: true }, routerKey));

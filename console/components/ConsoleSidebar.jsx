@@ -32,7 +32,7 @@ class C extends React.Component {
           </Link>
         </div>
         <ul className="nav nav-sidebar">
-          <NavLink to={`/${regionId}/usage`}>
+          <NavLink to={`/${regionId}/overview`}>
             <i className="fa fa-pie-chart fa-fw" />
             <span>{t('sidebarUsage')}</span>
           </NavLink>

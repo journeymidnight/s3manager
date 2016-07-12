@@ -7,7 +7,7 @@ class C extends Page {
   componentDidMount() {
     const { params, dispatch } = this.props;
     const regionId = params.regionId;
-    dispatch(push(`/${regionId}/instances`));
+    dispatch(push(`/${regionId}/overview`));
   }
 
   render() {

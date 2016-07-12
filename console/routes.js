@@ -104,7 +104,7 @@ export default function configureRoutes(store) {
           </Route>
           <Route path="firewalls" component={Settings} />
           <Route path="activities" component={Activities} />
-          <Route path="usage" component={Usage} />
+          <Route path="overview" component={Usage} />
         </Route>
       </Route>
     </Route >
