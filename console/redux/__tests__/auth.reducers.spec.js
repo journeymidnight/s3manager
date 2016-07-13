@@ -1,13 +1,27 @@
 import expect from 'expect';
 import deepFreeze from 'deep-freeze';
-import * as Reducer from '../reducers';
+import reducer from '../reducers';
 import * as ActionTypes from '../constants';
 
 describe('AuthReducers', () => {
   it('#AUTH_LOGIN', () => {
-    const stateBefore = null;
+    const stateBefore = {
+    };
+
     const stateAfter = {
-      name: 'prank',
+      context: {},
+      env: {},
+      form: {},
+      global: {
+        auth: {
+          name: "prank",
+        },
+      },
+      header: {},
+      routing: {
+        locationBeforeTransitions: null,
+      },
+      service: null,
     };
 
     const action = {
@@ -23,6 +37,6 @@ describe('AuthReducers', () => {
     };
 
     deepFreeze(action);
-    expect(stateAfter).toEqual(Reducer.authReducer(stateBefore, action));
+    expect(stateAfter).toEqual(reducer(stateBefore, action));
   });
 });
