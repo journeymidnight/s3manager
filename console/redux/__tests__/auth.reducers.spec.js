@@ -14,7 +14,7 @@ describe('AuthReducers', () => {
       form: {},
       global: {
         auth: {
-          name: "prank",
+          name: 'prank',
         },
       },
       header: {},
