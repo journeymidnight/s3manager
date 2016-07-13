@@ -11,19 +11,10 @@ export const constReducer = (state = {}) => {
 export const serviceReducer = (state = null, action) => {
   switch (action.type) {
     case ActionTypes.SELECT_SERVICE:
-      store.set('service', action.service);
+      if (action.service) {
+        store.set('region', action.service.region);
+      }
       return action.service;
-
-    default:
-      return state;
-  }
-};
-
-export const regionReducer = (state = null, action) => {
-  switch (action.type) {
-    case ActionTypes.SELECT_REGION:
-      store.set('region', action.region);
-      return action.region;
 
     default:
       return state;
@@ -50,7 +41,6 @@ const reducers = combineReducers({
   global: globalReducer,
   routing: routerReducer,
   form: formReducer,
-  region: regionReducer,
   service: serviceReducer,
   header: constReducer,
   context: constReducer,

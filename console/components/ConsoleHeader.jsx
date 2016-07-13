@@ -6,7 +6,7 @@ import { Link } from 'react-router';
 const C = (props) => {
   const { header } = props.context;
   const { auth, regionSet, serviceSet } = props.global;
-  const { t, region, service } = props;
+  const { t, service } = props;
   return (
     <header className="header-expanded navbar navbar-fixed-top navbar-gitlab">
       <div className="container-fluid">
@@ -22,7 +22,7 @@ const C = (props) => {
                 </a>
                 <ul className="dropdown-menu dropdown-menu-right">
                   {serviceSet.map((_service) => {
-                    return <li key={_service.key}><Link to={`/${_service.key}`}>{t(`services.${_service.key}`)}</Link></li>;
+                    return <li key={_service.serviceKey}><Link to={`/${_service.serviceKey}`}>{t(`services.${_service.serviceKey}`)}</Link></li>;
                   })}
                 </ul>
               </li>}
@@ -40,12 +40,11 @@ const C = (props) => {
               {regionSet && <li className="dropdown">
                 <a href="#" className="dropdown-toggle" role="button">
                   <i className="fa fa-codepen"></i>&nbsp;
-                  {region && region.name}
-                  <span className="caret"></span>
+                  {service && service.region && service.region.name || t('globalRegion')} <span className="caret"></span>
                 </a>
                 <ul className="dropdown-menu dropdown-menu-right">
                   {regionSet.map((_region) => {
-                    return <li key={_region.regionId}><Link to={`${_region.consoleEndpoint || ''}/${service && service.key}`}>{_region.name}</Link></li>;
+                    return <li key={_region.regionId}><Link to={`${_region.consoleEndpoint || ''}/${(service && service.key) || ''}`}>{_region.name}</Link></li>;
                   })}
                 </ul>
               </li>}
@@ -54,8 +53,8 @@ const C = (props) => {
                   {auth.username} <span className="caret"></span>
                 </a>
                 <ul className="dropdown-menu dropdown-menu-right">
-                  <li><Link to="/profile">{t('profile')}</Link></li>
-                  <li><Link to="/security">{t('security')}</Link></li>
+                  <li><Link to="/g/profile">{t('profile')}</Link></li>
+                  <li><Link to="/g/security">{t('security')}</Link></li>
                   <li role="separator" className="divider"></li>
                   <li>
                     <Link className="logout" to="/logout">

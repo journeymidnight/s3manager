@@ -1,11 +1,9 @@
 import React from 'react';
-import { Route, IndexRoute } from 'react-router';
+import { Route, IndexRoute, IndexRedirect } from 'react-router';
 
 import App from './pages/App.jsx';
-import Home from './pages/Home.jsx';
 import Login from './pages/Login.jsx';
 import Logout from './pages/Logout.jsx';
-import RegionIndex from './pages/RegionIndex.jsx';
 import NotFound from './pages/NotFound.jsx';
 import KeyPair from './pages/KeyPair.jsx';
 import KeyPairs from './pages/KeyPairs.jsx';
@@ -55,16 +53,25 @@ export default function configureRoutes(store) {
         <Route path=":host/:port/:token" component={VNC} />
       </Route>
       <Route path="/" component={App} onEnter={requireAuth} >
-        <IndexRoute component={Home} />
-        <Route path="access_keys">
-          <IndexRoute component={AccessKeys} />
-          <Route path="create" component={AccessKeyCreate} />
+        <IndexRedirect to="g" />
+
+        <Route path="g" >
+          <IndexRedirect to="profile" />
+
+          <Route path="profile" component={Settings} />
+          <Route path="access_keys">
+            <IndexRoute component={AccessKeys} />
+            <Route path="create" component={AccessKeyCreate} />
+          </Route>
+          <Route path="settings" component={Settings} />
+          <Route path="security" component={Settings} />
         </Route>
-        <Route path="settings" component={Settings} />
-        <Route path="profile" component={Settings} />
         <Route path="lcs" >
+          <IndexRedirect to="r" />
+
           <Route path=":regionId" >
-            <IndexRoute component={RegionIndex} />
+            <IndexRedirect to="overview" />
+
             <Route path="overview" component={Usage} />
             <Route path="instances" >
               <IndexRoute component={Instances} />

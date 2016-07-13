@@ -70,6 +70,13 @@ export function requestLogout() {
   };
 }
 
+export function selectService(service) {
+  return {
+    type: ActionTypes.SELECT_SERVICE,
+    service,
+  };
+}
+
 export function selectRegion(region) {
   return {
     type: ActionTypes.SELECT_REGION,
@@ -77,13 +84,13 @@ export function selectRegion(region) {
   };
 }
 
-export function requestConnectRegion(regionId) {
+export function requestConnectService(serviceKey, regionId) {
   return dispatch => {
     return Auth
-    .connectRegion(regionId)
+    .connectService(serviceKey, regionId)
     .promise
     .then((payload) => {
-      dispatch(selectRegion(payload));
+      dispatch(selectService(payload));
     })
     .catch((error) => {
       dispatch(notifyAlert(error.message));

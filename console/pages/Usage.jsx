@@ -10,9 +10,9 @@ class C extends Page {
 
     dispatch(Actions.setHeader(t('usageManage'), `/${region.regionId}/overview`));
     dispatch(QuotaActions.requestDescribeQuotas(region.regionId))
-      .then(() => {
-        dispatch(Actions.extendContext({ initialized: true }, routerKey));
-      });
+    .then(() => {
+      dispatch(Actions.extendContext({ initialized: true }, routerKey));
+    });
   }
 
   formatUsageDate(usage, total, resource) {

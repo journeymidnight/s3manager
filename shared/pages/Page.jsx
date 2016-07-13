@@ -50,6 +50,7 @@ C.propTypes = {
   dispatch: React.PropTypes.func.isRequired,
   context: React.PropTypes.object,
   region: React.PropTypes.object,
+  service: React.PropTypes.object,
   t: React.PropTypes.any,
   routerKey: React.PropTypes.string,
 };
@@ -57,7 +58,8 @@ C.propTypes = {
 function mapStateToProps(state) {
   return {
     context: state.context,
-    region: state.region,
+    region: state.service && state.service.region,
+    service: state.service,
     routerKey: state.routing.locationBeforeTransitions.key,
   };
 }

@@ -78,7 +78,6 @@ class C extends React.Component {
 
 C.propTypes = {
   dispatch: React.PropTypes.func.isRequired,
-  env: React.PropTypes.object,
   t: React.PropTypes.any,
   routing: React.PropTypes.object,
   region: React.PropTypes.object,
@@ -87,7 +86,6 @@ C.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    env: state.env,
     routing: state.routing,
     region: state.region,
     service: state.service,
