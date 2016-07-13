@@ -50,11 +50,6 @@ const C = (props) => {
           </div>
           <div className="navbar-collapse collapse">
             <ul className="nav navbar-nav pull-right">
-              <li>
-                <Link to="/g/tickets">
-                  <i className="fa fa-ticket"></i>&nbsp;{t('ticket')}
-                </Link>
-              </li>
               {regionSet && <li className="dropdown">
                 <a href="#" className="dropdown-toggle" role="button">
                   {(service && service.region) && <span><i className="fa fa-codepen"></i> {service.region.name}</span>}
@@ -67,6 +62,11 @@ const C = (props) => {
                   })}
                 </ul>
               </li>}
+              <li>
+                <Link to="/g/tickets">
+                  <i className="fa fa-ticket"></i>&nbsp;{t('ticket')}
+                </Link>
+              </li>
               <li className="dropdown">
                 <a href="#" className="dropdown-toggle" role="button">
                   {auth.username} <span className="caret"></span>
