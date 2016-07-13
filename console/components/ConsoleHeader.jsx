@@ -44,7 +44,7 @@ const C = (props) => {
                 </a>
                 <ul className="dropdown-menu dropdown-menu-right">
                   {regionSet.map((_region) => {
-                    return <li key={_region.regionId}><Link to={`${_region.consoleEndpoint || ''}/${(service && service.key) || ''}`}>{_region.name}</Link></li>;
+                    return <li key={_region.regionId}><Link to={`${_region.consoleEndpoint || ''}/${(service && service.serviceKey) || ''}`}>{_region.name}</Link></li>;
                   })}
                 </ul>
               </li>}

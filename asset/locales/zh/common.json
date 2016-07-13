@@ -142,6 +142,7 @@
     "confirmDelete": "确认删除吗?",
 
     "services": {
+        "g": "帐号信息",
         "lcs": "云主机"
     },
 
@@ -445,7 +446,7 @@
         "eipPackets": "数据包"
     },
 
-    "sidebarInstance": "云主机",
+    "sidebarInstance": "主机列表",
     "sidebarInstanceType": "主机配置",
     "sidebarVolume": "云硬盘",
     "sidebarNetwork": "私有网络",

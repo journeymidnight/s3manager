@@ -5,6 +5,56 @@ import { translate } from 'react-i18next';
 import NavLink from '../../shared/components/NavLink';
 
 class C extends React.Component {
+
+  componentWillMount() {
+    const { t } = this.props;
+
+    this.services = {
+      g: [{
+        path: 'profile',
+        title: t('profile'),
+        icon: 'fa-cog',
+      }, {
+        path: 'security',
+        title: t('security'),
+        icon: 'fa-shield',
+      }],
+      lcs: [{
+        path: 'overview',
+        title: t('sidebarUsage'),
+        icon: 'fa-pie-chart',
+      }, {
+        path: 'instances',
+        title: t('sidebarInstance'),
+        icon: 'fa-server',
+      }, {
+        path: 'networks',
+        title: t('sidebarNetwork'),
+        icon: 'fa-exchange',
+      }, {
+        path: 'volumes',
+        title: t('sidebarVolume'),
+        icon: 'fa-hdd-o',
+      }, {
+        path: 'images_snapshots',
+        title: t('sidebarImagesAndSnapshots'),
+        icon: 'fa-certificate',
+      }, {
+        path: 'eips',
+        title: t('sidebarEIP'),
+        icon: 'fa-rocket',
+      }, {
+        path: 'key_pairs',
+        title: t('sidebarKeyPair'),
+        icon: 'fa-key',
+      }, {
+        path: 'activities',
+        title: t('sidebarActivity'),
+        icon: 'fa-sticky-note',
+      }],
+    };
+  }
+
   componentDidMount() {
     const $ = require('jquery');
 
@@ -17,53 +67,32 @@ class C extends React.Component {
   }
 
   render() {
-    const { t } = this.props;
-    const regionId = 'a' || this.props.region.regionId;
+    const { t, service } = this.props;
+
+    const serviceKey = service.serviceKey;
+    const navs = this.services[serviceKey];
+
     return (
       <div className="nicescroll sidebar-wrapper" tabIndex="0">
         <div className="header-logo">
-          <Link to="/">
+          <Link to={`/${serviceKey}/`}>
             <img src="/asset/plato.white.svg" alt="logo" />
           </Link>
-          <Link className="gitlab-text-container-link" to="/">
+          <Link className="gitlab-text-container-link" to={`/${serviceKey}/`}>
             <div className="gitlab-text-container">
-              <h3>计算服务</h3>
+              <h3>{t(`services.${serviceKey}`)}</h3>
             </div>
           </Link>
         </div>
         <ul className="nav nav-sidebar">
-          <NavLink to={`/${regionId}/overview`}>
-            <i className="fa fa-pie-chart fa-fw" />
-            <span>{t('sidebarUsage')}</span>
-          </NavLink>
-          <NavLink to={`/${regionId}/instances`}>
-            <i className="fa fa-server fa-fw" />
-            <span>{t('sidebarInstance')}</span>
-          </NavLink>
-          <NavLink to={`/${regionId}/volumes`}>
-            <i className="fa fa-hdd-o fa-fw" />
-            <span>{t('sidebarVolume')}</span>
-          </NavLink>
-          <NavLink to={`/${regionId}/networks`}>
-            <i className="fa fa-exchange fa-fw" />
-            <span>{t('sidebarNetwork')}</span>
-          </NavLink>
-          <NavLink to={`/${regionId}/images_snapshots`}>
-            <i className="fa fa-certificate fa-fw" />
-            <span>{t('sidebarImagesAndSnapshots')}</span>
-          </NavLink>
-          <NavLink to={`/${regionId}/eips`}>
-            <i className="fa fa-rocket fa-fw" />
-            <span>{t('sidebarEIP')}</span>
-          </NavLink>
-          <NavLink to={`/${regionId}/key_pairs`}>
-            <i className="fa fa-key fa-fw" />
-            <span>{t('sidebarKeyPair')}</span>
-          </NavLink>
-          <NavLink to={`/${regionId}/activities`}>
-            <i className="fa fa-sticky-note fa-fw" />
-            <span>{t('sidebarActivity')}</span>
-          </NavLink>
+          {navs.map((_nav) => {
+            return (
+              <NavLink to={`${service.servicePath}/${_nav.path}`} key={_nav.path}>
+                <i className={`fa ${_nav.icon} fa-fw`} />
+                <span>{_nav.title}</span>
+              </NavLink>
+            );
+          })}
         </ul>
         <div className="collapse-nav">
           <a className="toggle-nav-collapse" href="#">
@@ -80,14 +109,12 @@ C.propTypes = {
   dispatch: React.PropTypes.func.isRequired,
   t: React.PropTypes.any,
   routing: React.PropTypes.object,
-  region: React.PropTypes.object,
   service: React.PropTypes.object,
 };
 
 function mapStateToProps(state) {
   return {
     routing: state.routing,
-    region: state.region,
     service: state.service,
   };
 }

@@ -60,6 +60,7 @@ function mapStateToProps(state) {
     context: state.context,
     region: state.service && state.service.region,
     service: state.service,
+    global: state.global,
     routerKey: state.routing.locationBeforeTransitions.key,
   };
 }

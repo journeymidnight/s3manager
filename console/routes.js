@@ -4,6 +4,7 @@ import { Route, IndexRoute, IndexRedirect } from 'react-router';
 import App from './pages/App.jsx';
 import Login from './pages/Login.jsx';
 import Logout from './pages/Logout.jsx';
+import GotoDefaultRegion from './pages/GotoDefaultRegion.jsx';
 import NotFound from './pages/NotFound.jsx';
 import KeyPair from './pages/KeyPair.jsx';
 import KeyPairs from './pages/KeyPairs.jsx';
@@ -67,7 +68,7 @@ export default function configureRoutes(store) {
           <Route path="security" component={Settings} />
         </Route>
         <Route path="lcs" >
-          <IndexRedirect to="r" />
+          <IndexRoute component={GotoDefaultRegion} />
 
           <Route path=":regionId" >
             <IndexRedirect to="overview" />

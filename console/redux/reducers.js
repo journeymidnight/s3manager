@@ -13,7 +13,14 @@ export const serviceReducer = (state = null, action) => {
     case ActionTypes.SELECT_SERVICE:
       if (action.service) {
         store.set('region', action.service.region);
+
+        if (action.service.region) {
+          action.service.servicePath = `/${action.service.serviceKey}/${action.service.region.regionId}`;
+        } else {
+          action.service.servicePath = `/${action.service.serviceKey}`;
+        }
       }
+
       return action.service;
 
     default:
