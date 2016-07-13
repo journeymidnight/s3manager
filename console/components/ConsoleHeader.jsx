@@ -52,13 +52,29 @@ const C = (props) => {
             <ul className="nav navbar-nav pull-right">
               {regionSet && <li className="dropdown">
                 <a href="#" className="dropdown-toggle" role="button">
-                  {(service && service.region) && <span><i className="fa fa-codepen"></i> {service.region.name}</span>}
-                  {!(service && service.region) && <span><i className="fa fa-globe"></i> {t('globalRegion')}</span>}
+                  {service.region && <span><i className="fa fa-codepen"></i> {service.region.name}</span>}
+                  {!service.region && <span><i className="fa fa-globe"></i> {t('globalRegion')}</span>}
                   &nbsp;<span className="caret"></span>
                 </a>
                 <ul className="dropdown-menu dropdown-menu-right">
                   {regionSet.map((_region) => {
-                    return <li key={_region.regionId}><Link to={`${_region.consoleEndpoint || ''}/${(service && service.serviceKey) || ''}`}>{_region.name}</Link></li>;
+                    if (service.serviceKey === 'g') {
+                      return (
+                        <li key={_region.regionId}>
+                          <Link to={`${_region.consoleEndpoint || ''}/`}>
+                            {_region.name}
+                          </Link>
+                        </li>
+                      );
+                    }
+
+                    return (
+                      <li key={_region.regionId}>
+                        <Link to={`${_region.consoleEndpoint || ''}/${service.serviceKey}/${_region.regionId}`}>
+                          {_region.name}
+                        </Link>
+                      </li>
+                    );
                   })}
                 </ul>
               </li>}
