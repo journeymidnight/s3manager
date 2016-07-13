@@ -16,9 +16,10 @@ header.navbar-gitlab .container-fluid {
       }
 
       > li > a {
-        width: inherit;
-        height: 58px;
-        padding: 15px 16px;
+        width: auto;
+        height: $header-height;
+        line-height: $header-height;
+        padding: 0px 16px;
         margin: 0;
 
         &:focus,

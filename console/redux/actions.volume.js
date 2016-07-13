@@ -1,4 +1,3 @@
-import { push } from 'react-router-redux';
 import { notify, notifyAlert, extendContext } from './actions';
 import IaaS from '../services/iaas';
 import i18n from '../../shared/i18n';
@@ -47,7 +46,6 @@ export function requestCreateVolume(routerKey, regionId, volume) {
       .then((payload) => {
         dispatch(extendContext({ volume: payload }));
         setTimeout(() => {
-          dispatch(push(`/${regionId}/volumes`));
           dispatch(notify(i18n.t('createSuccessed')));
         }, 1000);
       })

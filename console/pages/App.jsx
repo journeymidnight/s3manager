@@ -4,29 +4,71 @@ import { translate } from 'react-i18next';
 import ConsoleHeader from '../components/ConsoleHeader.jsx';
 import ConsoleSidebar from '../components/ConsoleSidebar.jsx';
 import Notify from '../../shared/components/Notify.jsx';
-import Home from '../pages/Home';
-import NoAnyRegions from '../pages/NoAnyRegions';
+import * as Actions from '../redux/actions';
 
 class App extends React.Component {
 
-  componentDidMount() {
+  componentWillMount() {
+    this.checkService(this.props);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.checkService(nextProps);
+  }
+
+  shouldComponentUpdate() {
+    return true;
+  }
+
+  checkService(props) {
+    const { routing, dispatch, service, global, params } = props;
+
+    const currentService = routing.locationBeforeTransitions.pathname.split('/')[1];
+
+    let currentRegion = params.regionId;
+    if (!currentRegion) {
+      if (global.defaultRegion) {
+        currentRegion = global.defaultRegion.regionId;
+      } else {
+        currentRegion = undefined;
+      }
+    }
+
+    this.currentService = currentService;
+
+    if (!currentService) {
+      return;
+    }
+
+    if (currentService === 'g') {
+      if (!service || service.serviceKey !== currentService) {
+        dispatch(Actions.selectService({
+          serviceKey: 'g',
+        }));
+      }
+    } else {
+      if (!service) {
+        dispatch(Actions.requestConnectService(currentService, currentRegion));
+      } else if (service && service.serviceKey !== currentService) {
+        dispatch(Actions.requestConnectService(currentService, currentRegion));
+      }
+    }
   }
 
   render() {
-    const { t, region, regions, params } = this.props;
-    if (regions && regions.length === 0) {
-      return <NoAnyRegions />;
+    const { t, service, children } = this.props;
+
+    if (service && service.serviceKey !== this.currentService) {
+      return <div />;
     }
 
-    if (!region) {
-      return <Home params={this.props.params} />;
-    } else if (params.regionId && region.regionId !== params.regionId) {
-      return <Home params={this.props.params} />;
+    if (this.currentService && !service) {
+      return <div />;
     }
 
     return (
       <div>
-        <ConsoleHeader auth={this.props.auth} env={this.props.env} />
+        <ConsoleHeader />
         <div className="page-sidebar-expanded page-with-sidebar">
           <ConsoleSidebar />
           <div className="content-wrapper">
@@ -36,7 +78,7 @@ class App extends React.Component {
               </div>
             </div>
             <Notify />
-            {this.props.children}
+            {children}
           </div>
         </div>
       </div>
@@ -46,22 +88,20 @@ class App extends React.Component {
 
 App.propTypes = {
   dispatch: React.PropTypes.func.isRequired,
-  children: React.PropTypes.element.isRequired,
-  auth: React.PropTypes.object,
-  env: React.PropTypes.object.isRequired,
-  t: React.PropTypes.any,
-  region: React.PropTypes.object,
-  regions: React.PropTypes.array,
+  children: React.PropTypes.element,
   params: React.PropTypes.object,
+  global: React.PropTypes.object,
+  service: React.PropTypes.object,
+  routing: React.PropTypes.object,
+  t: React.PropTypes.any,
 };
 
 function mapStateToProps(state) {
   return {
-    auth: state.auth,
-    env: state.env,
-    region: state.region,
-    regions: state.regions,
+    service: state.service,
+    routing: state.routing,
+    global: state.global,
   };
 }
 
-export default connect(mapStateToProps)(translate()(App));
+export default connect(mapStateToProps)(translate(['common'], { wait: true })(App));

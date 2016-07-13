@@ -1,106 +1,122 @@
+import i18n from 'i18next';
+import store from 'store';
 import React from 'react';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { Link } from 'react-router';
 
-class C extends React.Component {
-  componentDidMount() {
-    const $ = require('jquery');
+function changeLanguage(lng) {
+  return (e) => {
+    e.preventDefault();
 
-    $('.navbar-toggle').click(() => {
-      $('.header-content .navbar-left').toggle();
-      $('.header-content .navbar-collapse').toggle();
-      $('.navbar-toggle').toggleClass('active');
+    i18n.changeLanguage(lng, () => {
+      store.set('lng', lng);
+      window.location.reload();
     });
+  };
+}
+
+const C = (props) => {
+  const { header } = props.context;
+  const { auth, regionSet, serviceSet } = props.global;
+  const { t, service, env } = props;
+
+  if (header) {
+    document.title = `${header.title} | ${env.appName}`;
+  } else {
+    document.title = `${env.appName}`;
   }
-  render() {
-    const { t } = this.props;
-    const { header } = this.props.context;
-    return (
-      <header className="header-expanded navbar navbar-fixed-top navbar-gitlab">
-        <div className="container-fluid">
-          <div className="header-content">
-            <button className="navbar-toggle" type="button">
-              <span className="sr-only">
-                Toggle navigation
-              </span>
-              <i className="fa fa-bars"></i>
-            </button>
-            <div className="navbar-collapse collapse">
-              <ul className="nav navbar-nav pull-right">
-                <li>
-                  <Link to="/profile">
-                    <i className="fa fa-user fa-fw"></i>
-                  </Link>
-                </li>
-                <li>
-                  <Link className="logout" to="/logout">
-                    <i className="fa fa-sign-out"></i>
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <h1 className="title">
-              <i className="fa fa-codepen"></i>&nbsp;
-              <Link to="/" >
-                {this.props.region.name}
-              </Link>
-              {this.props.regions.length > 1 &&
-                <i data-target=".js-dropdown-menu-projects" data-toggle="dropdown" className="fa fa-chevron-down dropdown-toggle-caret js-projects-dropdown-toggle" />
-              }
-              {header && header.title && ' · '}
-              {header && header.title &&
-                <Link className="project-item-select-holder" to={header.link}>{header.title}</Link>
-              }
-              {this.props.regions.length > 1 &&
-                <div className="js-dropdown-menu-projects">
-                  <div className="dropdown-menu">
-                    <div className="dropdown-title">
-                      <span>{t('selectRegion')}</span>
-                      <button className="dropdown-title-button dropdown-menu-close" aria-label="Close" type="button">
-                        <i className="fa fa-times dropdown-menu-close-icon"></i>
-                      </button>
-                    </div>
-                    <div className="dropdown-content">
-                      <ul>
-                        {this.props.regions.map((region) => {
-                          if (region.regionId !== this.props.region.regionId) {
-                            return <li key={region.regionId}><Link to={`/${region.regionId}/instances`}>{region.name}</Link></li>;
-                          }
-                          return <li key={region.regionId} />;
-                        })}
-                      </ul>
-                    </div>
-                    <div className="dropdown-loading">
-                      <i className="fa fa-spinner fa-spin"></i>
-                    </div>
-                  </div>
-                </div>
-              }
-            </h1>
+
+  return (
+    <header className="header-expanded navbar navbar-fixed-top navbar-gitlab">
+      <div className="container-fluid">
+        <Link className="navbar-brand" to="/">
+          <img src="/asset/logo.white.svg" alt="logo" />
+        </Link>
+        <div className="header-content">
+          <div className="navbar-left">
+            <ul className="nav navbar-nav">
+              {serviceSet && <li className="dropdown">
+                <a href="#" className="dropdown-toggle" role="button">
+                  {t('productAndService')} <span className="caret"></span>
+                </a>
+                <ul className="dropdown-menu dropdown-menu-right">
+                  {serviceSet.map((_service) => {
+                    return <li key={_service.serviceKey}><Link to={`/${_service.serviceKey}`}>{t(`services.${_service.serviceKey}`)}</Link></li>;
+                  })}
+                </ul>
+              </li>}
+            </ul>
+          </div>
+          <div className="navbar-collapse collapse">
+            <ul className="nav navbar-nav pull-right">
+              {regionSet && <li className="dropdown">
+                <a href="#" className="dropdown-toggle" role="button">
+                  {(service && service.region) && <span><i className="fa fa-codepen"></i> {service.region.name}</span>}
+                  {!(service && service.region) && <span><i className="fa fa-globe"></i> {t('globalRegion')}</span>}
+                  &nbsp;<span className="caret"></span>
+                </a>
+                <ul className="dropdown-menu dropdown-menu-right">
+                  {regionSet.map((_region) => {
+                    return <li key={_region.regionId}><Link to={`${_region.consoleEndpoint || ''}/${(service && service.serviceKey) || ''}`}>{_region.name}</Link></li>;
+                  })}
+                </ul>
+              </li>}
+              <li>
+                <Link to="/g/tickets">
+                  <i className="fa fa-ticket"></i>&nbsp;{t('ticket')}
+                </Link>
+              </li>
+              <li className="dropdown">
+                <a href="#" className="dropdown-toggle" role="button">
+                  {auth.username} <span className="caret"></span>
+                </a>
+                <ul className="dropdown-menu dropdown-menu-right">
+                  <li><Link to="/g/profile">{t('profile')}</Link></li>
+                  <li><Link to="/g/security">{t('security')}</Link></li>
+                  <li role="separator" className="divider"></li>
+                  <li>
+                    <Link className="logout" to="/logout">
+                      <i className="fa fa-sign-out"></i> {t('logout')}
+                    </Link>
+                  </li>
+                </ul>
+              </li>
+              <li className="dropdown">
+                <a href="#" className="dropdown-toggle" role="button">
+                  <i className="fa fa-language"></i>
+                </a>
+                <ul className="dropdown-menu dropdown-menu-right">
+                  <li><a href onClick={changeLanguage('zh')}>{t('languages.chinese')}</a></li>
+                  <li><a href onClick={changeLanguage('en')}>{t('languages.english')}</a></li>
+                </ul>
+              </li>
+            </ul>
           </div>
         </div>
-      </header>
-    );
-  }
-}
+      </div>
+    </header>
+  );
+};
 
 C.propTypes = {
   dispatch: React.PropTypes.func.isRequired,
   t: React.PropTypes.any,
-  auth: React.PropTypes.object,
+  env: React.PropTypes.object,
+  global: React.PropTypes.object,
   region: React.PropTypes.object,
-  regions: React.PropTypes.array,
+  service: React.PropTypes.object,
   context: React.PropTypes.object,
 };
 
 function mapStateToProps(state) {
   return {
-    auth: state.auth,
+    env: state.env,
+    global: state.global,
     region: state.region,
-    regions: state.regions,
+    service: state.service,
     context: state.context,
   };
 }
 
-export default connect(mapStateToProps)(translate()(C));
+export default connect(mapStateToProps)(translate(['common'], { wait: true })(C));

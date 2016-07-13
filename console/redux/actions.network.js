@@ -1,4 +1,3 @@
-import { push } from 'react-router-redux';
 import { notify, notifyAlert, extendContext } from './actions';
 import IaaS from '../services/iaas';
 import i18n from '../../shared/i18n';
@@ -55,7 +54,6 @@ export function requestCreateNetwork(routerKey, regionId, network) {
     .createNetwork(regionId, network)
     .promise
     .then(() => {
-      dispatch(push(`/${regionId}/networks`));
       dispatch(notify(i18n.t('createSuccessed')));
     })
     .catch((error) => {

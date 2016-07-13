@@ -6,6 +6,9 @@
     "update": "保存",
     "reset": "重置",
     "login": "登录",
+    "logout": "退出",
+    "profile": "用户信息",
+    "security": "密码安全",
     "cancel": "取消",
     "delete": "删除",
     "submit": "提交",
@@ -21,6 +24,9 @@
     "role": "角色",
     "settings": "设置",
     "region": "区域",
+    "globalRegion": "服务全球",
+    "productAndService": "产品和服务",
+    "ticket": "工单",
     "project": "项目",
     "user": "用户",
     "admin": "管理员",
@@ -136,6 +142,16 @@
     "closeModal": "关闭",
     "confirmModal": "确认",
     "confirmDelete": "确认删除吗?",
+
+    "languages": {
+        "chinese": "中文",
+        "english": "English"
+    },
+
+    "services": {
+        "g": "帐号信息",
+        "lcs": "云主机"
+    },
 
     "networkStatus": {
         "pending": "准备中",
@@ -302,6 +318,7 @@
         "updateNetwork": "更新",
         "setExternalGateway": "开通公网网关",
         "unsetExternalGateway": "关闭公网网关",
+        "portForwarding": "端口转发",
         "deleteNetwork": "删除",
         "externalGatewayIp": "公网网关 IP",
         "createSubnet": "添加子网"
@@ -436,7 +453,7 @@
         "eipPackets": "数据包"
     },
 
-    "sidebarInstance": "云主机",
+    "sidebarInstance": "主机列表",
     "sidebarInstanceType": "主机配置",
     "sidebarVolume": "云硬盘",
     "sidebarNetwork": "私有网络",

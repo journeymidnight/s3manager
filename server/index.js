@@ -42,5 +42,4 @@ function createApp(module) {
 }
 
 createApp('boss').listen(9013);
-createApp('region').listen(9012);
 createApp('console').listen(9014);

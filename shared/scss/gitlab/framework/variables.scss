@@ -2,7 +2,7 @@
  * Layout
  */
 $sidebar_collapsed_width: 62px;
-$sidebar_width: 230px;
+$sidebar_width: 230px !default;
 $gutter_collapsed_width: 62px;
 $gutter_width: 290px;
 $gutter_inner_width: 258px;
@@ -65,7 +65,7 @@ $gl-padding-top: 10px;
 $row-hover: #f4f8fe;
 $progress-color: #c0392b;
 $avatar_radius: 50%;
-$header-height: 58px;
+$header-height: 58px !default;
 $fixed-layout-width: 1280px;
 $gl-avatar-size: 40px;
 $error-exclamation-point: #e62958;

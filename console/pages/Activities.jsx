@@ -8,8 +8,8 @@ import * as ActivityActions from '../redux/actions.activity';
 class C extends TablePage {
 
   componentDidMount() {
-    const { t, dispatch, region } = this.props;
-    dispatch(Actions.setHeader(t('activityManage'), `/${region.regionId}/activities`));
+    const { t, dispatch, servicePath } = this.props;
+    dispatch(Actions.setHeader(t('activityManage'), `${servicePath}/activities`));
 
     this.initTable({ status: ['pending', 'running', 'finished', 'error'] });
   }

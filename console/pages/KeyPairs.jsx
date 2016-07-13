@@ -18,8 +18,8 @@ class C extends TablePage {
   }
 
   componentDidMount() {
-    const { t, dispatch, region } = this.props;
-    dispatch(Actions.setHeader(t('keyPairManage'), `/${region.regionId}/key_pairs`));
+    const { t, dispatch, servicePath } = this.props;
+    dispatch(Actions.setHeader(t('keyPairManage'), `${servicePath}/key_pairs`));
 
     this.initTable();
   }
@@ -40,7 +40,7 @@ class C extends TablePage {
   }
 
   renderTable() {
-    const { t } = this.props;
+    const { t, servicePath } = this.props;
     return this.props.context.total > 0 && this.props.context.keyPairSet.length > 0 && (
       <table className="table">
         <thead>
@@ -62,7 +62,7 @@ class C extends TablePage {
                   <input type="checkbox" className="selected" onChange={this.onSelect(keyPair.keyPairId)} checked={this.props.context.selected[keyPair.keyPairId] === true} />
                 </td>
                 <td>
-                  <Link to={`/${this.props.region.regionId}/key_pairs/${keyPair.keyPairId}`}>
+                  <Link to={`${servicePath}/key_pairs/${keyPair.keyPairId}`}>
                     {keyPair.keyPairId}
                   </Link>
                 </td>
@@ -84,7 +84,7 @@ class C extends TablePage {
   }
 
   renderHeader() {
-    const { t } = this.props;
+    const { t, servicePath } = this.props;
     return (
       <div className="top-area">
         <div className="nav-text">
@@ -93,7 +93,7 @@ class C extends TablePage {
           </span>
         </div>
         <div className="nav-controls">
-          <Link className="btn btn-new" to={`/${this.props.region.regionId}/key_pairs/create`}>
+          <Link className="btn btn-new" to={`${servicePath}/key_pairs/create`}>
             <i className="fa fa-plus"></i>&nbsp; {t('create')}
           </Link>
         </div>

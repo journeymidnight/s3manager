@@ -48,8 +48,8 @@ class C extends Page {
   }
 
   componentDidMount() {
-    const { t, dispatch, region, routerKey } = this.props;
-    dispatch(Actions.setHeader(t('networkManage'), `/${region.regionId}/networks`));
+    const { t, dispatch, servicePath, routerKey } = this.props;
+    dispatch(Actions.setHeader(t('networkManage'), `${servicePath}/networks`));
 
     dispatch(Actions.extendContext({
       status: ['pending', 'active'],
@@ -153,7 +153,7 @@ class C extends Page {
   }
 
   renderTable() {
-    const { t } = this.props;
+    const { t, servicePath } = this.props;
     return this.props.context.total > 0 && this.props.context.networkSet.length > 0 && (
       <table className="table">
         <thead>
@@ -175,7 +175,7 @@ class C extends Page {
                 <input type="checkbox" className="selected" onChange={this.onSelect(network)} checked={this.props.context.selected[network.networkId] === true} />
               </td>
               <td>
-                <Link to={`/${this.props.region.regionId}/networks/${network.networkId}`}>
+                <Link to={`${servicePath}/networks/${network.networkId}`}>
                   {network.networkId}
                 </Link>
               </td>
@@ -197,7 +197,7 @@ class C extends Page {
   }
 
   renderAfterInitialized() {
-    const { t } = this.props;
+    const { t, servicePath } = this.props;
     return (
       <div className="container-fluid container-limited">
         <div className="content">
@@ -209,7 +209,7 @@ class C extends Page {
                 </span>
               </div>
               <div className="nav-controls">
-                <Link className="btn btn-new" to={`/${this.props.region.regionId}/networks/create`}>
+                <Link className="btn btn-new" to={`${servicePath}/networks/create`}>
                   <i className="fa fa-plus"></i>&nbsp;{t('create')}
                 </Link>
               </div>
@@ -241,11 +241,8 @@ class C extends Page {
                           status: ['active'],
                           name: t('networkStatus.active'),
                         }, {
-                          status: ['deleted'],
+                          status: ['deleted', 'ceased'],
                           name: t('networkStatus.deleted'),
-                        }, {
-                          status: ['ceased'],
-                          name: t('networkStatus.ceased'),
                         }].map((filter) => {
                           return (
                             <li key={filter.name}>

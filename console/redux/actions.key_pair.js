@@ -1,4 +1,3 @@
-import { push } from 'react-router-redux';
 import { notify, notifyAlert, extendContext } from './actions';
 import IaaS from '../services/iaas';
 import i18n from '../../shared/i18n';
@@ -42,7 +41,6 @@ export function requestCreateKeyPair(routerKey, regionId, keyPair) {
       .then((payload) => {
         dispatch(extendContext({ keyPair: payload }));
         setTimeout(() => {
-          dispatch(push(`/${regionId}/key_pairs`));
           dispatch(notify(i18n.t('createSuccessed')));
         }, 1000);
       })
@@ -73,7 +71,6 @@ export function requestDeleteKeyPairs(routerKey, regionId, keyPairIds) {
     .deleteKeyPairs(regionId, keyPairIds)
     .promise
     .then(() => {
-      dispatch(push(`/${regionId}/key_pairs`));
       dispatch(notify(i18n.t('deleteSuccessed')));
     })
     .catch((error) => {

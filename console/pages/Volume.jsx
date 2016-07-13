@@ -269,8 +269,8 @@ class C extends Page {
   }
 
   componentDidMount() {
-    const { t, dispatch, region } = this.props;
-    dispatch(Actions.setHeader(t('volumeManage'), `/${region.regionId}/volumes`));
+    const { t, dispatch, servicePath } = this.props;
+    dispatch(Actions.setHeader(t('volumeManage'), `${servicePath}/volumes`));
 
     this.setInterval(() => {
       this.refresh();

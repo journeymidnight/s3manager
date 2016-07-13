@@ -9,6 +9,7 @@ import bootstrap from '../shared/bootstrap';
 
 bootstrap((token, state, callback) => {
   document.title = state.env.appName;
+  window.$('body').toggleClass('ui_charcoal ui_console');
 
   let store = configureStore(rootReducer, state);
   let routes = configureRoutes(store);
@@ -17,8 +18,7 @@ bootstrap((token, state, callback) => {
     Auth.describeContext(token.token)
     .promise
     .then((context) => {
-      state.auth = context.auth;
-      state.regions = context.regionSet;
+      state.global = context;
 
       store = configureStore(rootReducer, state);
       routes = configureRoutes(store);

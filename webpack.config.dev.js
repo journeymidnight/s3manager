@@ -5,7 +5,6 @@ module.exports = {
 
   entry: {
     console: './console/index.js',
-    region: './region/index.js',
     boss: './boss/index.js',
   },
 
@@ -32,7 +31,6 @@ module.exports = {
       { test: /\.scss$/, loader: 'style!css!sass' },
       { test: /\.jsx*$/, loader: 'babel!eslint',
         includes: [
-          /region/,
           /console/,
           /boss/,
           /shared/,

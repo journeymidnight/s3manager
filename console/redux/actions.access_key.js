@@ -1,4 +1,3 @@
-import { push } from 'react-router-redux';
 import { notify, notifyAlert, extendContext } from './actions';
 import Auth from '../services/auth';
 import i18n from '../../shared/i18n';
@@ -29,7 +28,6 @@ export function requestCreateAccessKey(name, description) {
       .then((payload) => {
         dispatch(extendContext({ accessKey: payload }));
         setTimeout(() => {
-          dispatch(push('/access_keys'));
           dispatch(notify(i18n.t('createSuccessed')));
         }, 1000);
       })

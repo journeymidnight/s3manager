@@ -20,8 +20,8 @@ class C extends TablePage {
 
 
   componentDidMount() {
-    const { t, dispatch, region } = this.props;
-    dispatch(Actions.setHeader(t('volumeManage'), `/${region.regionId}/volumes`));
+    const { t, dispatch, servicePath } = this.props;
+    dispatch(Actions.setHeader(t('volumeManage'), `${servicePath}/volumes`));
 
     this.initTable();
   }
@@ -48,7 +48,7 @@ class C extends TablePage {
 
 
   renderTable() {
-    const { t } = this.props;
+    const { t, servicePath } = this.props;
     return this.props.context.total > 0 && this.props.context.volumeSet.length > 0 && (
       <table className="table">
         <thead>
@@ -71,7 +71,7 @@ class C extends TablePage {
                   <input type="checkbox" className="selected" onChange={this.onSelect(volume.volumeId)} checked={this.props.context.selected[volume.volumeId] === true} />
                 </td>
                 <td>
-                  <Link to={`/${this.props.region.regionId}/volumes/${volume.volumeId}`}>
+                  <Link to={`${servicePath}/volumes/${volume.volumeId}`}>
                     {volume.volumeId}
                   </Link>
                 </td>
@@ -94,7 +94,7 @@ class C extends TablePage {
   }
 
   renderHeader() {
-    const { t } = this.props;
+    const { t, servicePath } = this.props;
     return (
       <div className="top-area">
         <div className="nav-text">
@@ -103,7 +103,7 @@ class C extends TablePage {
           </span>
         </div>
         <div className="nav-controls">
-          <Link className="btn btn-new" to={`/${this.props.region.regionId}/volumes/create`}>
+          <Link className="btn btn-new" to={`${servicePath}/volumes/create`}>
             <i className="fa fa-plus"></i>&nbsp; {t('create')}
           </Link>
         </div>

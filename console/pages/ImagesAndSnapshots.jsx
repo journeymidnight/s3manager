@@ -9,7 +9,7 @@ class C extends Page {
   }
 
   render() {
-    const { t, region } = this.props;
+    const { t, servicePath } = this.props;
 
     let active = 'public_images';
     if (_.endsWith(this.props.location.pathname, 'public_images')) {
@@ -26,17 +26,17 @@ class C extends Page {
           <div className="clearfix">
             <ul className="nav-links clearfix">
               <li className={`pull-left ${(active === 'public_images') ? 'active' : ''}`}>
-                <Link data-placement="left" to={`/${region.regionId}/images_snapshots/public_images`}>
+                <Link data-placement="left" to={`${servicePath}/images_snapshots/public_images`}>
                   {t('public_images')}
                 </Link>
               </li>
               <li className={`pull-left ${(active === 'private_images') ? 'active' : ''}`}>
-                <Link data-placement="left" to={`/${region.regionId}/images_snapshots/private_images`}>
+                <Link data-placement="left" to={`${servicePath}/images_snapshots/private_images`}>
                   {t('private_images')}
                 </Link>
               </li>
               <li className={`pull-left ${(active === 'volume_snapshots') ? 'active' : ''}`}>
-                <Link data-placement="left" to={`/${region.regionId}/images_snapshots/volume_snapshots`}>
+                <Link data-placement="left" to={`${servicePath}/images_snapshots/volume_snapshots`}>
                   {t('volume_snapshots')}
                 </Link>
               </li>

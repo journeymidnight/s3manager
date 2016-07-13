@@ -13,8 +13,9 @@ class Auth {
       options.headers['X-Le-Token'] = token;
     });
   }
-  connectRegion(regionId) {
-    return call('post', '/api/iam/connectRegion', {
+  connectService(serviceKey, regionId) {
+    return call('post', '/api/iam/connectService', {
+      serviceKey,
       regionId,
     });
   }
