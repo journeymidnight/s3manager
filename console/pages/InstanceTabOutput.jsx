@@ -16,8 +16,8 @@ class C extends Page {
   }
 
   componentDidMount() {
-    const { t, dispatch, region } = this.props;
-    dispatch(Actions.setHeader(t('instanceManage'), `/${region.regionId}/instances`));
+    const { t, dispatch, servicePath } = this.props;
+    dispatch(Actions.setHeader(t('instanceManage'), `${servicePath}/instances`));
 
     this.refresh();
   }

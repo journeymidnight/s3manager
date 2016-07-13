@@ -19,8 +19,8 @@ class C extends TablePage {
   }
 
   componentDidMount() {
-    const { t, dispatch, region } = this.props;
-    dispatch(Actions.setHeader(t('volumeSnapshotManage'), `/${region.regionId}/images_snapshots/volume_snapshots`));
+    const { t, dispatch, servicePath } = this.props;
+    dispatch(Actions.setHeader(t('volumeSnapshotManage'), `${servicePath}/images_snapshots/volume_snapshots`));
 
     this.initTable({ isTabPage: true });
   }
@@ -46,7 +46,7 @@ class C extends TablePage {
   }
 
   renderTable() {
-    const { t } = this.props;
+    const { t, servicePath } = this.props;
     return this.props.context.total > 0 && this.props.context.snapshotSet.length > 0 && (
       <table className="table">
         <thead>
@@ -69,7 +69,7 @@ class C extends TablePage {
                   <input type="checkbox" className="selected" onChange={this.onSelect(snapshot.snapshotId)} checked={this.props.context.selected[snapshot.snapshotId] === true} />
                 </td>
                 <td>
-                  <Link to={`/${this.props.region.regionId}/snapshots/${snapshot.snapshotId}`}>
+                  <Link to={`${servicePath}/snapshots/${snapshot.snapshotId}`}>
                     {snapshot.snapshotId}
                   </Link>
                 </td>

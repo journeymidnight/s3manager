@@ -28,7 +28,7 @@ export function cleanNotify() {
   });
 }
 
-export function notify(message, type = 'notice', delay = undefined) {
+export function notify(message, type = 'success', delay = undefined) {
   return (dispatch) => {
     if (delay) {
       setTimeout(() => {

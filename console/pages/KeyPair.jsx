@@ -77,8 +77,8 @@ class C extends Page {
   }
 
   componentDidMount() {
-    const { t, dispatch, region } = this.props;
-    dispatch(Actions.setHeader(t('keyPairManage'), `/${region.regionId}/key_pairs`));
+    const { t, dispatch, servicePath } = this.props;
+    dispatch(Actions.setHeader(t('keyPairManage'), `${servicePath}/key_pairs`));
     this.setInterval(() => {
       this.refresh();
     }, 2000);

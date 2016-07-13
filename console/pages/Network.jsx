@@ -83,8 +83,8 @@ class C extends Page {
   }
 
   componentDidMount() {
-    const { t, dispatch, region } = this.props;
-    dispatch(Actions.setHeader(t('networkManage'), `/${region.regionId}/networks`));
+    const { t, dispatch, servicePath } = this.props;
+    dispatch(Actions.setHeader(t('networkManage'), `${servicePath}/networks`));
 
     this.setInterval(() => {
       this.refresh();
@@ -157,7 +157,7 @@ class C extends Page {
   }
 
   render() {
-    const { t, region, params } = this.props;
+    const { t, servicePath, params } = this.props;
 
     const network = this.props.context.network || this.network;
     if (!network || network.networkId !== params.networkId) {
@@ -252,12 +252,12 @@ class C extends Page {
               {this.isEnabled(network) && <div className="col-md-8 tabs">
                 <ul className="nav-links clearfix">
                   <li className={`pull-left ${(active === 'subnets') ? 'active' : ''}`}>
-                    <Link data-placement="left" to={`/${region.regionId}/networks/${network.networkId}/subnets`}>
+                    <Link data-placement="left" to={`${servicePath}/networks/${network.networkId}/subnets`}>
                       {t('pageNetwork.subnets')}
                     </Link>
                   </li>
                   {network.externalGatewayIp && <li className={`pull-left ${(active === 'portForwarding') ? 'active' : ''}`}>
-                    <Link data-placement="left" to={`/${region.regionId}/networks/${network.networkId}/port-forwarding`}>
+                    <Link data-placement="left" to={`${servicePath}/networks/${network.networkId}/port-forwarding`}>
                       {t('pageNetwork.portForwarding')}
                     </Link>
                   </li>}

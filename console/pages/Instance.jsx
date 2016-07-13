@@ -14,7 +14,6 @@ import * as EipActions from '../redux/actions.eip';
 import * as Actions from '../redux/actions';
 import * as InstanceActions from '../redux/actions.instance';
 
-
 let InstanceUpdateForm = (props) => {
   const { fields:
     { name, description },
@@ -100,8 +99,8 @@ class C extends Page {
   }
 
   componentDidMount() {
-    const { t, dispatch, region } = this.props;
-    dispatch(Actions.setHeader(t('instanceManage'), `/${region.regionId}/instances`));
+    const { t, dispatch, servicePath } = this.props;
+    dispatch(Actions.setHeader(t('instanceManage'), `${servicePath}/instances`));
 
     this.setInterval(() => {
       this.refresh();
@@ -304,7 +303,7 @@ class C extends Page {
   }
 
   render() {
-    const { t, region, params } = this.props;
+    const { t, servicePath, region, params } = this.props;
 
     const instance = this.props.context.instance || this.instance;
     if (!instance || instance.instanceId !== params.instanceId) {
@@ -462,12 +461,12 @@ class C extends Page {
               {this.isEnabled(instance) && <div className="col-md-8 tabs">
                 <ul className="nav-links clearfix">
                   <li className={`pull-left ${(active === 'monitor') ? 'active' : ''}`}>
-                    <Link data-placement="left" to={`/${region.regionId}/instances/${instance.instanceId}/monitor`}>
+                    <Link data-placement="left" to={`${servicePath}/instances/${instance.instanceId}/monitor`}>
                       {t('pageInstance.monitor')}
                     </Link>
                   </li>
                   <li className={`pull-left ${(active === 'output') ? 'active' : ''}`}>
-                    <Link data-placement="left" to={`/${region.regionId}/instances/${instance.instanceId}/output`}>
+                    <Link data-placement="left" to={`${servicePath}/instances/${instance.instanceId}/output`}>
                       {t('pageInstance.output')}
                     </Link>
                   </li>

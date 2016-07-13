@@ -137,8 +137,8 @@ class C extends Page {
   }
 
   componentDidMount() {
-    const { t, dispatch, region } = this.props;
-    dispatch(Actions.setHeader(t('eipManage'), `/${region.regionId}/eips`));
+    const { t, dispatch, servicePath } = this.props;
+    dispatch(Actions.setHeader(t('eipManage'), `${servicePath}/eips`));
 
     this.setInterval(() => {
       this.refresh();

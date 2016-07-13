@@ -51,6 +51,7 @@ C.propTypes = {
   context: React.PropTypes.object,
   region: React.PropTypes.object,
   service: React.PropTypes.object,
+  servicePath: React.PropTypes.string,
   t: React.PropTypes.any,
   routerKey: React.PropTypes.string,
 };
@@ -60,6 +61,7 @@ function mapStateToProps(state) {
     context: state.context,
     region: state.service && state.service.region,
     service: state.service,
+    servicePath: state.service && state.service.servicePath,
     global: state.global,
     routerKey: state.routing.locationBeforeTransitions.key,
   };

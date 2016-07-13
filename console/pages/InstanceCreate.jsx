@@ -13,9 +13,9 @@ class C extends Page {
   }
 
   componentDidMount() {
-    const { t, dispatch, region, routerKey } = this.props;
+    const { t, dispatch, region, servicePath, routerKey } = this.props;
 
-    dispatch(Actions.setHeader(t('instanceManage'), `/${region.regionId}/instances`));
+    dispatch(Actions.setHeader(t('instanceManage'), `${servicePath}/instances`));
     dispatch(InstanceActions.requestDescribePrerequisites(routerKey, region.regionId)).
     then(() => {
       dispatch(Actions.extendContext({ initialized: true }, routerKey));
@@ -54,7 +54,7 @@ class C extends Page {
   }
 
   renderAfterInitialized() {
-    const { t, region } = this.props;
+    const { t, servicePath, service } = this.props;
     const { networkSet, instanceTypeSet, imageSet, keyPairSet } = this.props.context;
 
     let hint = undefined;
@@ -64,7 +64,7 @@ class C extends Page {
       hint = (
         <div>
           <p>{t('pageInstanceCreate.networkNotFound')}</p>
-          <Link className="btn btn-new" to={`/${region.regionId}/networks/create`}>{t('pageNetworkCreate.createNetwork')}</Link>
+          <Link className="btn btn-new" to={`${servicePath}/networks/create`}>{t('pageNetworkCreate.createNetwork')}</Link>
         </div>
       );
     }
@@ -98,7 +98,7 @@ class C extends Page {
               instanceTypeSet={instanceTypeSet}
               imageSet={imageSet}
               keyPairSet={keyPairSet}
-              region={region}
+              service={service}
             />
           </div>
         </div>

@@ -10,8 +10,8 @@ class C extends Page {
   }
 
   componentDidMount() {
-    const { t, dispatch, region } = this.props;
-    dispatch(Actions.setHeader(t('networkManage'), `/${region.regionId}/networks`));
+    const { t, dispatch, servicePath } = this.props;
+    dispatch(Actions.setHeader(t('networkManage'), `${servicePath}/networks`));
   }
 }
 

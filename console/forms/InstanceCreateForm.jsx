@@ -84,6 +84,7 @@ class F extends React.Component {
       submitFailed,
       resetForm,
       t,
+      service,
     } = this.props;
 
     if (!vcpus.value) {
@@ -183,7 +184,7 @@ class F extends React.Component {
                     <div key={network.networkId}>
                       <div style={{ padding: '6px 0' }}>
                         <i>
-                          <Link target="_blank" to={`/${this.props.region.regionId}/networks/${network.networkId}`}>{network.networkId}</Link>
+                          <Link target="_blank" to={`${service.servicePath}/networks/${network.networkId}`}>{network.networkId}</Link>
                         </i>
                         &nbsp;<b>{network.name}</b>
                       </div>
@@ -289,7 +290,7 @@ F.propTypes = {
   instanceTypeSet: React.PropTypes.array,
   networkSet: React.PropTypes.array,
   keyPairSet: React.PropTypes.array,
-  region: React.PropTypes.object,
+  service: React.PropTypes.object,
 };
 
 F.validate = values => {

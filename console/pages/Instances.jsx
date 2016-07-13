@@ -25,8 +25,8 @@ class C extends TablePage {
   }
 
   componentDidMount() {
-    const { t, dispatch, region } = this.props;
-    dispatch(Actions.setHeader(t('instanceManage'), `/${region.regionId}/instances`));
+    const { t, dispatch, servicePath } = this.props;
+    dispatch(Actions.setHeader(t('instanceManage'), `${servicePath}/instances`));
 
     this.initTable({
       status: ['pending', 'active', 'starting', 'stopped', 'stopping', 'restarting', 'scheduling', 'error'],
@@ -83,7 +83,7 @@ class C extends TablePage {
   }
 
   renderTable() {
-    const { t } = this.props;
+    const { t, servicePath } = this.props;
     return this.props.context.total > 0 && this.props.context.instanceSet.length > 0 && (
       <table className="table">
         <thead>
@@ -108,7 +108,7 @@ class C extends TablePage {
                 <input type="checkbox" className="selected" onChange={this.onSelect(instance.instanceId)} checked={this.props.context.selected[instance.instanceId] === true} />
               </td>
               <td>
-                <Link to={`/${this.props.region.regionId}/instances/${instance.instanceId}`}>
+                <Link to={`${servicePath}/instances/${instance.instanceId}`}>
                   {instance.instanceId}
                 </Link>
                 {instance.status === 'active' && <a className="pull-right" href onClick={this.connectVNC(instance)}>
@@ -136,14 +136,14 @@ class C extends TablePage {
   }
 
   renderHeader() {
-    const { t } = this.props;
+    const { t, servicePath } = this.props;
     return (
       <div className="top-area">
         <div className="nav-text">
           <span>{t('instanceManageDescription')}</span>
         </div>
         <div className="nav-controls">
-          <Link className="btn btn-new" to={`/${this.props.region.regionId}/instances/create`}>
+          <Link className="btn btn-new" to={`${servicePath}/instances/create`}>
             <i className="fa fa-plus"></i>&nbsp;{t('create')}
           </Link>
         </div>

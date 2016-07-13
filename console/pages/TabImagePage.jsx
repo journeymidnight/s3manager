@@ -9,8 +9,8 @@ import * as ImageActions from '../redux/actions.image';
 class C extends TablePage {
 
   componentDidMount() {
-    const { t, dispatch, region } = this.props;
-    dispatch(Actions.setHeader(t('publicImageManage'), `/${region.regionId}/images_snapshots/public_images`));
+    const { t, dispatch, servicePath } = this.props;
+    dispatch(Actions.setHeader(t('publicImageManage'), `${servicePath}/images_snapshots/public_images`));
 
     this.initTable({ isTabPage: true });
   }

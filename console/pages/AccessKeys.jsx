@@ -91,7 +91,7 @@ class C extends TablePage {
   }
 
   renderHeader() {
-    const { t } = this.props;
+    const { t, servicePath } = this.props;
     return (
       <div className="top-area">
         <div className="nav-text">
@@ -100,7 +100,7 @@ class C extends TablePage {
           </span>
         </div>
         <div className="nav-controls">
-          <Link className="btn btn-new" to={'/access_keys/create'}>
+          <Link className="btn btn-new" to={`${servicePath}/access_keys/create`}>
             <i className="fa fa-plus"></i>&nbsp; {t('create')}
           </Link>
         </div>
