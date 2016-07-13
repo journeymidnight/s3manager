@@ -6,7 +6,14 @@ import { Link } from 'react-router';
 const C = (props) => {
   const { header } = props.context;
   const { auth, regionSet, serviceSet } = props.global;
-  const { t, service } = props;
+  const { t, service, env } = props;
+
+  if (header) {
+    document.title = `${header.title} | ${env.appName}`;
+  } else {
+    document.title = `${env.appName}`;
+  }
+
   return (
     <header className="header-expanded navbar navbar-fixed-top navbar-gitlab">
       <div className="container-fluid">
@@ -30,13 +37,6 @@ const C = (props) => {
           </div>
           <div className="navbar-collapse collapse">
             <ul className="nav navbar-nav pull-right">
-              <li className="hidden">
-                <h1 className="title">
-                  {header && header.title &&
-                    <Link className="project-item-select-holder" to={header.link}>{header.title}</Link>
-                  }
-                </h1>
-              </li>
               {regionSet && <li className="dropdown">
                 <a href="#" className="dropdown-toggle" role="button">
                   <i className="fa fa-codepen"></i>&nbsp;
@@ -74,6 +74,7 @@ const C = (props) => {
 C.propTypes = {
   dispatch: React.PropTypes.func.isRequired,
   t: React.PropTypes.any,
+  env: React.PropTypes.object,
   global: React.PropTypes.object,
   region: React.PropTypes.object,
   service: React.PropTypes.object,
@@ -82,6 +83,7 @@ C.propTypes = {
 
 function mapStateToProps(state) {
   return {
+    env: state.env,
     global: state.global,
     region: state.region,
     service: state.service,

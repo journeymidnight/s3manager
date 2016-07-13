@@ -241,11 +241,8 @@ class C extends Page {
                           status: ['active'],
                           name: t('networkStatus.active'),
                         }, {
-                          status: ['deleted'],
+                          status: ['deleted', 'ceased'],
                           name: t('networkStatus.deleted'),
-                        }, {
-                          status: ['ceased'],
-                          name: t('networkStatus.ceased'),
                         }].map((filter) => {
                           return (
                             <li key={filter.name}>
