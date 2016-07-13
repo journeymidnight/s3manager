@@ -127,4 +127,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(translate()(C));
+export default connect(mapStateToProps)(translate(['common'], { wait: true })(C));

@@ -1,7 +1,20 @@
+import i18n from 'i18next';
+import store from 'store';
 import React from 'react';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { Link } from 'react-router';
+
+function changeLanguage(lng) {
+  return (e) => {
+    e.preventDefault();
+
+    i18n.changeLanguage(lng, () => {
+      store.set('lng', lng);
+      window.location.reload();
+    });
+  };
+}
 
 const C = (props) => {
   const { header } = props.context;
@@ -25,7 +38,7 @@ const C = (props) => {
             <ul className="nav navbar-nav">
               {serviceSet && <li className="dropdown">
                 <a href="#" className="dropdown-toggle" role="button">
-                  产品和服务 <span className="caret"></span>
+                  {t('productAndService')} <span className="caret"></span>
                 </a>
                 <ul className="dropdown-menu dropdown-menu-right">
                   {serviceSet.map((_service) => {
@@ -44,8 +57,9 @@ const C = (props) => {
               </li>
               {regionSet && <li className="dropdown">
                 <a href="#" className="dropdown-toggle" role="button">
-                  <i className="fa fa-codepen"></i>&nbsp;
-                  {service && service.region && service.region.name || t('globalRegion')} <span className="caret"></span>
+                  {(service && service.region) && <span><i className="fa fa-codepen"></i> {service.region.name}</span>}
+                  {!(service && service.region) && <span><i className="fa fa-globe"></i> {t('globalRegion')}</span>}
+                  &nbsp;<span className="caret"></span>
                 </a>
                 <ul className="dropdown-menu dropdown-menu-right">
                   {regionSet.map((_region) => {
@@ -66,6 +80,15 @@ const C = (props) => {
                       <i className="fa fa-sign-out"></i> {t('logout')}
                     </Link>
                   </li>
+                </ul>
+              </li>
+              <li className="dropdown">
+                <a href="#" className="dropdown-toggle" role="button">
+                  <i className="fa fa-language"></i>
+                </a>
+                <ul className="dropdown-menu dropdown-menu-right">
+                  <li><a href onClick={changeLanguage('zh')}>{t('languages.chinese')}</a></li>
+                  <li><a href onClick={changeLanguage('en')}>{t('languages.english')}</a></li>
                 </ul>
               </li>
             </ul>
@@ -96,4 +119,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(translate()(C));
+export default connect(mapStateToProps)(translate(['common'], { wait: true })(C));

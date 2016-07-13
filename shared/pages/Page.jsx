@@ -68,7 +68,7 @@ function mapStateToProps(state) {
 }
 
 export function attach(page) {
-  return connect(mapStateToProps)(translate()(page));
+  return connect(mapStateToProps)(translate(['common'], { wait: true, withRef: true })(page));
 }
 
 export default C;

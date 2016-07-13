@@ -25,6 +25,7 @@
     "settings": "设置",
     "region": "区域",
     "globalRegion": "服务全球",
+    "productAndService": "产品和服务",
     "ticket": "工单",
     "project": "项目",
     "user": "用户",
@@ -141,6 +142,11 @@
     "closeModal": "关闭",
     "confirmModal": "确认",
     "confirmDelete": "确认删除吗?",
+
+    "languages": {
+        "chinese": "中文",
+        "english": "English"
+    },
 
     "services": {
         "g": "帐号信息",

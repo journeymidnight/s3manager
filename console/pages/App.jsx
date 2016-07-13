@@ -104,4 +104,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(translate()(App));
+export default connect(mapStateToProps)(translate(['common'], { wait: true })(App));
