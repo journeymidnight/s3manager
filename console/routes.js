@@ -65,6 +65,7 @@ export default function configureRoutes(store) {
             <Route path="create" component={AccessKeyCreate} />
           </Route>
           <Route path="settings" component={Settings} />
+          <Route path="tickets" component={Settings} />
           <Route path="security" component={Settings} />
         </Route>
         <Route path="lcs" >

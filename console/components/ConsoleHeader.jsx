@@ -37,6 +37,11 @@ const C = (props) => {
           </div>
           <div className="navbar-collapse collapse">
             <ul className="nav navbar-nav pull-right">
+              <li>
+                <Link to="/g/tickets">
+                  <i className="fa fa-ticket"></i>&nbsp;{t('ticket')}
+                </Link>
+              </li>
               {regionSet && <li className="dropdown">
                 <a href="#" className="dropdown-toggle" role="button">
                   <i className="fa fa-codepen"></i>&nbsp;

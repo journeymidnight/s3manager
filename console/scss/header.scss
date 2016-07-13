@@ -44,6 +44,16 @@ header.navbar-gitlab {
                 }
             }
 
+            .navbar-collapse {
+                .navbar-nav > li > a {
+                    border-left: 1px solid #0a7cd1;
+
+                    &:hover {
+                        border-right: 1px solid transparent;
+                    }
+                }
+            }
+
             .navbar-left {
                 .navbar-nav > li > a {
                     padding: 0px 25px;
@@ -70,6 +80,7 @@ header.navbar-gitlab {
             ul.nav li.dropdown:hover > ul.dropdown-menu {
                 display: block;
             }
+
             @media (min-width: 979px) {
                 ul.nav li.dropdown:hover > ul.dropdown-menu {
                     display: block;

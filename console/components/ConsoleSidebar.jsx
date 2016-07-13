@@ -18,6 +18,14 @@ class C extends React.Component {
         path: 'security',
         title: t('security'),
         icon: 'fa-shield',
+      }, {
+        path: 'access_keys',
+        title: t('sidebarAccessKey'),
+        icon: 'fa-code',
+      }, {
+        path: 'tickets',
+        title: t('ticket'),
+        icon: 'fa-ticket',
       }],
       lcs: [{
         path: 'overview',
