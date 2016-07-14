@@ -26,12 +26,8 @@ class App extends React.Component {
     const currentService = routing.locationBeforeTransitions.pathname.split('/')[1];
 
     let currentRegion = params.regionId;
-    if (!currentRegion) {
-      if (global.defaultRegion) {
-        currentRegion = global.defaultRegion.regionId;
-      } else {
-        currentRegion = undefined;
-      }
+    if (!currentRegion && global.defaultRegion) {
+      currentRegion = global.defaultRegion.regionId;
     }
 
     this.currentService = currentService;
@@ -50,6 +46,8 @@ class App extends React.Component {
       if (!service) {
         dispatch(Actions.requestConnectService(currentService, currentRegion));
       } else if (service && service.serviceKey !== currentService) {
+        dispatch(Actions.requestConnectService(currentService, currentRegion));
+      } else if (service.region && service.region.regionId !== currentRegion) {
         dispatch(Actions.requestConnectService(currentService, currentRegion));
       }
     }
