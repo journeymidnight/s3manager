@@ -356,6 +356,7 @@
     },
 
     "pageUsage": {
+        "usage": "资源使用概览",
         "eips": "公网IP",
         "key_pairs": "SSH 密钥",
         "instances": "云主机",

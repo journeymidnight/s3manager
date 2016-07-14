@@ -30,46 +30,48 @@ class C extends Page {
     const total = context.total;
     const usage = context.usage;
     const resourceList = ['instances', 'vcpus', 'memory', 'volumes', 'volume_size', 'snapshots', 'images', 'eips', 'key_pairs'];
-    const rowCount = resourceList.length % 2 === 0 ? parseInt(resourceList.length / 2, 10) : parseInt(resourceList.length / 2, 10) + 1;
-    const usagePanelRows = [];
-    for (let i = 0; i < rowCount; i++) {
-      usagePanelRows.push(
-        <div className="row" key={i}>
-          {resourceList.slice(i * 2, i * 2 + 2).map((resource) => {
-            return (<div className="col-md-6 usage-panel-container" key={resource}>
-              <div className="resource-usage-panel">
-                <div className="usage-title">
-                  <span>{t(`pageUsage.${resource}`)}</span>
-                </div>
-                <div className="usage-chart">
-                  <div className="progress">
-                    <div
-                      className="progress-bar"
-                      role="progressbar"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                      style={{ width: `${usage[resource] * 100 / total[resource]}%` }}
-                    />
-                  </div>
-                </div>
-                <div className="usage-data">
-                  <span>{this.formatUsageDate(usage, total, resource)}</span>
-                </div>
-              </div>
-            </div>);
-          })}
+    const rows = resourceList.map((resource) => {
+      return (<div key={resource}>
+        <div className="clearfix">
+          <span>{t(`pageUsage.${resource}`)}</span>
+          <span className="pull-right">{this.formatUsageDate(usage, total, resource)}</span>
         </div>
-      );
-    }
-    return usagePanelRows;
+        <div className="progress">
+          <div
+            className="progress-bar"
+            role="progressbar"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            style={{ width: `${usage[resource] * 100 / total[resource]}%` }}
+          />
+        </div>
+      </div>);
+    });
+    return rows;
   }
 
   renderAfterInitialized() {
+    const { t } = this.props;
     return (
-      <div className="container-fluid container-limited">
+      <div className="container-fluid container-limited detail">
         <div className="content">
           <div className="clearfix">
-            {this.buildUsagePanelRows()}
+
+            <div className="top-area">
+              <div className="nav-text">
+                <span>{t('pageUsage.usage')}</span>
+              </div>
+            </div>
+
+            <div className="row">
+              <div className="col-md-6">
+                <div className="panel panel-default">
+                  <div className="panel-body">
+                    {this.buildUsagePanelRows()}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
