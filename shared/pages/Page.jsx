@@ -10,6 +10,7 @@ class C extends React.Component {
     super(props);
 
     this.timers = [];
+    this.routerKey = props.routerKey;
   }
 
   componentDidMount() {
@@ -17,6 +18,13 @@ class C extends React.Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     return !_.isEqual(this.props.context, nextProps.context) || !_.isEqual(this.state, nextState);
+  }
+
+  componentDidUpdate() {
+    if (this.props.routerKey !== this.routerKey && _.keys(this.props.context).length === 0) {
+      this.componentDidMount();
+      this.routerKey = this.props.routerKey;
+    }
   }
 
   componentWillUnmount() {

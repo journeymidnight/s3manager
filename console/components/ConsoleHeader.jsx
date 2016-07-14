@@ -90,6 +90,7 @@ const C = (props) => {
                 <ul className="dropdown-menu dropdown-menu-right">
                   <li><Link to="/g/profile">{t('profile')}</Link></li>
                   <li><Link to="/g/security">{t('security')}</Link></li>
+                  <li><Link to="/g/access_keys">{t('sidebarAccessKey')}</Link></li>
                   <li role="separator" className="divider"></li>
                   <li>
                     <Link className="logout" to="/logout">
