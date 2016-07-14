@@ -266,7 +266,7 @@ header.navbar-gitlab .container-fluid {
 
 .top-area {
     .nav-text {
-        width: 70%;
+        width: 50%;
 
         /* Small devices (phones, tablets, 768px and lower) */
         @media (max-width: $screen-sm-min) {
@@ -274,7 +274,7 @@ header.navbar-gitlab .container-fluid {
         }
     }
     .nav-controls {
-        width: 30%;
+        width: 50%;
 
         /* Small devices (tablets, 768px and lower) */
         @media (max-width: $screen-sm-max) {

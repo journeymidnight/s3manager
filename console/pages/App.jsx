@@ -31,6 +31,7 @@ class App extends React.Component {
     }
 
     this.currentService = currentService;
+    this.currentRegion = currentRegion;
 
     if (!currentService) {
       return;
@@ -58,9 +59,9 @@ class App extends React.Component {
 
     if (service && service.serviceKey !== this.currentService) {
       return <div />;
-    }
-
-    if (this.currentService && !service) {
+    } else if (service && service.region && service.region.regionId !== this.currentRegion) {
+      return <div />;
+    } else if (!service && this.currentService) {
       return <div />;
     }
 
