@@ -54,7 +54,7 @@ export default function configureRoutes(store) {
         <Route path=":host/:port/:token" component={VNC} />
       </Route>
       <Route path="/" component={App} onEnter={requireAuth} >
-        <IndexRedirect to="g" />
+        <IndexRedirect to="lcs" />
 
         <Route path="g" >
           <IndexRedirect to="profile" />
