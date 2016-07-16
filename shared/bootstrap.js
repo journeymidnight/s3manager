@@ -8,6 +8,7 @@ import { I18nextProvider } from 'react-i18next';
 import DevTools from './components/DevTools';
 import API from './services/api';
 import i18n from './i18n';
+import './analytics';
 
 const dest = document.getElementById('root');
 
