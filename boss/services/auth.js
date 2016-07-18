@@ -8,7 +8,7 @@ class Auth {
     });
   }
   describeContext(token) {
-    return call('post', '/api/describeContext', {}, (options) => {
+    return call('post', '/api/DescribeContext', {}, (options) => {
       options.headers['X-Le-Token'] = token;
     });
   }
