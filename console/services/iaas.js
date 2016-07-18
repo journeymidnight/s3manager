@@ -222,5 +222,17 @@ class IaaS {
   describeQuotas(regionId) {
     return this.call(regionId, 'DescribeQuotas');
   }
+  describePortForwardings(regionId, filter = {}) {
+    return this.call(regionId, 'DescribePortForwardings', filter);
+  }
+  createPortForwarding(regionId, portForwarding) {
+    return this.call(regionId, 'CreatePortForwarding', portForwarding);
+  }
+  deletePortForwardings(regionId, portForwardingIds) {
+    return this.call(regionId, 'DeletePortForwardings', {
+      portForwardingIds,
+    });
+  }
 }
+
 export default new IaaS();

@@ -146,3 +146,45 @@ export function requestUnsetExternalGateway(routerKey, regionId, networkIds) {
     });
   };
 }
+
+export function requestDescribePortForwardings(routerKey, regionId, filters) {
+  return dispatch => {
+    return IaaS
+    .describePortForwardings(regionId, filters)
+    .promise
+    .then((payload) => {
+      dispatch(extendContext(payload, routerKey));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
+export function requestCreatePortForwarding(routerKey, regionId, portForwarding) {
+  return dispatch => {
+    return IaaS
+    .createPortForwarding(regionId, portForwarding)
+    .promise
+    .then(() => {
+      dispatch(notify(i18n.t('createSuccessed')));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
+export function requestDeletePortForwardings(routerKey, regionId, portForwardingIds) {
+  return dispatch => {
+    return IaaS
+    .deletePortForwardings(regionId, portForwardingIds)
+    .promise
+    .then(() => {
+      dispatch(notify(i18n.t('deleteSuccessed')));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}

@@ -22,6 +22,7 @@ class C extends React.Component {
 
   componentDidUpdate() {
     if (this.props.routerKey !== this.routerKey && _.keys(this.props.context).length === 0) {
+      this.componentWillUnmount();
       this.componentDidMount();
       this.routerKey = this.props.routerKey;
     }
