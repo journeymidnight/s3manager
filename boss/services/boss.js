@@ -6,84 +6,84 @@ export const projectRoleUser = 2;
 class Boss {
   call(action, params) {
     const payload = Object.assign({}, params);
-    return rawCall('post', `/api/${action}`, payload);
+    return rawCall('post', `/api/iam/${action}`, payload);
   }
   describeProjects(filters = {}) {
-    return this.call('describeProjects', filters);
+    return this.call('DescribeProjects', filters);
   }
   deleteProjects(filters = {}) {
-    return this.call('deleteProjects', filters);
+    return this.call('DeleteProjects', filters);
   }
   createProject(project) {
-    return this.call('createProject', project);
+    return this.call('CreateProject', project);
   }
   modifyProject(project) {
-    return this.call('modifyProjectAttributes', project);
+    return this.call('ModifyProjectAttributes', project);
   }
   describeProjectRoles(projectId) {
-    return this.call('describeProjectRoles', {
+    return this.call('DescribeProjectRoles', {
       projectId,
     });
   }
   describeUserRoles(userId) {
-    return this.call('describeUserRoles', {
+    return this.call('DescribeUserRoles', {
       userId,
     });
   }
   createProjectRole(projectId, userId, role) {
-    return this.call('createProjectRole', {
+    return this.call('CreateProjectRole', {
       projectId,
       userId,
       role,
     });
   }
   deleteProjectRole(projectId, userIds) {
-    return this.call('deleteProjectRole', {
+    return this.call('DeleteProjectRole', {
       projectId,
       userIds,
     });
   }
   describeUsers(filters = {}) {
-    return this.call('describeUsers', filters);
+    return this.call('DescribeUsers', filters);
   }
   deleteUsers(userIds) {
-    return this.call('deleteUsers', {
+    return this.call('DeleteUsers', {
       userIds,
     });
   }
   createUser(user) {
-    return this.call('createUser', user);
+    return this.call('CreateUser', user);
   }
   modifyUser(user) {
-    return this.call('modifyUserAttributes', user);
+    return this.call('ModifyUserAttributes', user);
   }
   describeRegions(filters = {}) {
-    return this.call('describeRegions', filters);
+    return this.call('DescribeRegions', filters);
   }
   createRegion(region) {
-    return this.call('createRegion', region);
+    return this.call('CreateRegion', region);
   }
   modifyRegion(region) {
-    return this.call('modifyRegionAttributes', region);
+    return this.call('ModifyRegionAttributes', region);
   }
   describeProjectQuotas(filters = {}) {
-    return this.call('describeProjectQuotas', filters);
+    return this.call('DescribeProjectQuotas', filters);
   }
   assignProjectQuota(regionId, projectId, quota) {
-    return this.call('assignProjectQuota', {
+    return this.call('AssignProjectQuota', {
       regionId,
       projectId,
       ...quota,
     });
   }
   describeAdmins(filters = {}) {
-    return this.call('describeAdmins', filters);
+    return this.call('DescribeAdmins', filters);
   }
   createAdmin(admin) {
-    return this.call('createAdmin', admin);
+    return this.call('CreateAdmin', admin);
   }
   modifyAdmin(admin) {
-    return this.call('modifyAdminAttributes', admin);
+    return this.call('ModifyAdminAttributes', admin);
   }
 }
 

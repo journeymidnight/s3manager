@@ -61,9 +61,7 @@ const C = (props) => {
                     if (service.serviceKey === 'g') {
                       return (
                         <li key={_region.regionId}>
-                          <Link to={`${_region.consoleEndpoint || ''}/`}>
-                            {_region.name}
-                          </Link>
+                          <Link to={`${_region.consoleEndpoint || ''}/`}>{_region.name}</Link>
                         </li>
                       );
                     }
