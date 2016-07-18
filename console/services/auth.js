@@ -9,27 +9,27 @@ class Auth {
     });
   }
   describeContext(token) {
-    return call('post', '/api/iam/describeContext', {}, (options) => {
+    return call('post', '/api/iam/DescribeContext', {}, (options) => {
       options.headers['X-Le-Token'] = token;
     });
   }
   connectService(serviceKey, regionId) {
-    return call('post', '/api/iam/connectService', {
+    return call('post', '/api/iam/ConnectService', {
       serviceKey,
       regionId,
     });
   }
   createAccessKey(name, description) {
-    return call('post', '/api/iam/createAccessKey', {
+    return call('post', '/api/iam/CreateAccessKey', {
       name,
       description,
     });
   }
   describeAccessKeys(filter = {}) {
-    return call('post', '/api/iam/describeAccessKeys', filter);
+    return call('post', '/api/iam/DescribeAccessKeys', filter);
   }
   deleteAccessKeys(accessKeys) {
-    return call('post', '/api/iam/deleteAccessKeys', {
+    return call('post', '/api/iam/DeleteAccessKeys', {
       accessKeys,
     });
   }
