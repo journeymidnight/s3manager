@@ -26,6 +26,7 @@ class C extends Page {
         name,
         size,
         count,
+        volumeType: 'normal',
       }))
         .then(() => {
           resolve();

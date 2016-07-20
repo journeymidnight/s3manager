@@ -501,6 +501,12 @@ class C extends Page {
                         </td>
                       </tr>
                       <tr>
+                        <td>{t('attachInstance')}</td>
+                        <td>
+                        {volume.instanceId || <i className="text-muted">{t('noName')}</i>}
+                        </td>
+                      </tr>
+                      <tr>
                         <td>{t('status')}</td>
                         <td className={`i-status i-status-${volume.status}`}>
                           <i className="icon"></i>
