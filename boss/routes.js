@@ -1,6 +1,7 @@
 import React from 'react';
 import { IndexRoute, Route } from 'react-router';
 
+import NotFound from '../shared/pages/NotFound.jsx';
 import App from './pages/App.jsx';
 import Index from './pages/Index.jsx';
 import Login from './pages/Login.jsx';
@@ -79,6 +80,7 @@ export default function configureRoutes(store) {
           <Route path=":userId" component={User} />
         </Route>
       </Route>
+      <Route path="*" component={NotFound} />
     </Route>
   );
 }
