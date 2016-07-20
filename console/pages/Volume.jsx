@@ -346,7 +346,7 @@ class C extends Page {
     const { t, dispatch, region, routerKey } = this.props;
     const volume = this.props.context.volume;
     confirmModal(t('pageVolume.confirmDetachVolume'), () => {
-      dispatch(VolumeActions.requestDetachVolumes(routerKey, region.regionId, [volume.volumeId], 'i-VVyfG7jk'))
+      dispatch(VolumeActions.requestDetachVolumes(routerKey, region.regionId, [volume.volumeId], volume.instanceId))
         .then(() => {
           dispatch(VolumeActions.requestDescribeVolume(routerKey, region.regionId, volume.volumeId));
         });
