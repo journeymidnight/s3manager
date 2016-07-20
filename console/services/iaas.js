@@ -41,12 +41,10 @@ class IaaS {
       description,
     });
   }
-  attachVolume(regionId, volumeId, instanceId, mountpoint, mode) {
+  attachVolume(regionId, volumeId, instanceId) {
     return this.call(regionId, 'AttachVolume', {
       volumeId,
       instanceId,
-      mountpoint,
-      mode,
     });
   }
   detachVolumes(regionId, volumeIds, instanceId) {

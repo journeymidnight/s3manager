@@ -65,7 +65,7 @@ VolumeUpdateForm = reduxForm({
 
 let VolumeAttachForm = (props) => {
   const { fields:
-    { name, instanceId, mountpoint },
+    { name, instanceId },
     handleSubmit,
     submitting,
     submitFailed,
@@ -93,13 +93,6 @@ let VolumeAttachForm = (props) => {
             {submitFailed && instanceId.error && <div className="text-danger"><small>{instanceId.error}</small></div>}
           </div>
         </div>
-        <div className={submitFailed && mountpoint.error ? 'form-group has-error' : 'form-group'}>
-          <label className="control-label" >{t('mountpoint')}</label>
-          <div className="col-sm-10">
-            <input type="text" className="form-control" {...mountpoint} />
-            {submitFailed && mountpoint.error && <div className="text-danger"><small>{mountpoint.error}</small></div>}
-          </div>
-        </div>
       </div>
       <div className="modal-footer">
         <button type="button" className="btn btn-default" data-dismiss="modal">{t('closeModal')}</button>
@@ -122,15 +115,14 @@ VolumeAttachForm.propTypes = {
   t: React.PropTypes.any,
 };
 
-VolumeAttachForm.validate = (values) => {
+VolumeAttachForm.validate = () => {
   const errors = {};
-  errors.mountpoint = Validations.required(values.mountpoint);
   return errors;
 };
 
 VolumeAttachForm = reduxForm({
   form: 'VolumeAttachForm',
-  fields: ['name', 'instanceId', 'mountpoint'],
+  fields: ['name', 'instanceId'],
   validate: VolumeAttachForm.validate,
 })(translate()(VolumeAttachForm));
 
@@ -323,9 +315,8 @@ class C extends Page {
 
     return new Promise((resolve, reject) => {
       const instanceId = values.instanceId;
-      const mountpoint = values.mountpoint;
 
-      dispatch(VolumeActions.requestAttachVolume(routerKey, region.regionId, volume.volumeId, instanceId, mountpoint, 'rw'))
+      dispatch(VolumeActions.requestAttachVolume(routerKey, region.regionId, volume.volumeId, instanceId))
         .then(() => {
           resolve();
           this.refs.attachModal.hide();

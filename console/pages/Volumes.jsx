@@ -23,7 +23,9 @@ class C extends TablePage {
     const { t, dispatch, servicePath } = this.props;
     dispatch(Actions.setHeader(t('volumeManage'), `${servicePath}/volumes`));
 
-    this.initTable();
+    this.initTable({
+      status: ['active', 'inuse'],
+    });
   }
 
   refreshAction(routerKey, filters) {
