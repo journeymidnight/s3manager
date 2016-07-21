@@ -359,7 +359,9 @@
         "createSnapshot": "创建快照",
         "confirmDetachVolume": "确认要卸载云硬盘吗?",
         "noAvailableInstance": "没有可用的云主机",
-        "validateSizeGreatThanInitialSize": "扩容的大小须大于当前大小"
+        "validateSizeGreatThanInitialSize": "扩容的大小须大于当前大小",
+        "noSelectableSnapshot": "无可选快照",
+        "selectSnapshotPlease": "请选择快照"
     },
 
     "pageUsage": {

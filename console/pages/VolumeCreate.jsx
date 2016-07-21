@@ -2,6 +2,7 @@ import React from 'react';
 import { push } from 'react-router-redux';
 import Page, { attach } from '../../shared/pages/Page';
 import VolumeForm from '../forms/VolumeForm';
+import * as SnapshotActions from '../redux/actions.snapshot';
 import * as VolumeActions from '../redux/actions.volume';
 
 class C extends Page {
@@ -12,6 +13,8 @@ class C extends Page {
   }
 
   componentDidMount() {
+    const { dispatch, region, routerKey } = this.props;
+    dispatch(SnapshotActions.requestDescribeSnapshots(routerKey, region.regionId, { status: ['active'] }));
   }
 
   onSubmit(values) {
@@ -21,12 +24,14 @@ class C extends Page {
       const name = values.name;
       const size = Number(values.size);
       const count = Number(values.count);
+      const snapshotId = values.snapshotId;
 
       dispatch(VolumeActions.requestCreateVolume(routerKey, region.regionId, {
         name,
-        size,
+        size: snapshotId ? 1 : size,
         count,
-        volumeType: 'normal',
+        snapshotId,
+        volumeType: snapshotId ? '' : 'normal',
       }))
         .then(() => {
           resolve();
@@ -39,6 +44,7 @@ class C extends Page {
 
   render() {
     const { t } = this.props;
+    const availableSnapshots = this.props.context.snapshotSet || [];
 
     return (
       <div className="container-fluid container-limited">
@@ -49,7 +55,7 @@ class C extends Page {
                 <span>{t('pageVolumeCreate.createVolume')}</span>
               </div>
             </div>
-            <VolumeForm onSubmit={this.onSubmit} />
+            <VolumeForm onSubmit={this.onSubmit} availableSnapshots={availableSnapshots} />
           </div>
         </div>
       </div>
