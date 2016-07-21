@@ -23,6 +23,7 @@
     "created": "创建时间",
     "role": "角色",
     "settings": "设置",
+    "service": "服务",
     "region": "区域",
     "globalRegion": "服务全球",
     "productAndService": "产品和服务",
@@ -123,6 +124,9 @@
 
     "projectManage": "项目管理",
     "projectManageDescription": "可根据不同的企业或团队划分独立的项目, 分配相应的资源配额。",
+
+    "serviceManage": "服务管理",
+    "serviceManageDescription": "管理云主机（LCS），云存储（LOS）等服务的配置，配额等信息。",
 
     "regionManage": "区域管理",
     "regionManageDescription": "一个区域即独立完整的IaaS集群，包含OpenStack，Ceph及所有服务组建。可为项目分配不同区域不同配额的云资源，并统一管理。",
@@ -312,6 +316,10 @@
         "authorizedUsers": "授权用户"
     },
 
+    "pageService": {
+        "basic": "基本信息"
+    },
+
     "pageNetwork": {
         "basic": "基本信息",
         "subnets": "子网",
@@ -413,11 +421,16 @@
         "publicKey": "公钥"
     },
 
-    "formRegionForm": {
+    "formServiceForm": {
+        "serviceKey": "服务类型",
+        "regionId": "区域 ID",
         "publicEndpoint": "公共接口 URL",
         "manageEndpoint": "管理接口 URL",
         "manageKey": "管理账号",
         "manageSecret": "管理密码"
+    },
+
+    "formRegionForm": {
     },
 
     "formProjectQuotaForm": {

@@ -57,6 +57,15 @@ class Boss {
   modifyUser(user) {
     return this.call('ModifyUserAttributes', user);
   }
+  describeServices(filters = {}) {
+    return this.call('DescribeServices', filters);
+  }
+  createService(service) {
+    return this.call('CreateService', service);
+  }
+  modifyService(service) {
+    return this.call('ModifyServiceAttributes', service);
+  }
   describeRegions(filters = {}) {
     return this.call('DescribeRegions', filters);
   }

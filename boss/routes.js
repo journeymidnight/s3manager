@@ -17,6 +17,14 @@ import User from './pages/User.jsx';
 import Admins from './pages/Admins.jsx';
 import AdminCreate from './pages/AdminCreate.jsx';
 import Admin from './pages/Admin.jsx';
+import Services from './pages/Services.jsx';
+import Service from './pages/Service.jsx';
+import ServiceCreate from './pages/ServiceCreate.jsx';
+import ServiceTabBasic from './pages/ServiceTabBasic.jsx';
+import LCS from './pages/lcs/LCS.jsx';
+import LCSTabBasic from './pages/lcs/LCSTabBasic.jsx';
+import LCSTabImages from './pages/lcs/LCSTabImages.jsx';
+import LCSTabInstanceTypes from './pages/lcs/LCSTabInstanceTypes.jsx';
 import Regions from './pages/Regions.jsx';
 import RegionCreate from './pages/RegionCreate.jsx';
 import Region from './pages/Region.jsx';
@@ -49,6 +57,22 @@ export default function configureRoutes(store) {
           <IndexRoute component={Admins} />
           <Route path="create" component={AdminCreate} />
           <Route path=":adminId" component={Admin} />
+        </Route>
+        <Route path="services" >
+          <IndexRoute component={Services} />
+          <Route path="create" component={ServiceCreate} />
+          <Route path=":serviceId" component={Service} >
+            <IndexRoute component={ServiceTabBasic} />
+            <Route path="basic" component={ServiceTabBasic} />
+          </Route>
+          <Route path="lcs" >
+            <Route path=":regionId" component={LCS} >
+              <IndexRoute component={LCSTabBasic} />
+              <Route path="basic" component={LCSTabBasic} />
+              <Route path="images" component={LCSTabImages} />
+              <Route path="instance_types" component={LCSTabInstanceTypes} />
+            </Route>
+          </Route>
         </Route>
         <Route path="regions" >
           <IndexRoute component={Regions} />
