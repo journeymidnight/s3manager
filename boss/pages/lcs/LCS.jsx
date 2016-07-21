@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import Page, { attach } from '../../../shared/pages/Page';
 import * as Actions from '../../redux/actions';
-import * as RegionActions from '../../redux/actions.region';
+import * as ServiceActions from '../../redux/actions.service';
 
 class C extends Page {
 
@@ -14,32 +14,28 @@ class C extends Page {
 
   refresh() {
     const { params, dispatch } = this.props;
-    this.regionId = params.regionId;
-    dispatch(RegionActions.requestDescribeRegion(this.regionId))
+    this.serviceId = params.serviceId;
+    dispatch(ServiceActions.requestDescribeService(this.serviceId))
     .then(() => {
-      this.region = this.props.context.region;
+      this.service = this.props.context.service;
     });
   }
 
   render() {
     const { t, params } = this.props;
 
-    const region = this.props.context.region || this.region;
-    if (!region || region.regionId !== params.regionId) {
+    const service = this.props.context.service || this.service;
+    if (!service || service.serviceId !== params.serviceId) {
       this.refresh();
 
       return <div />;
     }
 
-    let active = 'basic';
-    if (_.endsWith(this.props.location.pathname, 'projects')) {
-      active = 'projects';
-    } else if (_.endsWith(this.props.location.pathname, 'images')) {
+    let active = 'images';
+    if (_.endsWith(this.props.location.pathname, 'images')) {
       active = 'images';
     } else if (_.endsWith(this.props.location.pathname, 'instance_types')) {
       active = 'instanceTypes';
-    } else if (_.endsWith(this.props.location.pathname, 'basic')) {
-      active = 'basic';
     }
 
     return (
@@ -49,32 +45,25 @@ class C extends Page {
 
             <div className="top-area">
               <div className="nav-text">
-                {t('region')}&nbsp;<i>{region.regionId}</i>
+                {t('service')}&nbsp;<i>{service.serviceId}</i>
               </div>
 
               <ul className="nav-links pull-right">
                 <li className={`pull-right ${(active === 'images') ? 'active' : ''}`}>
-                  <Link data-placement="left" to={`/regions/${region.regionId}/images`}>
-                    {t('pageRegion.publicImages')}
+                  <Link data-placement="left" to={`/lcs/${service.serviceId}/images`}>
+                    {t('pageService.publicImages')}
                   </Link>
                 </li>
                 <li className={`pull-right ${(active === 'instanceTypes') ? 'active' : ''}`}>
-                  <Link data-placement="left" to={`/regions/${region.regionId}/instance_types`}>
-                    {t('pageRegion.instanceTypes')}
-                  </Link>
-                </li>
-                <li className={`pull-right ${(active === 'basic') ? 'active' : ''}`}>
-                  <Link data-placement="left" to={`/services/lcs/${region.regionId}/basic`}>
-                    {t('pageRegion.basic')}
+                  <Link data-placement="left" to={`/lcs/${service.serviceId}/instance_types`}>
+                    {t('pageService.instanceTypes')}
                   </Link>
                 </li>
               </ul>
             </div>
-
             <div>
-              {React.cloneElement(this.props.children, { region2: region })}
+              {React.cloneElement(this.props.children, { service2: service })}
             </div>
-
           </div>
         </div>
       </div>

@@ -51,6 +51,7 @@ class C extends TablePage {
             <th>{t('formServiceForm.publicEndpoint')}</th>
             <th>{t('formServiceForm.manageEndpoint')}</th>
             <th width="200">{t('created')}</th>
+            <th />
           </tr>
         </thead>
         <tbody>
@@ -61,6 +62,11 @@ class C extends TablePage {
               <td>{service.publicEndpoint}</td>
               <td>{service.manageEndpoint}</td>
               <td>{moment.utc(service.created).local().format('YYYY-MM-DD HH:mm:ss')}</td>
+              <td>
+                <Link className="btn btn-sm btn-close" to={`/${service.serviceKey}/${service.serviceId}`}>
+                  <i className="fa fa-cog" /> 配置
+                </Link>
+              </td>
             </tr>
           );
         })}
