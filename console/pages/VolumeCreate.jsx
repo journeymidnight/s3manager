@@ -1,4 +1,5 @@
 import React from 'react';
+import { push } from 'react-router-redux';
 import Page, { attach } from '../../shared/pages/Page';
 import VolumeForm from '../forms/VolumeForm';
 import * as VolumeActions from '../redux/actions.volume';
@@ -14,7 +15,7 @@ class C extends Page {
   }
 
   onSubmit(values) {
-    const { dispatch, region, routerKey } = this.props;
+    const { dispatch, region, routerKey, servicePath } = this.props;
 
     return new Promise((resolve, reject) => {
       const name = values.name;
@@ -25,9 +26,11 @@ class C extends Page {
         name,
         size,
         count,
+        volumeType: 'normal',
       }))
         .then(() => {
           resolve();
+          dispatch(push(`${servicePath}/volumes`));
         }).catch((error) => {
           reject({ _error: error.message });
         });

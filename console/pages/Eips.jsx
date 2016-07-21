@@ -59,7 +59,7 @@ class C extends TablePage {
             <th width="150">{t('id')}</th>
             <th>{t('name')}</th>
             <th>{t('bandwidth')}</th>
-            <th>{t('associateInstance')}</th>
+            <th>{t('associateResource')}</th>
             <th>{t('address')}</th>
             <th>{t('status')}</th>
             <th width="200">{t('created')}</th>

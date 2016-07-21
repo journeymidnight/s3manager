@@ -1,4 +1,5 @@
 import React from 'react';
+import { push } from 'react-router-redux';
 import Page, { attach } from '../../shared/pages/Page';
 import AccessKeyForm from '../forms/AccessKeyForm';
 import * as Actions from '../redux/actions';
@@ -29,6 +30,7 @@ class C extends Page {
       ))
       .then(() => {
         resolve();
+        dispatch(push('/access_keys'));
       }).catch(() => {
         reject();
       });

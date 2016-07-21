@@ -23,7 +23,9 @@ class C extends TablePage {
     const { t, dispatch, servicePath } = this.props;
     dispatch(Actions.setHeader(t('volumeManage'), `${servicePath}/volumes`));
 
-    this.initTable();
+    this.initTable({
+      status: ['active', 'inuse'],
+    });
   }
 
   refreshAction(routerKey, filters) {
@@ -59,6 +61,7 @@ class C extends TablePage {
             <th width="150">{t('id')}</th>
             <th>{t('name')}</th>
             <th>{t('size')}</th>
+            <th>{t('attachInstance')}</th>
             <th>{t('status')}</th>
             <th width="200">{t('created')}</th>
           </tr>
@@ -80,6 +83,9 @@ class C extends TablePage {
                   {!volume.name && <i className="text-muted">{t('noName')}</i>}
                 </td>
                 <td>{volume.size}G</td>
+                <td>
+                  {volume.instanceId || <i className="text-muted">{t('noName')}</i>}
+                </td>
                 <td className={`i-status i-status-${volume.status}`}>
                   <i className="icon"></i>
                   {t(`volumeStatus.${volume.status}`)}
@@ -118,23 +124,11 @@ class C extends TablePage {
         status: ['pending', 'active', 'attaching', 'inuse', 'backup_ing', 'backup_restoring', 'deleted', 'ceased', 'error'],
         name: t('allAvaliableStatus'),
       }, {
-        status: ['pending'],
-        name: t('volumeStatus.pending'),
-      }, {
         status: ['active'],
         name: t('volumeStatus.active'),
       }, {
-        status: ['attaching'],
-        name: t('volumeStatus.attaching'),
-      }, {
         status: ['inuse'],
         name: t('volumeStatus.inuse'),
-      }, {
-        status: ['backup_ing'],
-        name: t('volumeStatus.backup_ing'),
-      }, {
-        status: ['backup_restoring'],
-        name: t('volumeStatus.backup_restoring'),
       }, {
         status: ['deleted', 'ceased'],
         name: t('volumeStatus.deleted'),

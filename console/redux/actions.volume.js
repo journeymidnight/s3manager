@@ -70,10 +70,10 @@ export function requestModifyVolumeAttributes(routerKey, regionId, volumeId, nam
   };
 }
 
-export function requestAttachVolume(routerKey, regionId, volumeId, instanceId, mountpoint, mode) {
+export function requestAttachVolume(routerKey, regionId, volumeId, instanceId) {
   return dispatch => {
     return IaaS
-    .attachVolume(regionId, volumeId, instanceId, mountpoint, mode)
+    .attachVolume(regionId, volumeId, instanceId)
     .promise
     .then(() => {
       dispatch(notify(i18n.t('attachSuccessed')));

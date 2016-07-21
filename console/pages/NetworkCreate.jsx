@@ -1,4 +1,5 @@
 import React from 'react';
+import { push } from 'react-router-redux';
 import Page, { attach } from '../../shared/pages/Page';
 import NetworkCreateForm from '../forms/NetworkCreateForm';
 import * as Actions from '../redux/actions';
@@ -17,7 +18,7 @@ class C extends Page {
   }
 
   onSubmit(values) {
-    const { dispatch, region, routerKey } = this.props;
+    const { dispatch, region, routerKey, servicePath } = this.props;
 
     return new Promise((resolve, reject) => {
       const name = values.name;
@@ -28,6 +29,7 @@ class C extends Page {
         cidr,
       }))
       .then(() => {
+        dispatch(push(`${servicePath}/networks`));
         resolve();
       }).catch(() => {
         reject();
