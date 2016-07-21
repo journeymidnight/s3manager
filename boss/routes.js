@@ -21,6 +21,8 @@ import Services from './pages/Services.jsx';
 import Service from './pages/Service.jsx';
 import ServiceCreate from './pages/ServiceCreate.jsx';
 import ServiceTabBasic from './pages/ServiceTabBasic.jsx';
+import ServiceTabProjects from './pages/ServiceTabProjects.jsx';
+import LOS from './pages/los/LOS.jsx';
 import LCS from './pages/lcs/LCS.jsx';
 import LCSTabImages from './pages/lcs/LCSTabImages.jsx';
 import LCSTabInstanceTypes from './pages/lcs/LCSTabInstanceTypes.jsx';
@@ -28,9 +30,6 @@ import Regions from './pages/Regions.jsx';
 import RegionCreate from './pages/RegionCreate.jsx';
 import Region from './pages/Region.jsx';
 import RegionTabBasic from './pages/RegionTabBasic.jsx';
-import RegionTabImages from './pages/RegionTabImages.jsx';
-import RegionTabInstanceTypes from './pages/RegionTabInstanceTypes.jsx';
-import RegionTabProjects from './pages/RegionTabProjects.jsx';
 import ProjectQuotaCreate from './pages/ProjectQuotaCreate.jsx';
 import ProjectQuota from './pages/ProjectQuota.jsx';
 import Profile from './pages/Profile.jsx';
@@ -63,7 +62,11 @@ export default function configureRoutes(store) {
           <Route path=":serviceId" component={Service} >
             <IndexRoute component={ServiceTabBasic} />
             <Route path="basic" component={ServiceTabBasic} />
+            <Route path="projects" component={ServiceTabProjects} />
           </Route>
+        </Route>
+        <Route path="los" >
+          <Route path=":serviceId" component={LOS} />
         </Route>
         <Route path="lcs" >
           <Route path=":serviceId" component={LCS} >
@@ -78,12 +81,9 @@ export default function configureRoutes(store) {
           <Route path=":regionId" component={Region} >
             <IndexRoute component={RegionTabBasic} />
             <Route path="basic" component={RegionTabBasic} />
-            <Route path="projects" component={RegionTabProjects} />
-            <Route path="images" component={RegionTabImages} />
-            <Route path="instance_types" component={RegionTabInstanceTypes} />
           </Route>
         </Route>
-        <Route path="q/:regionId" >
+        <Route path="q/:serviceId" >
           <Route path="create" component={ProjectQuotaCreate} />
           <Route path=":projectId" component={ProjectQuota} />
         </Route>

@@ -300,8 +300,7 @@
     },
 
     "pageRegion": {
-        "basic": "基本信息",
-        "assignedProjects": "分配项目"
+        "basic": "基本信息"
     },
 
     "pageProject": {
@@ -311,6 +310,7 @@
 
     "pageService": {
         "basic": "基本信息",
+        "assignedProjects": "分配项目",
         "instanceTypes": "主机配置",
         "updateQuota": "调整配额",
         "updateImage": "更新信息",
@@ -433,7 +433,7 @@
     "formRegionForm": {
     },
 
-    "formProjectQuotaForm": {
+    "formQuotaForm": {
         "projectId": "项目ID",
         "quotaInstances": "云主机",
         "quotaVCPUs": "vCPU",

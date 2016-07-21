@@ -21,7 +21,7 @@ export function requestDescribeServices(routerKey, filters) {
 export function requestDescribeAssignedQuotas(serviceId) {
   return dispatch => {
     return BOSS
-    .describeProjectQuotas({
+    .describeQuotas({
       serviceId,
     })
     .promise
@@ -34,10 +34,10 @@ export function requestDescribeAssignedQuotas(serviceId) {
   };
 }
 
-export function requestDescribeProjectQuota(serviceId, projectId) {
+export function requestDescribeQuota(serviceId, projectId) {
   return dispatch => {
     return BOSS
-    .describeProjectQuotas({
+    .describeQuotas({
       serviceId,
       projectIds: [projectId],
     })
@@ -53,10 +53,10 @@ export function requestDescribeProjectQuota(serviceId, projectId) {
   };
 }
 
-export function requestAssignProjectQuota(serviceId, projectId, quota) {
+export function requestAssignQuota(serviceId, projectId, quota) {
   return dispatch => {
     return BOSS
-    .assignProjectQuota(serviceId, projectId, quota)
+    .assignQuota(serviceId, projectId, quota)
     .promise
     .then(() => {
       dispatch(notify(i18n.t('updateSuccessed')));

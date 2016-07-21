@@ -32,13 +32,7 @@ class C extends Page {
     }
 
     let active = 'basic';
-    if (_.endsWith(this.props.location.pathname, 'projects')) {
-      active = 'projects';
-    } else if (_.endsWith(this.props.location.pathname, 'images')) {
-      active = 'images';
-    } else if (_.endsWith(this.props.location.pathname, 'instance_types')) {
-      active = 'instanceTypes';
-    } else if (_.endsWith(this.props.location.pathname, 'basic')) {
+    if (_.endsWith(this.props.location.pathname, 'basic')) {
       active = 'basic';
     }
 
@@ -53,21 +47,6 @@ class C extends Page {
               </div>
 
               <ul className="nav-links pull-right">
-                <li className={`pull-right ${(active === 'images') ? 'active' : ''}`}>
-                  <Link data-placement="left" to={`/regions/${region.regionId}/images`}>
-                    {t('pageRegion.publicImages')}
-                  </Link>
-                </li>
-                <li className={`pull-right ${(active === 'instanceTypes') ? 'active' : ''}`}>
-                  <Link data-placement="left" to={`/regions/${region.regionId}/instance_types`}>
-                    {t('pageRegion.instanceTypes')}
-                  </Link>
-                </li>
-                <li className={`pull-right ${(active === 'projects') ? 'active' : ''}`}>
-                  <Link data-placement="left" to={`/regions/${region.regionId}/projects`}>
-                    {t('pageRegion.assignedProjects')}
-                  </Link>
-                </li>
                 <li className={`pull-right ${(active === 'basic') ? 'active' : ''}`}>
                   <Link data-placement="left" to={`/regions/${region.regionId}/basic`}>
                     {t('pageRegion.basic')}

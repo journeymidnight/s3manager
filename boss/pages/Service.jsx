@@ -32,7 +32,9 @@ class C extends Page {
     }
 
     let active = 'basic';
-    if (_.endsWith(this.props.location.pathname, 'basic')) {
+    if (_.endsWith(this.props.location.pathname, 'projects')) {
+      active = 'projects';
+    } else if (_.endsWith(this.props.location.pathname, 'basic')) {
       active = 'basic';
     }
 
@@ -50,6 +52,11 @@ class C extends Page {
                 <li className={`pull-right ${(active === 'basic') ? 'active' : ''}`}>
                   <Link data-placement="left" to={`/services/${service.serviceId}/basic`}>
                     {t('pageService.basic')}
+                  </Link>
+                </li>
+                <li className={`pull-right ${(active === 'projects') ? 'active' : ''}`}>
+                  <Link data-placement="left" to={`/services/${service.serviceId}/projects`}>
+                    {t('pageService.assignedProjects')}
                   </Link>
                 </li>
               </ul>
