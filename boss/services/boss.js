@@ -57,6 +57,15 @@ class Boss {
   modifyUser(user) {
     return this.call('ModifyUserAttributes', user);
   }
+  describeServices(filters = {}) {
+    return this.call('DescribeServices', filters);
+  }
+  createService(service) {
+    return this.call('CreateService', service);
+  }
+  modifyService(service) {
+    return this.call('ModifyServiceAttributes', service);
+  }
   describeRegions(filters = {}) {
     return this.call('DescribeRegions', filters);
   }
@@ -66,14 +75,15 @@ class Boss {
   modifyRegion(region) {
     return this.call('ModifyRegionAttributes', region);
   }
-  describeProjectQuotas(filters = {}) {
-    return this.call('DescribeProjectQuotas', filters);
+  describeQuotas(filters = {}) {
+    return this.call('DescribeQuotas', filters);
   }
-  assignProjectQuota(regionId, projectId, quota) {
-    return this.call('AssignProjectQuota', {
+  assignQuota(serviceKey, regionId, projectId, quota) {
+    return this.call('AssignQuota', {
+      serviceKey,
       regionId,
       projectId,
-      ...quota,
+      quota,
     });
   }
   describeAdmins(filters = {}) {

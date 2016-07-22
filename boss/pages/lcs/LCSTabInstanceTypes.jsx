@@ -2,12 +2,12 @@ import _ from 'lodash';
 import React from 'react';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
-import { attach } from '../../shared/pages/Page';
-import ButtonForm from '../../shared/forms/ButtonForm';
-import TablePage from '../../shared/pages/TablePage';
-import Modal, { confirmModal } from '../../shared/components/Modal';
-import * as Actions from '../redux/actions';
-import * as RegionActions from '../redux/actions.region';
+import { attach } from '../../../shared/pages/Page';
+import ButtonForm from '../../../shared/forms/ButtonForm';
+import TablePage from '../../../shared/pages/TablePage';
+import Modal, { confirmModal } from '../../../shared/components/Modal';
+import * as Actions from '../../redux/actions';
+import * as ServiceActions from '../../redux/actions.service';
 
 let InstanceTypeCreateForm = (props) => {
   const { fields:
@@ -91,7 +91,7 @@ class C extends TablePage {
 
   componentDidMount() {
     const { t, dispatch } = this.props;
-    dispatch(Actions.setHeader(t('regionManage'), '/regions'));
+    dispatch(Actions.setHeader(t('serviceManage'), '/services'));
 
     this.initTable({ status: ['active'], isTabPage: true });
   }
@@ -100,11 +100,11 @@ class C extends TablePage {
     const { t } = this.props;
 
     confirmModal(t('confirmDelete'), () => {
-      const { dispatch, region2, routerKey } = this.props;
+      const { dispatch, service2, routerKey } = this.props;
       const instanceTypeIds = _.keys(this.props.context.selected);
 
       return new Promise((resolve, reject) => {
-        dispatch(RegionActions.requestDeleteInstanceTypes(routerKey, region2.regionId, instanceTypeIds))
+        dispatch(ServiceActions.requestDeleteInstanceTypes(routerKey, service2, instanceTypeIds))
         .then(() => {
           resolve();
           this.onRefresh({}, false)();
@@ -121,7 +121,7 @@ class C extends TablePage {
   }
 
   onCreate(values) {
-    const { dispatch, region2, routerKey } = this.props;
+    const { dispatch, service2, routerKey } = this.props;
 
     return new Promise((resolve, reject) => {
       const instanceType = {
@@ -130,7 +130,7 @@ class C extends TablePage {
         disk: parseInt(values.disk, 10),
       };
 
-      dispatch(RegionActions.requestCreateInstanceType(routerKey, region2.regionId, instanceType))
+      dispatch(ServiceActions.requestCreateInstanceType(routerKey, service2, instanceType))
       .then(() => {
         resolve();
         this.refs.createModal.hide();
@@ -142,9 +142,9 @@ class C extends TablePage {
 
   onGenerate(e) {
     e.preventDefault();
-    const { dispatch, region2, routerKey } = this.props;
+    const { dispatch, service2, routerKey } = this.props;
 
-    dispatch(RegionActions.requestGenerateInstanceTypes(routerKey, region2.regionId))
+    dispatch(ServiceActions.requestGenerateInstanceTypes(routerKey, service2))
     .then(() => {
       this.onRefresh({}, false)();
     }).catch(() => {
@@ -152,8 +152,8 @@ class C extends TablePage {
   }
 
   refreshAction(routerKey, filters) {
-    const { region2 } = this.props;
-    return RegionActions.requestDescribeInstanceTypes(routerKey, region2.regionId, filters);
+    const { service2 } = this.props;
+    return ServiceActions.requestDescribeInstanceTypes(routerKey, service2, filters);
   }
 
   renderTable() {
@@ -253,13 +253,13 @@ class C extends TablePage {
             <a href className="btn btn-new" onClick={this.showCreateModal}>
               <i className="fa fa-plus"></i>&nbsp;{t('create')}
             </a>
-            <Modal title={t('pageRegion.createInstanceType')} ref="createModal" >
+            <Modal title={t('pageService.createInstanceType')} ref="createModal" >
               <InstanceTypeCreateForm onSubmit={this.onCreate} initialValues={{ name: 'c1m1024d0', vcpus: 1, memory: 1024, disk: 10 }} />
             </Modal>
           </div>
           <div className="filter-item inline pull-right">
             <a href className="btn btn-info" onClick={this.onGenerate}>
-              {t('pageRegion.generateInstanceTypes')}
+              {t('pageService.generateInstanceTypes')}
             </a>
           </div>
         </div>

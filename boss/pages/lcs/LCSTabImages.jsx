@@ -2,12 +2,12 @@ import _ from 'lodash';
 import React from 'react';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
-import { attach } from '../../shared/pages/Page';
-import ButtonForm from '../../shared/forms/ButtonForm';
-import TablePage from '../../shared/pages/TablePage';
-import Modal, { alertModal, confirmModal } from '../../shared/components/Modal';
-import * as Actions from '../redux/actions';
-import * as RegionActions from '../redux/actions.region';
+import { attach } from '../../../shared/pages/Page';
+import ButtonForm from '../../../shared/forms/ButtonForm';
+import TablePage from '../../../shared/pages/TablePage';
+import Modal, { alertModal, confirmModal } from '../../../shared/components/Modal';
+import * as Actions from '../../redux/actions';
+import * as ServiceActions from '../../redux/actions.service';
 
 let ImageUpdateForm = (props) => {
   const { fields:
@@ -133,7 +133,7 @@ class C extends TablePage {
 
   componentDidMount() {
     const { t, dispatch } = this.props;
-    dispatch(Actions.setHeader(t('regionManage'), '/regions'));
+    dispatch(Actions.setHeader(t('serviceManage'), '/services'));
 
     this.initTable({ status: ['active'], isTabPage: true });
   }
@@ -142,11 +142,11 @@ class C extends TablePage {
     const { t } = this.props;
 
     confirmModal(t('confirmDelete'), () => {
-      const { dispatch, region2, routerKey } = this.props;
+      const { dispatch, service2, routerKey } = this.props;
       const imageIds = _.keys(this.props.context.selected);
 
       return new Promise((resolve, reject) => {
-        dispatch(RegionActions.requestDeleteImages(routerKey, region2.regionId, imageIds))
+        dispatch(ServiceActions.requestDeleteImages(routerKey, service2, imageIds))
         .then(() => {
           resolve();
           this.onRefresh({}, false)();
@@ -162,9 +162,9 @@ class C extends TablePage {
   }
 
   onSync() {
-    const { dispatch, region2, routerKey } = this.props;
+    const { dispatch, service2, routerKey } = this.props;
 
-    dispatch(RegionActions.requestSyncImages(routerKey, region2.regionId))
+    dispatch(ServiceActions.requestSyncImages(routerKey, service2))
     .then(() => {
       this.onRefresh({}, false)();
     }).catch(() => {
@@ -172,12 +172,12 @@ class C extends TablePage {
   }
 
   onUpdate(values) {
-    const { dispatch, region2, routerKey } = this.props;
+    const { dispatch, service2, routerKey } = this.props;
 
     return new Promise((resolve, reject) => {
       const image = values;
 
-      dispatch(RegionActions.requestModifyImageAttributes(routerKey, region2.regionId, image))
+      dispatch(ServiceActions.requestModifyImageAttributes(routerKey, service2, image))
       .then(() => {
         resolve();
         this.onRefresh({}, false)();
@@ -198,8 +198,8 @@ class C extends TablePage {
   }
 
   refreshAction(routerKey, filters) {
-    const { region2 } = this.props;
-    return RegionActions.requestDescribeImages(routerKey, region2.regionId, filters);
+    const { service2 } = this.props;
+    return ServiceActions.requestDescribeImages(routerKey, service2, filters);
   }
 
   renderTable() {
@@ -242,7 +242,7 @@ class C extends TablePage {
               <td>{t(`osProcessorTypes.${image.processorType}`)}</td>
               <td>
                 <button className="btn btn-sm btn-close" onClick={this.update(image)}>
-                  <i className="fa fa-cog" /> {t('pageRegion.updateImage')}
+                  <i className="fa fa-cog" /> {t('pageService.updateImage')}
                 </button>
               </td>
             </tr>
@@ -306,7 +306,7 @@ class C extends TablePage {
           </div>
           <div className="filter-item inline pull-right">
             <button className="btn btn-info" onClick={this.onSync}>
-              {t('pageRegion.syncImages')}
+              {t('pageService.syncImages')}
             </button>
           </div>
         </div>
@@ -315,7 +315,7 @@ class C extends TablePage {
             <ButtonForm onSubmit={this.onDelete} text={t('delete')} type="btn-danger" />
           </div>
         </div>
-        <Modal title={t('pageRegion.updateImage')} ref="updateModal" >
+        <Modal title={t('pageService.updateImage')} ref="updateModal" >
           <ImageUpdateForm onSubmit={this.onUpdate} initialValues={this.state.image} />
         </Modal>
       </div>

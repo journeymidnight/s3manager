@@ -26,7 +26,7 @@ describe('UserActions', () => {
     };
 
     const scope = mockRequest
-    .post('/p/api/describeUsers', {
+    .post('/p/api/iam/DescribeUsers', {
     })
     .reply(200, {
       data: rep,
@@ -53,7 +53,7 @@ describe('UserActions', () => {
 
   it('#requestCreateUserError', (done) => {
     const scope = mockRequest
-    .post('/p/api/createUser', {
+    .post('/p/api/iam/CreateUser', {
       username,
       email,
       password,
@@ -92,7 +92,7 @@ describe('UserActions', () => {
 
   it('#requestCreateUser', (done) => {
     const scope = mockRequest
-    .post('/p/api/createUser', {
+    .post('/p/api/iam/CreateUser', {
       username,
       email,
       password,
@@ -142,7 +142,7 @@ describe('UserActions', () => {
 
   it('#requestModifyUser', (done) => {
     const scope = mockRequest
-    .post('/p/api/modifyUserAttributes', {
+    .post('/p/api/iam/ModifyUserAttributes', {
       userId,
       username,
     })
@@ -162,7 +162,7 @@ describe('UserActions', () => {
     };
 
     const scope2 = mockRequest
-    .post('/p/api/describeUsers', {
+    .post('/p/api/iam/DescribeUsers', {
       userIds: [userId],
     })
     .reply(200, {

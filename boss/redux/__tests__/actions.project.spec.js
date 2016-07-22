@@ -24,7 +24,7 @@ describe('ProjectActions', () => {
     };
 
     const scope = mockRequest
-    .post('/p/api/describeProjects', {
+    .post('/p/api/iam/DescribeProjects', {
     })
     .reply(200, {
       data: rep,
@@ -51,7 +51,7 @@ describe('ProjectActions', () => {
 
   it('#requestCreateProjectError', (done) => {
     const scope = mockRequest
-    .post('/p/api/createProject', {
+    .post('/p/api/iam/CreateProject', {
       name,
     })
     .reply(200, {
@@ -84,7 +84,7 @@ describe('ProjectActions', () => {
 
   it('#requestCreateProject', (done) => {
     const scope = mockRequest
-    .post('/p/api/createProject', {
+    .post('/p/api/iam/CreateProject', {
       name,
       description,
     })
@@ -137,7 +137,7 @@ describe('ProjectActions', () => {
 
   it('#requestModifyProject', (done) => {
     const scope = mockRequest
-    .post('/p/api/modifyProjectAttributes', {
+    .post('/p/api/iam/ModifyProjectAttributes', {
       name,
       description,
     })
@@ -156,7 +156,7 @@ describe('ProjectActions', () => {
     };
 
     const scope2 = mockRequest
-    .post('/p/api/describeProjects', {
+    .post('/p/api/iam/DescribeProjects', {
     })
     .reply(200, {
       data: rep,

@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
@@ -24,14 +25,7 @@ class App extends React.Component {
     const { routing, dispatch, service, global, params } = props;
 
     const currentService = routing.locationBeforeTransitions.pathname.split('/')[1];
-
-    let currentRegion = params.regionId;
-    if (!currentRegion && global.defaultRegion) {
-      currentRegion = global.defaultRegion.regionId;
-    }
-
     this.currentService = currentService;
-    this.currentRegion = currentRegion;
 
     if (!currentService) {
       return;
@@ -44,6 +38,24 @@ class App extends React.Component {
         }));
       }
     } else {
+      const serviceMached = _.find(global.serviceSet, (s) => {
+        return s.serviceKey === currentService;
+      });
+
+      if (!serviceMached) {
+        return;
+      }
+
+      let currentRegion = params.regionId;
+      if (currentRegion && !_.find(serviceMached.quotas, (q) => {
+        return q.regionId === currentRegion;
+      })) {
+        currentRegion = serviceMached.quotas[0].regionId;
+      } else if (!currentRegion) {
+        currentRegion = serviceMached.quotas[0].regionId;
+      }
+      this.currentRegion = currentRegion;
+
       if (!service) {
         dispatch(Actions.requestConnectService(currentService, currentRegion));
       } else if (service && service.serviceKey !== currentService) {
