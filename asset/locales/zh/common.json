@@ -254,7 +254,8 @@
 
     "pageNetworkCreate": {
         "createNetwork": "添加私有网络",
-        "cidr": "初始网段地址"
+        "cidr": "初始网段地址",
+        "cidrHint": "创建私有网络时，同时创建一个默认网关，用于创建云主机"
     },
 
     "pageVNC": {
