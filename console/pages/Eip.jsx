@@ -293,8 +293,8 @@ class C extends Page {
                       </button>
                       <ul className="dropdown-menu">
                         <li><a href onClick={this.updateEip}>{t('pageEip.updateEip')}</a></li>
-                        <li><a href onClick={this.associateEip}>{t('pageEip.associateEip')}</a></li>
-                        <li><a href onClick={this.dissociateEip}>{t('pageEip.dissociateEip')}</a></li>
+                        <li><a href onClick={this.associateEip}>{t('pageEip.associateResource')}</a></li>
+                        <li><a href onClick={this.dissociateEip}>{t('pageEip.dissociateResource')}</a></li>
                         <li><a href onClick={this.deleteEip}>{t('pageEip.deleteEip')}</a></li>
                       </ul>
                     </div>}
@@ -317,7 +317,7 @@ class C extends Page {
                         <td>{eip.bandwidth}Mb</td>
                       </tr>
                       <tr>
-                        <td>{t('associateInstance')}</td>
+                        <td>{t('associateResource')}</td>
                         <td>
                         {eip.resourceId || <i className="text-muted">{t('noName')}</i>}
                         </td>

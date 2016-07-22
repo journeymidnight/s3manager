@@ -1,4 +1,5 @@
 import React from 'react';
+import { push } from 'react-router-redux';
 import Page, { attach } from '../../shared/pages/Page';
 import KeyPairForm from '../forms/KeyPairForm';
 import * as KeyPairActions from '../redux/actions.key_pair';
@@ -14,7 +15,7 @@ class C extends Page {
   }
 
   onSubmit(values) {
-    const { dispatch, region, routerKey } = this.props;
+    const { dispatch, region, routerKey, servicePath } = this.props;
 
     return new Promise((resolve, reject) => {
       const name = values.name;
@@ -28,6 +29,7 @@ class C extends Page {
       }))
         .then(() => {
           resolve();
+          dispatch(push(`${servicePath}/key_pairs`));
         }).catch((error) => {
           reject({ _error: error.message });
         });

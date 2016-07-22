@@ -56,7 +56,8 @@
     "size": "大小",
     "download": "下载",
     "key_pair": "SSH 密钥",
-    "associateInstance": "已绑定云主机",
+    "associateResource": "绑定资源",
+    "attachInstance": "挂载的云主机",
     "bandwidth": "带宽",
     "public_images": "公共映像",
     "private_images": "自有映像",
@@ -236,9 +237,9 @@
 
     "volumeStatus": {
         "pending": "准备中",
-        "active": "运行中",
+        "active": "可挂载",
         "attaching": "挂载中",
-        "inuse": "使用中",
+        "inuse": "已挂载",
         "backup_ing": "备份中",
         "backup_restoring": "备份恢复中",
         "error": "状态异常",
@@ -351,8 +352,8 @@
         "basic": "基本信息",
         "updateEip": "更新基本信息",
         "deleteEip": "删除公网IP",
-        "associateEip": "绑定公网IP",
-        "dissociateEip": "解绑公网IP",
+        "associateResource": "绑定资源",
+        "dissociateResource": "解绑资源",
         "noAvailableInstance": "没有可用的云主机",
         "confirmDissociateEip": "确认要解绑公网IP吗?"
     },

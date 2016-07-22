@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
+import { push } from 'react-router-redux';
 import Page, { attach } from '../../shared/pages/Page';
 import InstanceCreateForm from '../forms/InstanceCreateForm';
 import * as Actions from '../redux/actions';
@@ -23,7 +24,7 @@ class C extends Page {
   }
 
   onSubmit(values) {
-    const { dispatch, region, routerKey } = this.props;
+    const { dispatch, region, routerKey, servicePath } = this.props;
 
     return new Promise((resolve, reject) => {
       const name = values.name;
@@ -47,6 +48,7 @@ class C extends Page {
       }))
       .then(() => {
         resolve();
+        dispatch(push(`${servicePath}/instances`));
       }).catch(() => {
         reject();
       });
