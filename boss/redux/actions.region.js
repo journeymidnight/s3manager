@@ -1,12 +1,12 @@
 import { push } from 'react-router-redux';
 import { notify, notifyAlert, extendContext } from './actions';
-import BOSS from '../services/boss';
+import IAM from '../services/iam';
 import Region from '../services/region';
 import i18n from '../../shared/i18n';
 
 export function requestDescribeRegions(routerKey, filters) {
   return dispatch => {
-    return BOSS
+    return IAM
     .describeRegions(filters)
     .promise
     .then((payload) => {
@@ -20,7 +20,7 @@ export function requestDescribeRegions(routerKey, filters) {
 
 export function requestDescribeAssignedQuotas(regionId) {
   return dispatch => {
-    return BOSS
+    return IAM
     .describeProjectQuotas({
       regionId,
     })
@@ -36,7 +36,7 @@ export function requestDescribeAssignedQuotas(regionId) {
 
 export function requestDescribeProjectQuota(regionId, projectId) {
   return dispatch => {
-    return BOSS
+    return IAM
     .describeProjectQuotas({
       regionId,
       projectIds: [projectId],
@@ -55,7 +55,7 @@ export function requestDescribeProjectQuota(regionId, projectId) {
 
 export function requestAssignProjectQuota(regionId, projectId, quota) {
   return dispatch => {
-    return BOSS
+    return IAM
     .assignProjectQuota(regionId, projectId, quota)
     .promise
     .then(() => {
@@ -69,7 +69,7 @@ export function requestAssignProjectQuota(regionId, projectId, quota) {
 
 export function requestDescribeRegion(regionId) {
   return dispatch => {
-    return BOSS
+    return IAM
     .describeRegions({
       regionIds: [regionId],
     })
@@ -87,7 +87,7 @@ export function requestDescribeRegion(regionId) {
 
 export function requestCreateRegion(region) {
   return dispatch => {
-    return BOSS
+    return IAM
     .createRegion(region)
     .promise
     .then(() => {
@@ -102,7 +102,7 @@ export function requestCreateRegion(region) {
 
 export function requestModifyRegion(region) {
   return (dispatch) => {
-    return BOSS
+    return IAM
     .modifyRegion(region)
     .promise
     .then(() => {

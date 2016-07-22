@@ -1,12 +1,12 @@
 import { push } from 'react-router-redux';
 import { notify, notifyAlert, extendContext } from './actions';
-import BOSS from '../services/boss';
+import IAM from '../services/iam';
 import Service from '../services/service';
 import i18n from '../../shared/i18n';
 
 export function requestDescribeServices(routerKey, filters) {
   return dispatch => {
-    return BOSS
+    return IAM
     .describeServices(filters)
     .promise
     .then((payload) => {
@@ -20,7 +20,7 @@ export function requestDescribeServices(routerKey, filters) {
 
 export function requestDescribeAssignedQuotas(serviceKey, regionId) {
   return dispatch => {
-    return BOSS
+    return IAM
     .describeQuotas({
       serviceKeys: [serviceKey],
       regionIds: [regionId],
@@ -37,7 +37,7 @@ export function requestDescribeAssignedQuotas(serviceKey, regionId) {
 
 export function requestDescribeQuota(serviceKey, regionId, projectId) {
   return dispatch => {
-    return BOSS
+    return IAM
     .describeQuotas({
       serviceKeys: [serviceKey],
       regionIds: [regionId],
@@ -57,7 +57,7 @@ export function requestDescribeQuota(serviceKey, regionId, projectId) {
 
 export function requestAssignQuota(serviceKey, regionId, projectId, quota) {
   return dispatch => {
-    return BOSS
+    return IAM
     .assignQuota(serviceKey, regionId, projectId, quota)
     .promise
     .then(() => {
@@ -71,7 +71,7 @@ export function requestAssignQuota(serviceKey, regionId, projectId, quota) {
 
 export function requestDescribeService(serviceId) {
   return dispatch => {
-    return BOSS
+    return IAM
     .describeServices({
       serviceIds: [serviceId],
     })
@@ -89,7 +89,7 @@ export function requestDescribeService(serviceId) {
 
 export function requestCreateService(service) {
   return dispatch => {
-    return BOSS
+    return IAM
     .createService(service)
     .promise
     .then(() => {
@@ -104,7 +104,7 @@ export function requestCreateService(service) {
 
 export function requestModifyService(service) {
   return (dispatch) => {
-    return BOSS
+    return IAM
     .modifyService(service)
     .promise
     .then(() => {
