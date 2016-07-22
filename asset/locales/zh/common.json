@@ -286,6 +286,7 @@
         "hostname": "主机名",
         "network": "网络设置",
         "loginMode": "SSH 登录方式",
+        "defaultUser": "默认用户",
         "keyPair": "SSH 密钥",
         "loginPassword": "密码",
         "passwordNotValid": "密码不符合规范。",
