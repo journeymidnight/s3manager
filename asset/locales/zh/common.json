@@ -435,14 +435,16 @@
 
     "formQuotaForm": {
         "projectId": "项目ID",
-        "quotaInstances": "云主机",
-        "quotaVCPUs": "vCPU",
-        "quotaMemory": "内存(MB)",
-        "quotaImages": "镜像",
-        "quotaEIPs": "公网 IP",
-        "quotaVolumes": "云硬盘个数",
-        "quotaVolumeSize": "云硬盘容量(GB)",
-        "quotaKeyPairs": "SSH 密钥"
+        "instances": "云主机",
+        "vCPUs": "vCPU",
+        "memory": "内存(MB)",
+        "images": "镜像",
+        "eIPs": "公网 IP",
+        "volumes": "云硬盘个数",
+        "volumeSize": "云硬盘容量(GB)",
+        "keyPairs": "SSH 密钥",
+        "networks": "私有网络数量",
+        "snapshots": "快照个数"
     },
 
     "monitor": {

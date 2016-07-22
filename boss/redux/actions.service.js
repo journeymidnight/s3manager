@@ -35,17 +35,18 @@ export function requestDescribeAssignedQuotas(serviceKey, regionId) {
   };
 }
 
-export function requestDescribeQuota(serviceId, projectId) {
+export function requestDescribeQuota(serviceKey, regionId, projectId) {
   return dispatch => {
     return BOSS
     .describeQuotas({
-      serviceId,
+      serviceKeys: [serviceKey],
+      regionIds: [regionId],
       projectIds: [projectId],
     })
     .promise
     .then((payload) => {
       dispatch(extendContext({
-        quota: payload.projectQuotaSet[0],
+        quota: payload.quotaSet[0],
       }));
     })
     .catch((error) => {
@@ -54,10 +55,10 @@ export function requestDescribeQuota(serviceId, projectId) {
   };
 }
 
-export function requestAssignQuota(serviceId, projectId, quota) {
+export function requestAssignQuota(serviceKey, regionId, projectId, quota) {
   return dispatch => {
     return BOSS
-    .assignQuota(serviceId, projectId, quota)
+    .assignQuota(serviceKey, regionId, projectId, quota)
     .promise
     .then(() => {
       dispatch(notify(i18n.t('updateSuccessed')));

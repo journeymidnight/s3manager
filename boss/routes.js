@@ -30,8 +30,8 @@ import Regions from './pages/Regions.jsx';
 import RegionCreate from './pages/RegionCreate.jsx';
 import Region from './pages/Region.jsx';
 import RegionTabBasic from './pages/RegionTabBasic.jsx';
-import ProjectQuotaCreate from './pages/ProjectQuotaCreate.jsx';
-import ProjectQuota from './pages/ProjectQuota.jsx';
+import QuotaCreate from './pages/QuotaCreate.jsx';
+import Quota from './pages/Quota.jsx';
 import Profile from './pages/Profile.jsx';
 
 export default function configureRoutes(store) {
@@ -84,8 +84,8 @@ export default function configureRoutes(store) {
           </Route>
         </Route>
         <Route path="q/:serviceId" >
-          <Route path="create" component={ProjectQuotaCreate} />
-          <Route path=":projectId" component={ProjectQuota} />
+          <Route path="create" component={QuotaCreate} />
+          <Route path=":projectId" component={Quota} />
         </Route>
         <Route path="projects" >
           <IndexRoute component={Projects} />

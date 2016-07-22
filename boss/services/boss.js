@@ -78,11 +78,12 @@ class Boss {
   describeQuotas(filters = {}) {
     return this.call('DescribeQuotas', filters);
   }
-  assignQuota(regionId, projectId, quota) {
+  assignQuota(serviceKey, regionId, projectId, quota) {
     return this.call('AssignQuota', {
+      serviceKey,
       regionId,
       projectId,
-      ...quota,
+      quota,
     });
   }
   describeAdmins(filters = {}) {

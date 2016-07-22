@@ -47,12 +47,12 @@ class C extends TablePage {
               <input type="checkbox" className="selected" onChange={this.onSelectAll(this.props.context.quotaSet.map((u) => { return u.projectId; }))} />
             </th>
             <th width="150">{t('id')}</th>
-            <th>{t('formQuotaForm.quotaVCPUs')}</th>
-            <th>{t('formQuotaForm.quotaMemory')}</th>
-            <th>{t('formQuotaForm.quotaInstances')}</th>
-            <th>{t('formQuotaForm.quotaVolumes')}</th>
-            <th>{t('formQuotaForm.quotaVolumeSize')}</th>
-            <th>{t('formQuotaForm.quotaEIPs')}</th>
+            <th>{t('formQuotaForm.vCPUs')}</th>
+            <th>{t('formQuotaForm.memory')}</th>
+            <th>{t('formQuotaForm.instances')}</th>
+            <th>{t('formQuotaForm.volumes')}</th>
+            <th>{t('formQuotaForm.volumeSize')}</th>
+            <th>{t('formQuotaForm.eIPs')}</th>
             <th width="100"></th>
           </tr>
         </thead>
@@ -68,12 +68,12 @@ class C extends TablePage {
                   {quota.projectId}
                 </Link>
               </td>
-              <td>{quota.quota.VCPUs}</td>
-              <td>{quota.quota.Memory} MB</td>
-              <td>{quota.quota.Instances}</td>
-              <td>{quota.quota.Volumes}</td>
-              <td>{quota.quota.VolumeSize} GB</td>
-              <td>{quota.quota.EIPs}</td>
+              <td>{quota.quota.vCPUs}</td>
+              <td>{quota.quota.memory} MB</td>
+              <td>{quota.quota.instances}</td>
+              <td>{quota.quota.volumes}</td>
+              <td>{quota.quota.volumeSize} GB</td>
+              <td>{quota.quota.eIPs}</td>
               <td>
                 <Link className="btn btn-sm btn-close" to={`/q/${this.props.service2.serviceId}/${quota.projectId}/`}>
                   <i className="fa fa-cog" /> 配置
