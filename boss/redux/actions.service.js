@@ -18,11 +18,12 @@ export function requestDescribeServices(routerKey, filters) {
   };
 }
 
-export function requestDescribeAssignedQuotas(serviceId) {
+export function requestDescribeAssignedQuotas(serviceKey, regionId) {
   return dispatch => {
     return BOSS
     .describeQuotas({
-      serviceId,
+      serviceKeys: [serviceKey],
+      regionIds: [regionId],
     })
     .promise
     .then((payload) => {

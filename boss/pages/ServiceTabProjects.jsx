@@ -34,7 +34,7 @@ class C extends TablePage {
 
   refreshAction() {
     const { service2 } = this.props;
-    return ServiceActions.requestDescribeAssignedQuotas(service2);
+    return ServiceActions.requestDescribeAssignedQuotas(service2.serviceKey, service2.regionId);
   }
 
   renderTable() {
