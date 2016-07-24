@@ -278,7 +278,10 @@
         "resetInstance": "系统重置",
         "captureInstance": "生成自有映像",
         "associateEip": "绑定公网IP",
-        "dissociateEip": "解绑公网IP"
+        "dissociateEip": "解绑公网IP",
+        "attachVolume": "挂载云硬盘",
+        "noVolumeToBeAttahed": "无可挂载的云硬盘",
+        "promptForStatusCheckToAttachVolume": "云主机需要在运行或停止状态下才可挂载云硬盘"
     },
 
     "pageInstanceCreate": {
