@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
+import { push } from 'react-router-redux';
 import { translate } from 'react-i18next';
 import ConsoleHeader from '../components/ConsoleHeader.jsx';
 import ConsoleSidebar from '../components/ConsoleSidebar.jsx';
@@ -51,6 +52,8 @@ class App extends React.Component {
         return q.regionId === currentRegion;
       })) {
         currentRegion = serviceMached.quotas[0].regionId;
+        dispatch(push(`/${service.serviceKey}/${currentRegion}/`));
+        return;
       } else if (!currentRegion) {
         currentRegion = serviceMached.quotas[0].regionId;
       }
