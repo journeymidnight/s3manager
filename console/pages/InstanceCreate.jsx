@@ -57,10 +57,10 @@ class C extends Page {
 
   renderAfterInitialized() {
     const { t, servicePath, service } = this.props;
-    const { networkSet, instanceTypeSet, imageSet, keyPairSet } = this.props.context;
+    const { networkSet, instanceTypeSet, publicImageSet, privateImageSet, keyPairSet } = this.props.context;
 
     let hint = undefined;
-    if (imageSet.length === 0 || instanceTypeSet.length === 0) {
+    if (publicImageSet.length + privateImageSet.length === 0 || instanceTypeSet.length === 0) {
       hint = t('pageInstanceCreate.imageOrInstanceTypeNotFound');
     } else if (networkSet.length === 0) {
       hint = (
@@ -98,7 +98,8 @@ class C extends Page {
               onSubmit={this.onSubmit}
               networkSet={networkSet}
               instanceTypeSet={instanceTypeSet}
-              imageSet={imageSet}
+              publicImageSet={publicImageSet}
+              privateImageSet={privateImageSet}
               keyPairSet={keyPairSet}
               service={service}
             />
