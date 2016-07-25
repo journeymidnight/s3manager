@@ -57,7 +57,7 @@ class InstanceEipForm extends React.Component {
                 {this.eipSet && this.eipSet.map((eip) => {
                   return (
                     <option key={eip.eipId} value={eip.eipId}>
-                      {eip.name} ({eip.eipId})
+                      {eip.name} ({eip.address})
                     </option>
                   );
                 })}

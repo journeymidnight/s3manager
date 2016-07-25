@@ -2,7 +2,7 @@ import _ from 'lodash';
 import moment from 'moment';
 import React from 'react';
 import { attach } from '../../shared/pages/Page';
-import { confirmModal } from '../../shared/components/Modal';
+import Modal, { confirmModal } from '../../shared/components/Modal';
 import { buttonForm } from '../../shared/forms/ButtonForm';
 import TablePage from '../../shared/pages/TablePage';
 import SubnetCreateForm from '../forms/SubnetCreateForm';
@@ -18,10 +18,6 @@ class C extends TablePage {
     this.onDelete = this.onDelete.bind(this);
     this.onCreateSubnet = this.onCreateSubnet.bind(this);
     this.showCreatePanel = this.showCreatePanel.bind(this);
-
-    this.state = {
-      showCreatePanel: false,
-    };
   }
 
   componentDidMount() {
@@ -71,6 +67,7 @@ class C extends TablePage {
       }))
       .then(() => {
         resolve();
+        this.refs.subnetCreateModal.hide();
         this.onRefresh({}, false)();
       }).catch(() => {
         reject();
@@ -80,7 +77,7 @@ class C extends TablePage {
 
   showCreatePanel(e) {
     e.preventDefault();
-    this.setState({ showCreatePanel: true });
+    this.refs.subnetCreateModal.show();
   }
 
   renderTable() {
@@ -133,12 +130,9 @@ class C extends TablePage {
             </a>
           </div>
         </div>
-        {this.state.showCreatePanel && <div className="panel panel-primary">
-          <div className="panel-heading">{t('pageNetwork.createSubnet')}</div>
-          <div className="panel-body">
-            <SubnetCreateForm onSubmit={this.onCreateSubnet} />
-          </div>
-        </div>}
+        <Modal title={t('pageNetwork.createSubnet')} ref="subnetCreateModal" >
+          <SubnetCreateForm onSubmit={this.onCreateSubnet} />
+        </Modal>
       </div>
     );
   }

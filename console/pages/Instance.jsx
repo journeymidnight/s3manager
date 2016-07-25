@@ -10,9 +10,11 @@ import InstanceResetForm from '../forms/InstanceResetForm';
 import InstanceResizeForm from '../forms/InstanceResizeForm';
 import InstanceEipForm from '../forms/InstanceEipForm';
 import InstanceCaptureForm from '../forms/InstanceCaptureForm';
+import InstanceVolumeForm from '../forms/InstanceVolumeForm';
 import * as EipActions from '../redux/actions.eip';
 import * as Actions from '../redux/actions';
 import * as InstanceActions from '../redux/actions.instance';
+import * as VolumeActions from '../redux/actions.volume';
 
 let InstanceUpdateForm = (props) => {
   const { fields:
@@ -84,6 +86,7 @@ class C extends Page {
     this.onResize = this.onResize.bind(this);
     this.onReset = this.onReset.bind(this);
     this.onUpdate = this.onUpdate.bind(this);
+    this.onAttachVolume = this.onAttachVolume.bind(this);
     this.refresh = this.refresh.bind(this);
     this.deleteInstance = this.deleteInstance.bind(this);
     this.startInstance = this.startInstance.bind(this);
@@ -96,6 +99,7 @@ class C extends Page {
     this.associateEip = this.associateEip.bind(this);
     this.dissociateEip = this.dissociateEip.bind(this);
     this.captureInstance = this.captureInstance.bind(this);
+    this.attachVolume = this.attachVolume.bind(this);
   }
 
   componentDidMount() {
@@ -295,6 +299,52 @@ class C extends Page {
     this.refs.resizeModal.show();
   }
 
+  attachVolume(e) {
+    e.preventDefault();
+
+    const { t, dispatch, routerKey, region } = this.props;
+    const instance = this.props.context.instance || this.instance;
+    if (['active', 'stopped'].indexOf(instance.status) === -1) {
+      alertModal(t('pageInstance.promptForStatusCheckToAttachVolume'));
+      return;
+    }
+
+    dispatch(VolumeActions.requestDescribeVolumes(routerKey, region.regionId, { status: ['active'] }))
+      .then(() => {
+        if (this.props.context.volumeSet && this.props.context.volumeSet.length) {
+          this.refs.attachVolumeModal.show();
+        } else {
+          alertModal(t('pageInstance.noVolumeToBeAttahed'));
+        }
+      });
+  }
+
+  onAttachVolume(values) {
+    const { dispatch, region, routerKey } = this.props;
+
+    const volumeId = values.volumeId;
+    const instanceId = this.props.context.instance.instanceId;
+
+    dispatch(VolumeActions.requestAttachVolume(routerKey, region.regionId, volumeId, instanceId))
+      .then(() => {
+        this.refs.attachVolumeModal.hide();
+      }).catch(() => {
+      });
+  }
+
+  renderAttachVolumeModal() {
+    const { t } = this.props;
+    const availableVolumes = this.props.context.volumeSet;
+    const initialValues = {
+      volumeId: availableVolumes[0].volumeId,
+    };
+    return (
+      <Modal title={t('pageInstance.attachVolume')} ref="attachVolumeModal" >
+        <InstanceVolumeForm onSubmit={this.onAttachVolume} availableVolumes={availableVolumes} initialValues={initialValues} />
+      </Modal>
+    );
+  }
+
   connectVNC(e) {
     e.preventDefault();
 
@@ -406,6 +456,7 @@ class C extends Page {
                       </button>
                       <ul className="dropdown-menu">
                         <li><a href onClick={this.resizeInstance}>{t('pageInstance.resizeInstance')}</a></li>
+                        <li><a href onClick={this.attachVolume}>{t('pageInstance.attachVolume')}</a></li>
                         <li><a href onClick={this.resetInstance}>{t('pageInstance.resetInstance')}</a></li>
                         <li><a href onClick={this.associateEip}>{t('pageInstance.associateEip')}</a></li>
                         <li><a href onClick={this.dissociateEip}>{t('pageInstance.dissociateEip')}</a></li>
@@ -493,6 +544,7 @@ class C extends Page {
         <Modal title={t('pageInstance.captureInstance')} ref="captureModal" >
           <InstanceCaptureForm onSubmit={this.onCaptureInstance} instance={instance} region={region} />
         </Modal>
+        {this.props.context.volumeSet && this.props.context.volumeSet.length && this.renderAttachVolumeModal()}
       </div>
     );
   }
