@@ -436,6 +436,7 @@
     },
 
     "formRegionForm": {
+        "devopsEndpoint": "DevOps 接口 URL"
     },
 
     "formQuotaForm": {
