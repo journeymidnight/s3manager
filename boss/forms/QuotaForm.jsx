@@ -2,7 +2,7 @@ import React from 'react';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
 import Select from 'react-select';
-import BOSS from '../services/boss';
+import IAM from '../services/iam';
 import * as Validations from '../../shared/utils/validations';
 
 class F extends React.Component {
@@ -18,7 +18,7 @@ class F extends React.Component {
   }
 
   getOptions(input, callback) {
-    BOSS
+    IAM
     .describeProjects({
       searchWord: input,
     })

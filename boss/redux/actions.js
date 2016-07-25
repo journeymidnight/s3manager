@@ -1,6 +1,6 @@
 import * as ActionTypes from './constants';
 import { push } from 'react-router-redux';
-import BOSS from '../services/boss';
+import IAM from '../services/iam';
 import Auth from '../services/auth';
 import i18n from '../../shared/i18n';
 
@@ -99,7 +99,7 @@ export function requestLogout() {
 
 export function requestDescribeUserRoles(userId) {
   return (dispatch) => {
-    return BOSS
+    return IAM
     .describeUserRoles(userId)
     .promise
     .then((payload) => {
@@ -115,7 +115,7 @@ export function requestDescribeUserRoles(userId) {
 
 export function requestDescribeUsers(filters = {}) {
   return dispatch => {
-    return BOSS
+    return IAM
     .describeUsers(filters)
     .promise
     .then((payload) => {
@@ -129,7 +129,7 @@ export function requestDescribeUsers(filters = {}) {
 
 export function requestDescribeUser(userId) {
   return dispatch => {
-    return BOSS
+    return IAM
     .describeUsers({
       userIds: [userId],
     })
@@ -147,7 +147,7 @@ export function requestDescribeUser(userId) {
 
 export function requestUserByEmail(email) {
   return dispatch => {
-    return BOSS
+    return IAM
     .describeUsers({
       searchWord: email,
       size: 0,
@@ -173,7 +173,7 @@ export function requestUserByEmail(email) {
 
 export function requestCreateUser(user) {
   return dispatch => {
-    return BOSS
+    return IAM
     .createUser(user)
     .promise
     .then(() => {
@@ -188,7 +188,7 @@ export function requestCreateUser(user) {
 
 export function requestModifyUser(user) {
   return (dispatch) => {
-    return BOSS
+    return IAM
     .modifyUser(user)
     .promise
     .then(() => {
@@ -203,7 +203,7 @@ export function requestModifyUser(user) {
 
 export function requestDescribeAdmins() {
   return dispatch => {
-    return BOSS
+    return IAM
     .describeAdmins()
     .promise
     .then((payload) => {
@@ -214,7 +214,7 @@ export function requestDescribeAdmins() {
 
 export function requestDescribeAdmin(adminId) {
   return dispatch => {
-    return BOSS
+    return IAM
     .describeAdmins({
       admins: [adminId],
     })
@@ -232,7 +232,7 @@ export function requestDescribeAdmin(adminId) {
 
 export function requestCreateAdmin(admin) {
   return dispatch => {
-    return BOSS
+    return IAM
     .createAdmin(admin)
     .promise
     .then(() => {
@@ -247,7 +247,7 @@ export function requestCreateAdmin(admin) {
 
 export function requestModifyAdmin(admin) {
   return (dispatch) => {
-    return BOSS
+    return IAM
     .modifyAdmin(admin)
     .promise
     .then(() => {

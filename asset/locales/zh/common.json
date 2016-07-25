@@ -94,6 +94,9 @@
     "instanceManage": "云主机管理",
     "instanceManageDescription": "添加、删除和修改云主机信息。",
 
+    "adminManage": "管理员管理",
+    "adminManageDescription": "添加、删除和修改管理员信息。",
+
     "userManage": "用户管理",
     "userManageDescription": "添加、删除和修改用户信息。",
 
