@@ -287,8 +287,7 @@
         "associateEip": "绑定公网IP",
         "dissociateEip": "解绑公网IP",
         "attachVolume": "挂载云硬盘",
-        "noVolumeToBeAttahed": "无可挂载的云硬盘",
-        "promptForStatusCheckToAttachVolume": "云主机需要在运行或停止状态下才可挂载云硬盘"
+        "noVolumeToBeAttahed": "无可挂载的云硬盘"
     },
 
     "pageInstanceCreate": {
@@ -492,6 +491,10 @@
         "diskIOPS": "硬盘 IOPS",
         "eipTraffic": "流量",
         "eipPackets": "数据包"
+    },
+
+    "promptOperationCheck": {
+        "promptPrefix1": "当前状态不可"
     },
 
     "sidebarInstance": "主机列表",

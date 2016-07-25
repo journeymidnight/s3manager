@@ -132,14 +132,26 @@ class C extends Page {
   startInstance(e) {
     e.preventDefault();
 
-    const { dispatch, region, routerKey, params } = this.props;
+    const { t, dispatch, region, routerKey, params } = this.props;
+    const instance = this.props.context.instance;
+
+    if (instance.status !== 'stopped') {
+      alertModal(t('promptOperationCheck.promptPrefix1') + t('pageInstance.startInstance') + t('instance'));
+      return;
+    }
     dispatch(InstanceActions.requestStartInstances(routerKey, region.regionId, [params.instanceId]));
   }
 
   stopInstance(e) {
     e.preventDefault();
 
-    const { dispatch, region, routerKey, params } = this.props;
+    const { t, dispatch, region, routerKey, params } = this.props;
+    const instance = this.props.context.instance;
+
+    if (instance.status !== 'active') {
+      alertModal(t('promptOperationCheck.promptPrefix1') + t('pageInstance.stopInstance'));
+      return;
+    }
     dispatch(InstanceActions.requestStopInstances(routerKey, region.regionId, [params.instanceId]));
   }
 
@@ -163,13 +175,27 @@ class C extends Page {
 
   updateInstance(e) {
     e.preventDefault();
+
+    const { t } = this.props;
+    const instance = this.props.context.instance;
+
+    if (instance.status !== 'stopped') {
+      alertModal(t('promptOperationCheck.promptPrefix1') + t('pageInstance.updateInstance') + t('instance'));
+      return;
+    }
     this.refs.updateModal.show();
   }
 
   restartInstance(e) {
     e.preventDefault();
 
-    const { dispatch, region, routerKey, params } = this.props;
+    const { t, dispatch, region, routerKey, params } = this.props;
+    const instance = this.props.context.instance;
+
+    if (instance.status !== 'active') {
+      alertModal(t('promptOperationCheck.promptPrefix1') + t('pageInstance.restartInstance') + t('instance'));
+      return;
+    }
     dispatch(InstanceActions.requestRestartInstances(routerKey, region.regionId, [params.instanceId]));
   }
 
@@ -177,7 +203,12 @@ class C extends Page {
     e.preventDefault();
 
     const { t, dispatch, region, routerKey, params } = this.props;
+    const instance = this.props.context.instance;
 
+    if (['active', 'stopped'].indexOf(instance.status) === -1) {
+      alertModal(t('promptOperationCheck.promptPrefix1') + t('pageInstance.deleteInstance') + t('instance'));
+      return;
+    }
     confirmModal(t('confirmDelete'), () => {
       dispatch(InstanceActions.requestDeleteInstances(routerKey, region.regionId, [params.instanceId]));
     });
@@ -233,15 +264,26 @@ class C extends Page {
   associateEip(e) {
     e.preventDefault();
 
+    const { t } = this.props;
+    const instance = this.props.context.instance;
+
+    if (['active', 'stopped'].indexOf(instance.status) === -1) {
+      alertModal(t('promptOperationCheck.promptPrefix1') + t('pageInstance.associateEip'));
+      return;
+    }
     this.refs.eipModal.show();
   }
 
   dissociateEip(e) {
     e.preventDefault();
 
-    const { dispatch, region, routerKey, params } = this.props;
+    const { t, dispatch, region, routerKey, params } = this.props;
     const instance = this.props.context.instance || this.instance;
 
+    if (['active', 'stopped'].indexOf(instance.status) === -1) {
+      alertModal(t('promptOperationCheck.promptPrefix1') + t('pageInstance.dissociateEip'));
+      return;
+    }
     dispatch(EipActions.requestDissociateEips(routerKey, region.regionId, [instance.eipId], params.instanceId))
     .then(() => {
     }).catch(() => {
@@ -267,6 +309,12 @@ class C extends Page {
   captureInstance(e) {
     e.preventDefault();
 
+    const { t } = this.props;
+    const instance = this.props.context.instance;
+    if (['active', 'stopped'].indexOf(instance.status) === -1) {
+      alertModal(t('promptOperationCheck.promptPrefix1') + t('pageInstance.captureInstance'));
+      return;
+    }
     this.refs.captureModal.show();
   }
 
@@ -305,7 +353,7 @@ class C extends Page {
     const { t, dispatch, routerKey, region } = this.props;
     const instance = this.props.context.instance || this.instance;
     if (['active', 'stopped'].indexOf(instance.status) === -1) {
-      alertModal(t('pageInstance.promptForStatusCheckToAttachVolume'));
+      alertModal(t('promptOperationCheck.promptPrefix1') + t('pageInstance.attachVolume'));
       return;
     }
 
@@ -348,7 +396,13 @@ class C extends Page {
   connectVNC(e) {
     e.preventDefault();
 
-    const { dispatch, region, routerKey, params } = this.props;
+    const { t, dispatch, region, routerKey, params } = this.props;
+    const instance = this.props.context.instance;
+
+    if (instance.status !== 'active') {
+      alertModal(t('promptOperationCheck.promptPrefix1') + t('pageInstance.connectVNC'));
+      return;
+    }
     dispatch(InstanceActions.requestConnectVNC(routerKey, region.regionId, params.instanceId));
   }
 
