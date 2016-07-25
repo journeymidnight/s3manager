@@ -1,6 +1,7 @@
 import React from 'react';
 import { IndexRoute, Route } from 'react-router';
 
+import NotFound from '../shared/pages/NotFound.jsx';
 import App from './pages/App.jsx';
 import Index from './pages/Index.jsx';
 import Login from './pages/Login.jsx';
@@ -16,15 +17,21 @@ import User from './pages/User.jsx';
 import Admins from './pages/Admins.jsx';
 import AdminCreate from './pages/AdminCreate.jsx';
 import Admin from './pages/Admin.jsx';
+import Services from './pages/Services.jsx';
+import Service from './pages/Service.jsx';
+import ServiceCreate from './pages/ServiceCreate.jsx';
+import ServiceTabBasic from './pages/ServiceTabBasic.jsx';
+import ServiceTabProjects from './pages/ServiceTabProjects.jsx';
+import LOS from './pages/los/LOS.jsx';
+import LCS from './pages/lcs/LCS.jsx';
+import LCSTabImages from './pages/lcs/LCSTabImages.jsx';
+import LCSTabInstanceTypes from './pages/lcs/LCSTabInstanceTypes.jsx';
 import Regions from './pages/Regions.jsx';
 import RegionCreate from './pages/RegionCreate.jsx';
 import Region from './pages/Region.jsx';
 import RegionTabBasic from './pages/RegionTabBasic.jsx';
-import RegionTabImages from './pages/RegionTabImages.jsx';
-import RegionTabInstanceTypes from './pages/RegionTabInstanceTypes.jsx';
-import RegionTabProjects from './pages/RegionTabProjects.jsx';
-import ProjectQuotaCreate from './pages/ProjectQuotaCreate.jsx';
-import ProjectQuota from './pages/ProjectQuota.jsx';
+import QuotaCreate from './pages/QuotaCreate.jsx';
+import Quota from './pages/Quota.jsx';
 import Profile from './pages/Profile.jsx';
 
 export default function configureRoutes(store) {
@@ -49,20 +56,36 @@ export default function configureRoutes(store) {
           <Route path="create" component={AdminCreate} />
           <Route path=":adminId" component={Admin} />
         </Route>
+        <Route path="services" >
+          <IndexRoute component={Services} />
+          <Route path="create" component={ServiceCreate} />
+          <Route path=":serviceId" component={Service} >
+            <IndexRoute component={ServiceTabBasic} />
+            <Route path="basic" component={ServiceTabBasic} />
+            <Route path="projects" component={ServiceTabProjects} />
+          </Route>
+        </Route>
+        <Route path="los" >
+          <Route path=":serviceId" component={LOS} />
+        </Route>
+        <Route path="lcs" >
+          <Route path=":serviceId" component={LCS} >
+            <IndexRoute component={LCSTabImages} />
+            <Route path="images" component={LCSTabImages} />
+            <Route path="instance_types" component={LCSTabInstanceTypes} />
+          </Route>
+        </Route>
         <Route path="regions" >
           <IndexRoute component={Regions} />
           <Route path="create" component={RegionCreate} />
           <Route path=":regionId" component={Region} >
             <IndexRoute component={RegionTabBasic} />
             <Route path="basic" component={RegionTabBasic} />
-            <Route path="projects" component={RegionTabProjects} />
-            <Route path="images" component={RegionTabImages} />
-            <Route path="instance_types" component={RegionTabInstanceTypes} />
           </Route>
         </Route>
-        <Route path="q/:regionId" >
-          <Route path="create" component={ProjectQuotaCreate} />
-          <Route path=":projectId" component={ProjectQuota} />
+        <Route path="q/:serviceId" >
+          <Route path="create" component={QuotaCreate} />
+          <Route path=":projectId" component={Quota} />
         </Route>
         <Route path="projects" >
           <IndexRoute component={Projects} />
@@ -79,6 +102,7 @@ export default function configureRoutes(store) {
           <Route path=":userId" component={User} />
         </Route>
       </Route>
+      <Route path="*" component={NotFound} />
     </Route>
   );
 }

@@ -5,7 +5,7 @@ import ButtonForm from '../../shared/forms/ButtonForm';
 import TablePage from '../../shared/pages/TablePage';
 import { alertModal } from '../../shared/components/Modal';
 import * as Actions from '../redux/actions';
-import * as RegionActions from '../redux/actions.region';
+import * as ServiceActions from '../redux/actions.service';
 
 class C extends TablePage {
 
@@ -17,7 +17,7 @@ class C extends TablePage {
 
   componentDidMount() {
     const { t, dispatch } = this.props;
-    dispatch(Actions.setHeader(t('regionManage'), '/regions'));
+    dispatch(Actions.setHeader(t('serviceManage'), '/services'));
 
     this.initTable({ isTabPage: true });
   }
@@ -33,32 +33,31 @@ class C extends TablePage {
   }
 
   refreshAction() {
-    const { region2 } = this.props;
-    return RegionActions.requestDescribeAssignedQuotas(region2.regionId);
+    const { service2 } = this.props;
+    return ServiceActions.requestDescribeAssignedQuotas(service2.serviceKey, service2.regionId);
   }
 
   renderTable() {
     const { t } = this.props;
-    return this.props.context.total > 0 && this.props.context.projectQuotaSet.length > 0 && (
+    return this.props.context.total > 0 && this.props.context.quotaSet.length > 0 && (
       <table className="table">
         <thead>
           <tr>
             <th width="40">
-              <input type="checkbox" className="selected" onChange={this.onSelectAll(this.props.context.projectQuotaSet.map((u) => { return u.projectId; }))} />
+              <input type="checkbox" className="selected" onChange={this.onSelectAll(this.props.context.quotaSet.map((u) => { return u.projectId; }))} />
             </th>
             <th width="150">{t('id')}</th>
-            <th>{t('name')}</th>
-            <th>{t('formProjectQuotaForm.quotaVCPUs')}</th>
-            <th>{t('formProjectQuotaForm.quotaMemory')}</th>
-            <th>{t('formProjectQuotaForm.quotaInstances')}</th>
-            <th>{t('formProjectQuotaForm.quotaVolumes')}</th>
-            <th>{t('formProjectQuotaForm.quotaVolumeSize')}</th>
-            <th>{t('formProjectQuotaForm.quotaEIPs')}</th>
+            <th>{t('formQuotaForm.vCPUs')}</th>
+            <th>{t('formQuotaForm.memory')}</th>
+            <th>{t('formQuotaForm.instances')}</th>
+            <th>{t('formQuotaForm.volumes')}</th>
+            <th>{t('formQuotaForm.volumeSize')}</th>
+            <th>{t('formQuotaForm.eIPs')}</th>
             <th width="100"></th>
           </tr>
         </thead>
         <tbody>
-        {this.props.context.projectQuotaSet.map((quota) => {
+        {this.props.context.quotaSet.map((quota) => {
           return (
             <tr key={quota.projectId}>
               <td>
@@ -69,15 +68,14 @@ class C extends TablePage {
                   {quota.projectId}
                 </Link>
               </td>
-              <td><strong>{quota.name}</strong></td>
-              <td>{quota.quotaVCPUs}</td>
-              <td>{quota.quotaMemory} MB</td>
-              <td>{quota.quotaInstances}</td>
-              <td>{quota.quotaVolumes}</td>
-              <td>{quota.quotaVolumeSize} GB</td>
-              <td>{quota.quotaEIPs}</td>
+              <td>{quota.quota.vCPUs}</td>
+              <td>{quota.quota.memory} MB</td>
+              <td>{quota.quota.instances}</td>
+              <td>{quota.quota.volumes}</td>
+              <td>{quota.quota.volumeSize} GB</td>
+              <td>{quota.quota.eIPs}</td>
               <td>
-                <Link className="btn btn-sm btn-close" to={`/q/${this.props.region2.regionId}/${quota.projectId}/`}>
+                <Link className="btn btn-sm btn-close" to={`/q/${this.props.service2.serviceId}/${quota.projectId}/`}>
                   <i className="fa fa-cog" /> 配置
                 </Link>
               </td>
@@ -90,7 +88,7 @@ class C extends TablePage {
   }
 
   renderFilters() {
-    const { t, region2 } = this.props;
+    const { t, service2 } = this.props;
     return (
       <div className="gray-content-block second-block">
         <div className={Object.keys(this.props.context.selected).length > 0 ? 'hidden' : ''}>
@@ -100,7 +98,7 @@ class C extends TablePage {
             </a>
           </div>
           <div className="pull-right">
-            <Link className="btn btn-new" to={`/q/${region2.regionId}/create`}>
+            <Link className="btn btn-new" to={`/q/${service2.serviceId}/create`}>
               <i className="fa fa-plus"></i>&nbsp;{t('create')}
             </Link>
           </div>

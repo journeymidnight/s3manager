@@ -1,27 +1,27 @@
 import expect from 'expect';
 import nock from 'nock';
-import * as RegionActions from '../actions.region';
+import * as ServiceActions from '../actions.service';
 import * as ActionTypes from '../constants';
 import { mockStore, mockRequest } from '../../../shared/__tests__/mock';
 import i18n from '../../../shared/i18n';
 
-const regionId = 'idA';
+const serviceId = 'idA';
 const name = 'nameA';
 const publicEndpoint = 'publicEndpointA';
 const manageEndpoint = 'manageEndpointA';
 const manageKey = 'manageKeyA';
 const manageSecret = 'manageSecretA';
 
-describe('RegionActions', () => {
+describe('ServiceActions', () => {
   afterEach(() => {
     nock.cleanAll();
   });
 
-  it('#requestDescribeRegions', (done) => {
+  it('#requestDescribeServices', (done) => {
     const rep = {
       totalCount: 9,
-      regionSet: [{
-        regionId,
+      serviceSet: [{
+        serviceId,
         name,
         publicEndpoint,
         manageEndpoint,
@@ -30,7 +30,7 @@ describe('RegionActions', () => {
     };
 
     const scope = mockRequest
-    .post('/p/api/describeRegions', {
+    .post('/p/api/iam/DescribeServices', {
     })
     .reply(200, {
       data: rep,
@@ -40,7 +40,7 @@ describe('RegionActions', () => {
 
     const store = mockStore();
     return store
-    .dispatch(RegionActions.requestDescribeRegions())
+    .dispatch(ServiceActions.requestDescribeServices())
     .then(() => {
       scope.isDone();
       expect(store.getActions()).toEqual([{
@@ -55,9 +55,9 @@ describe('RegionActions', () => {
     });
   });
 
-  it('#requestCreateRegionError', (done) => {
+  it('#requestCreateServiceError', (done) => {
     const scope = mockRequest
-    .post('/p/api/createRegion', {
+    .post('/p/api/iam/CreateService', {
       name,
       publicEndpoint,
       manageEndpoint,
@@ -72,7 +72,7 @@ describe('RegionActions', () => {
 
     const store = mockStore();
     return store
-    .dispatch(RegionActions.requestCreateRegion({
+    .dispatch(ServiceActions.requestCreateService({
       name,
       publicEndpoint,
       manageEndpoint,
@@ -98,9 +98,9 @@ describe('RegionActions', () => {
     });
   });
 
-  it('#requestCreateRegion', (done) => {
+  it('#requestCreateService', (done) => {
     const scope = mockRequest
-    .post('/p/api/createRegion', {
+    .post('/p/api/iam/CreateService', {
       name,
       publicEndpoint,
       manageEndpoint,
@@ -109,7 +109,7 @@ describe('RegionActions', () => {
     })
     .reply(200, {
       data: {
-        regionId,
+        serviceId,
       },
       retCode: 0,
       message: null,
@@ -118,7 +118,7 @@ describe('RegionActions', () => {
     const store = mockStore();
 
     return store
-    .dispatch(RegionActions.requestCreateRegion({
+    .dispatch(ServiceActions.requestCreateService({
       name,
       publicEndpoint,
       manageEndpoint,
@@ -130,7 +130,7 @@ describe('RegionActions', () => {
       expect(store.getActions()).toEqual([{
         payload: {
           args: [
-            '/regions',
+            '/services',
           ],
           method: 'push',
         },
@@ -152,10 +152,10 @@ describe('RegionActions', () => {
     });
   });
 
-  it('#requestModifyRegion', (done) => {
+  it('#requestModifyService', (done) => {
     const scope = mockRequest
-    .post('/p/api/modifyRegionAttributes', {
-      regionId,
+    .post('/p/api/iam/ModifyServiceAttributes', {
+      serviceId,
       name,
     })
     .reply(200, {
@@ -166,8 +166,8 @@ describe('RegionActions', () => {
 
     const rep = {
       totalCount: 9,
-      regionSet: [{
-        regionId,
+      serviceSet: [{
+        serviceId,
         name,
         publicEndpoint,
         manageEndpoint,
@@ -175,8 +175,8 @@ describe('RegionActions', () => {
     };
 
     const scope2 = mockRequest
-    .post('/p/api/describeRegions', {
-      regionIds: [regionId],
+    .post('/p/api/iam/DescribeServices', {
+      serviceIds: [serviceId],
     })
     .reply(200, {
       data: rep,
@@ -195,7 +195,7 @@ describe('RegionActions', () => {
       routerKey: undefined,
     }, {
       payload: {
-        region: rep.regionSet[0],
+        service: rep.serviceSet[0],
       },
       type: ActionTypes.EXTEND_CONTEXT,
       routerKey: undefined,
@@ -204,8 +204,8 @@ describe('RegionActions', () => {
     const store = mockStore();
 
     return store
-    .dispatch(RegionActions.requestModifyRegion({
-      regionId,
+    .dispatch(ServiceActions.requestModifyService({
+      serviceId,
       name,
     }))
     .then(() => {

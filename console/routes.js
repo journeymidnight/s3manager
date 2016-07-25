@@ -1,11 +1,11 @@
 import React from 'react';
 import { Route, IndexRoute, IndexRedirect } from 'react-router';
 
+import NotFound from '../shared/pages/NotFound.jsx';
 import App from './pages/App.jsx';
 import Login from './pages/Login.jsx';
 import Logout from './pages/Logout.jsx';
 import GotoDefaultRegion from './pages/GotoDefaultRegion.jsx';
-import NotFound from './pages/NotFound.jsx';
 import KeyPair from './pages/KeyPair.jsx';
 import KeyPairs from './pages/KeyPairs.jsx';
 import KeyPairCreate from './pages/KeyPairCreate.jsx';
