@@ -355,8 +355,8 @@
 
     "pageEip": {
         "basic": "基本信息",
-        "updateEip": "更新基本信息",
-        "deleteEip": "删除公网IP",
+        "updateEip": "更新",
+        "deleteEip": "删除",
         "associateResource": "绑定资源",
         "dissociateResource": "解绑资源",
         "noAvailableInstance": "没有可用的云主机",
@@ -365,11 +365,11 @@
 
     "pageVolume": {
         "basic": "基本信息",
-        "updateVolume": "更新基本信息",
-        "deleteVolume": "删除云硬盘",
-        "attachVolume": "挂载云硬盘",
-        "detachVolume": "卸载云硬盘",
-        "resizeVolume": "扩容云硬盘",
+        "updateVolume": "更新",
+        "deleteVolume": "删除",
+        "attachVolume": "挂载",
+        "detachVolume": "卸载",
+        "resizeVolume": "扩容",
         "monitor": "监控",
         "snapshot": "快照",
         "createSnapshot": "创建快照",

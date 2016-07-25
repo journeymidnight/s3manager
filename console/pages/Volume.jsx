@@ -340,7 +340,7 @@ class C extends Page {
     const { t, dispatch, region, routerKey } = this.props;
     const volume = this.props.context.volume;
 
-    if (volume.status === 'active') {
+    if (volume.status !== 'active') {
       alertModal(t('promptOperationCheck.promptPrefix1') + t('pageVolume.attachVolume'));
       return;
     }
@@ -360,7 +360,7 @@ class C extends Page {
     const { t, dispatch, region, routerKey } = this.props;
     const volume = this.props.context.volume;
 
-    if (volume.status === 'inuse') {
+    if (volume.status !== 'inuse') {
       alertModal(t('promptOperationCheck.promptPrefix1') + t('pageVolume.detachVolume'));
       return;
     }
