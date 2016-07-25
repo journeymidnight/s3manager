@@ -494,7 +494,8 @@
     },
 
     "promptOperationCheck": {
-        "promptPrefix1": "当前状态不可"
+        "promptPrefix1": "当前状态不可",
+        "detachVolumeFirst":"，请先解挂云硬盘"
     },
 
     "sidebarInstance": "主机列表",
