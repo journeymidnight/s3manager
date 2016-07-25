@@ -1,11 +1,11 @@
 import { push } from 'react-router-redux';
 import { notifyAlert, notify, extendContext } from './actions';
-import BOSS from '../services/boss';
+import IAM from '../services/iam';
 import i18n from '../../shared/i18n';
 
 export function requestDescribeProjects(routerKey, filters) {
   return dispatch => {
-    return BOSS
+    return IAM
     .describeProjects(filters)
     .promise
     .then((payload) => {
@@ -19,7 +19,7 @@ export function requestDescribeProjects(routerKey, filters) {
 
 export function requestDescribeProject(projectId) {
   return dispatch => {
-    return BOSS
+    return IAM
     .describeProjects({
       projectIds: [projectId],
     })
@@ -37,7 +37,7 @@ export function requestDescribeProject(projectId) {
 
 export function requestCreateProject(project) {
   return dispatch => {
-    return BOSS
+    return IAM
     .createProject(project)
     .promise
     .then((res) => {
@@ -57,7 +57,7 @@ export function requestCreateProject(project) {
 
 export function requestModifyProject(project) {
   return (dispatch) => {
-    return BOSS
+    return IAM
     .modifyProject(project)
     .promise
     .then(() => {
@@ -72,7 +72,7 @@ export function requestModifyProject(project) {
 
 export function requestCreateProjectRole(projectId, userId, role) {
   return (dispatch) => {
-    return BOSS
+    return IAM
     .createProjectRole(projectId, userId, role)
     .promise
     .then(() => {
@@ -86,7 +86,7 @@ export function requestCreateProjectRole(projectId, userId, role) {
 
 export function requestDeleteProjectRole(projectId, userIds) {
   return (dispatch) => {
-    return BOSS
+    return IAM
     .deleteProjectRole(projectId, userIds)
     .promise
     .then(() => {
@@ -100,7 +100,7 @@ export function requestDeleteProjectRole(projectId, userIds) {
 
 export function requestDescribeProjectRoles(projectId) {
   return (dispatch) => {
-    return BOSS
+    return IAM
     .describeProjectRoles(projectId)
     .promise
     .then((payload) => {
@@ -114,7 +114,7 @@ export function requestDescribeProjectRoles(projectId) {
 
 export function requestDeleteProjects(routerKey, projectIds) {
   return dispatch => {
-    return BOSS
+    return IAM
     .deleteProjects(projectIds)
     .promise
     .then((payload) => {

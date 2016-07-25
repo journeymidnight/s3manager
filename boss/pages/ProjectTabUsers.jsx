@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
 import Select from 'react-select';
-import BOSS, { projectRoleAdmin, projectRoleUser } from '../services/boss';
+import IAM, { projectRoleAdmin, projectRoleUser } from '../services/iam';
 import { attach } from '../../shared/pages/Page';
 import ButtonForm from '../../shared/forms/ButtonForm';
 import TablePage from '../../shared/pages/TablePage';
@@ -25,7 +25,7 @@ class F extends React.Component {
   }
 
   getOptions(input, callback) {
-    BOSS
+    IAM
     .describeUsers({
       searchWord: input,
     })

@@ -1,10 +1,10 @@
 import { notify, notifyAlert, extendContext } from './actions';
-import BOSS from '../services/boss';
+import IAM from '../services/iam';
 import i18n from '../../shared/i18n';
 
 export function requestDeleteUsers(routerKey, userIds) {
   return dispatch => {
-    return BOSS
+    return IAM
     .deleteUsers(userIds)
     .promise
     .then((payload) => {
