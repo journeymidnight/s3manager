@@ -513,8 +513,23 @@
     "boss": {
         "title": "BOSS业务运营支撑系统",
         "monitor": {
+            "periods": {
+                "120mins": "最近120分钟",
+                "720mins": "最近720分钟",
+                "48hours": "最近48小时",
+                "14days": "最近7天",
+                "30days": "最近30天"
+            },
+            "intervals": {
+                "120mins": "间隔: 1分钟",
+                "720mins": "间隔: 1分钟",
+                "48hours": "间隔: 5分钟",
+                "14days": "间隔: 20分钟",
+                "30days": "间隔: 3小时"
+            },
             "servers": "服务器",
             "ceph": "Ceph",
+            "cephOSDs": "OSD 数量",
             "openstack": "OpenStack"
         }
     },
