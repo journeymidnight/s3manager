@@ -2,6 +2,7 @@ import React from 'react';
 import { push } from 'react-router-redux';
 import Page, { attach } from '../../shared/pages/Page';
 import VolumeForm from '../forms/VolumeForm';
+import { notifyAlert } from '../redux/actions';
 import * as SnapshotActions from '../redux/actions.snapshot';
 import * as VolumeActions from '../redux/actions.volume';
 
@@ -20,12 +21,12 @@ class C extends Page {
   onSubmit(values) {
     const { dispatch, region, routerKey, servicePath } = this.props;
 
-    return new Promise((resolve, reject) => {
-      const name = values.name;
-      const size = Number(values.size);
-      const count = Number(values.count);
-      const snapshotId = values.snapshotId;
+    const name = values.name;
+    const size = Number(values.size);
+    const count = Number(values.count);
+    const snapshotId = values.snapshotId;
 
+    return new Promise((resolve, reject) => {
       dispatch(VolumeActions.requestCreateVolume(routerKey, region.regionId, {
         name,
         size: snapshotId ? 1 : size,
@@ -37,6 +38,7 @@ class C extends Page {
           resolve();
           dispatch(push(`${servicePath}/volumes`));
         }).catch((error) => {
+          dispatch(notifyAlert(error.message));
           reject({ _error: error.message });
         });
     });

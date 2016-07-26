@@ -65,13 +65,14 @@ class C extends TablePage {
         networkId: network.networkId,
         cidr,
       }))
-      .then(() => {
-        resolve();
-        this.refs.subnetCreateModal.hide();
-        this.onRefresh({}, false)();
-      }).catch(() => {
-        reject();
-      });
+        .then(() => {
+          resolve();
+          this.refs.subnetCreateModal.hide();
+          this.onRefresh({}, false)();
+        }).catch((error) => {
+          dispatch(Actions.notifyAlert(error.message));
+          reject({ _error: error.message });
+        });
     });
   }
 

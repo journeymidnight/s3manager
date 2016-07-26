@@ -113,9 +113,6 @@ export function requestCreateInstances(routerKey, regionId, params) {
     .promise
     .then(() => {
       dispatch(notify(i18n.t('createSuccessed')));
-    })
-    .catch((error) => {
-      dispatch(notifyAlert(error.message));
     });
   };
 }

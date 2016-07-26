@@ -28,12 +28,13 @@ class C extends Page {
         name,
         cidr,
       }))
-      .then(() => {
-        dispatch(push(`${servicePath}/networks`));
-        resolve();
-      }).catch(() => {
-        reject();
-      });
+        .then(() => {
+          dispatch(push(`${servicePath}/networks`));
+          resolve();
+        }).catch((error) => {
+          dispatch(Actions.notifyAlert(error.message));
+          reject({ _error: error.message });
+        });
     });
   }
 
