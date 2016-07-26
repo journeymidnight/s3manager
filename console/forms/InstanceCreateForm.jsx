@@ -100,7 +100,11 @@ class F extends React.Component {
     const selectedImage = Array.isArray(imageSet) && imageSet.filter((image) => {
       return image.imageId === imageId;
     })[0];
-    let defaultUser = selectedImage && selectedImage.platform === 'windows' ? 'admin' : 'root';
+    const isSelectedWindowsImage = selectedImage && selectedImage.platform === 'windows';
+    if (isSelectedWindowsImage) {
+      loginMode.onChange('password');
+    }
+    const defaultUser = isSelectedWindowsImage ? 'admin' : 'root';
 
     if (!vcpus.value) {
       // not initialized
@@ -255,15 +259,22 @@ class F extends React.Component {
                   <input type="radio" checked={loginMode.value === 'password'} name="input_login_mode" onChange={() => {}} onClick={() => { loginMode.onChange('password'); }} />
                   {t('pageInstanceCreate.loginPassword')}
                 </label>
-                <label className="radio inline">
+                {!isSelectedWindowsImage && <label className="radio inline">
                   <input type="radio" checked={loginMode.value === 'keyPair'} name="input_login_mode" onChange={() => {}} onClick={() => { loginMode.onChange('keyPair'); }} />
                   {t('pageInstanceCreate.keyPair')}&nbsp;
-                </label>
+                </label>}
               </div>
             </div>
           </div>
 
-          {loginMode.value === 'keyPair' && <div className="form-group">
+          <div className="form-group">
+            <label className="control-label" >{t('pageInstanceCreate.defaultUser')}</label>
+            <div className="col-sm-10">
+              <input type="text" className="form-control" value={defaultUser} disabled="disabled" />
+            </div>
+          </div>
+
+          {!isSelectedWindowsImage && loginMode.value === 'keyPair' && <div className="form-group">
             <label className="control-label" >{t('pageInstanceCreate.keyPair')}</label>
             <div className="col-sm-10">
               <select className="form-control" {...keyPairId}>
@@ -277,13 +288,6 @@ class F extends React.Component {
               </select>
             </div>
           </div>}
-
-          <div className="form-group">
-            <label className="control-label" >{t('pageInstanceCreate.defaultUser')}</label>
-            <div className="col-sm-10">
-              <input type="text" className="form-control" value={defaultUser} disabled="disabled" />
-            </div>
-          </div>
 
           {loginMode.value === 'password' && <div className={submitFailed && loginPassword.error ? 'form-group has-error' : 'form-group'}>
             <label className="control-label" >{t('pageInstanceCreate.loginPassword')}</label>
