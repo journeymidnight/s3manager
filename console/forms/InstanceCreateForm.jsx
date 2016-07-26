@@ -36,7 +36,8 @@ class F extends React.Component {
       instanceTypeId: _.values(_.values(_.values(instanceTypes)[0])[0])[0][0].instanceTypeId,
       count: 1,
       subnetId: this.props.networkSet[0].subnets[0].subnetId,
-      imageId: this.props.imageSet[0].imageId,
+      imageType: 'public',
+      imageId: this.props.publicImageSet[0].imageId,
       loginMode: 'password',
     };
 
@@ -46,6 +47,14 @@ class F extends React.Component {
 
     this.instanceTypes = instanceTypes;
     this.props.initializeForm(initialValues);
+  }
+
+  onChangeImageType(value) {
+    const { imageType, imageId } = this.props.fields;
+
+    imageType.onChange(value);
+    const imageSet = value === 'public' ? this.props.publicImageSet : this.props.privateImageSet;
+    imageId.onChange(imageSet[0] && imageSet[0].imageId);
   }
 
   onChangeInstanceType(values) {
@@ -78,7 +87,7 @@ class F extends React.Component {
 
   render() {
     const { fields:
-      { name, imageId, vcpus, memory, disk, instanceTypeId, subnetId, count, keyPairId, loginPassword, loginMode },
+      { name, imageType, imageId, vcpus, memory, disk, instanceTypeId, subnetId, count, keyPairId, loginPassword, loginMode },
       handleSubmit,
       submitting,
       submitFailed,
@@ -87,7 +96,8 @@ class F extends React.Component {
       service,
     } = this.props;
 
-    const selectedImage = Array.isArray(this.props.imageSet) && this.props.imageSet.filter((image) => {
+    const imageSet = imageType.value === 'public' ? this.props.publicImageSet : this.props.privateImageSet;
+    const selectedImage = Array.isArray(imageSet) && imageSet.filter((image) => {
       return image.imageId === imageId;
     })[0];
     let defaultUser = selectedImage && selectedImage.platform === 'windows' ? 'admin' : 'root';
@@ -100,10 +110,21 @@ class F extends React.Component {
     return (
       <form className="form-horizontal" onSubmit={handleSubmit}>
         <div className="form-group">
+          <label className="control-label" >{t('pageInstanceCreate.imageType')}</label>
+          <div className="col-sm-10">
+            <label className="radio-inline">
+              <input type="radio" value="public" onClick={() => { this.onChangeImageType('public'); }} checked={imageType.value === 'public'} /> {t('public_images')}
+            </label>
+            <label className="radio-inline">
+              <input type="radio" value="private" onClick={() => { this.onChangeImageType('private'); }} checked={imageType.value === 'private'} /> {t('private_images')}
+            </label>
+          </div>
+        </div>
+        <div className="form-group">
           <label className="control-label" >{t('pageInstanceCreate.image')}</label>
           <div className="col-sm-10">
             <select className="form-control" {...imageId}>
-              {this.props.imageSet.map((image) => {
+              {imageSet.map((image) => {
                 return <option key={image.imageId} value={image.imageId}>{image.name}</option>;
               })}
             </select>
@@ -298,7 +319,8 @@ F.propTypes = {
   submitFailed: React.PropTypes.bool.isRequired,
   resetForm: React.PropTypes.func.isRequired,
   t: React.PropTypes.any,
-  imageSet: React.PropTypes.array,
+  publicImageSet: React.PropTypes.array,
+  privateImageSet: React.PropTypes.array,
   instanceTypeSet: React.PropTypes.array,
   networkSet: React.PropTypes.array,
   keyPairSet: React.PropTypes.array,
@@ -321,6 +343,6 @@ F.validate = values => {
 
 export default reduxForm({
   form: 'InstanceCreateForm',
-  fields: ['name', 'imageId', 'vcpus', 'memory', 'disk', 'instanceTypeId', 'subnetId', 'count', 'keyPairId', 'loginPassword', 'loginMode'],
+  fields: ['name', 'imageType', 'imageId', 'vcpus', 'memory', 'disk', 'instanceTypeId', 'subnetId', 'count', 'keyPairId', 'loginPassword', 'loginMode'],
   validate: F.validate,
 })(translate()(F));

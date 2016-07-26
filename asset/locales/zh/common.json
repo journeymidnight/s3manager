@@ -287,8 +287,7 @@
         "associateEip": "绑定公网IP",
         "dissociateEip": "解绑公网IP",
         "attachVolume": "挂载云硬盘",
-        "noVolumeToBeAttahed": "无可挂载的云硬盘",
-        "promptForStatusCheckToAttachVolume": "云主机需要在运行或停止状态下才可挂载云硬盘"
+        "noVolumeToBeAttahed": "无可挂载的云硬盘"
     },
 
     "pageInstanceCreate": {
@@ -304,6 +303,7 @@
         "passwordHint": "密码至少8位，并包括大小写字母及数字。",
         "instanceType": "选择配置",
         "image": "选择映像",
+        "imageType": "映像类型",
         "imageOrInstanceTypeNotFound": "本区域尚未初始化或者出现异常，请与管理员取得联系。",
         "networkNotFound": "云主机需要运行在一个二层隔离的私有网络（VPC）中，用户首先需要定义一个私有网络，并配置相关网段信息。"
     },
@@ -355,8 +355,8 @@
 
     "pageEip": {
         "basic": "基本信息",
-        "updateEip": "更新基本信息",
-        "deleteEip": "删除公网IP",
+        "updateEip": "更新",
+        "deleteEip": "删除",
         "associateResource": "绑定资源",
         "dissociateResource": "解绑资源",
         "noAvailableInstance": "没有可用的云主机",
@@ -365,11 +365,11 @@
 
     "pageVolume": {
         "basic": "基本信息",
-        "updateVolume": "更新基本信息",
-        "deleteVolume": "删除云硬盘",
-        "attachVolume": "挂载云硬盘",
-        "detachVolume": "卸载云硬盘",
-        "resizeVolume": "扩容云硬盘",
+        "updateVolume": "更新",
+        "deleteVolume": "删除",
+        "attachVolume": "挂载",
+        "detachVolume": "卸载",
+        "resizeVolume": "扩容",
         "monitor": "监控",
         "snapshot": "快照",
         "createSnapshot": "创建快照",
@@ -491,6 +491,11 @@
         "diskIOPS": "硬盘 IOPS",
         "eipTraffic": "流量",
         "eipPackets": "数据包"
+    },
+
+    "promptOperationCheck": {
+        "promptPrefix1": "当前状态不可",
+        "detachVolumeFirst":"，请先解挂云硬盘"
     },
 
     "sidebarInstance": "主机列表",

@@ -26,7 +26,20 @@ export function requestDescribePrerequisites(routerKey, regionId) {
     })
     .then((payload) => {
       dispatch(extendContext({
-        imageSet: payload.imageSet,
+        publicImageSet: payload.imageSet,
+      }, routerKey));
+
+      return IaaS
+      .describeImages(regionId, {
+        status: ['active'],
+        isPublic: false,
+        limit: 100,
+      })
+      .promise;
+    })
+    .then((payload) => {
+      dispatch(extendContext({
+        privateImageSet: payload.imageSet,
       }, routerKey));
 
       return IaaS

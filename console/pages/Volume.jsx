@@ -4,7 +4,7 @@ import { reduxForm } from 'redux-form';
 import Time from 'react-time';
 import Page, { attach } from '../../shared/pages/Page';
 import i18n from '../../shared/i18n';
-import Modal, { confirmModal } from '../../shared/components/Modal';
+import Modal, { alertModal, confirmModal } from '../../shared/components/Modal';
 import VolumeMonitor from './VolumeMonitor';
 import * as Actions from '../redux/actions';
 import * as VolumeActions from '../redux/actions.volume';
@@ -306,6 +306,14 @@ class C extends Page {
 
   updateVolume(e) {
     e.preventDefault();
+
+    const { t } = this.props;
+    const volume = this.props.context.volume;
+
+    if (['active', 'inuse'].indexOf(volume.status) === -1) {
+      alertModal(t('promptOperationCheck.promptPrefix1') + t('pageVolume.updateVolume'));
+      return;
+    }
     this.refs.updateModal.show();
   }
 
@@ -330,6 +338,12 @@ class C extends Page {
     e.preventDefault();
 
     const { t, dispatch, region, routerKey } = this.props;
+    const volume = this.props.context.volume;
+
+    if (volume.status !== 'active') {
+      alertModal(t('promptOperationCheck.promptPrefix1') + t('pageVolume.attachVolume'));
+      return;
+    }
 
     dispatch(InstanceActions.requestDescribeInstances(routerKey, region.regionId, { status: ['active', 'stopped'] }))
       .then(() => {
@@ -345,6 +359,11 @@ class C extends Page {
     e.preventDefault();
     const { t, dispatch, region, routerKey } = this.props;
     const volume = this.props.context.volume;
+
+    if (volume.status !== 'inuse') {
+      alertModal(t('promptOperationCheck.promptPrefix1') + t('pageVolume.detachVolume'));
+      return;
+    }
     confirmModal(t('pageVolume.confirmDetachVolume'), () => {
       dispatch(VolumeActions.requestDetachVolumes(routerKey, region.regionId, [volume.volumeId], volume.instanceId))
         .then(() => {
@@ -373,6 +392,13 @@ class C extends Page {
 
   resizeVolume(e) {
     e.preventDefault();
+    const { t } = this.props;
+    const volume = this.props.context.volume;
+
+    if (['active', 'inuse'].indexOf(volume.status) === -1) {
+      alertModal(t('promptOperationCheck.promptPrefix1') + t('pageVolume.resizeVolume'));
+      return;
+    }
     this.refs.resizeModal.show();
   }
 
@@ -398,6 +424,14 @@ class C extends Page {
 
   createSnapshot(e) {
     e.preventDefault();
+
+    const { t } = this.props;
+    const volume = this.props.context.volume;
+
+    if (['active', 'inuse'].indexOf(volume.status) === -1) {
+      alertModal(t('promptOperationCheck.promptPrefix1') + t('pageVolume.createSnapshot'));
+      return;
+    }
     this.refs.snapshotCreateModal.show();
   }
 
@@ -405,6 +439,17 @@ class C extends Page {
     e.preventDefault();
 
     const { t, dispatch, region, routerKey, params } = this.props;
+    const volume = this.props.context.volume;
+
+    if (volume.status === 'inuse') {
+      alertModal(t('promptOperationCheck.promptPrefix1') + t('pageVolume.deleteVolume') + t('promptOperationCheck.detachVolumeFirst'));
+      return;
+    }
+
+    if (volume.status !== 'active') {
+      alertModal(t('promptOperationCheck.promptPrefix1') + t('pageVolume.deleteVolume'));
+      return;
+    }
 
     confirmModal(t('confirmDelete'), () => {
       dispatch(VolumeActions.requestDeleteVolumes(routerKey, region.regionId, [params.volumeId]));
