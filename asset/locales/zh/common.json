@@ -1,6 +1,5 @@
 {
     "appName": "LeCloud",
-    "boss": "BOSS业务运营支撑系统",
 
     "create": "添加",
     "update": "保存",
@@ -503,6 +502,13 @@
     "sidebarProject": "项目",
     "sidebarUser": "用户",
     "sidebarAdmin": "管理员",
+
+    "boss": {
+        "title": "BOSS业务运营支撑系统",
+        "monitor": {
+            "servers": "服务器"
+        }
+    },
 
     "smallScreen": "低宽度的屏幕中可能会影响组件的正常布局。"
 }

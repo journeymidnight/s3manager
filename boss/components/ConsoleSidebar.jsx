@@ -31,6 +31,9 @@ class C extends React.Component {
           </Link>
         </div>
         <ul className="nav nav-sidebar">
+          <li>
+            <h5>IAM</h5>
+          </li>
           <NavLink to="/regions">
             <i className="fa fa-codepen fa-fw" />
             <span>{t('sidebarRegion')}</span>
@@ -46,6 +49,14 @@ class C extends React.Component {
           <NavLink to="/users">
             <i className="fa fa-user fa-fw" />
             <span>{t('sidebarUser')}</span>
+          </NavLink>
+          <li className="separate-item" />
+          <li>
+            <h5>Monitor</h5>
+          </li>
+          <NavLink to="/devops/r/nodes">
+            <i className="fa fa-server fa-fw" />
+            <span>{t('boss.monitor.servers')}</span>
           </NavLink>
           <li className="separate-item" />
           <NavLink to="/admins">

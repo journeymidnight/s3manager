@@ -65,26 +65,11 @@
                 border-right: 3px solid #f91;
                 width: $sidebar_width;
             }
-            li h5 {
-                padding-left: 15px;
-                font-weight: normal;
-                color: #c5d0de;
-                text-transform: upperCase;
-                opacity: 0.5;
-            }
         }
 
         .collapse-nav a {
             height: 38px;
             line-height: 38px;
-        }
-
-        &.page-sidebar-collapsed {
-            .nav-sidebar {
-                li h5 {
-                    display: none;
-                }
-            }
         }
     }
 }
