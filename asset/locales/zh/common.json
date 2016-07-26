@@ -513,7 +513,9 @@
     "boss": {
         "title": "BOSS业务运营支撑系统",
         "monitor": {
-            "servers": "服务器"
+            "servers": "服务器",
+            "ceph": "Ceph",
+            "openstack": "OpenStack"
         }
     },
 

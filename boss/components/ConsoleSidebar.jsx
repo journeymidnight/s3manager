@@ -54,9 +54,17 @@ class C extends React.Component {
           <li>
             <h5>Monitor</h5>
           </li>
-          <NavLink to="/devops/r/nodes">
+          <NavLink to="/devops/nodes">
             <i className="fa fa-server fa-fw" />
             <span>{t('boss.monitor.servers')}</span>
+          </NavLink>
+          <NavLink to="/devops/ceph">
+            <i className="fa fa-check-square fa-fw" />
+            <span>{t('boss.monitor.ceph')}</span>
+          </NavLink>
+          <NavLink to="/devops/openstack">
+            <i className="fa fa-check-square fa-fw" />
+            <span>{t('boss.monitor.openstack')}</span>
           </NavLink>
           <li className="separate-item" />
           <NavLink to="/admins">

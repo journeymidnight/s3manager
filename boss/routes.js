@@ -26,11 +26,13 @@ import LOS from './pages/los/LOS.jsx';
 import LCS from './pages/lcs/LCS.jsx';
 import LCSTabImages from './pages/lcs/LCSTabImages.jsx';
 import LCSTabInstanceTypes from './pages/lcs/LCSTabInstanceTypes.jsx';
+import RegionTab from './pages/devops/RegionTab.jsx';
 import DevOpsNodes from './pages/devops/DevOpsNodes.jsx';
+import DevOpsCeph from './pages/devops/DevOpsCeph.jsx';
+import DevOpsOpenStack from './pages/devops/DevOpsOpenStack.jsx';
 import Regions from './pages/Regions.jsx';
 import RegionCreate from './pages/RegionCreate.jsx';
 import Region from './pages/Region.jsx';
-import RegionTab from './pages/RegionTab.jsx';
 import RegionTabBasic from './pages/RegionTabBasic.jsx';
 import QuotaCreate from './pages/QuotaCreate.jsx';
 import Quota from './pages/Quota.jsx';
@@ -104,8 +106,14 @@ export default function configureRoutes(store) {
           <Route path=":userId" component={User} />
         </Route>
         <Route path="devops" >
-          <Route path=":regionId" component={RegionTab} >
-            <Route path="nodes" component={DevOpsNodes} />
+          <Route path="nodes" component={RegionTab}>
+            <Route path=":regionId" component={DevOpsNodes} />
+          </Route>
+          <Route path="ceph" component={RegionTab}>
+            <Route path=":regionId" component={DevOpsCeph} />
+          </Route>
+          <Route path="openstack" component={RegionTab}>
+            <Route path=":regionId" component={DevOpsOpenStack} />
           </Route>
         </Route>
       </Route>

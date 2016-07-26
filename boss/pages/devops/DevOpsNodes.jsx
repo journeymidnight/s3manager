@@ -1,15 +1,12 @@
 import React from 'react';
 import Page, { attach } from '../../../shared/pages/Page';
 import * as Actions from '../../redux/actions';
-import * as DevOpsActions from '../../redux/actions.devops';
 
 class C extends Page {
 
   componentDidMount() {
-    const { t, dispatch, routerKey, region2 } = this.props;
+    const { t, dispatch } = this.props;
     dispatch(Actions.setHeader(t('regionManage'), '/regions'));
-
-    dispatch(DevOpsActions.requestGetMonitorData(routerKey, region2));
   }
 
   render() {

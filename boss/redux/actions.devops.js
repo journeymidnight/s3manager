@@ -1,10 +1,10 @@
 import { notifyAlert, extendContext } from './actions';
 import DevOps from '../services/devops';
 
-export function requestGetMonitorData(routerKey, region) {
+export function requestGetMonitorData(routerKey, region, params) {
   return dispatch => {
     return DevOps
-    .getMonitorData(region)
+    .getMonitorData(region, params)
     .promise
     .then((payload) => {
       dispatch(extendContext(payload, routerKey));

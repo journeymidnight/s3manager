@@ -8,13 +8,8 @@ class DevOps {
     });
   }
 
-  getMonitorData(region) {
-    return this.call(region, 'GetMonitorData', {
-      endpoints: ['ceph'],
-      metrics: ['osd_num'],
-      start: '2016-07-15T16:53:46Z',
-      sample_type: 'Average',
-    });
+  getMonitorData(region, params) {
+    return this.call(region, 'GetMonitorData', params);
   }
 }
 
