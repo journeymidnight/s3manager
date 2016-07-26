@@ -87,6 +87,11 @@ class F extends React.Component {
       service,
     } = this.props;
 
+    const selectedImage = Array.isArray(this.props.imageSet) && this.props.imageSet.filter((image) => {
+      return image.imageId === imageId;
+    })[0];
+    let defaultUser = selectedImage && selectedImage.platform === 'windows' ? 'admin' : 'root';
+
     if (!vcpus.value) {
       // not initialized
       return <div />;
@@ -251,6 +256,13 @@ class F extends React.Component {
               </select>
             </div>
           </div>}
+
+          <div className="form-group">
+            <label className="control-label" >{t('pageInstanceCreate.defaultUser')}</label>
+            <div className="col-sm-10">
+              <input type="text" className="form-control" value={defaultUser} disabled="disabled" />
+            </div>
+          </div>
 
           {loginMode.value === 'password' && <div className={submitFailed && loginPassword.error ? 'form-group has-error' : 'form-group'}>
             <label className="control-label" >{t('pageInstanceCreate.loginPassword')}</label>

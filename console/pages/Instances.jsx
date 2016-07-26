@@ -174,26 +174,11 @@ class C extends TablePage {
                     status: ['pending', 'active', 'starting', 'stopped', 'stopping', 'restarting', 'scheduling', 'error'],
                     name: t('allAvaliableStatus'),
                   }, {
-                    status: ['pending'],
-                    name: t('instanceStatus.pending'),
-                  }, {
                     status: ['active'],
                     name: t('instanceStatus.active'),
                   }, {
-                    status: ['starting'],
-                    name: t('instanceStatus.starting'),
-                  }, {
                     status: ['stopped'],
                     name: t('instanceStatus.stopped'),
-                  }, {
-                    status: ['stopping'],
-                    name: t('instanceStatus.stopping'),
-                  }, {
-                    status: ['restarting'],
-                    name: t('instanceStatus.restarting'),
-                  }, {
-                    status: ['scheduling'],
-                    name: t('instanceStatus.scheduling'),
                   }, {
                     status: ['error'],
                     name: t('instanceStatus.error'),

@@ -260,7 +260,8 @@
 
     "pageNetworkCreate": {
         "createNetwork": "添加私有网络",
-        "cidr": "初始网段地址"
+        "cidr": "初始网段地址",
+        "cidrHint": "创建私有网络时，同时创建一个默认网关，用于创建云主机"
     },
 
     "pageVNC": {
@@ -283,7 +284,10 @@
         "resetInstance": "系统重置",
         "captureInstance": "生成自有映像",
         "associateEip": "绑定公网IP",
-        "dissociateEip": "解绑公网IP"
+        "dissociateEip": "解绑公网IP",
+        "attachVolume": "挂载云硬盘",
+        "noVolumeToBeAttahed": "无可挂载的云硬盘",
+        "promptForStatusCheckToAttachVolume": "云主机需要在运行或停止状态下才可挂载云硬盘"
     },
 
     "pageInstanceCreate": {
@@ -292,6 +296,7 @@
         "hostname": "主机名",
         "network": "网络设置",
         "loginMode": "SSH 登录方式",
+        "defaultUser": "默认用户",
         "keyPair": "SSH 密钥",
         "loginPassword": "密码",
         "passwordNotValid": "密码不符合规范。",
@@ -369,7 +374,9 @@
         "createSnapshot": "创建快照",
         "confirmDetachVolume": "确认要卸载云硬盘吗?",
         "noAvailableInstance": "没有可用的云主机",
-        "validateSizeGreatThanInitialSize": "扩容的大小须大于当前大小"
+        "validateSizeGreatThanInitialSize": "扩容的大小须大于当前大小",
+        "noSelectableSnapshot": "无可选快照",
+        "selectSnapshotPlease": "请选择快照"
     },
 
     "pageUsage": {

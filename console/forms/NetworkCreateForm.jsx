@@ -28,6 +28,7 @@ const F = (props) => {
         <label className="control-label" >{t('pageNetworkCreate.cidr')}</label>
         <div className="col-sm-10">
           <input type="text" className="form-control" {...cidr} />
+          <p className="help-block">{t('pageNetworkCreate.cidrHint')}</p>
           {submitFailed && cidr.error && <div className="text-danger"><small>{cidr.error}</small></div>}
         </div>
       </div>
