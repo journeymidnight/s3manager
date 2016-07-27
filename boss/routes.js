@@ -28,6 +28,9 @@ import LCSTabImages from './pages/lcs/LCSTabImages.jsx';
 import LCSTabInstanceTypes from './pages/lcs/LCSTabInstanceTypes.jsx';
 import RegionTab from './pages/devops/RegionTab.jsx';
 import DevOpsNodes from './pages/devops/DevOpsNodes.jsx';
+import DevOpsAlerts from './pages/devops/DevOpsAlerts.jsx';
+import DevOpsInstances from './pages/devops/DevOpsInstances.jsx';
+import DevOpsEips from './pages/devops/DevOpsEips.jsx';
 import DevOpsCeph from './pages/devops/DevOpsCeph.jsx';
 import DevOpsOpenStack from './pages/devops/DevOpsOpenStack.jsx';
 import Regions from './pages/Regions.jsx';
@@ -115,6 +118,13 @@ export default function configureRoutes(store) {
           <Route path="openstack" component={RegionTab}>
             <Route path=":regionId" component={DevOpsOpenStack} />
           </Route>
+          <Route path="instances" component={RegionTab} >
+            <Route path=":regionId" component={DevOpsInstances} />
+          </Route>
+          <Route path="eips" component={RegionTab} >
+            <Route path=":regionId" component={DevOpsEips} />
+          </Route>
+          <Route path="alerts" component={DevOpsAlerts} />
         </Route>
       </Route>
       <Route path="*" component={NotFound} />

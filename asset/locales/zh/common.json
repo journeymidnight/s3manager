@@ -512,7 +512,14 @@
 
     "boss": {
         "title": "BOSS业务运营支撑系统",
+        "iam": {
+            "title": "IAM"
+        },
+        "alert": {
+            "title": "异常报警"
+        },
         "monitor": {
+            "title": "监控",
             "periods": {
                 "120mins": "最近120分钟",
                 "720mins": "最近720分钟",
@@ -527,7 +534,10 @@
                 "14days": "间隔: 20分钟",
                 "30days": "间隔: 3小时"
             },
-            "servers": "服务器",
+            "basic": "基础监控",
+            "eips": "公网流量",
+            "instances": "云主机",
+            "nodes": "服务器",
             "ceph": "Ceph",
             "cephOSDs": "OSD 数量",
             "openstack": "OpenStack"

@@ -45,7 +45,7 @@ class C extends Page {
 
   componentDidMount() {
     const { t, dispatch } = this.props;
-    dispatch(Actions.setHeader(t('regionManage'), '/regions'));
+    dispatch(Actions.setHeader(t('boss.monitor.ceph'), '/devops/ceph'));
 
     this.refresh('120mins')();
   }
