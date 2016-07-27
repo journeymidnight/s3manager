@@ -540,6 +540,13 @@
             "nodes": "服务器",
             "ceph": "Ceph",
             "cephOSDs": "OSD 数量",
+            "cephOSDIns": "OSD IN 数量",
+            "cephOSDUps": "OSD Up 数量",
+            "cephCapacity": "容量",
+            "cephTotal": "总容量",
+            "cephUsed": "已使用",
+            "cephData": "数据容量",
+            "cephPGs": "PG 数量",
             "openstack": "OpenStack"
         }
     },

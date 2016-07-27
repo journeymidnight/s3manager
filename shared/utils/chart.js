@@ -2,7 +2,28 @@ import d3 from 'd3';
 import _ from 'lodash';
 import moment from 'moment';
 
-export function generateLineChartConfig(data, cols, yFormat) {
+export function mergeTimeSeries(...args) {
+  const mergedTimeSeries = {};
+  _.each(args, (ts) => {
+    const field = ts[0];
+    const timeSeries = ts[1];
+
+    _.each(timeSeries, (t) => {
+      if (!mergedTimeSeries[t.timestamp]) {
+        mergedTimeSeries[t.timestamp] = {
+          timestamp: t.timestamp,
+        };
+      }
+
+      mergedTimeSeries[t.timestamp][field] = t.value;
+    });
+  });
+  return _.map(mergedTimeSeries, (v) => {
+    return v;
+  });
+}
+
+export function generateChartConfig(data, cols, yFormat) {
   const config = {
     transition: {
       duration: 0,
@@ -135,5 +156,28 @@ export function generateLineChartConfig(data, cols, yFormat) {
     };
   }
 
+  return config;
+}
+
+export function generateLineChartConfig(data, cols, yFormat) {
+  const config = generateChartConfig(data, cols, yFormat);
+  config.data.type = 'line';
+  return config;
+}
+
+export function generateBarChartConfig(data, cols, yFormat) {
+  const config = generateChartConfig(data, cols, yFormat);
+  config.bar = {
+    width: {
+      ratio: 0.5,
+    },
+  };
+  config.data.type = 'bar';
+  return config;
+}
+
+export function generateAreaChartConfig(data, cols, yFormat) {
+  const config = generateChartConfig(data, cols, yFormat);
+  config.data.type = 'area';
   return config;
 }
