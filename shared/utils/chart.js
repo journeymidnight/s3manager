@@ -181,3 +181,9 @@ export function generateAreaChartConfig(data, cols, yFormat) {
   config.data.type = 'area';
   return config;
 }
+
+export function generateStepChartConfig(data, cols, yFormat) {
+  const config = generateChartConfig(data, cols, yFormat);
+  config.data.type = 'step';
+  return config;
+}

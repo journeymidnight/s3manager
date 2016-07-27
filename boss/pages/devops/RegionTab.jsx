@@ -8,6 +8,15 @@ import * as RegionActions from '../../redux/actions.region';
 
 class C extends Page {
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      region: undefined,
+      regions: undefined,
+    };
+  }
+
   componentDidMount() {
     const { t, dispatch } = this.props;
     dispatch(Actions.setHeader(t('regionManage'), '/regions'));
@@ -17,11 +26,6 @@ class C extends Page {
 
   componentWillMount() {
     this.checkRegion(this.props);
-
-    this.setState({
-      region: undefined,
-      regions: undefined,
-    });
   }
 
   componentDidUpdate() {
@@ -34,6 +38,10 @@ class C extends Page {
     let region;
     const regions = props.context.regionSet;
     if (!regions || regions.length === 0) {
+      this.setState({
+        region: undefined,
+        regions: undefined,
+      });
       return;
     }
 

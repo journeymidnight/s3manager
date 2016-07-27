@@ -547,7 +547,22 @@
             "cephUsed": "已使用",
             "cephData": "数据容量",
             "cephPGs": "PG 数量",
-            "openstack": "OpenStack"
+            "CPU": "CPU",
+            "CPUTotal": "Total",
+            "CPUUsed": "Used",
+            "RAM": "内存",
+            "RAMTotal": "Total",
+            "RAMUsed": "Used",
+            "rabbitmq": "RabbitMQ",
+            "rabbitmqQueuesItems": "队列个数",
+            "openstack": "OpenStack",
+            "openstackKeystone": "Keystone Public",
+            "openstackKeystoneService": "Keystone Admin",
+            "openstackCinder": "Cinder",
+            "openstackGlance": "Glance",
+            "openstackNeutron": "Neutron",
+            "openstackNovaOS": "Nova",
+            "openstackAPIs": "OpenStack 服务"
         }
     },
 
