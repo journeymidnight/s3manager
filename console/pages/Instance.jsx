@@ -246,18 +246,24 @@ class C extends Page {
   }
 
   onAssociateEip(values) {
-    const { dispatch, region, routerKey, params } = this.props;
+    const { t, dispatch, region, routerKey, params } = this.props;
 
     return new Promise((resolve, reject) => {
       const eipId = values.eipId;
 
       dispatch(EipActions.requestAssociateEip(routerKey, region.regionId, eipId, params.instanceId))
-      .then(() => {
-        resolve();
-        this.refs.eipModal.hide();
-      }).catch(() => {
-        reject();
-      });
+        .then(() => {
+          resolve();
+          this.refs.eipModal.hide();
+        }).catch((error) => {
+          this.refs.eipModal.hide();
+          if (error.retCode === 4701) {
+            dispatch(Actions.notifyAlert(t('errorMsg.4701')));
+          } else {
+            dispatch(Actions.notifyAlert(error.message));
+          }
+          reject();
+        });
     });
   }
 

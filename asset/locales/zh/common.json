@@ -497,7 +497,12 @@
     "promptOperationCheck": {
         "promptPrefix1": "当前状态不可",
         "promptPrefix2": "状态校验失败，不可执行该操作",
-        "detachVolumeFirst":"，请先解挂云硬盘"
+        "detachVolumeFirst": "，请先解挂云硬盘"
+    },
+
+    "errorMsg": {
+        "4701": "请给主机的网络增加外网网关，再重试。",
+        "4702": "尝试给主机解绑 Eip，再重试。"
     },
 
     "sidebarInstance": "主机列表",
