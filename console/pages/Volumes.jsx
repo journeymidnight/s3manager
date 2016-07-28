@@ -18,7 +18,6 @@ class C extends TablePage {
     this.onDelete = this.onDelete.bind(this);
   }
 
-
   componentDidMount() {
     const { t, dispatch, servicePath } = this.props;
     dispatch(Actions.setHeader(t('volumeManage'), `${servicePath}/volumes`));

@@ -20,18 +20,12 @@ class C extends Page {
   onSave(values, dispatch) {
     return new Promise((resolve, reject) => {
       const name = values.name;
-      const publicEndpoint = values.publicEndpoint;
-      const manageEndpoint = values.manageEndpoint;
-      const manageKey = values.manageKey;
-      const manageSecret = values.manageSecret;
+      const devopsEndpoint = values.devopsEndpoint;
 
       dispatch(RegionActions.requestModifyRegion({
         regionId: this.props.region2.regionId,
         name,
-        publicEndpoint,
-        manageEndpoint,
-        manageKey,
-        manageSecret,
+        devopsEndpoint,
       }))
       .then(() => {
         resolve();

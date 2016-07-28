@@ -10,22 +10,32 @@ class C extends React.Component {
     super(props);
 
     this.timers = [];
-    this.routerKey = props.routerKey;
+  }
+
+  componentWillMount() {
   }
 
   componentDidMount() {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return !_.isEqual(this.props.context, nextProps.context) || !_.isEqual(this.state, nextState);
+    let shouleUpdate = true;
+    if (nextProps.routerKey !== this.props.routerKey && _.keys(nextProps.context).length === 0) {
+      this.componentWillUnmount();
+      this.componentWillMount();
+      this.componentDidMount();
+
+      shouleUpdate = false;
+    } else {
+      shouleUpdate = !_.isEqual(this.props.context, nextProps.context) || !_.isEqual(this.state, nextState);
+    }
+    return shouleUpdate;
+  }
+
+  componentWillUpdate() {
   }
 
   componentDidUpdate() {
-    if (this.props.routerKey !== this.routerKey && _.keys(this.props.context).length === 0) {
-      this.componentWillUnmount();
-      this.componentDidMount();
-      this.routerKey = this.props.routerKey;
-    }
   }
 
   componentWillUnmount() {
@@ -63,6 +73,7 @@ C.propTypes = {
   servicePath: React.PropTypes.string,
   t: React.PropTypes.any,
   routerKey: React.PropTypes.string,
+  path: React.PropTypes.string,
 };
 
 function mapStateToProps(state) {
@@ -73,6 +84,7 @@ function mapStateToProps(state) {
     servicePath: state.service && state.service.servicePath,
     global: state.global,
     routerKey: state.routing.locationBeforeTransitions.key,
+    path: state.routing.locationBeforeTransitions.pathname,
   };
 }
 

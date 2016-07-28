@@ -39,7 +39,7 @@ class C extends React.Component {
               </ul>
             </div>
             <h1 className="title">
-              <Link to="/">{t('boss')}</Link>
+              <Link to="/">{t('boss.title')}</Link>
               {header && header.title && ' · '}
               {header && header.title &&
                 <Link className="project-item-select-holder" to={header.link}>{header.title}</Link>

@@ -1,6 +1,5 @@
 {
     "appName": "LeCloud",
-    "boss": "BOSS业务运营支撑系统",
 
     "create": "添加",
     "update": "保存",
@@ -443,6 +442,7 @@
     },
 
     "formRegionForm": {
+        "devopsEndpoint": "DevOps 接口 URL"
     },
 
     "formQuotaForm": {
@@ -514,6 +514,62 @@
     "sidebarProject": "项目",
     "sidebarUser": "用户",
     "sidebarAdmin": "管理员",
+
+    "boss": {
+        "title": "BOSS业务运营支撑系统",
+        "iam": {
+            "title": "IAM"
+        },
+        "alert": {
+            "title": "异常报警"
+        },
+        "monitor": {
+            "title": "监控",
+            "periods": {
+                "120mins": "最近120分钟",
+                "720mins": "最近720分钟",
+                "48hours": "最近48小时",
+                "14days": "最近7天",
+                "30days": "最近30天"
+            },
+            "intervals": {
+                "120mins": "间隔: 1分钟",
+                "720mins": "间隔: 1分钟",
+                "48hours": "间隔: 5分钟",
+                "14days": "间隔: 20分钟",
+                "30days": "间隔: 3小时"
+            },
+            "basic": "基础监控",
+            "eips": "公网流量",
+            "instances": "云主机",
+            "nodes": "服务器",
+            "ceph": "Ceph",
+            "cephOSDs": "OSD 数量",
+            "cephOSDIns": "OSD IN 数量",
+            "cephOSDUps": "OSD Up 数量",
+            "cephCapacity": "容量",
+            "cephTotal": "总容量",
+            "cephUsed": "已使用",
+            "cephData": "数据容量",
+            "cephPGs": "PG 数量",
+            "CPU": "CPU",
+            "CPUTotal": "Total",
+            "CPUUsed": "Used",
+            "RAM": "内存",
+            "RAMTotal": "Total",
+            "RAMUsed": "Used",
+            "rabbitmq": "RabbitMQ",
+            "rabbitmqQueuesItems": "队列个数",
+            "openstack": "OpenStack",
+            "openstackKeystone": "Keystone Public",
+            "openstackKeystoneService": "Keystone Admin",
+            "openstackCinder": "Cinder",
+            "openstackGlance": "Glance",
+            "openstackNeutron": "Neutron",
+            "openstackNovaOS": "Nova",
+            "openstackAPIs": "OpenStack 服务"
+        }
+    },
 
     "smallScreen": "低宽度的屏幕中可能会影响组件的正常布局。"
 }

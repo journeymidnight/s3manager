@@ -3,7 +3,7 @@ import { call as rawCall } from '../../shared/services/api';
 class Service {
   call(service, action, params) {
     const payload = Object.assign({}, params);
-    return rawCall('post', `/api/s/${service}/${action}`, payload, (options) => {
+    return rawCall('post', `/api/s/${service.serviceKey}/${action}`, payload, (options) => {
       options.headers['X-Le-Endpoint'] = service.manageEndpoint;
     });
   }
