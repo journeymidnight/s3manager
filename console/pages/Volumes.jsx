@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import _ from 'lodash';
 import Time from 'react-time';
 import { attach } from '../../shared/pages/Page';
+import { alertModal } from '../../shared/components/Modal';
 import TablePage from '../../shared/pages/TablePage';
 import ButtonForm from '../../shared/forms/ButtonForm';
 import StatusFilter from '../../shared/components/StatusFilter';
@@ -34,9 +35,16 @@ class C extends TablePage {
   }
 
   onDelete() {
-    const { dispatch, routerKey, region } = this.props;
+    const { t, dispatch, routerKey, region } = this.props;
     const volumeIds = _.keys(this.props.context.selected);
+    const unavailabeVolumes = this.props.context.volumeSet.filter((volume) => {
+      return volumeIds.indexOf(volume.volumeId) > -1 && volume.status !== 'active';
+    });
 
+    if (unavailabeVolumes.length) {
+      alertModal(t('promptOperationCheck.promptPrefix2'));
+      return null;
+    }
     return new Promise((resolve, reject) => {
       dispatch(VolumeActions.requestDeleteVolumes(routerKey, region.regionId, volumeIds))
         .then(() => {

@@ -4,6 +4,7 @@ import _ from 'lodash';
 import Time from 'react-time';
 import { attach } from '../../shared/pages/Page';
 import TablePage from '../../shared/pages/TablePage';
+import { alertModal } from '../../shared/components/Modal';
 import ButtonForm from '../../shared/forms/ButtonForm';
 import StatusFilter from '../../shared/components/StatusFilter';
 import TimeSorter from '../../shared/components/TimeSorter';
@@ -33,8 +34,16 @@ class C extends TablePage {
   }
 
   onDelete() {
-    const { dispatch, routerKey, region } = this.props;
+    const { t, dispatch, routerKey, region } = this.props;
     const eipIds = _.keys(this.props.context.selected);
+    const unavailabeEips = this.props.context.eipSet.filter((eip) => {
+      return eipIds.indexOf(eip.eipId) > -1 && eip.status !== 'active';
+    });
+
+    if (unavailabeEips.length) {
+      alertModal(t('promptOperationCheck.promptPrefix2'));
+      return null;
+    }
 
     return new Promise((resolve, reject) => {
       dispatch(EipActions.requestReleaseEips(routerKey, region.regionId, eipIds))

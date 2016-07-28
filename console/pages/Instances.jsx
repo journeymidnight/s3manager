@@ -3,7 +3,7 @@ import moment from 'moment';
 import React from 'react';
 import { Link } from 'react-router';
 import { attach } from '../../shared/pages/Page';
-import { confirmModal } from '../../shared/components/Modal';
+import { confirmModal, alertModal } from '../../shared/components/Modal';
 import { buttonForm } from '../../shared/forms/ButtonForm';
 import TablePage from '../../shared/pages/TablePage';
 import * as Actions from '../redux/actions';
@@ -38,9 +38,17 @@ class C extends TablePage {
     return InstanceActions.requestDescribeInstances(routerKey, region.regionId, filters);
   }
 
-  batchActions(action) {
+  batchActions(action, availabeStatuss, prompt) {
     const { dispatch, region, routerKey } = this.props;
     const instanceIds = _.keys(this.props.context.selected);
+    const unavailabeInstances = this.props.context.instanceSet.filter((instance) => {
+      return instanceIds.indexOf(instance.instanceId) > -1 && availabeStatuss.indexOf(instance.status) === -1;
+    });
+
+    if (unavailabeInstances.length) {
+      alertModal(prompt);
+      return null;
+    }
 
     return new Promise((resolve, reject) => {
       dispatch(action(routerKey, region.regionId, instanceIds))
@@ -57,20 +65,27 @@ class C extends TablePage {
     const { t } = this.props;
 
     confirmModal(t('confirmDelete'), () => {
-      return this.batchActions(InstanceActions.requestDeleteInstances);
+      const prompt = t('promptOperationCheck.promptPrefix2');
+      return this.batchActions(InstanceActions.requestDeleteInstances, ['active', 'stopped'], prompt);
     });
   }
 
   onStart() {
-    return this.batchActions(InstanceActions.requestStartInstances);
+    const { t } = this.props;
+    const prompt = t('promptOperationCheck.promptPrefix2');
+    return this.batchActions(InstanceActions.requestStartInstances, ['stopped'], prompt);
   }
 
   onStop() {
-    return this.batchActions(InstanceActions.requestStopInstances);
+    const { t } = this.props;
+    const prompt = t('promptOperationCheck.promptPrefix2');
+    return this.batchActions(InstanceActions.requestStopInstances, ['active'], prompt);
   }
 
   onRestart() {
-    return this.batchActions(InstanceActions.requestRestartInstances);
+    const { t } = this.props;
+    const prompt = t('promptOperationCheck.promptPrefix2');
+    return this.batchActions(InstanceActions.requestRestartInstances, ['active'], prompt);
   }
 
   connectVNC(instance) {

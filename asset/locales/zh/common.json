@@ -496,6 +496,7 @@
 
     "promptOperationCheck": {
         "promptPrefix1": "当前状态不可",
+        "promptPrefix2": "状态校验失败，不可执行该操作",
         "detachVolumeFirst":"，请先解挂云硬盘"
     },
 
