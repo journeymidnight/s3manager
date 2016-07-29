@@ -31,6 +31,9 @@ class C extends React.Component {
           </Link>
         </div>
         <ul className="nav nav-sidebar">
+          <li>
+            <h5>{t('boss.iam.title')}</h5>
+          </li>
           <NavLink to="/regions">
             <i className="fa fa-codepen fa-fw" />
             <span>{t('sidebarRegion')}</span>
@@ -46,6 +49,37 @@ class C extends React.Component {
           <NavLink to="/users">
             <i className="fa fa-user fa-fw" />
             <span>{t('sidebarUser')}</span>
+          </NavLink>
+          <li className="separate-item" />
+          <li>
+            <h5>{t('boss.monitor.title')}</h5>
+          </li>
+          <NavLink to="/devops/eips">
+            <i className="fa fa-area-chart fa-fw" />
+            <span>{t('boss.monitor.eips')}</span>
+          </NavLink>
+          <NavLink to="/devops/instances">
+            <i className="fa fa-area-chart fa-fw" />
+            <span>{t('boss.monitor.instances')}</span>
+          </NavLink>
+          <NavLink to="/devops/openstack">
+            <i className="fa fa-area-chart fa-fw" />
+            <span>{t('boss.monitor.openstack')}</span>
+          </NavLink>
+          <NavLink to="/devops/ceph">
+            <i className="fa fa-area-chart fa-fw" />
+            <span>{t('boss.monitor.ceph')}</span>
+          </NavLink>
+          <NavLink to="/devops/nodes">
+            <i className="fa fa-area-chart fa-fw" />
+            <span>{t('boss.monitor.basic')}</span>
+          </NavLink>
+          <li>
+            <h5>{t('boss.alert.title')}</h5>
+          </li>
+          <NavLink to="/devops/alerts">
+            <i className="fa fa-exclamation-triangle fa-fw" />
+            <span>{t('boss.alert.title')}</span>
           </NavLink>
           <li className="separate-item" />
           <NavLink to="/admins">

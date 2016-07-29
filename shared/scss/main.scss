@@ -3,6 +3,7 @@
 @import "./pace";
 @import "./header";
 @import "./login";
+@import "./chart";
 
 body {
     font-family: Arial, "Hiragino Sans GB", "Microsoft YaHei", STHeiti, "WenQuanYi Micro Hei", SimSun, sans-serif;
@@ -401,6 +402,25 @@ ul.options-vertical {
                 display: inline-block;
                 text-align: left;
                 padding-left: 10px;
+            }
+        }
+    }
+}
+
+.page-with-sidebar {
+    .nav-sidebar {
+        li h5 {
+            padding-left: 15px;
+            font-weight: normal;
+            color: #c5d0de;
+            opacity: 0.5;
+        }
+    }
+
+    &.page-sidebar-collapsed {
+        .nav-sidebar {
+            li h5 {
+                display: none;
             }
         }
     }

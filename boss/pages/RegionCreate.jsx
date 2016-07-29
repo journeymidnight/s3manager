@@ -21,18 +21,12 @@ class C extends Page {
     return new Promise((resolve, reject) => {
       const regionId = values.regionId;
       const name = values.name;
-      const publicEndpoint = values.publicEndpoint;
-      const manageEndpoint = values.manageEndpoint;
-      const manageKey = values.manageKey;
-      const manageSecret = values.manageSecret;
+      const devopsEndpoint = values.devopsEndpoint;
 
       dispatch(RegionActions.requestCreateRegion({
         regionId,
         name,
-        publicEndpoint,
-        manageEndpoint,
-        manageKey,
-        manageSecret,
+        devopsEndpoint,
       }))
       .then(() => {
         resolve();

@@ -5,6 +5,7 @@ var _ = require('lodash');
 
 function generateConfig(module) {
   var config = _.clone(devConfig, true);
+  config.devtool = undefined;
   config.entry = './' + module + '/index.js';
   config.output = {
     path: __dirname + '/dist/' + module,

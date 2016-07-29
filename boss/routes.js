@@ -26,6 +26,13 @@ import LOS from './pages/los/LOS.jsx';
 import LCS from './pages/lcs/LCS.jsx';
 import LCSTabImages from './pages/lcs/LCSTabImages.jsx';
 import LCSTabInstanceTypes from './pages/lcs/LCSTabInstanceTypes.jsx';
+import RegionTab from './pages/devops/RegionTab.jsx';
+import DevOpsNodes from './pages/devops/DevOpsNodes.jsx';
+import DevOpsAlerts from './pages/devops/DevOpsAlerts.jsx';
+import DevOpsInstances from './pages/devops/DevOpsInstances.jsx';
+import DevOpsEips from './pages/devops/DevOpsEips.jsx';
+import DevOpsCeph from './pages/devops/DevOpsCeph.jsx';
+import DevOpsOpenStack from './pages/devops/DevOpsOpenStack.jsx';
 import Regions from './pages/Regions.jsx';
 import RegionCreate from './pages/RegionCreate.jsx';
 import Region from './pages/Region.jsx';
@@ -100,6 +107,24 @@ export default function configureRoutes(store) {
           <IndexRoute component={Users} />
           <Route path="create" component={UserCreate} />
           <Route path=":userId" component={User} />
+        </Route>
+        <Route path="devops" >
+          <Route path="nodes" component={RegionTab}>
+            <Route path=":regionId" component={DevOpsNodes} />
+          </Route>
+          <Route path="ceph" component={RegionTab}>
+            <Route path=":regionId" component={DevOpsCeph} />
+          </Route>
+          <Route path="openstack" component={RegionTab}>
+            <Route path=":regionId" component={DevOpsOpenStack} />
+          </Route>
+          <Route path="instances" component={RegionTab} >
+            <Route path=":regionId" component={DevOpsInstances} />
+          </Route>
+          <Route path="eips" component={RegionTab} >
+            <Route path=":regionId" component={DevOpsEips} />
+          </Route>
+          <Route path="alerts" component={DevOpsAlerts} />
         </Route>
       </Route>
       <Route path="*" component={NotFound} />

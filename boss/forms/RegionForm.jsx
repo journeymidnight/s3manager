@@ -5,7 +5,7 @@ import * as Validations from '../../shared/utils/validations';
 
 const F = (props) => {
   const { fields:
-    { regionId, name },
+    { regionId, name, devopsEndpoint },
     handleSubmit,
     resetForm,
     submitting,
@@ -28,6 +28,14 @@ const F = (props) => {
         <div className="col-sm-10">
           <input type="text" className="form-control" {...name} />
           {submitFailed && name.error && <div className="text-danger"><small>{name.error}</small></div>}
+        </div>
+      </div>
+
+      <div className={submitFailed && devopsEndpoint.error ? 'form-group has-error' : 'form-group'}>
+        <label className="control-label" >{t('formRegionForm.devopsEndpoint')}</label>
+        <div className="col-sm-10">
+          <input type="text" className="form-control" {...devopsEndpoint} />
+          {submitFailed && devopsEndpoint.error && <div className="text-danger"><small>{devopsEndpoint.error}</small></div>}
         </div>
       </div>
 
@@ -58,11 +66,12 @@ F.validate = values => {
   const errors = {};
   errors.regionId = Validations.required(values.regionId);
   errors.name = Validations.required(values.name);
+  errors.devopsEndpoint = Validations.required(values.devopsEndpoint);
   return errors;
 };
 
 export default reduxForm({
   form: 'RegionForm',
-  fields: ['regionId', 'name'],
+  fields: ['regionId', 'name', 'devopsEndpoint'],
   validate: F.validate,
 })(translate()(F));
