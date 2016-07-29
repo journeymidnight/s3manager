@@ -2,6 +2,7 @@ import React from 'react';
 import { push } from 'react-router-redux';
 import Page, { attach } from '../../shared/pages/Page';
 import KeyPairForm from '../forms/KeyPairForm';
+import { notifyAlert } from '../redux/actions';
 import * as KeyPairActions from '../redux/actions.key_pair';
 
 class C extends Page {
@@ -31,6 +32,7 @@ class C extends Page {
           resolve();
           dispatch(push(`${servicePath}/key_pairs`));
         }).catch((error) => {
+          dispatch(notifyAlert(error.message));
           reject({ _error: error.message });
         });
     });

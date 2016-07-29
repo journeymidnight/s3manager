@@ -30,9 +30,6 @@ export function requestCreateAccessKey(name, description) {
         setTimeout(() => {
           dispatch(notify(i18n.t('createSuccessed')));
         }, 1000);
-      })
-      .catch((error) => {
-        dispatch(notifyAlert(error.message));
       });
   };
 }

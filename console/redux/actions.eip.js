@@ -46,9 +46,6 @@ export function requestCreateEip(routerKey, regionId, eip) {
       .promise
       .then(() => {
         dispatch(notify(i18n.t('createSuccessed')));
-      })
-      .catch((error) => {
-        dispatch(notifyAlert(error.message));
       });
   };
 }

@@ -2,6 +2,7 @@ import React from 'react';
 import { push } from 'react-router-redux';
 import Page, { attach } from '../../shared/pages/Page';
 import EipForm from '../forms/EipForm';
+import { notifyAlert } from '../redux/actions';
 import * as EipActions from '../redux/actions.eip';
 
 class C extends Page {
@@ -25,12 +26,13 @@ class C extends Page {
         name,
         count,
       }))
-      .then(() => {
-        resolve();
-        dispatch(push(`${servicePath}/eips`));
-      }).catch((error) => {
-        reject({ _error: error.message });
-      });
+        .then(() => {
+          resolve();
+          dispatch(push(`${servicePath}/eips`));
+        }).catch((error) => {
+          dispatch(notifyAlert(error.message));
+          reject({ _error: error.message });
+        });
     });
   }
 

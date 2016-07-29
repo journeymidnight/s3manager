@@ -55,9 +55,6 @@ export function requestCreateNetwork(routerKey, regionId, network) {
     .promise
     .then(() => {
       dispatch(notify(i18n.t('createSuccessed')));
-    })
-    .catch((error) => {
-      dispatch(notifyAlert(error.message));
     });
   };
 }
@@ -112,9 +109,6 @@ export function requestCreateSubnet(routerKey, regionId, subnet) {
     .promise
     .then(() => {
       dispatch(notify(i18n.t('createSuccessed')));
-    })
-    .catch((error) => {
-      dispatch(notifyAlert(error.message));
     });
   };
 }

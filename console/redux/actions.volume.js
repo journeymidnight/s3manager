@@ -48,9 +48,6 @@ export function requestCreateVolume(routerKey, regionId, volume) {
         setTimeout(() => {
           dispatch(notify(i18n.t('createSuccessed')));
         }, 1000);
-      })
-      .catch((error) => {
-        dispatch(notifyAlert(error.message));
       });
   };
 }

@@ -545,6 +545,18 @@ class C extends Page {
                         </td>
                       </tr>
                       <tr>
+                        <td>{t('volume')}</td>
+                        <td>
+                          {instance.volumes.map((volume) => {
+                            return (<div>
+                              <Link to={`${servicePath}/volumes/${volume.volumeId}`}>
+                                {volume.volumeId} ({volume.size}GB)
+                              </Link>
+                            </div>);
+                          })}
+                        </td>
+                      </tr>
+                      <tr>
                         <td>{t('privateIP')}</td>
                         <td>
                         {instance.address && <span>{instance.address}</span>}
@@ -554,7 +566,9 @@ class C extends Page {
                       <tr>
                         <td>{t('publicIP')}</td>
                         <td>
-                          {instance.eip && <span>{instance.eip.address}</span>}
+                          {instance.eip && <Link to={`${servicePath}/eips/${instance.eip.eipId}`}>
+                            {instance.eip.eipId} ({instance.eip.address})
+                          </Link>}
                           {!instance.eip && <i className="text-muted">{t('noName')}</i>}
                         </td>
                       </tr>

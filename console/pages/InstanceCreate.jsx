@@ -46,12 +46,13 @@ class C extends Page {
         loginPassword,
         keyPairId,
       }))
-      .then(() => {
-        resolve();
-        dispatch(push(`${servicePath}/instances`));
-      }).catch(() => {
-        reject();
-      });
+        .then(() => {
+          resolve();
+          dispatch(push(`${servicePath}/instances`));
+        }).catch((error) => {
+          dispatch(Actions.notifyAlert(error.message));
+          reject({ _error: error.message });
+        });
     });
   }
 
