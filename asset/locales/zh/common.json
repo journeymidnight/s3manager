@@ -12,6 +12,7 @@
     "cancel": "取消",
     "delete": "删除",
     "submit": "提交",
+    "action": "操作",
 
     "id": "ID",
     "name": "名称",
@@ -65,6 +66,7 @@
     "access_key": "密钥Key",
     "access_secret": "密钥Secret",
     "address": "地址",
+    "resource": "资源",
 
     "lastCreated": "最新创建",
     "firstCreated": "最早创建",
@@ -503,6 +505,22 @@
     "errorMsg": {
         "4701": "请给主机的网络增加外网网关，再重试。",
         "4702": "尝试给主机解绑 Eip，再重试。"
+    },
+
+    "actionTranslation": {
+        "StartInstances": "启动虚拟机",
+        "StopInstances": "关闭虚拟机",
+        "CreateInstances": "创建虚拟机",
+        "RestartInstances": "重启虚拟机",
+        "ResetInstances": "重置虚拟机",
+        "ResizeInstances": "虚拟机变更配置",
+        "CreateImages": "创建映像",
+        "CreateVolumes": "创建硬盘",
+        "AttachVolumes": "挂载硬盘",
+        "DetachVolumes": "卸载硬盘",
+        "ExtendVolumes": "扩展硬盘",
+        "CreateSnapshots": "创建快照",
+        "CreateNetworks": "创建网络"
     },
 
     "sidebarInstance": "主机列表",
