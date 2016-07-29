@@ -33,6 +33,7 @@
     "i18next-xhr-backend": "^0.5.4",
     "jquery": "^2.2.3",
     "lodash": "^4.13.1",
+    "mixpanel-browser": "^2.8.1",
     "moment": "^2.13.0",
     "morgan": "^1.7.0",
     "okay": "^1.0.0",

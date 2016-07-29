@@ -1,11 +1,9 @@
-// const analytics = require('analytics.js-loader')({
-//   writeKey: 'iOJlVzoiriE1luO0OkD5UAcd2XbaO4E5',
-//   skipPageCall: false,
-// });
-const analytics = window.analytics;
+import Mixpanel from 'mixpanel-browser';
 
-analytics.track('Visited', {
+const mixpanel = Mixpanel.init('cc1f30308ba75740c13580c25937577d');
+
+mixpanel.track('Visited', {
   source: undefined,
 });
 
-export default analytics;
+export default mixpanel;
