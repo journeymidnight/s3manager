@@ -44,11 +44,22 @@
         }
     }
 
+    &.i-status-finished,
     &.i-status-active {
         color: #468847;
 
         i.icon {
             background: #468847;
+            border-color: #dff0d8;
+        }
+    }
+
+    &.i-status-inuse,
+    &.i-status-associated {
+        color: #0e90d2;
+
+        i.icon {
+            background: #0e90d2;
             border-color: #dff0d8;
         }
     }

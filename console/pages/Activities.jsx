@@ -1,5 +1,6 @@
 import React from 'react';
 import Time from 'react-time';
+import { Link } from 'react-router';
 import { attach } from '../../shared/pages/Page';
 import TablePage from '../../shared/pages/TablePage';
 import * as Actions from '../redux/actions';
@@ -19,14 +20,30 @@ class C extends TablePage {
     return ActivityActions.requestDescribeJobs(routerKey, region.regionId, filters);
   }
 
+  getResourceUrl(resourceId) {
+    const { servicePath } = this.props;
+    const mapKey = resourceId.split('-')[0];
+    const map = {
+      i: 'instances',
+      net: 'networks',
+      snt: 'subnets',
+      v: 'volumes',
+      img: 'images',
+      snapshot: 'snapshots',
+      eip: 'eips',
+      kp: 'key_pairs',
+    };
+    return `${servicePath}/${map[mapKey]}/${resourceId}`;
+  }
+
   renderTable() {
     const { t } = this.props;
     return this.props.context.total > 0 && this.props.context.jobSet.length > 0 && (
       <table className="table">
         <thead>
           <tr>
-            <th width="150">{t('id')}</th>
             <th>{t('action')}</th>
+            <th>{t('resource')}</th>
             <th>{t('status')}</th>
             <th width="200">{t('created')}</th>
           </tr>
@@ -35,10 +52,11 @@ class C extends TablePage {
           {this.props.context.jobSet.map((job) => {
             return (
               <tr key={job.jobId}>
-                <td>{job.jobId}</td>
                 <td>
-                  {job.action && <strong>{job.action}</strong>}
-                  {!job.action && <i className="text-muted">{t('noName')}</i>}
+                  {t(`actionTranslation.${job.action}`)}
+                </td>
+                <td>
+                  <Link to={this.getResourceUrl(job.resourceIds[0])}>{job.resourceIds[0]}</Link>
                 </td>
                 <td className={`i-status i-status-${job.status}`}>
                   <i className="icon"></i>

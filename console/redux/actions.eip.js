@@ -87,9 +87,6 @@ export function requestAssociateEip(routerKey, regionId, eipId, instanceId) {
     .then(() => {
       dispatch(notify(i18n.t('associateSuccessed')));
       return dispatch(requestDescribeEip(routerKey, regionId, eipId));
-    })
-    .catch((error) => {
-      dispatch(notifyAlert(error.message));
     });
   };
 }
