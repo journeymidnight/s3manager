@@ -52,6 +52,14 @@ class C extends React.Component {
           </NavLink>
           <li className="separate-item" />
           <li>
+            <h5>{t('boss.ticket.title')}</h5>
+          </li>
+          <NavLink to="/devops/tickets">
+            <i className="fa fa-ticket fa-fw" />
+            <span>{t('boss.ticket.title')}</span>
+          </NavLink>
+          <li className="separate-item" />
+          <li>
             <h5>{t('boss.monitor.title')}</h5>
           </li>
           <NavLink to="/devops/eips">

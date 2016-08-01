@@ -548,6 +548,9 @@
         "alert": {
             "title": "异常报警"
         },
+        "ticket": {
+            "title": "工单"
+        },
         "monitor": {
             "title": "监控",
             "periods": {
