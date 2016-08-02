@@ -119,9 +119,9 @@ class F extends React.Component {
             <label className="radio-inline">
               <input type="radio" value="public" onClick={() => { this.onChangeImageType('public'); }} checked={imageType.value === 'public'} /> {t('public_images')}
             </label>
-            <label className="radio-inline">
+            {this.props.privateImageSet.length > 0 && <label className="radio-inline">
               <input type="radio" value="private" onClick={() => { this.onChangeImageType('private'); }} checked={imageType.value === 'private'} /> {t('private_images')}
-            </label>
+            </label>}
           </div>
         </div>
         <div className="form-group">
@@ -277,7 +277,7 @@ class F extends React.Component {
           {!isSelectedWindowsImage && loginMode.value === 'keyPair' && <div className="form-group">
             <label className="control-label" >{t('pageInstanceCreate.keyPair')}</label>
             <div className="col-sm-10">
-              <select className="form-control" {...keyPairId}>
+              {this.props.keyPairSet.length > 0 && <select className="form-control" {...keyPairId}>
                 {this.props.keyPairSet.map((keyPair) => {
                   return (
                     <option key={keyPair.keyPairId} value={keyPair.keyPairId}>
@@ -285,7 +285,8 @@ class F extends React.Component {
                     </option>
                   );
                 })}
-              </select>
+              </select>}
+              {this.props.keyPairSet.length === 0 && <Link className="btn btn-new" to={`${service.servicePath}/key_pairs/create`}>{t('pageKeyPairCreate.createKeyPair')}</Link>}
             </div>
           </div>}
 
