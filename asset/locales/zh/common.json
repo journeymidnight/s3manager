@@ -62,8 +62,8 @@
     "public_images": "公共映像",
     "private_images": "自有映像",
     "volume_snapshots": "硬盘备份",
-    "access_key": "密钥Key",
-    "access_secret": "密钥Secret",
+    "accessKey": "密钥 Key",
+    "accessSecret": "密钥 Secret",
     "address": "地址",
     "resource": "资源",
 
@@ -257,7 +257,7 @@
     },    
 
     "accessKeyStatus": {
-        "active": "运行中",
+        "active": "可用",
         "deleted": "已删除"
     },
 

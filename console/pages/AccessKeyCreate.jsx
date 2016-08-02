@@ -28,13 +28,13 @@ class C extends Page {
         name,
         description
       ))
-        .then(() => {
-          resolve();
-          dispatch(push('/access_keys'));
-        }).catch((error) => {
-          dispatch(Actions.notifyAlert(error.message));
-          reject({ _error: error.message });
-        });
+      .then(() => {
+        resolve();
+        dispatch(push('/g/access_keys'));
+      }).catch((error) => {
+        dispatch(Actions.notifyAlert(error.message));
+        reject({ _error: error.message });
+      });
     });
   }
 

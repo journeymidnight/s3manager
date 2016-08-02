@@ -55,9 +55,9 @@ class C extends TablePage {
             <th width="40">
               <input type="checkbox" className="selected" onChange={this.onSelectAll(this.props.context.accessKeySet.map((u) => { return u.accessKey; }))} />
             </th>
-            <th width="150">{t('access_key')}</th>
-            <th>{t('name')}</th>
-            <th>{t('access_secret')}</th>
+            <th width="150">{t('name')}</th>
+            <th>{t('accessKey')}</th>
+            <th>{t('accessSecret')}</th>
             <th>{t('status')}</th>
             <th width="200">{t('created')}</th>
           </tr>
@@ -70,12 +70,10 @@ class C extends TablePage {
                   <input type="checkbox" className="selected" onChange={this.onSelect(accessKey.accessKey)} checked={this.props.context.selected[accessKey.accessKey] === true} />
                 </td>
                 <td>
-                  {accessKey.accessKey}
-                </td>
-                <td>
                   {accessKey.name && <strong>{accessKey.name}</strong>}
                   {!accessKey.name && <i className="text-muted">{t('noName')}</i>}
                 </td>
+                <td>{accessKey.accessKey}</td>
                 <td>{accessKey.accessSecret}</td>
                 <td className={`i-status i-status-${accessKey.status}`}>
                   <i className="icon"></i>
@@ -112,9 +110,6 @@ class C extends TablePage {
     const { t } = this.props;
     const statusOption = [
       {
-        status: ['active', 'deleted'],
-        name: t('allAvaliableStatus'),
-      }, {
         status: ['active'],
         name: t('accessKeyStatus.active'),
       }, {
