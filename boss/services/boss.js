@@ -14,6 +14,26 @@ class BOSS {
   modifyAdmin(admin) {
     return this.call('ModifyAdminAttributes', admin);
   }
+  describeTickets(filter = {}) {
+    return this.call('DescribeTickets', filter);
+  }
+  describeTicketReplies(ticketId, filter = {}) {
+    return this.call('DescribeTicketReplies', {
+      ticketId,
+      ...filter,
+    });
+  }
+  createTicketReply(ticketId, content) {
+    return this.call('CreateTicketReply', {
+      ticketId,
+      content,
+    });
+  }
+  closeTickets(ticketIds) {
+    return this.call('CloseTickets', {
+      ticketIds,
+    });
+  }
 }
 
 export default new BOSS();

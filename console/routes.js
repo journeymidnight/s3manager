@@ -35,6 +35,9 @@ import Activities from './pages/Activities.jsx';
 import Usage from './pages/Usage.jsx';
 import AccessKeyCreate from './pages/AccessKeyCreate.jsx';
 import AccessKeys from './pages/AccessKeys.jsx';
+import TicketCreate from './pages/TicketCreate.jsx';
+import Ticket from './pages/Ticket.jsx';
+import Tickets from './pages/Tickets.jsx';
 
 export default function configureRoutes(store) {
   function requireAuth(nextState, replace) {
@@ -65,7 +68,11 @@ export default function configureRoutes(store) {
             <Route path="create" component={AccessKeyCreate} />
           </Route>
           <Route path="settings" component={Settings} />
-          <Route path="tickets" component={Settings} />
+          <Route path="tickets">
+            <IndexRoute component={Tickets} />
+            <Route path="create" component={TicketCreate} />
+            <Route path=":ticketId" component={Ticket} />
+          </Route>
           <Route path="security" component={Settings} />
         </Route>
         <Route path="lcs" >

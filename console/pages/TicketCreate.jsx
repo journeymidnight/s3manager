@@ -1,9 +1,9 @@
 import React from 'react';
 import { push } from 'react-router-redux';
 import Page, { attach } from '../../shared/pages/Page';
-import AccessKeyForm from '../forms/AccessKeyForm';
+import TicketForm from '../forms/TicketForm';
 import * as Actions from '../redux/actions';
-import * as AccessKeyActions from '../redux/actions.access_key';
+import * as TicketActions from '../redux/actions.ticket';
 
 class C extends Page {
 
@@ -14,23 +14,23 @@ class C extends Page {
 
   componentDidMount() {
     const { t, dispatch } = this.props;
-    dispatch(Actions.setHeader(t('accessKeyManage'), '/access_keys'));
+    dispatch(Actions.setHeader(t('ticketManage'), '/tickets'));
   }
 
   onSubmit(values) {
     const { dispatch } = this.props;
 
     return new Promise((resolve, reject) => {
-      const name = values.name;
-      const description = values.description;
+      const title = values.title;
+      const content = values.content;
 
-      dispatch(AccessKeyActions.requestCreateAccessKey(
-        name,
-        description
+      dispatch(TicketActions.requestCreateTicket(
+        title,
+        content
       ))
       .then(() => {
         resolve();
-        dispatch(push('/g/access_keys'));
+        dispatch(push('/g/tickets'));
       }).catch((error) => {
         dispatch(Actions.notifyAlert(error.message));
         reject({ _error: error.message });
@@ -47,10 +47,10 @@ class C extends Page {
 
             <div className="top-area append-bottom-20">
               <div className="nav-text">
-                <span>{t('pageAccessKeyCreate.createAccessKey')}</span>
+                <span>{t('pageTicketCreate.createTicket')}</span>
               </div>
             </div>
-            <AccessKeyForm onSubmit={this.onSubmit} />
+            <TicketForm onSubmit={this.onSubmit} />
           </div>
         </div>
       </div>

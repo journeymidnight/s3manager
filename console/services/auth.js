@@ -33,6 +33,32 @@ class Auth {
       accessKeys,
     });
   }
+  describeTickets(filter = {}) {
+    return call('post', '/api/boss/DescribeTickets', filter);
+  }
+  describeTicketReplies(ticketId, filter = {}) {
+    return call('post', '/api/boss/DescribeTicketReplies', {
+      ticketId,
+      ...filter,
+    });
+  }
+  createTicket(title, content) {
+    return call('post', '/api/boss/CreateTicket', {
+      title,
+      content,
+    });
+  }
+  createTicketReply(ticketId, content) {
+    return call('post', '/api/boss/CreateTicketReply', {
+      ticketId,
+      content,
+    });
+  }
+  closeTickets(ticketIds) {
+    return call('post', '/api/boss/CloseTickets', {
+      ticketIds,
+    });
+  }
 }
 
 export default new Auth();

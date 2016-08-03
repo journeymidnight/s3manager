@@ -17,6 +17,7 @@
     "name": "名称",
     "noName": "无",
     "username": "用户名",
+    "title": "标题",
     "email": "邮箱",
     "password": "密码",
     "description": "描述",
@@ -62,8 +63,8 @@
     "public_images": "公共映像",
     "private_images": "自有映像",
     "volume_snapshots": "硬盘备份",
-    "access_key": "密钥Key",
-    "access_secret": "密钥Secret",
+    "accessKey": "密钥 Key",
+    "accessSecret": "密钥 Secret",
     "address": "地址",
     "resource": "资源",
 
@@ -144,6 +145,9 @@
     "accessKeyManageDescription": "为用户提供API安全凭证。",
 
     "usageManage": "资源概览",
+
+    "ticketManage": "工单管理",
+    "ticketManageDescription": "添加、删除和修改工单信息。",
 
     "projectRoleAdmin": "管理账号",
     "projectRoleUser": "使用账户",
@@ -257,8 +261,14 @@
     },    
 
     "accessKeyStatus": {
-        "active": "运行中",
+        "active": "可用",
         "deleted": "已删除"
+    },
+
+    "ticketStatus": {
+        "pending": "等待处理",
+        "in-progress": "处理中",
+        "closed": "已解决"
     },
 
     "pageNetworkCreate": {
@@ -398,6 +408,20 @@
 
     "pageAccessKeyCreate": {
         "createAccessKey": "添加API密钥"
+    },
+
+    "pageTicketCreate": {
+        "createTicket": "添加工单",
+        "title": "标题",
+        "content": "内容"
+    },
+
+    "pageTicket": {
+        "unclosed": "未解决工单",
+        "closeTicket": "关闭工单",
+        "reply": "回复",
+        "closed": "此工单已关闭。",
+        "created": "创建时间"
     },
 
     "pageVolumeCreate": {
@@ -547,6 +571,9 @@
         },
         "alert": {
             "title": "异常报警"
+        },
+        "ticket": {
+            "title": "工单"
         },
         "monitor": {
             "title": "监控",

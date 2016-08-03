@@ -29,6 +29,8 @@ import LCSTabInstanceTypes from './pages/lcs/LCSTabInstanceTypes.jsx';
 import RegionTab from './pages/devops/RegionTab.jsx';
 import DevOpsNodes from './pages/devops/DevOpsNodes.jsx';
 import DevOpsAlerts from './pages/devops/DevOpsAlerts.jsx';
+import Tickets from './pages/Tickets.jsx';
+import Ticket from './pages/Ticket.jsx';
 import DevOpsInstances from './pages/devops/DevOpsInstances.jsx';
 import DevOpsEips from './pages/devops/DevOpsEips.jsx';
 import DevOpsCeph from './pages/devops/DevOpsCeph.jsx';
@@ -107,6 +109,10 @@ export default function configureRoutes(store) {
           <IndexRoute component={Users} />
           <Route path="create" component={UserCreate} />
           <Route path=":userId" component={User} />
+        </Route>
+        <Route path="tickets" >
+          <IndexRoute component={Tickets} />
+          <Route path=":ticketId" component={Ticket} />
         </Route>
         <Route path="devops" >
           <Route path="nodes" component={RegionTab}>
