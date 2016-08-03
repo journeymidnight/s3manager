@@ -33,17 +33,19 @@ class C extends TablePage {
     return VolumeActions.requestDescribeVolumes(routerKey, region.regionId, filters);
   }
 
-  onDelete() {
-    const { t, dispatch, routerKey, region } = this.props;
+  isBatchDeleteDisabled() {
     const volumeIds = _.keys(this.props.context.selected);
     const unavailabeVolumes = this.props.context.volumeSet.filter((volume) => {
-      return volumeIds.indexOf(volume.volumeId) > -1 && volume.status !== 'active';
+      return volumeIds.indexOf(volume.volumeId) > -1 && ['active', 'error'].indexOf(volume.status) === -1;
     });
 
-    if (unavailabeVolumes.length) {
-      alertModal(t('promptOperationCheck.promptPrefix2'));
-      return null;
-    }
+    return !!unavailabeVolumes.length;
+  }
+
+  onDelete() {
+    const { dispatch, routerKey, region } = this.props;
+    const volumeIds = _.keys(this.props.context.selected);
+
     return new Promise((resolve, reject) => {
       dispatch(VolumeActions.requestDeleteVolumes(routerKey, region.regionId, volumeIds))
         .then(() => {
@@ -163,7 +165,7 @@ class C extends TablePage {
         </div>
         <div className={Object.keys(this.props.context.selected).length > 0 ? '' : 'hidden'}>
           <div className="filter-item inline">
-            <ButtonForm onSubmit={this.onDelete} text={t('delete')} type="btn-danger" />
+            <ButtonForm onSubmit={this.onDelete} text={t('delete')} type="btn-danger" disabled={this.isBatchDeleteDisabled()} />
           </div>
         </div>
       </div>

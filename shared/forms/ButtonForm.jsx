@@ -8,10 +8,11 @@ const F = (props) => {
     submitting,
     text,
     type,
+    disabled,
   } = props;
   return (
     <form onSubmit={handleSubmit}>
-      <button type="submit" className={`btn ${type}`} disabled={submitting}>
+      <button type="submit" className={`btn ${type}`} disabled={disabled || submitting}>
         {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {text}
       </button>
     </form>
@@ -24,6 +25,7 @@ F.propTypes = {
   t: React.PropTypes.any,
   text: React.PropTypes.string.isRequired,
   type: React.PropTypes.string,
+  disabled: React.PropTypes.bool,
 };
 
 const ButtonForm = reduxForm({

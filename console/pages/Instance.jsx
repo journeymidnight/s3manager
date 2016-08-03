@@ -132,13 +132,8 @@ class C extends Page {
   startInstance(e) {
     e.preventDefault();
 
-    const { t, dispatch, region, routerKey, params } = this.props;
-    const instance = this.props.context.instance;
+    const { dispatch, region, routerKey, params } = this.props;
 
-    if (instance.status !== 'stopped') {
-      alertModal(t('promptOperationCheck.promptPrefix1') + t('pageInstance.startInstance') + t('instance'));
-      return;
-    }
     dispatch(InstanceActions.requestStartInstances(routerKey, region.regionId, [params.instanceId]));
   }
 
@@ -176,26 +171,14 @@ class C extends Page {
   updateInstance(e) {
     e.preventDefault();
 
-    const { t } = this.props;
-    const instance = this.props.context.instance;
-
-    if (instance.status !== 'stopped') {
-      alertModal(t('promptOperationCheck.promptPrefix1') + t('pageInstance.updateInstance') + t('instance'));
-      return;
-    }
     this.refs.updateModal.show();
   }
 
   restartInstance(e) {
     e.preventDefault();
 
-    const { t, dispatch, region, routerKey, params } = this.props;
-    const instance = this.props.context.instance;
+    const { dispatch, region, routerKey, params } = this.props;
 
-    if (instance.status !== 'active') {
-      alertModal(t('promptOperationCheck.promptPrefix1') + t('pageInstance.restartInstance') + t('instance'));
-      return;
-    }
     dispatch(InstanceActions.requestRestartInstances(routerKey, region.regionId, [params.instanceId]));
   }
 
@@ -203,12 +186,7 @@ class C extends Page {
     e.preventDefault();
 
     const { t, dispatch, region, routerKey, params } = this.props;
-    const instance = this.props.context.instance;
 
-    if (['active', 'stopped'].indexOf(instance.status) === -1) {
-      alertModal(t('promptOperationCheck.promptPrefix1') + t('pageInstance.deleteInstance') + t('instance'));
-      return;
-    }
     confirmModal(t('confirmDelete'), () => {
       dispatch(InstanceActions.requestDeleteInstances(routerKey, region.regionId, [params.instanceId]));
     });
@@ -234,13 +212,6 @@ class C extends Page {
 
   resetInstance(e) {
     e.preventDefault();
-
-    const { t } = this.props;
-    const instance = this.props.context.instance || this.instance;
-    if (instance.status !== 'stopped') {
-      alertModal(t('pageInstance.stopInstanceFirst'));
-      return;
-    }
 
     this.refs.resetModal.show();
   }
@@ -270,26 +241,15 @@ class C extends Page {
   associateEip(e) {
     e.preventDefault();
 
-    const { t } = this.props;
-    const instance = this.props.context.instance;
-
-    if (['active', 'stopped'].indexOf(instance.status) === -1) {
-      alertModal(t('promptOperationCheck.promptPrefix1') + t('pageInstance.associateEip'));
-      return;
-    }
     this.refs.eipModal.show();
   }
 
   dissociateEip(e) {
     e.preventDefault();
 
-    const { t, dispatch, region, routerKey, params } = this.props;
+    const { dispatch, region, routerKey, params } = this.props;
     const instance = this.props.context.instance || this.instance;
 
-    if (['active', 'stopped'].indexOf(instance.status) === -1) {
-      alertModal(t('promptOperationCheck.promptPrefix1') + t('pageInstance.dissociateEip'));
-      return;
-    }
     dispatch(EipActions.requestDissociateEips(routerKey, region.regionId, [instance.eipId], params.instanceId))
     .then(() => {
     }).catch(() => {
@@ -315,12 +275,6 @@ class C extends Page {
   captureInstance(e) {
     e.preventDefault();
 
-    const { t } = this.props;
-    const instance = this.props.context.instance;
-    if (['active', 'stopped'].indexOf(instance.status) === -1) {
-      alertModal(t('promptOperationCheck.promptPrefix1') + t('pageInstance.captureInstance'));
-      return;
-    }
     this.refs.captureModal.show();
   }
 
@@ -343,13 +297,6 @@ class C extends Page {
   resizeInstance(e) {
     e.preventDefault();
 
-    const { t } = this.props;
-    const instance = this.props.context.instance || this.instance;
-    if (instance.status !== 'stopped') {
-      alertModal(t('pageInstance.stopInstanceFirst'));
-      return;
-    }
-
     this.refs.resizeModal.show();
   }
 
@@ -357,11 +304,6 @@ class C extends Page {
     e.preventDefault();
 
     const { t, dispatch, routerKey, region } = this.props;
-    const instance = this.props.context.instance || this.instance;
-    if (['active', 'stopped'].indexOf(instance.status) === -1) {
-      alertModal(t('promptOperationCheck.promptPrefix1') + t('pageInstance.attachVolume'));
-      return;
-    }
 
     dispatch(VolumeActions.requestDescribeVolumes(routerKey, region.regionId, { status: ['active'] }))
       .then(() => {
@@ -457,11 +399,51 @@ class C extends Page {
                         <i className="fa fa-bars"></i>
                       </button>
                       <ul className="dropdown-menu">
-                        <li><a href onClick={this.updateInstance}>{t('pageInstance.updateInstance')}</a></li>
-                        <li><a href onClick={this.startInstance}>{t('pageInstance.startInstance')}</a></li>
-                        <li><a href onClick={this.stopInstance}>{t('pageInstance.stopInstance')}</a></li>
-                        <li><a href onClick={this.restartInstance}>{t('pageInstance.restartInstance')}</a></li>
-                        <li><a href onClick={this.deleteInstance}>{t('pageInstance.deleteInstance')}</a></li>
+                        <li>
+                          <button
+                            className="btn-page-action"
+                            disabled={instance.status !== 'stopped'}
+                            onClick={this.updateInstance}
+                          >
+                            {t('pageInstance.updateInstance')}
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            className="btn-page-action"
+                            disabled={instance.status !== 'stopped'}
+                            onClick={this.startInstance}
+                          >
+                            {t('pageInstance.startInstance')}
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            className="btn-page-action"
+                            disabled={instance.status !== 'active'}
+                            onClick={this.stopInstance}
+                          >
+                            {t('pageInstance.stopInstance')}
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            className="btn-page-action"
+                            disabled={instance.status !== 'active'}
+                            onClick={this.restartInstance}
+                          >
+                            {t('pageInstance.restartInstance')}
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            className="btn-page-action"
+                            disabled={['active', 'stopped', 'error'].indexOf(instance.status) === -1}
+                            onClick={this.deleteInstance}
+                          >
+                            {t('pageInstance.deleteInstance')}
+                          </button>
+                        </li>
                       </ul>
                     </div>}
                     {!this.isEnabled(instance) && this.isDeletable(instance) && <div className="btn-group pull-right">
@@ -515,12 +497,60 @@ class C extends Page {
                         <i className="fa fa-bars"></i>
                       </button>
                       <ul className="dropdown-menu">
-                        <li><a href onClick={this.resizeInstance}>{t('pageInstance.resizeInstance')}</a></li>
-                        <li><a href onClick={this.attachVolume}>{t('pageInstance.attachVolume')}</a></li>
-                        <li><a href onClick={this.resetInstance}>{t('pageInstance.resetInstance')}</a></li>
-                        <li><a href onClick={this.associateEip}>{t('pageInstance.associateEip')}</a></li>
-                        <li><a href onClick={this.dissociateEip}>{t('pageInstance.dissociateEip')}</a></li>
-                        <li><a href onClick={this.captureInstance}>{t('pageInstance.captureInstance')}</a></li>
+                        <li>
+                          <button
+                            className="btn-page-action"
+                            disabled={instance.status !== 'stopped'}
+                            onClick={this.resizeInstance}
+                          >
+                            {t('pageInstance.resizeInstance')}
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            className="btn-page-action"
+                            disabled={['active', 'stopped'].indexOf(instance.status) === -1}
+                            onClick={this.attachVolume}
+                          >
+                            {t('pageInstance.attachVolume')}
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            className="btn-page-action"
+                            disabled={instance.status !== 'stopped'}
+                            onClick={this.resetInstance}
+                          >
+                            {t('pageInstance.resetInstance')}
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            className="btn-page-action"
+                            disabled={['active', 'stopped'].indexOf(instance.status) === -1}
+                            onClick={this.associateEip}
+                          >
+                            {t('pageInstance.associateEip')}
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            className="btn-page-action"
+                            disabled={['active', 'stopped'].indexOf(instance.status) === -1}
+                            onClick={this.dissociateEip}
+                          >
+                            {t('pageInstance.dissociateEip')}
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            className="btn-page-action"
+                            disabled={['active', 'stopped'].indexOf(instance.status) === -1}
+                            onClick={this.captureInstance}
+                          >
+                            {t('pageInstance.captureInstance')}
+                          </button>
+                        </li>
                       </ul>
                     </div>}
                   </div>

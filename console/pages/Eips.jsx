@@ -4,7 +4,6 @@ import _ from 'lodash';
 import Time from 'react-time';
 import { attach } from '../../shared/pages/Page';
 import TablePage from '../../shared/pages/TablePage';
-import { alertModal } from '../../shared/components/Modal';
 import ButtonForm from '../../shared/forms/ButtonForm';
 import StatusFilter from '../../shared/components/StatusFilter';
 import TimeSorter from '../../shared/components/TimeSorter';
@@ -33,17 +32,18 @@ class C extends TablePage {
     return EipActions.requestDescribeEips(routerKey, region.regionId, filters);
   }
 
-  onDelete() {
-    const { t, dispatch, routerKey, region } = this.props;
+  isBatchDeleteDisabled() {
     const eipIds = _.keys(this.props.context.selected);
     const unavailabeEips = this.props.context.eipSet.filter((eip) => {
-      return eipIds.indexOf(eip.eipId) > -1 && eip.status !== 'active';
+      return eipIds.indexOf(eip.eipId) > -1 && ['active', 'error'].indexOf(eip.status) === -1;
     });
 
-    if (unavailabeEips.length) {
-      alertModal(t('promptOperationCheck.promptPrefix2'));
-      return null;
-    }
+    return !!unavailabeEips.length;
+  }
+
+  onDelete() {
+    const { dispatch, routerKey, region } = this.props;
+    const eipIds = _.keys(this.props.context.selected);
 
     return new Promise((resolve, reject) => {
       dispatch(EipActions.requestReleaseEips(routerKey, region.regionId, eipIds))
@@ -156,7 +156,7 @@ class C extends TablePage {
         </div>
         <div className={Object.keys(this.props.context.selected).length > 0 ? '' : 'hidden'}>
           <div className="filter-item inline">
-            <ButtonForm onSubmit={this.onDelete} text={t('delete')} type="btn-danger" />
+            <ButtonForm onSubmit={this.onDelete} text={t('delete')} type="btn-danger" disabled={this.isBatchDeleteDisabled()} />
           </div>
         </div>
       </div>
