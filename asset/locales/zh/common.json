@@ -266,9 +266,8 @@
     },
 
     "ticketStatus": {
-        "avaliable": "以提交",
         "pending": "等待处理",
-        "in-process": "处理中",
+        "in-progress": "处理中",
         "closed": "已解决"
     },
 
@@ -418,10 +417,10 @@
     },
 
     "pageTicket": {
+        "unclosed": "未解决工单",
         "closeTicket": "关闭工单",
         "reply": "回复",
         "closed": "此工单已关闭。",
-        "replied": "回复时间",
         "created": "创建时间"
     },
 

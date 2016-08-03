@@ -45,7 +45,6 @@ class C extends TablePage {
     });
   }
 
-
   renderTable() {
     const { t } = this.props;
     return this.props.context.total > 0 && this.props.context.accessKeySet.length > 0 && (
@@ -142,7 +141,6 @@ class C extends TablePage {
       </div>
     );
   }
-
 }
 
 export default attach(C);

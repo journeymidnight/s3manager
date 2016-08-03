@@ -18,8 +18,8 @@ class C extends Page {
   }
 
   componentDidMount() {
-    const { t, dispatch, servicePath } = this.props;
-    dispatch(Actions.setHeader(t('ticketManage'), `${servicePath}/tickets`));
+    const { t, dispatch } = this.props;
+    dispatch(Actions.setHeader(t('ticketManage'), '/tickets'));
 
     this.setInterval(() => {
       this.refresh();

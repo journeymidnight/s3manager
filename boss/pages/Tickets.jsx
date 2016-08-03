@@ -5,6 +5,7 @@ import Time from 'react-time';
 import { attach } from '../../shared/pages/Page';
 import TablePage from '../../shared/pages/TablePage';
 import ButtonForm from '../../shared/forms/ButtonForm';
+import StatusFilter from '../../shared/components/StatusFilter';
 import TimeSorter from '../../shared/components/TimeSorter';
 import * as Actions from '../redux/actions';
 import * as TicketActions from '../redux/actions.ticket';
@@ -23,7 +24,7 @@ class C extends TablePage {
     dispatch(Actions.setHeader(t('ticketManage'), '/tickets'));
 
     this.initTable({
-      status: ['pending', 'in-progress', 'closed'],
+      status: ['pending', 'in-progress'],
     });
   }
 
@@ -69,7 +70,7 @@ class C extends TablePage {
                   <input type="checkbox" className="selected" onChange={this.onSelect(ticket.ticket)} checked={this.props.context.selected[ticket.ticket] === true} />
                 </td>
                 <td>
-                  <Link to={`/g/tickets/${ticket.ticketId}`}>
+                  <Link to={`/tickets/${ticket.ticketId}`}>
                     {ticket.ticketId}
                   </Link>
                 </td>
@@ -88,7 +89,7 @@ class C extends TablePage {
   }
 
   renderHeader() {
-    const { t, servicePath } = this.props;
+    const { t } = this.props;
     return (
       <div className="top-area">
         <div className="nav-text">
@@ -96,17 +97,20 @@ class C extends TablePage {
             {t('ticketManageDescription')}
           </span>
         </div>
-        <div className="nav-controls">
-          <Link className="btn btn-new" to={`${servicePath}/tickets/create`}>
-            <i className="fa fa-plus"></i>&nbsp; {t('create')}
-          </Link>
-        </div>
       </div>
     );
   }
 
   renderFilters() {
     const { t } = this.props;
+    const statusOption = [
+      {
+        status: ['pending', 'in-progress'],
+        name: t('pageTicket.unclosed'),
+      }, {
+        status: ['closed'],
+        name: t('ticketStatus.closed'),
+      }];
     return (
       <div className="gray-content-block second-block">
         <div className={Object.keys(this.props.context.selected).length > 0 ? 'hidden' : ''}>
@@ -114,6 +118,9 @@ class C extends TablePage {
             <a className="btn btn-default" onClick={this.onRefresh({}, false)}>
               <i className={`fa fa-refresh ${this.props.context.loading ? 'fa-spin' : ''}`}></i>
             </a>
+          </div>
+          <div className="filter-item inline labels-filter">
+            <StatusFilter statusOption={statusOption} filterStatus={this.props.context.status} onRefresh={this.onRefresh} />
           </div>
           <div className="filter-item inline">
             <input type="search" ref="search" placeholder={t('filterByIdorName')} className="form-control" onKeyPress={this.onSearchKeyPress} />

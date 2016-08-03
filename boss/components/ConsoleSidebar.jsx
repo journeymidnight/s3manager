@@ -54,7 +54,7 @@ class C extends React.Component {
           <li>
             <h5>{t('boss.ticket.title')}</h5>
           </li>
-          <NavLink to="/devops/tickets">
+          <NavLink to="/tickets">
             <i className="fa fa-ticket fa-fw" />
             <span>{t('boss.ticket.title')}</span>
           </NavLink>
