@@ -3,50 +3,62 @@ import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
 import * as Validations from '../../shared/utils/validations';
 
-const F = (props) => {
-  const { fields:
-    { name, count },
-    handleSubmit,
-    submitting,
-    submitFailed,
-    resetForm,
-    t,
-  } = props;
-  return (
-    <form className="form-horizontal" onSubmit={handleSubmit}>
+class F extends React.Component {
 
-      <div className={submitFailed && name.error ? 'form-group has-error' : 'form-group'}>
-        <label className="control-label" >{t('name')}</label>
-        <div className="col-sm-10">
-          <input type="text" className="form-control" {...name} />
-          {submitFailed && name.error && <div className="text-danger"><small>{name.error}</small></div>}
+  componentDidMount() {
+    const initialValues = {
+      name: '',
+      count: 1,
+    };
+    this.props.initializeForm(initialValues);
+  }
+
+  render() {
+    const { fields:
+      { name, count },
+      handleSubmit,
+      submitting,
+      submitFailed,
+      resetForm,
+      t,
+    } = this.props;
+    return (
+      <form className="form-horizontal" onSubmit={handleSubmit}>
+
+        <div className={submitFailed && name.error ? 'form-group has-error' : 'form-group'}>
+          <label className="control-label" >{t('name')}</label>
+          <div className="col-sm-10">
+            <input type="text" className="form-control" {...name} />
+            {submitFailed && name.error && <div className="text-danger"><small>{name.error}</small></div>}
+          </div>
         </div>
-      </div>
 
-      <div className={submitFailed && count.error ? 'form-group has-error' : 'form-group'}>
-        <label className="control-label" >{t('count')}</label>
-        <div className="col-sm-10">
-          <input type="text" className="form-control" {...count} />
-          {submitFailed && count.error && <div className="text-danger"><small>{count.error}</small></div>}
+        <div className={submitFailed && count.error ? 'form-group has-error' : 'form-group'}>
+          <label className="control-label" >{t('count')}</label>
+          <div className="col-sm-10">
+            <input type="text" className="form-control" {...count} />
+            {submitFailed && count.error && <div className="text-danger"><small>{count.error}</small></div>}
+          </div>
         </div>
-      </div>
 
-      <div className="form-actions">
-        <button type="submit" className="btn btn-save" disabled={submitting}>
-          {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('create')}
-        </button>
-        &nbsp;
-        <button type="button" className="btn btn-cancel" disabled={submitting} onClick={resetForm}>
-          {t('reset')}
-        </button>
-      </div>
-    </form>
-  );
-};
+        <div className="form-actions">
+          <button type="submit" className="btn btn-save" disabled={submitting}>
+            {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('create')}
+          </button>
+          &nbsp;
+          <button type="button" className="btn btn-cancel" disabled={submitting} onClick={resetForm}>
+            {t('reset')}
+          </button>
+        </div>
+      </form>
+    );
+  }
+}
 
 F.propTypes = {
   fields: React.PropTypes.object.isRequired,
   error: React.PropTypes.string,
+  initializeForm: React.PropTypes.func.isRequired,
   handleSubmit: React.PropTypes.func.isRequired,
   submitting: React.PropTypes.bool.isRequired,
   submitFailed: React.PropTypes.bool.isRequired,

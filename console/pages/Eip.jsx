@@ -3,7 +3,7 @@ import Page, { attach } from '../../shared/pages/Page';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
 import Time from 'react-time';
-import Modal, { confirmModal, alertModal } from '../../shared/components/Modal';
+import Modal, { confirmModal } from '../../shared/components/Modal';
 import EipMonitor from './EipMonitor';
 import * as Actions from '../redux/actions';
 import * as EipActions from '../redux/actions.eip';
@@ -183,12 +183,6 @@ class C extends Page {
   updateEip(e) {
     e.preventDefault();
 
-    const { t } = this.props;
-    const eip = this.props.context.eip;
-    if (['active', 'associated'].indexOf(eip.status) === -1) {
-      alertModal(t('promptOperationCheck.promptPrefix1') + t('pageEip.updateEip'));
-      return;
-    }
     this.refs.updateModal.show();
   }
 
@@ -213,11 +207,6 @@ class C extends Page {
     e.preventDefault();
 
     const { t, dispatch, region, routerKey } = this.props;
-    const eip = this.props.context.eip;
-    if (eip.status !== 'active') {
-      alertModal(t('promptOperationCheck.promptPrefix1') + t('pageEip.associateResource'));
-      return;
-    }
 
     dispatch(InstanceActions.requestDescribeInstances(routerKey, region.regionId, { status: ['active', 'stopped'] }))
       .then(() => {
@@ -241,12 +230,9 @@ class C extends Page {
     e.preventDefault();
     const { t, dispatch, region, routerKey } = this.props;
     const eip = this.props.context.eip;
-    if (eip.status !== 'associated') {
-      alertModal(t('promptOperationCheck.promptPrefix1') + t('pageEip.dissociateResource'));
-      return;
-    }
+
     confirmModal(t('pageEip.confirmDissociateEip'), () => {
-      dispatch(EipActions.requestDissociateEips(routerKey, region.regionId, [eip.eipId], 'i-VVyfG7jk'))
+      dispatch(EipActions.requestDissociateEips(routerKey, region.regionId, [eip.eipId]))
         .then(() => {
           dispatch(EipActions.requestDescribeEip(routerKey, region.regionId, eip.eipId));
         });
@@ -257,11 +243,7 @@ class C extends Page {
     e.preventDefault();
 
     const { t, dispatch, region, routerKey, params } = this.props;
-    const eip = this.props.context.eip;
-    if (eip.status !== 'active') {
-      alertModal(t('promptOperationCheck.promptPrefix1') + t('pageEip.deleteEip'));
-      return;
-    }
+
     confirmModal(t('confirmDelete'), () => {
       dispatch(EipActions.requestReleaseEips(routerKey, region.regionId, [params.eipId]));
     });
@@ -312,10 +294,42 @@ class C extends Page {
                         <i className="fa fa-bars"></i>
                       </button>
                       <ul className="dropdown-menu">
-                        <li><a href onClick={this.updateEip}>{t('pageEip.updateEip')}</a></li>
-                        <li><a href onClick={this.associateEip}>{t('pageEip.associateResource')}</a></li>
-                        <li><a href onClick={this.dissociateEip}>{t('pageEip.dissociateResource')}</a></li>
-                        <li><a href onClick={this.deleteEip}>{t('pageEip.deleteEip')}</a></li>
+                        <li>
+                          <button
+                            className="btn-page-action"
+                            disabled={['active', 'associated'].indexOf(eip.status) === -1}
+                            onClick={this.updateEip}
+                          >
+                            {t('pageEip.updateEip')}
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            className="btn-page-action"
+                            disabled={eip.status !== 'active'}
+                            onClick={this.associateEip}
+                          >
+                            {t('pageEip.associateResource')}
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            className="btn-page-action"
+                            disabled={eip.status !== 'associated'}
+                            onClick={this.dissociateEip}
+                          >
+                            {t('pageEip.dissociateResource')}
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            className="btn-page-action"
+                            disabled={['active', 'error'].indexOf(eip.status) === -1}
+                            onClick={this.deleteEip}
+                          >
+                            {t('pageEip.deleteEip')}
+                          </button>
+                        </li>
                       </ul>
                     </div>}
                   </div>

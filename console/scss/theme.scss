@@ -21,6 +21,20 @@
                         padding-bottom: 10px;
                     }
                 }
+
+                .btn-page-action {
+                    border: none;
+                    background: none;
+                    width: 100%;
+                    text-align: left;
+                    padding-left: 10px;
+                    padding-right: 10px;
+
+                    &:disabled{
+                        cursor: not-allowed;
+                        color:#ccc;
+                    }
+                }
             }
         }
     }

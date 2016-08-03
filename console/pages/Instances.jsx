@@ -3,7 +3,7 @@ import moment from 'moment';
 import React from 'react';
 import { Link } from 'react-router';
 import { attach } from '../../shared/pages/Page';
-import { confirmModal, alertModal } from '../../shared/components/Modal';
+import { confirmModal } from '../../shared/components/Modal';
 import { buttonForm } from '../../shared/forms/ButtonForm';
 import TablePage from '../../shared/pages/TablePage';
 import * as Actions from '../redux/actions';
@@ -38,17 +38,18 @@ class C extends TablePage {
     return InstanceActions.requestDescribeInstances(routerKey, region.regionId, filters);
   }
 
-  batchActions(action, availabeStatuss, prompt) {
-    const { dispatch, region, routerKey } = this.props;
+  isBatchActionDisabled(availabeStatuss) {
     const instanceIds = _.keys(this.props.context.selected);
     const unavailabeInstances = this.props.context.instanceSet.filter((instance) => {
       return instanceIds.indexOf(instance.instanceId) > -1 && availabeStatuss.indexOf(instance.status) === -1;
     });
 
-    if (unavailabeInstances.length) {
-      alertModal(prompt);
-      return null;
-    }
+    return !!unavailabeInstances.length;
+  }
+
+  batchActions(action) {
+    const { dispatch, region, routerKey } = this.props;
+    const instanceIds = _.keys(this.props.context.selected);
 
     return new Promise((resolve, reject) => {
       dispatch(action(routerKey, region.regionId, instanceIds))
@@ -63,29 +64,21 @@ class C extends TablePage {
 
   onDelete() {
     const { t } = this.props;
-
     confirmModal(t('confirmDelete'), () => {
-      const prompt = t('promptOperationCheck.promptPrefix2');
-      return this.batchActions(InstanceActions.requestDeleteInstances, ['active', 'stopped'], prompt);
+      return this.batchActions(InstanceActions.requestDeleteInstances);
     });
   }
 
   onStart() {
-    const { t } = this.props;
-    const prompt = t('promptOperationCheck.promptPrefix2');
-    return this.batchActions(InstanceActions.requestStartInstances, ['stopped'], prompt);
+    return this.batchActions(InstanceActions.requestStartInstances);
   }
 
   onStop() {
-    const { t } = this.props;
-    const prompt = t('promptOperationCheck.promptPrefix2');
-    return this.batchActions(InstanceActions.requestStopInstances, ['active'], prompt);
+    return this.batchActions(InstanceActions.requestStopInstances);
   }
 
   onRestart() {
-    const { t } = this.props;
-    const prompt = t('promptOperationCheck.promptPrefix2');
-    return this.batchActions(InstanceActions.requestRestartInstances, ['active'], prompt);
+    return this.batchActions(InstanceActions.requestRestartInstances);
   }
 
   connectVNC(instance) {
@@ -235,16 +228,21 @@ class C extends TablePage {
         </div>
         {Object.keys(this.props.context.selected).length > 0 && <div>
           <div className="filter-item inline">
-            {buttonForm({ onSubmit: this.onStart, text: t('pageInstance.startInstance') })}
+            {buttonForm({ onSubmit: this.onStart, text: t('pageInstance.startInstance'), disabled: this.isBatchActionDisabled(['stopped']) })}
           </div>
           <div className="filter-item inline">
-            {buttonForm({ onSubmit: this.onRestart, text: t('pageInstance.restartInstance') })}
+            {buttonForm({ onSubmit: this.onRestart, text: t('pageInstance.restartInstance'), disabled: this.isBatchActionDisabled(['active']) })}
           </div>
           <div className="filter-item inline">
-            {buttonForm({ onSubmit: this.onStop, text: t('pageInstance.stopInstance') })}
+            {buttonForm({ onSubmit: this.onStop, text: t('pageInstance.stopInstance'), disabled: this.isBatchActionDisabled(['active']) })}
           </div>
           <div className="filter-item inline pull-right">
-            {React.cloneElement(buttonForm(), { onSubmit: this.onDelete, text: t('delete'), type: 'btn-danger' })}
+            {React.cloneElement(buttonForm(), {
+              onSubmit: this.onDelete,
+              text: t('delete'),
+              type: 'btn-danger',
+              disabled: this.isBatchActionDisabled(['active', 'error']),
+            })}
           </div>
         </div>}
       </div>
