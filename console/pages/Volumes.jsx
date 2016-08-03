@@ -3,7 +3,6 @@ import { Link } from 'react-router';
 import _ from 'lodash';
 import Time from 'react-time';
 import { attach } from '../../shared/pages/Page';
-import { alertModal } from '../../shared/components/Modal';
 import TablePage from '../../shared/pages/TablePage';
 import ButtonForm from '../../shared/forms/ButtonForm';
 import StatusFilter from '../../shared/components/StatusFilter';

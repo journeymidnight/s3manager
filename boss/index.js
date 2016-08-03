@@ -15,7 +15,7 @@ bootstrap((token, state, callback) => {
   let routes = configureRoutes(store);
 
   if (token) {
-    Auth.describeContext(token.token)
+    Auth.describeToken(token.token)
     .promise
     .then((context) => {
       state.auth = context.auth;

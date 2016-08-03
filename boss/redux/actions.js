@@ -70,7 +70,7 @@ export function requestLogin(email, password) {
     return Auth.authorize(email, password)
     .promise
     .then((token) => {
-      return Auth.describeContext(token.token)
+      return Auth.describeToken(token.token)
       .promise
       .then((context) => {
         dispatch(authLogin(context, token));
