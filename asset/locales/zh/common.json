@@ -17,6 +17,7 @@
     "name": "名称",
     "noName": "无",
     "username": "用户名",
+    "title": "标题",
     "email": "邮箱",
     "password": "密码",
     "description": "描述",
@@ -145,6 +146,9 @@
 
     "usageManage": "资源概览",
 
+    "ticketManage": "工单管理",
+    "ticketManageDescription": "添加、删除和修改工单信息。",
+
     "projectRoleAdmin": "管理账号",
     "projectRoleUser": "使用账户",
 
@@ -259,6 +263,13 @@
     "accessKeyStatus": {
         "active": "可用",
         "deleted": "已删除"
+    },
+
+    "ticketStatus": {
+        "avaliable": "以提交",
+        "pending": "等待处理",
+        "in-process": "处理中",
+        "closed": "已解决"
     },
 
     "pageNetworkCreate": {
@@ -398,6 +409,20 @@
 
     "pageAccessKeyCreate": {
         "createAccessKey": "添加API密钥"
+    },
+
+    "pageTicketCreate": {
+        "createTicket": "添加工单",
+        "title": "标题",
+        "content": "内容"
+    },
+
+    "pageTicket": {
+        "closeTicket": "关闭工单",
+        "reply": "回复",
+        "closed": "此工单已关闭。",
+        "replied": "回复时间",
+        "created": "创建时间"
     },
 
     "pageVolumeCreate": {

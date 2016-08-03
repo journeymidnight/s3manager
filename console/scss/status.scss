@@ -35,7 +35,8 @@
         }
     }
 
-    &.i-status-stopped {
+    &.i-status-stopped,
+    &.i-status-closed {
         color: #333333;
 
         i.icon {
