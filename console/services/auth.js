@@ -8,8 +8,8 @@ class Auth {
       projectId,
     });
   }
-  describeContext(token) {
-    return call('post', '/api/iam/DescribeContext', {}, (options) => {
+  describeToken(token) {
+    return call('post', '/api/iam/DescribeToken', {}, (options) => {
       options.headers['X-Le-Token'] = token;
     });
   }
