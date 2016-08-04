@@ -27,7 +27,7 @@ class C extends Page {
       Auth.authorize(email, password, projectId)
       .promise
       .then((token) => {
-        Auth.describeContext(token.token)
+        Auth.describeToken(token.token)
         .promise
         .then((context) => {
           resolve();

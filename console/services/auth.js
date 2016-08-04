@@ -8,8 +8,8 @@ class Auth {
       projectId,
     });
   }
-  describeContext(token) {
-    return call('post', '/api/iam/DescribeContext', {}, (options) => {
+  describeToken(token) {
+    return call('post', '/api/iam/DescribeToken', {}, (options) => {
       options.headers['X-Le-Token'] = token;
     });
   }
@@ -31,6 +31,32 @@ class Auth {
   deleteAccessKeys(accessKeys) {
     return call('post', '/api/iam/DeleteAccessKeys', {
       accessKeys,
+    });
+  }
+  describeTickets(filter = {}) {
+    return call('post', '/api/boss/DescribeTickets', filter);
+  }
+  describeTicketReplies(ticketId, filter = {}) {
+    return call('post', '/api/boss/DescribeTicketReplies', {
+      ticketId,
+      ...filter,
+    });
+  }
+  createTicket(title, content) {
+    return call('post', '/api/boss/CreateTicket', {
+      title,
+      content,
+    });
+  }
+  createTicketReply(ticketId, content) {
+    return call('post', '/api/boss/CreateTicketReply', {
+      ticketId,
+      content,
+    });
+  }
+  closeTickets(ticketIds) {
+    return call('post', '/api/boss/CloseTickets', {
+      ticketIds,
     });
   }
 }

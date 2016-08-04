@@ -35,7 +35,8 @@
         }
     }
 
-    &.i-status-stopped {
+    &.i-status-stopped,
+    &.i-status-closed {
         color: #333333;
 
         i.icon {
@@ -45,6 +46,7 @@
     }
 
     &.i-status-finished,
+    &.i-status-in-progress,
     &.i-status-active {
         color: #468847;
 

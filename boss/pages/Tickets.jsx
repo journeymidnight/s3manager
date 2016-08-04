@@ -8,7 +8,7 @@ import ButtonForm from '../../shared/forms/ButtonForm';
 import StatusFilter from '../../shared/components/StatusFilter';
 import TimeSorter from '../../shared/components/TimeSorter';
 import * as Actions from '../redux/actions';
-import * as AccessKeyActions from '../redux/actions.access_key';
+import * as TicketActions from '../redux/actions.ticket';
 
 class C extends TablePage {
 
@@ -21,21 +21,23 @@ class C extends TablePage {
 
   componentDidMount() {
     const { t, dispatch } = this.props;
-    dispatch(Actions.setHeader(t('accessKeyManage'), '/access_keys'));
+    dispatch(Actions.setHeader(t('ticketManage'), '/tickets'));
 
-    this.initTable();
+    this.initTable({
+      status: ['pending', 'in-progress'],
+    });
   }
 
   refreshAction(routerKey, filters) {
-    return AccessKeyActions.requestDescribeAccessKeys(filters);
+    return TicketActions.requestDescribeTickets(routerKey, filters);
   }
 
   onDelete() {
     const { dispatch } = this.props;
-    const accessKeyIds = _.keys(this.props.context.selected);
+    const ticketIds = _.keys(this.props.context.selected);
 
     return new Promise((resolve, reject) => {
-      dispatch(AccessKeyActions.requestDeleteAccessKeys(accessKeyIds))
+      dispatch(TicketActions.requestDeleteTickets(ticketIds))
         .then(() => {
           resolve();
           this.onRefresh({}, false)();
@@ -47,38 +49,37 @@ class C extends TablePage {
 
   renderTable() {
     const { t } = this.props;
-    return this.props.context.total > 0 && this.props.context.accessKeySet.length > 0 && (
+    return this.props.context.total > 0 && this.props.context.ticketSet.length > 0 && (
       <table className="table">
         <thead>
           <tr>
             <th width="40">
-              <input type="checkbox" className="selected" onChange={this.onSelectAll(this.props.context.accessKeySet.map((u) => { return u.accessKey; }))} />
+              <input type="checkbox" className="selected" onChange={this.onSelectAll(this.props.context.ticketSet.map((u) => { return u.ticket; }))} />
             </th>
-            <th width="150">{t('name')}</th>
-            <th>{t('accessKey')}</th>
-            <th>{t('accessSecret')}</th>
-            <th>{t('status')}</th>
+            <th width="150">{t('id')}</th>
+            <th>{t('title')}</th>
+            <th width="150">{t('status')}</th>
             <th width="200">{t('created')}</th>
           </tr>
         </thead>
         <tbody>
-          {this.props.context.accessKeySet.map((accessKey) => {
+          {this.props.context.ticketSet.map((ticket) => {
             return (
-              <tr key={accessKey.accessKey}>
+              <tr key={ticket.ticketId}>
                 <td>
-                  <input type="checkbox" className="selected" onChange={this.onSelect(accessKey.accessKey)} checked={this.props.context.selected[accessKey.accessKey] === true} />
+                  <input type="checkbox" className="selected" onChange={this.onSelect(ticket.ticket)} checked={this.props.context.selected[ticket.ticket] === true} />
                 </td>
                 <td>
-                  {accessKey.name && <strong>{accessKey.name}</strong>}
-                  {!accessKey.name && <i className="text-muted">{t('noName')}</i>}
+                  <Link to={`/tickets/${ticket.ticketId}`}>
+                    {ticket.ticketId}
+                  </Link>
                 </td>
-                <td>{accessKey.accessKey}</td>
-                <td>{accessKey.accessSecret}</td>
-                <td className={`i-status i-status-${accessKey.status}`}>
+                <td><strong>{ticket.title}</strong></td>
+                <td className={`i-status i-status-${ticket.status}`}>
                   <i className="icon"></i>
-                  {t(`accessKeyStatus.${accessKey.status}`)}
+                  {t(`ticketStatus.${ticket.status}`)}
                 </td>
-                <td className="light"><Time value={accessKey.created} format="YYYY-MM-DD HH:mm:ss" /></td>
+                <td className="light"><Time value={ticket.created} format="YYYY-MM-DD HH:mm:ss" /></td>
               </tr>
             );
           })}
@@ -88,18 +89,13 @@ class C extends TablePage {
   }
 
   renderHeader() {
-    const { t, servicePath } = this.props;
+    const { t } = this.props;
     return (
       <div className="top-area">
         <div className="nav-text">
           <span className="light">
-            {t('accessKeyManageDescription')}
+            {t('ticketManageDescription')}
           </span>
-        </div>
-        <div className="nav-controls">
-          <Link className="btn btn-new" to={`${servicePath}/access_keys/create`}>
-            <i className="fa fa-plus"></i>&nbsp; {t('create')}
-          </Link>
         </div>
       </div>
     );
@@ -109,11 +105,11 @@ class C extends TablePage {
     const { t } = this.props;
     const statusOption = [
       {
-        status: ['active'],
-        name: t('accessKeyStatus.active'),
+        status: ['pending', 'in-progress'],
+        name: t('pageTicket.unclosed'),
       }, {
-        status: ['deleted'],
-        name: t('accessKeyStatus.deleted'),
+        status: ['closed'],
+        name: t('ticketStatus.closed'),
       }];
     return (
       <div className="gray-content-block second-block">
