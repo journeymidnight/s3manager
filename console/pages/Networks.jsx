@@ -52,7 +52,7 @@ class C extends Page {
     dispatch(Actions.setHeader(t('networkManage'), `${servicePath}/networks`));
 
     dispatch(Actions.extendContext({
-      status: ['pending', 'active'],
+      status: ['pending', 'active', 'deleted', 'ceased'],
       selected: {
       },
       currentPage: 1,
@@ -232,11 +232,8 @@ class C extends Page {
                       <div className="dropdown-content">
                         <ul>
                         {[{
-                          status: ['pending', 'active'],
-                          name: t('allAvaliableStatus'),
-                        }, {
-                          status: ['pending'],
-                          name: t('networkStatus.pending'),
+                          status: ['pending', 'active', 'deleted', 'ceased'],
+                          name: t('allStatus'),
                         }, {
                           status: ['active'],
                           name: t('networkStatus.active'),

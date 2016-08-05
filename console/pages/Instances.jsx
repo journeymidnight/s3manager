@@ -180,7 +180,7 @@ class C extends TablePage {
                   <ul>
                   {[{
                     status: ['pending', 'active', 'starting', 'stopped', 'stopping', 'restarting', 'scheduling', 'error'],
-                    name: t('allAvaliableStatus'),
+                    name: t('allStatus'),
                   }, {
                     status: ['active'],
                     name: t('instanceStatus.active'),

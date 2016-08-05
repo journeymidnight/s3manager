@@ -12,7 +12,7 @@ class C extends TablePage {
     const { t, dispatch, servicePath } = this.props;
     dispatch(Actions.setHeader(t('publicImageManage'), `${servicePath}/images_snapshots/public_images`));
 
-    this.initTable({ isTabPage: true });
+    this.initTable({ isTabPage: true, status: ['pending', 'active', 'deleted', 'ceased'] });
   }
 
   // need inherit
@@ -74,10 +74,7 @@ class C extends TablePage {
     const statusOption = [
       {
         status: ['pending', 'active', 'deleted', 'ceased'],
-        name: t('allAvaliableStatus'),
-      }, {
-        status: ['pending'],
-        name: t('imageStatus.pending'),
+        name: t('allStatus'),
       }, {
         status: ['active'],
         name: t('imageStatus.active'),

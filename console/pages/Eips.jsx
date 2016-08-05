@@ -23,7 +23,7 @@ class C extends TablePage {
     dispatch(Actions.setHeader(t('eipManage'), `${servicePath}/eips`));
 
     this.initTable({
-      status: ['active', 'associated'],
+      status: ['active', 'associated', 'ceased', 'deleted'],
     });
   }
 
@@ -130,8 +130,14 @@ class C extends TablePage {
     const { t } = this.props;
     const statusOption = [
       {
-        status: ['active', 'associated'],
-        name: t('allAvaliableStatus'),
+        status: ['active', 'associated', 'ceased', 'deleted'],
+        name: t('allStatus'),
+      }, {
+        status: ['active'],
+        name: t('eipStatus.active'),
+      }, {
+        status: ['associated'],
+        name: t('eipStatus.associated'),
       }, {
         status: ['ceased', 'deleted'],
         name: t('eipStatus.deleted'),
