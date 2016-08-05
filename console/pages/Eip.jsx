@@ -187,19 +187,25 @@ class C extends Page {
   }
 
   onAssociate(values) {
-    const { dispatch, region, routerKey } = this.props;
+    const { t, dispatch, region, routerKey } = this.props;
     const eip = this.props.context.eip || this.eip;
 
     return new Promise((resolve, reject) => {
       const instanceId = values.instanceId;
 
       dispatch(EipActions.requestAssociateEip(routerKey, region.regionId, eip.eipId, instanceId))
-      .then(() => {
-        resolve();
-        this.refs.associateModal.hide();
-      }).catch(() => {
-        reject();
-      });
+        .then(() => {
+          resolve();
+          this.refs.associateModal.hide();
+        }).catch((error) => {
+          this.refs.associateModal.hide();
+          if (error.retCode === 4701) {
+            dispatch(Actions.notifyAlert(t('errorMsg.4701')));
+          } else {
+            dispatch(Actions.notifyAlert(error.message));
+          }
+          reject();
+        });
     });
   }
 
