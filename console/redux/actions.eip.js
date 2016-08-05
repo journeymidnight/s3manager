@@ -68,14 +68,19 @@ export function requestModifyEipAttributes(routerKey, regionId, eipId, name, des
 export function requestReleaseEips(routerKey, regionId, eipIds) {
   return dispatch => {
     return IaaS
-    .releaseEips(regionId, eipIds)
-    .promise
-    .then(() => {
-      dispatch(notify(i18n.t('deleteSuccessed')));
-    })
-    .catch((error) => {
-      dispatch(notifyAlert(error.message));
-    });
+      .releaseEips(regionId, eipIds)
+      .promise
+      .then(() => {
+        dispatch(notify(i18n.t('deleteSuccessed')));
+      })
+      .catch((error) => {
+        if (error.retCode === 4702) {
+          dispatch(notifyAlert(i18n.t('errorMsg.4702')));
+        } else {
+          dispatch(notifyAlert(error.message));
+        }
+        throw error;
+      });
   };
 }
 
