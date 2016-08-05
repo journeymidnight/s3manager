@@ -593,6 +593,15 @@ class C extends Page {
                         </td>
                       </tr>
                       <tr>
+                        <td>{t('network')}</td>
+                        <td>
+                          {instance.networkId && <Link to={`${servicePath}/networks/${instance.networkId}`}>
+                            {instance.networkId}
+                          </Link>}
+                          {!instance.networkId && <i className="text-muted">{t('noName')}</i>}
+                        </td>
+                      </tr>
+                      <tr>
                         <td>{t('privateIP')}</td>
                         <td>
                         {instance.address && <span>{instance.address}</span>}
