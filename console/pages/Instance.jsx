@@ -140,13 +140,8 @@ class C extends Page {
   stopInstance(e) {
     e.preventDefault();
 
-    const { t, dispatch, region, routerKey, params } = this.props;
-    const instance = this.props.context.instance;
+    const { dispatch, region, routerKey, params } = this.props;
 
-    if (instance.status !== 'active') {
-      alertModal(t('promptOperationCheck.promptPrefix1') + t('pageInstance.stopInstance'));
-      return;
-    }
     dispatch(InstanceActions.requestStopInstances(routerKey, region.regionId, [params.instanceId]));
   }
 
@@ -320,12 +315,15 @@ class C extends Page {
 
     const volumeId = values.volumeId;
     const instanceId = this.props.context.instance.instanceId;
-
-    dispatch(VolumeActions.requestAttachVolume(routerKey, region.regionId, volumeId, instanceId))
-      .then(() => {
-        this.refs.attachVolumeModal.hide();
-      }).catch(() => {
-      });
+    return new Promise((resolve, reject) => {
+      dispatch(VolumeActions.requestAttachVolume(routerKey, region.regionId, volumeId, instanceId))
+        .then(() => {
+          this.refs.attachVolumeModal.hide();
+          resolve();
+        }).catch(() => {
+          reject();
+        });
+    });
   }
 
   renderAttachVolumeModal() {

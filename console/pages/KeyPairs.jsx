@@ -34,11 +34,15 @@ class C extends TablePage {
   onDelete() {
     const { dispatch, routerKey, region } = this.props;
     const keyPairIds = _.keys(this.props.context.selected);
-
-    dispatch(KeyPairActions.requestDeleteKeyPairs(routerKey, region.regionId, keyPairIds))
-      .then(() => {
-        this.onRefresh({}, false)();
-      });
+    return new Promise((resolve, reject) => {
+      dispatch(KeyPairActions.requestDeleteKeyPairs(routerKey, region.regionId, keyPairIds))
+        .then(() => {
+          this.onRefresh({}, false)();
+          resolve();
+        }).catch(() => {
+          reject();
+        });
+    });
   }
 
   renderTable() {

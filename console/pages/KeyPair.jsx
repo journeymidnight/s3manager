@@ -119,11 +119,15 @@ class C extends Page {
 
     const name = values.name;
     const description = values.description;
-
-    dispatch(KeyPairActions.requestModifyKeyPairAttributes(routerKey, region.regionId, keyPair.keyPairId, name, description))
-      .then(() => {
-        this.refs.updateModal.hide();
-      });
+    return new Promise((resolve, reject) => {
+      dispatch(KeyPairActions.requestModifyKeyPairAttributes(routerKey, region.regionId, keyPair.keyPairId, name, description))
+        .then(() => {
+          this.refs.updateModal.hide();
+          resolve();
+        }).catch(() => {
+          reject();
+        });
+    });
   }
 
   render() {
