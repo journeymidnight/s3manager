@@ -430,7 +430,8 @@
     },
 
     "pageEipCreate": {
-        "createEip": "添加公网IP"
+        "createEip": "添加公网IP",
+        "bandwidthHint": "单位Mbps"
     },
 
     "pageKeyPairCreate": {
