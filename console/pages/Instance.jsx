@@ -4,6 +4,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
+import { push } from 'react-router-redux';
 import Page, { attach } from '../../shared/pages/Page';
 import Modal, { alertModal, confirmModal } from '../../shared/components/Modal';
 import InstanceResetForm from '../forms/InstanceResetForm';
@@ -252,7 +253,7 @@ class C extends Page {
   }
 
   onCaptureInstance(values) {
-    const { dispatch, region, routerKey, params } = this.props;
+    const { t, dispatch, region, routerKey, params, servicePath } = this.props;
 
     return new Promise((resolve, reject) => {
       const name = values.name;
@@ -261,6 +262,10 @@ class C extends Page {
       .then(() => {
         resolve();
         this.refs.captureModal.hide();
+        setTimeout(() => {
+          dispatch(push(`${servicePath}/images_snapshots/private_images`));
+          dispatch(Actions.notify(t('createSuccessed')));
+        }, 200);
       }).catch(() => {
         reject();
       });

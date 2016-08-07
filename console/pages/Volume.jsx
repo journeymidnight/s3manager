@@ -1,6 +1,7 @@
 import React from 'react';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
+import { push } from 'react-router-redux';
 import Time from 'react-time';
 import Page, { attach } from '../../shared/pages/Page';
 import i18n from '../../shared/i18n';
@@ -380,7 +381,7 @@ class C extends Page {
   }
 
   onCreateSnapshot(values) {
-    const { dispatch, region, routerKey } = this.props;
+    const { t, dispatch, region, routerKey, servicePath } = this.props;
     const volume = this.props.context.volume || this.volume;
 
     return new Promise((resolve, reject) => {
@@ -393,6 +394,10 @@ class C extends Page {
         .then(() => {
           resolve();
           this.refs.snapshotCreateModal.hide();
+          setTimeout(() => {
+            dispatch(push(`${servicePath}/images_snapshots/volume_snapshots`));
+            dispatch(Actions.notify(t('createSuccessed')));
+          }, 200);
         }).catch(() => {
           reject();
         });
