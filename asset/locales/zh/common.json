@@ -93,6 +93,7 @@
     "capturePending": "正在生成映像...",
     "dissociateSuccessed": "解绑成功。",
     "associateSuccessed": "绑定成功。",
+    "updateBandwidthSuccessed": "调整带宽成功。",
 
     "instanceManage": "云主机管理",
     "instanceManageDescription": "添加、删除和修改云主机信息。",
@@ -372,6 +373,7 @@
         "deleteEip": "删除",
         "associateResource": "绑定资源",
         "dissociateResource": "解绑资源",
+        "updateBandwidth": "更新带宽",
         "noAvailableInstance": "没有可用的云主机",
         "confirmDissociateEip": "确认要解绑公网IP吗?"
     },
@@ -431,7 +433,7 @@
 
     "pageEipCreate": {
         "createEip": "添加公网IP",
-        "bandwidthHint": "单位Mbps"
+        "bandwidthHint": "单位Mb"
     },
 
     "pageKeyPairCreate": {
