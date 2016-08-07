@@ -252,7 +252,7 @@
         "backup_restoring": "备份恢复中",
         "error": "状态异常",
         "deleted": "已删除",
-        "ceased": "物理删除"
+        "ceased": "已删除"
     },
 
     "jobStatus": {
