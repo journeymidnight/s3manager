@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router';
 import Time from 'react-time';
 import _ from 'lodash';
 import ButtonForm from '../../shared/forms/ButtonForm';
@@ -46,7 +45,7 @@ class C extends TablePage {
   }
 
   renderTable() {
-    const { t, servicePath } = this.props;
+    const { t } = this.props;
     return this.props.context.total > 0 && this.props.context.snapshotSet.length > 0 && (
       <table className="table">
         <thead>
