@@ -69,9 +69,7 @@ class C extends TablePage {
                   <input type="checkbox" className="selected" onChange={this.onSelect(snapshot.snapshotId)} checked={this.props.context.selected[snapshot.snapshotId] === true} />
                 </td>
                 <td>
-                  <Link to={`${servicePath}/snapshots/${snapshot.snapshotId}`}>
-                    {snapshot.snapshotId}
-                  </Link>
+                  {snapshot.snapshotId}
                 </td>
                 <td>
                   {snapshot.name && <strong>{snapshot.name}</strong>}
