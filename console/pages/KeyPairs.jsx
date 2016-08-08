@@ -22,7 +22,7 @@ class C extends TablePage {
     dispatch(Actions.setHeader(t('keyPairManage'), `${servicePath}/key_pairs`));
 
     this.initTable({
-      status: ['active', 'deleted'],
+      status: ['active'],
     });
   }
 
@@ -111,9 +111,6 @@ class C extends TablePage {
     const { t } = this.props;
     const statusOption = [
       {
-        status: ['active', 'deleted'],
-        name: t('allStatus'),
-      }, {
         status: ['active'],
         name: t('keyPairStatus.active'),
       }, {
