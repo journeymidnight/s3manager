@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import _ from 'lodash';
+import Time from 'react-time';
 import { attach } from '../../shared/pages/Page';
 import TablePage from '../../shared/pages/TablePage';
 import ButtonForm from '../../shared/forms/ButtonForm';
@@ -82,7 +83,7 @@ class C extends TablePage {
                   <i className="icon"></i>
                   {t(`networkStatus.${network.status}`)}
                 </td>
-                <td>{network.created}</td>
+                <td><Time value={network.created} format="YYYY-MM-DD HH:mm:ss" /></td>
               </tr>
             );
           })}
