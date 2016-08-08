@@ -21,7 +21,9 @@ class C extends TablePage {
     const { t, dispatch, servicePath } = this.props;
     dispatch(Actions.setHeader(t('keyPairManage'), `${servicePath}/key_pairs`));
 
-    this.initTable();
+    this.initTable({
+      status: ['active', 'deleted'],
+    });
   }
 
   refreshAction(routerKey, filters) {
@@ -32,11 +34,15 @@ class C extends TablePage {
   onDelete() {
     const { dispatch, routerKey, region } = this.props;
     const keyPairIds = _.keys(this.props.context.selected);
-
-    dispatch(KeyPairActions.requestDeleteKeyPairs(routerKey, region.regionId, keyPairIds))
-      .then(() => {
-        this.onRefresh({}, false)();
-      });
+    return new Promise((resolve, reject) => {
+      dispatch(KeyPairActions.requestDeleteKeyPairs(routerKey, region.regionId, keyPairIds))
+        .then(() => {
+          this.onRefresh({}, false)();
+          resolve();
+        }).catch(() => {
+          reject();
+        });
+    });
   }
 
   renderTable() {
@@ -106,7 +112,7 @@ class C extends TablePage {
     const statusOption = [
       {
         status: ['active', 'deleted'],
-        name: t('allAvaliableStatus'),
+        name: t('allStatus'),
       }, {
         status: ['active'],
         name: t('keyPairStatus.active'),

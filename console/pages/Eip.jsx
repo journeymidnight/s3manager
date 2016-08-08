@@ -8,6 +8,7 @@ import EipMonitor from './EipMonitor';
 import * as Actions from '../redux/actions';
 import * as EipActions from '../redux/actions.eip';
 import * as InstanceActions from '../redux/actions.instance';
+import * as Validations from '../../shared/utils/validations';
 
 let EipUpdateForm = (props) => {
   const { fields:
@@ -123,6 +124,75 @@ EipAssociateForm = reduxForm({
   validate: EipAssociateForm.validate,
 })(translate()(EipAssociateForm));
 
+class BandwidthUpdateForm extends React.Component {
+
+  componentDidMount() {
+    this.props.initializeForm({ name: this.props.eip.name });
+  }
+
+  render() {
+    const { fields:
+      { name, bandwidth },
+      handleSubmit,
+      submitting,
+      submitFailed,
+      t,
+      invalid,
+    } = this.props;
+    return (
+      <form className="form-horizontal" onSubmit={handleSubmit}>
+        <div className="modal-body">
+          <div className={submitFailed && name.error ? 'form-group has-error' : 'form-group'}>
+            <label className="control-label" >{t('name')}</label>
+            <div className="col-sm-10">
+              <input type="text" className="form-control" disabled {...name} />
+              {submitFailed && name.error && <div className="text-danger"><small>{name.error}</small></div>}
+            </div>
+          </div>
+          <div className={submitFailed && bandwidth.error ? 'form-group has-error' : 'form-group'}>
+            <label className="control-label" >{t('bandwidth')}</label>
+            <div className="col-sm-10">
+              <input type="text" className="form-control" {...bandwidth} />
+              {submitFailed && bandwidth.error && <div className="text-danger"><small>{bandwidth.error}</small></div>}
+            </div>
+          </div>
+        </div>
+        <div className="modal-footer">
+          <button type="button" className="btn btn-default" data-dismiss="modal">{t('closeModal')}</button>
+          <button type="submit" className="btn btn-save" disabled={submitting || invalid}>
+            {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('submit')}
+          </button>
+        </div>
+      </form>
+    );
+  }
+}
+
+
+BandwidthUpdateForm.propTypes = {
+  fields: React.PropTypes.object.isRequired,
+  error: React.PropTypes.string,
+  invalid: React.PropTypes.bool,
+  handleSubmit: React.PropTypes.func.isRequired,
+  submitting: React.PropTypes.bool.isRequired,
+  submitFailed: React.PropTypes.bool.isRequired,
+  initializeForm: React.PropTypes.func.isRequired,
+  eip: React.PropTypes.object.isRequired,
+  t: React.PropTypes.any,
+};
+
+BandwidthUpdateForm.validate = (values) => {
+  const errors = {};
+  errors.bandwidth = Validations.integer(values.bandwidth);
+  return errors;
+};
+
+BandwidthUpdateForm = reduxForm({
+  form: 'BandwidthUpdateForm',
+  fields: ['name', 'bandwidth'],
+  validate: BandwidthUpdateForm.validate,
+})(translate()(BandwidthUpdateForm));
+
 class C extends Page {
 
   constructor(props) {
@@ -133,6 +203,8 @@ class C extends Page {
     this.onAssociate = this.onAssociate.bind(this);
     this.associateEip = this.associateEip.bind(this);
     this.dissociateEip = this.dissociateEip.bind(this);
+    this.updateBandwidth = this.updateBandwidth.bind(this);
+    this.onUpdateBandwidth = this.onUpdateBandwidth.bind(this);
     this.deleteEip = this.deleteEip.bind(this);
   }
 
@@ -187,19 +259,25 @@ class C extends Page {
   }
 
   onAssociate(values) {
-    const { dispatch, region, routerKey } = this.props;
+    const { t, dispatch, region, routerKey } = this.props;
     const eip = this.props.context.eip || this.eip;
 
     return new Promise((resolve, reject) => {
       const instanceId = values.instanceId;
 
       dispatch(EipActions.requestAssociateEip(routerKey, region.regionId, eip.eipId, instanceId))
-      .then(() => {
-        resolve();
-        this.refs.associateModal.hide();
-      }).catch(() => {
-        reject();
-      });
+        .then(() => {
+          resolve();
+          this.refs.associateModal.hide();
+        }).catch((error) => {
+          this.refs.associateModal.hide();
+          if (error.retCode === 4701) {
+            dispatch(Actions.notifyAlert(t('errorMsg.4701')));
+          } else {
+            dispatch(Actions.notifyAlert(error.message));
+          }
+          reject();
+        });
     });
   }
 
@@ -247,6 +325,29 @@ class C extends Page {
     confirmModal(t('confirmDelete'), () => {
       dispatch(EipActions.requestReleaseEips(routerKey, region.regionId, [params.eipId]));
     });
+  }
+
+  onUpdateBandwidth(values) {
+    const { dispatch, region, routerKey } = this.props;
+    const eip = this.props.context.eip;
+
+    return new Promise((resolve, reject) => {
+      const bandwidth = Number(values.bandwidth);
+
+      dispatch(EipActions.requestUpdateBandwidth(routerKey, region.regionId, [eip.eipId], bandwidth))
+        .then(() => {
+          resolve();
+          this.refs.bandwidthUpdateModal.hide();
+        }).catch(() => {
+          reject();
+        });
+    });
+  }
+
+  updateBandwidth(e) {
+    e.preventDefault();
+
+    this.refs.bandwidthUpdateModal.show();
   }
 
   renderAssociateModal() {
@@ -324,6 +425,15 @@ class C extends Page {
                         <li>
                           <button
                             className="btn-page-action"
+                            disabled={eip.status !== 'active'}
+                            onClick={this.updateBandwidth}
+                          >
+                            {t('pageEip.updateBandwidth')}
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            className="btn-page-action"
                             disabled={['active', 'error'].indexOf(eip.status) === -1}
                             onClick={this.deleteEip}
                           >
@@ -384,6 +494,9 @@ class C extends Page {
         </div>
         <Modal title={t('pageEip.updateEip')} ref="updateModal" >
           <EipUpdateForm onSubmit={this.onUpdate} initialValues={eip} />
+        </Modal>
+        <Modal title={t('pageEip.updateBandwidth')} ref="bandwidthUpdateModal" >
+          <BandwidthUpdateForm onSubmit={this.onUpdateBandwidth} eip={eip} />
         </Modal>
         {this.props.context.availableInstances && this.props.context.availableInstances.length && this.renderAssociateModal()}
       </div>

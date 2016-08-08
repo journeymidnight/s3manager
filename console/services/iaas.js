@@ -81,6 +81,12 @@ class IaaS {
       eipIds,
     });
   }
+  updateBandwidth(regionId, eipIds, bandwidth) {
+    return this.call(regionId, 'UpdateBandwidth', {
+      eipIds,
+      bandwidth,
+    });
+  }
   modifyEipAttributes(regionId, eipId, name, description) {
     return this.call(regionId, 'ModifyEipAttributes', {
       eipId,

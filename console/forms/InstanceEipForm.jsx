@@ -15,23 +15,19 @@ class InstanceEipForm extends React.Component {
   componentDidMount() {
     const { region } = this.props;
 
-    const initialValues = {};
-    if (this.props.instance.eipId) {
-      initialValues.eipId = this.props.instance.eipId;
-    }
-
-    this.props.initializeForm(initialValues);
-
     IaaS
-    .describeEips(region.regionId, {
-      status: ['active'],
-      limit: 100,
-    })
-    .promise
-    .then((payload) => {
-      this.eipSet = payload.eipSet;
-      this.setState({ initialized: true });
-    });
+      .describeEips(region.regionId, {
+        status: ['active'],
+        limit: 100,
+      })
+      .promise
+      .then((payload) => {
+        this.eipSet = payload.eipSet;
+        if (this.eipSet.length) {
+          this.props.initializeForm({ eipId: this.eipSet[0].eipId });
+        }
+        this.setState({ initialized: true });
+      });
   }
 
   render() {

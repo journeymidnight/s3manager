@@ -23,7 +23,7 @@ class C extends TablePage {
     dispatch(Actions.setHeader(t('volumeManage'), `${servicePath}/volumes`));
 
     this.initTable({
-      status: ['active', 'inuse'],
+      status: ['pending', 'active', 'attaching', 'inuse', 'backup_ing', 'backup_restoring', 'deleted', 'ceased', 'error'],
     });
   }
 
@@ -130,7 +130,7 @@ class C extends TablePage {
     const statusOption = [
       {
         status: ['pending', 'active', 'attaching', 'inuse', 'backup_ing', 'backup_restoring', 'deleted', 'ceased', 'error'],
-        name: t('allAvaliableStatus'),
+        name: t('allStatus'),
       }, {
         status: ['active'],
         name: t('volumeStatus.active'),
@@ -138,11 +138,11 @@ class C extends TablePage {
         status: ['inuse'],
         name: t('volumeStatus.inuse'),
       }, {
-        status: ['deleted', 'ceased'],
-        name: t('volumeStatus.deleted'),
-      }, {
         status: ['error'],
         name: t('volumeStatus.error'),
+      }, {
+        status: ['deleted', 'ceased'],
+        name: t('volumeStatus.deleted'),
       }];
     return (
       <div className="gray-content-block second-block">

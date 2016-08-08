@@ -22,7 +22,7 @@ class C extends TablePage {
     const { t, dispatch, servicePath } = this.props;
     dispatch(Actions.setHeader(t('volumeSnapshotManage'), `${servicePath}/images_snapshots/volume_snapshots`));
 
-    this.initTable({ isTabPage: true });
+    this.initTable({ isTabPage: true, status: ['pending', 'active', 'deleted', 'ceased', 'error'] });
   }
 
   refreshAction(routerKey, filters) {
@@ -109,19 +109,16 @@ class C extends TablePage {
     const statusOption = [
       {
         status: ['pending', 'active', 'deleted', 'ceased', 'error'],
-        name: t('allAvaliableStatus'),
-      }, {
-        status: ['pending'],
-        name: t('volumeSnapshotsStatus.pending'),
+        name: t('allStatus'),
       }, {
         status: ['active'],
         name: t('volumeSnapshotsStatus.active'),
       }, {
-        status: ['deleted', 'ceased'],
-        name: t('volumeSnapshotsStatus.deleted'),
-      }, {
         status: ['error'],
         name: t('volumeSnapshotsStatus.error'),
+      }, {
+        status: ['deleted', 'ceased'],
+        name: t('volumeSnapshotsStatus.deleted'),
       }];
     return (
       <div className="gray-content-block second-block">

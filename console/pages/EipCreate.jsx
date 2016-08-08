@@ -21,10 +21,12 @@ class C extends Page {
     return new Promise((resolve, reject) => {
       const name = values.name;
       const count = Number(values.count);
+      const bandwidth = Number(values.bandwidth);
 
       dispatch(EipActions.requestCreateEip(routerKey, region.regionId, {
         name,
         count,
+        bandwidth,
       }))
         .then(() => {
           resolve();

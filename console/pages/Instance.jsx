@@ -4,6 +4,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
+import { push } from 'react-router-redux';
 import Page, { attach } from '../../shared/pages/Page';
 import Modal, { alertModal, confirmModal } from '../../shared/components/Modal';
 import InstanceResetForm from '../forms/InstanceResetForm';
@@ -140,13 +141,8 @@ class C extends Page {
   stopInstance(e) {
     e.preventDefault();
 
-    const { t, dispatch, region, routerKey, params } = this.props;
-    const instance = this.props.context.instance;
+    const { dispatch, region, routerKey, params } = this.props;
 
-    if (instance.status !== 'active') {
-      alertModal(t('promptOperationCheck.promptPrefix1') + t('pageInstance.stopInstance'));
-      return;
-    }
     dispatch(InstanceActions.requestStopInstances(routerKey, region.regionId, [params.instanceId]));
   }
 
@@ -257,7 +253,7 @@ class C extends Page {
   }
 
   onCaptureInstance(values) {
-    const { dispatch, region, routerKey, params } = this.props;
+    const { t, dispatch, region, routerKey, params, servicePath } = this.props;
 
     return new Promise((resolve, reject) => {
       const name = values.name;
@@ -266,6 +262,10 @@ class C extends Page {
       .then(() => {
         resolve();
         this.refs.captureModal.hide();
+        setTimeout(() => {
+          dispatch(push(`${servicePath}/images_snapshots/private_images`));
+          dispatch(Actions.notify(t('createSuccessed')));
+        }, 200);
       }).catch(() => {
         reject();
       });
@@ -320,12 +320,15 @@ class C extends Page {
 
     const volumeId = values.volumeId;
     const instanceId = this.props.context.instance.instanceId;
-
-    dispatch(VolumeActions.requestAttachVolume(routerKey, region.regionId, volumeId, instanceId))
-      .then(() => {
-        this.refs.attachVolumeModal.hide();
-      }).catch(() => {
-      });
+    return new Promise((resolve, reject) => {
+      dispatch(VolumeActions.requestAttachVolume(routerKey, region.regionId, volumeId, instanceId))
+        .then(() => {
+          this.refs.attachVolumeModal.hide();
+          resolve();
+        }).catch(() => {
+          reject();
+        });
+    });
   }
 
   renderAttachVolumeModal() {
@@ -590,6 +593,15 @@ class C extends Page {
                               </Link>
                             </div>);
                           })}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>{t('network')}</td>
+                        <td>
+                          {instance.networkId && <Link to={`${servicePath}/networks/${instance.networkId}`}>
+                            {instance.networkId}
+                          </Link>}
+                          {!instance.networkId && <i className="text-muted">{t('noName')}</i>}
                         </td>
                       </tr>
                       <tr>

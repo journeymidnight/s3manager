@@ -9,13 +9,14 @@ class F extends React.Component {
     const initialValues = {
       name: '',
       count: 1,
+      bandwidth: 1,
     };
     this.props.initializeForm(initialValues);
   }
 
   render() {
     const { fields:
-      { name, count },
+      { name, count, bandwidth },
       handleSubmit,
       submitting,
       submitFailed,
@@ -30,6 +31,15 @@ class F extends React.Component {
           <div className="col-sm-10">
             <input type="text" className="form-control" {...name} />
             {submitFailed && name.error && <div className="text-danger"><small>{name.error}</small></div>}
+          </div>
+        </div>
+
+        <div className={submitFailed && bandwidth.error ? 'form-group has-error' : 'form-group'}>
+          <label className="control-label" >{t('bandwidth')}</label>
+          <div className="col-sm-10">
+            <input type="text" className="form-control" {...bandwidth} />
+            {submitFailed && bandwidth.error && <div className="text-danger"><small>{bandwidth.error}</small></div>}
+            <p className="help-block">{t('pageEipCreate.bandwidthHint')}</p>
           </div>
         </div>
 
@@ -70,11 +80,12 @@ F.validate = values => {
   const errors = {};
   errors.name = Validations.required(values.name);
   errors.count = Validations.integer(values.count);
+  errors.bandwidth = Validations.integer(values.bandwidth);
   return errors;
 };
 
 export default reduxForm({
   form: 'EipForm',
-  fields: ['name', 'count'],
+  fields: ['name', 'count', 'bandwidth'],
   validate: F.validate,
 })(translate()(F));

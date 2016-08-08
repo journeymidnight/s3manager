@@ -33,7 +33,7 @@ class C extends Page {
           setTimeout(() => {
             dispatch(push(`${servicePath}/key_pairs`));
             dispatch(notify(t('createSuccessed')));
-          }, 1000);
+          }, 200);
         }).catch((error) => {
           dispatch(notifyAlert(error.message));
           reject({ _error: error.message });
