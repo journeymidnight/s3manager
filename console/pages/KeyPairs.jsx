@@ -80,7 +80,7 @@ class C extends TablePage {
                   <i className="icon"></i>
                   {t(`keyPairStatus.${keyPair.status}`)}
                 </td>
-                <td className="light"><Time value={keyPair.created} format="YYYY-MM-DD HH:mm:ss" /></td>
+                <td><Time value={keyPair.created} format="YYYY-MM-DD HH:mm:ss" /></td>
               </tr>
             );
           })}
