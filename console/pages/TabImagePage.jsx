@@ -12,12 +12,14 @@ class C extends TablePage {
     const { t, dispatch, servicePath } = this.props;
     dispatch(Actions.setHeader(t('publicImageManage'), `${servicePath}/images_snapshots/public_images`));
 
-    this.initTable(routerKey, { isTabPage: true, status: ['pending', 'active', 'deleted', 'ceased'] });
+    this.initTable(routerKey, {
+      isTabPage: true,
+      status: ['pending', 'active'],
+    });
   }
 
   // need inherit
   isPublicImage() {
-
   }
 
   refreshAction(routerKey, filters) {
@@ -73,8 +75,8 @@ class C extends TablePage {
     const { t } = this.props;
     const statusOption = [
       {
-        status: ['pending', 'active', 'deleted', 'ceased'],
-        name: t('allStatus'),
+        status: ['pending', 'active'],
+        name: t('allAvaliableStatus'),
       }, {
         status: ['active'],
         name: t('imageStatus.active'),

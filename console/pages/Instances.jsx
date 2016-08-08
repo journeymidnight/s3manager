@@ -179,8 +179,8 @@ class C extends TablePage {
                 <div className="dropdown-content">
                   <ul>
                   {[{
-                    status: ['pending', 'active', 'starting', 'stopped', 'stopping', 'restarting', 'scheduling', 'error'],
-                    name: t('allStatus'),
+                    status: ['pending', 'active', 'starting', 'stopped', 'stopping', 'restarting', 'scheduling'],
+                    name: t('allAvaliableStatus'),
                   }, {
                     status: ['active'],
                     name: t('instanceStatus.active'),

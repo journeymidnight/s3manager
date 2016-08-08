@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router';
 import Time from 'react-time';
 import _ from 'lodash';
 import ButtonForm from '../../shared/forms/ButtonForm';
@@ -22,7 +21,10 @@ class C extends TablePage {
     const { t, dispatch, servicePath } = this.props;
     dispatch(Actions.setHeader(t('volumeSnapshotManage'), `${servicePath}/images_snapshots/volume_snapshots`));
 
-    this.initTable(routerKey, { isTabPage: true, status: ['pending', 'active', 'deleted', 'ceased', 'error'] });
+    this.initTable(routerKey, {
+      isTabPage: true,
+      status: ['pending', 'active', 'error'],
+    });
   }
 
   refreshAction(routerKey, filters) {
@@ -46,7 +48,7 @@ class C extends TablePage {
   }
 
   renderTable() {
-    const { t, servicePath } = this.props;
+    const { t } = this.props;
     return this.props.context.total > 0 && this.props.context.snapshotSet.length > 0 && (
       <table className="table">
         <thead>
@@ -69,9 +71,7 @@ class C extends TablePage {
                   <input type="checkbox" className="selected" onChange={this.onSelect(snapshot.snapshotId)} checked={this.props.context.selected[snapshot.snapshotId] === true} />
                 </td>
                 <td>
-                  <Link to={`${servicePath}/snapshots/${snapshot.snapshotId}`}>
-                    {snapshot.snapshotId}
-                  </Link>
+                  {snapshot.snapshotId}
                 </td>
                 <td>
                   {snapshot.name && <strong>{snapshot.name}</strong>}
@@ -108,8 +108,8 @@ class C extends TablePage {
     const { t } = this.props;
     const statusOption = [
       {
-        status: ['pending', 'active', 'deleted', 'ceased', 'error'],
-        name: t('allStatus'),
+        status: ['pending', 'active'],
+        name: t('allAvaliableStatus'),
       }, {
         status: ['active'],
         name: t('volumeSnapshotsStatus.active'),
