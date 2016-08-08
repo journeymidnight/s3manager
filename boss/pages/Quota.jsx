@@ -5,7 +5,7 @@ import * as ServiceActions from '../redux/actions.service';
 
 class C extends Page {
 
-  componentDidMount() {
+  initialize() {
     const { params, dispatch } = this.props;
 
     this.serviceId = params.serviceId;

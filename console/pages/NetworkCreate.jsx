@@ -12,7 +12,7 @@ class C extends Page {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  componentDidMount() {
+  initialize() {
     const { t, dispatch, servicePath } = this.props;
     dispatch(Actions.setHeader(t('networkManage'), `${servicePath}/networks`));
   }

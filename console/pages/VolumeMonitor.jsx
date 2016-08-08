@@ -42,7 +42,7 @@ class C extends Page {
     this.refresh = this.refresh.bind(this);
   }
 
-  componentDidMount() {
+  initialize() {
     const { t, dispatch, servicePath } = this.props;
     dispatch(Actions.setHeader(t('volumeManage'), `${servicePath}/volumes`));
 

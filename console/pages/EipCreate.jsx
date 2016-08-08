@@ -12,7 +12,7 @@ class C extends Page {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  componentDidMount() {
+  initialize() {
   }
 
   onSubmit(values) {

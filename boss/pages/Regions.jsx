@@ -16,11 +16,11 @@ class C extends TablePage {
     this.onDelete = this.onDelete.bind(this);
   }
 
-  componentDidMount() {
+  initialize(routerKey) {
     const { t, dispatch } = this.props;
     dispatch(Actions.setHeader(t('regionManage'), '/regions'));
 
-    this.initTable();
+    this.initTable(routerKey);
   }
 
   refreshAction(routerKey, filters) {

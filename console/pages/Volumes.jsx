@@ -18,11 +18,11 @@ class C extends TablePage {
     this.onDelete = this.onDelete.bind(this);
   }
 
-  componentDidMount() {
+  initialize(routerKey) {
     const { t, dispatch, servicePath } = this.props;
     dispatch(Actions.setHeader(t('volumeManage'), `${servicePath}/volumes`));
 
-    this.initTable({
+    this.initTable(routerKey, {
       status: ['pending', 'active', 'attaching', 'inuse', 'backup_ing', 'backup_restoring', 'deleted', 'ceased', 'error'],
     });
   }

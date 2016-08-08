@@ -4,7 +4,7 @@ import { translate } from 'react-i18next';
 
 class C extends React.Component {
 
-  componentDidMount() {
+  initialize() {
   }
 
   render() {

@@ -5,8 +5,8 @@ import * as QuotaActions from '../redux/actions.quota';
 
 class C extends Page {
 
-  componentDidMount() {
-    const { t, routerKey, dispatch, region, servicePath } = this.props;
+  initialize(routerKey) {
+    const { t, dispatch, region, servicePath } = this.props;
 
     dispatch(Actions.setHeader(t('usageManage'), `${servicePath}/overview`));
     dispatch(QuotaActions.requestDescribeQuotas(region.regionId))

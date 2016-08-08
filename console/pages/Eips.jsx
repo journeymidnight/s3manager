@@ -18,11 +18,11 @@ class C extends TablePage {
     this.onDelete = this.onDelete.bind(this);
   }
 
-  componentDidMount() {
+  initialize(routerKey) {
     const { t, dispatch, servicePath } = this.props;
     dispatch(Actions.setHeader(t('eipManage'), `${servicePath}/eips`));
 
-    this.initTable({
+    this.initTable(routerKey, {
       status: ['active', 'associated', 'ceased', 'deleted'],
     });
   }

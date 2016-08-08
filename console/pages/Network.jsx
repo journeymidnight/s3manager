@@ -82,7 +82,7 @@ class C extends Page {
     this.unsetExternalGateway = this.unsetExternalGateway.bind(this);
   }
 
-  componentDidMount() {
+  initialize() {
     const { t, dispatch, servicePath } = this.props;
     dispatch(Actions.setHeader(t('networkManage'), `${servicePath}/networks`));
 

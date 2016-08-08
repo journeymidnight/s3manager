@@ -5,7 +5,7 @@ import * as ServiceActions from '../../redux/actions.service';
 
 class C extends Page {
 
-  componentDidMount() {
+  initialize() {
     const { t, dispatch } = this.props;
     dispatch(Actions.setHeader(t('serviceManage'), '/services'));
   }

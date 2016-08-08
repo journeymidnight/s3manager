@@ -103,7 +103,7 @@ class C extends Page {
     this.attachVolume = this.attachVolume.bind(this);
   }
 
-  componentDidMount() {
+  initialize() {
     const { t, dispatch, servicePath } = this.props;
     dispatch(Actions.setHeader(t('instanceManage'), `${servicePath}/instances`));
 

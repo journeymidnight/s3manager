@@ -20,11 +20,11 @@ class C extends TablePage {
     this.showCreatePanel = this.showCreatePanel.bind(this);
   }
 
-  componentDidMount() {
+  initialize(routerKey) {
     const { t, dispatch, servicePath } = this.props;
     dispatch(Actions.setHeader(t('networkManage'), `${servicePath}/networks`));
 
-    this.initTable({
+    this.initTable(routerKey, {
       status: ['active'],
       isTabPage: true,
     });

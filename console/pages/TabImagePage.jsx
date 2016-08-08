@@ -8,11 +8,11 @@ import * as ImageActions from '../redux/actions.image';
 
 class C extends TablePage {
 
-  componentDidMount() {
+  initialize(routerKey) {
     const { t, dispatch, servicePath } = this.props;
     dispatch(Actions.setHeader(t('publicImageManage'), `${servicePath}/images_snapshots/public_images`));
 
-    this.initTable({ isTabPage: true, status: ['pending', 'active', 'deleted', 'ceased'] });
+    this.initTable(routerKey, { isTabPage: true, status: ['pending', 'active', 'deleted', 'ceased'] });
   }
 
   // need inherit
