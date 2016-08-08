@@ -22,7 +22,7 @@ class C extends TablePage {
     const { t, dispatch, servicePath } = this.props;
     dispatch(Actions.setHeader(t('volumeSnapshotManage'), `${servicePath}/images_snapshots/volume_snapshots`));
 
-    this.initTable({ isTabPage: true, status: ['pending', 'active', 'deleted', 'ceased', 'error'] });
+    this.initTable({ isTabPage: true, status: ['pending', 'active'] });
   }
 
   refreshAction(routerKey, filters) {
@@ -108,8 +108,8 @@ class C extends TablePage {
     const { t } = this.props;
     const statusOption = [
       {
-        status: ['pending', 'active', 'deleted', 'ceased', 'error'],
-        name: t('allStatus'),
+        status: ['pending', 'active'],
+        name: t('allAvaliableStatus'),
       }, {
         status: ['active'],
         name: t('volumeSnapshotsStatus.active'),

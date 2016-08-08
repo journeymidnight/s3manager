@@ -29,7 +29,7 @@ class C extends TablePage {
     dispatch(Actions.setHeader(t('instanceManage'), `${servicePath}/instances`));
 
     this.initTable({
-      status: ['pending', 'active', 'starting', 'stopped', 'stopping', 'restarting', 'scheduling', 'error'],
+      status: ['pending', 'active', 'starting', 'stopped', 'stopping', 'restarting', 'scheduling'],
     });
   }
 
@@ -179,8 +179,8 @@ class C extends TablePage {
                 <div className="dropdown-content">
                   <ul>
                   {[{
-                    status: ['pending', 'active', 'starting', 'stopped', 'stopping', 'restarting', 'scheduling', 'error'],
-                    name: t('allStatus'),
+                    status: ['pending', 'active', 'starting', 'stopped', 'stopping', 'restarting', 'scheduling'],
+                    name: t('allAvaliableStatus'),
                   }, {
                     status: ['active'],
                     name: t('instanceStatus.active'),
