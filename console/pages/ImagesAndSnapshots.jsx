@@ -8,6 +8,16 @@ class C extends Page {
   componentDidMount() {
   }
 
+  shouldComponentUpdate(nextProps) {
+    let shouleUpdate = false;
+
+    if (nextProps.routerKey !== this.props.routerKey && _.keys(nextProps.context).length === 0) {
+      shouleUpdate = true;
+    }
+
+    return shouleUpdate;
+  }
+
   render() {
     const { t, servicePath } = this.props;
 
