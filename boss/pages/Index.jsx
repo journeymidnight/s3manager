@@ -4,7 +4,7 @@ import Page, { attach } from '../../shared/pages/Page';
 
 class C extends Page {
 
-  componentDidMount() {
+  initialize() {
     const { dispatch } = this.props;
     dispatch(push('/regions'));
   }

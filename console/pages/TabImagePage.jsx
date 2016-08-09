@@ -8,16 +8,18 @@ import * as ImageActions from '../redux/actions.image';
 
 class C extends TablePage {
 
-  componentDidMount() {
+  initialize(routerKey) {
     const { t, dispatch, servicePath } = this.props;
     dispatch(Actions.setHeader(t('publicImageManage'), `${servicePath}/images_snapshots/public_images`));
 
-    this.initTable({ isTabPage: true, status: ['pending', 'active'] });
+    this.initTable(routerKey, {
+      isTabPage: true,
+      status: ['pending', 'active'],
+    });
   }
 
   // need inherit
   isPublicImage() {
-
   }
 
   refreshAction(routerKey, filters) {

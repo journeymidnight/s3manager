@@ -18,7 +18,7 @@ window.inflator = inflator;
 
 class C extends Page {
 
-  componentDidMount() {
+  initialize() {
     const $ = require('jquery');
 
     // Load supporting scripts

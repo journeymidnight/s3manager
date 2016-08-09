@@ -12,7 +12,7 @@ class C extends Page {
     this.onSave = this.onSave.bind(this);
   }
 
-  componentDidMount() {
+  initialize() {
     const { t, dispatch } = this.props;
     dispatch(Actions.setHeader(t('serviceManage'), '/services'));
   }

@@ -17,11 +17,11 @@ class C extends TablePage {
     this.onDelete = this.onDelete.bind(this);
   }
 
-  componentDidMount() {
+  initialize(routerKey) {
     const { t, dispatch, servicePath } = this.props;
     dispatch(Actions.setHeader(t('keyPairManage'), `${servicePath}/key_pairs`));
 
-    this.initTable({
+    this.initTable(routerKey, {
       status: ['active'],
     });
   }

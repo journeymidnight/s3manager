@@ -13,8 +13,8 @@ class C extends Page {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  componentDidMount() {
-    const { t, dispatch, region, servicePath, routerKey } = this.props;
+  initialize(routerKey) {
+    const { t, dispatch, region, servicePath } = this.props;
 
     dispatch(Actions.setHeader(t('instanceManage'), `${servicePath}/instances`));
     dispatch(InstanceActions.requestDescribePrerequisites(routerKey, region.regionId)).

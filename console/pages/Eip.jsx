@@ -208,7 +208,7 @@ class C extends Page {
     this.deleteEip = this.deleteEip.bind(this);
   }
 
-  componentDidMount() {
+  initialize() {
     const { t, dispatch, servicePath } = this.props;
     dispatch(Actions.setHeader(t('eipManage'), `${servicePath}/eips`));
 

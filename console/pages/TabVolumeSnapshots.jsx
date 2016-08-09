@@ -17,11 +17,14 @@ class C extends TablePage {
     this.onDelete = this.onDelete.bind(this);
   }
 
-  componentDidMount() {
+  initialize(routerKey) {
     const { t, dispatch, servicePath } = this.props;
     dispatch(Actions.setHeader(t('volumeSnapshotManage'), `${servicePath}/images_snapshots/volume_snapshots`));
 
-    this.initTable({ isTabPage: true, status: ['pending', 'active'] });
+    this.initTable(routerKey, {
+      isTabPage: true,
+      status: ['pending', 'active', 'error'],
+    });
   }
 
   refreshAction(routerKey, filters) {

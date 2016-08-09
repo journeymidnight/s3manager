@@ -3,7 +3,6 @@ import React from 'react';
 import { Link } from 'react-router';
 import { push } from 'react-router-redux';
 import Page, { attach } from '../../../shared/pages/Page';
-import * as Actions from '../../redux/actions';
 import * as RegionActions from '../../redux/actions.region';
 
 class C extends Page {
@@ -17,15 +16,9 @@ class C extends Page {
     };
   }
 
-  componentDidMount() {
-    const { t, dispatch } = this.props;
-    dispatch(Actions.setHeader(t('regionManage'), '/regions'));
-
+  initialize() {
+    const { dispatch } = this.props;
     dispatch(RegionActions.requestDescribeRegions());
-  }
-
-  componentWillMount() {
-    this.checkRegion(this.props);
   }
 
   componentDidUpdate() {

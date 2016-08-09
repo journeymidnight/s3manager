@@ -13,7 +13,7 @@ class C extends Page {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  componentDidMount() {
+  initialize() {
     const { dispatch, region, routerKey } = this.props;
     dispatch(SnapshotActions.requestDescribeSnapshots(routerKey, region.regionId, { status: ['active'] }));
   }

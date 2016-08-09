@@ -7,7 +7,7 @@ import * as ProjectActions from '../redux/actions.project';
 
 class C extends Page {
 
-  componentDidMount() {
+  initialize() {
     const { t, dispatch } = this.props;
     dispatch(Actions.setHeader(t('projectManage'), '/projects'));
   }

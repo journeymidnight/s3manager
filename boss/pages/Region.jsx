@@ -7,7 +7,7 @@ import * as RegionActions from '../redux/actions.region';
 
 class C extends Page {
 
-  componentDidMount() {
+  initialize() {
     const { t, dispatch } = this.props;
     dispatch(Actions.setHeader(t('regionManage'), '/regions'));
   }

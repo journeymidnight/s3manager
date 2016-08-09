@@ -19,11 +19,11 @@ class C extends TablePage {
   }
 
 
-  componentDidMount() {
+  initialize(routerKey) {
     const { t, dispatch } = this.props;
     dispatch(Actions.setHeader(t('ticketManage'), '/tickets'));
 
-    this.initTable({
+    this.initTable(routerKey, {
       status: ['pending', 'in-progress'],
     });
   }

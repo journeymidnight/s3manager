@@ -17,7 +17,7 @@ class C extends Page {
     this.closeTicket = this.closeTicket.bind(this);
   }
 
-  componentDidMount() {
+  initialize() {
     const { t, dispatch } = this.props;
     dispatch(Actions.setHeader(t('ticketManage'), '/tickets'));
 

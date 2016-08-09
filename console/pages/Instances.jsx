@@ -24,12 +24,12 @@ class C extends TablePage {
     this.onSearchKeyPress = this.onSearchKeyPress.bind(this);
   }
 
-  componentDidMount() {
+  initialize(routerKey) {
     const { t, dispatch, servicePath } = this.props;
     dispatch(Actions.setHeader(t('instanceManage'), `${servicePath}/instances`));
 
-    this.initTable({
-      status: ['pending', 'active', 'starting', 'stopped', 'stopping', 'restarting', 'scheduling'],
+    this.initTable(routerKey, {
+      status: ['pending', 'active', 'starting', 'stopped', 'stopping', 'restarting', 'scheduling', 'error'],
     });
   }
 

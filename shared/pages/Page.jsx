@@ -13,6 +13,7 @@ class C extends React.Component {
   }
 
   componentWillMount() {
+    this.initialize(this.props.routerKey, false);
   }
 
   componentDidMount() {
@@ -21,12 +22,16 @@ class C extends React.Component {
   shouldComponentUpdate(nextProps, nextState) {
     let shouleUpdate = true;
     if (nextProps.routerKey !== this.props.routerKey && _.keys(nextProps.context).length === 0) {
-      this.componentWillUnmount();
+      this.timers.forEach((timer) => {
+        clearInterval(timer);
+      });
+      this.initialize(nextProps.routerKey, true);
 
-      setTimeout(() => {
-        this.componentWillMount();
-        this.componentDidMount();
-      }, 100);
+      /*
+      this.componentWillUnmount();
+      this.componentWillMount();
+      this.componentDidMount();
+      */
 
       shouleUpdate = false;
     } else {
@@ -53,6 +58,10 @@ class C extends React.Component {
     }, interval);
 
     this.timers.push(timer);
+  }
+
+  initialize(routerKey, reInit = false) {
+    return reInit;
   }
 
   renderAfterInitialized() {

@@ -107,11 +107,11 @@ class C extends TablePage {
     this.onDelete = this.onDelete.bind(this);
   }
 
-  componentDidMount() {
+  initialize(routerKey) {
     const { t, dispatch } = this.props;
     dispatch(Actions.setHeader(t('projectManage'), '/projects'));
 
-    this.initTable({ isTabPage: true });
+    this.initTable(routerKey, { isTabPage: true });
   }
 
   onCreateRole(values) {

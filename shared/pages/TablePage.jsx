@@ -20,8 +20,12 @@ class C extends Page {
   refreshAction() {
   }
 
-  initTable(options) {
-    const { dispatch, routerKey } = this.props;
+  initialize(routerKey, reInit = false) {
+    return reInit;
+  }
+
+  initTable(routerKey, options) {
+    const { dispatch } = this.props;
 
     const context = {
       status: ['pending', 'active'],

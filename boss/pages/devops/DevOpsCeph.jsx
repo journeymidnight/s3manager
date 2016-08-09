@@ -10,7 +10,7 @@ import * as DevOpsActions from '../../redux/actions.devops';
 
 class C extends DevOpsMonitor {
 
-  componentWillMount() {
+  initialize() {
     const { t, dispatch } = this.props;
     dispatch(Actions.setHeader(t('boss.monitor.ceph'), '/devops/ceph'));
   }

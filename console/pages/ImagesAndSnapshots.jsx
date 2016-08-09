@@ -5,7 +5,7 @@ import Page, { attach } from '../../shared/pages/Page';
 
 class C extends Page {
 
-  componentDidMount() {
+  initialize() {
   }
 
   shouldComponentUpdate(nextProps) {

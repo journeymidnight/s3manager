@@ -76,13 +76,13 @@ class C extends Page {
     this.onUpdate = this.onUpdate.bind(this);
   }
 
-  componentDidMount() {
+  initialize() {
     const { t, dispatch, servicePath } = this.props;
     dispatch(Actions.setHeader(t('keyPairManage'), `${servicePath}/key_pairs`));
+
     this.setInterval(() => {
       this.refresh();
     }, 2000);
-    this.refresh();
   }
 
   refresh() {

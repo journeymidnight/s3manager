@@ -131,11 +131,11 @@ class C extends TablePage {
     };
   }
 
-  componentDidMount() {
+  initialize(routerKey) {
     const { t, dispatch } = this.props;
     dispatch(Actions.setHeader(t('serviceManage'), '/services'));
 
-    this.initTable({ status: ['active'], isTabPage: true });
+    this.initTable(routerKey, { status: ['active'], isTabPage: true });
   }
 
   onDelete() {
