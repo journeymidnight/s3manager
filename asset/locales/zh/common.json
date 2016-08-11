@@ -171,10 +171,12 @@
     },
 
     "networkStatus": {
-        "pending": "准备中",
+        "pending": "创建中",
         "active": "运行中",
-        "deleted": "已删除",
-        "ceased": "已删除"
+        "building": "构建中",
+        "disabled": "已禁用",
+        "error": "错误",
+        "deleted": "已删除"
     },
 
     "instanceStatus": {
@@ -272,7 +274,12 @@
         "running": "运行中",
         "finished": "已完成",
         "error": "状态异常"
-    },    
+    }, 
+
+    "operationStatus": {
+        "finished": "成功",
+        "error": "失败"
+    },       
 
     "accessKeyStatus": {
         "active": "可用",

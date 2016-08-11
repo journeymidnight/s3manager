@@ -405,7 +405,7 @@ class C extends Page {
                         <li>
                           <button
                             className="btn-page-action"
-                            disabled={instance.status !== 'stopped'}
+                            disabled={['active', 'stopped'].indexOf(instance.status) === -1}
                             onClick={this.updateInstance}
                           >
                             {t('pageInstance.updateInstance')}
