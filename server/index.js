@@ -35,7 +35,7 @@ function createApp(module) {
   app.use((req, res) => {
     const html = fs.readFileSync(`${__dirname}/../index.html`).toString();
     res.set('Content-Type', 'text/html');
-    res.send(html.replace('<!-- MODULE -->', `<script src="/dist/${module}.js"></script>`));
+    res.send(html.replace('<!-- MODULE -->', `<script src="/dist/vendor.js"></script><script src="/dist/${module}.js"></script>`));
   });
 
   return app;

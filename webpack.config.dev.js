@@ -6,6 +6,36 @@ module.exports = {
   entry: {
     console: './console/index.js',
     boss: './boss/index.js',
+    vendor: [
+      'axios',
+      'bootstrap',
+      'c3',
+      'd3',
+      'history',
+      'i18next',
+      'i18next-xhr-backend',
+      'jquery',
+      'lodash',
+      'mixpanel-browser',
+      'moment',
+      'okay',
+      'promise',
+      'react',
+      'react-c3-component',
+      'react-dom',
+      'react-i18next',
+      'react-redux',
+      'react-router',
+      'react-router-redux',
+      'react-select',
+      'react-time',
+      'redux',
+      'redux-form',
+      'redux-logger',
+      'redux-thunk',
+      'store',
+      'superagent'
+    ]
   },
 
   output: {
@@ -45,6 +75,7 @@ module.exports = {
 
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
+    new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js'),
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify('development'),
