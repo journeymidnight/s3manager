@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 import Time from 'react-time';
 import _ from 'lodash';
 import ButtonForm from '../../shared/forms/ButtonForm';
@@ -48,7 +49,7 @@ class C extends TablePage {
   }
 
   renderTable() {
-    const { t } = this.props;
+    const { t, servicePath } = this.props;
     return this.props.context.total > 0 && this.props.context.snapshotSet.length > 0 && (
       <table className="table">
         <thead>
@@ -71,7 +72,9 @@ class C extends TablePage {
                   <input type="checkbox" className="selected" onChange={this.onSelect(snapshot.snapshotId)} checked={this.props.context.selected[snapshot.snapshotId] === true} />
                 </td>
                 <td>
-                  {snapshot.snapshotId}
+                  <Link to={`${servicePath}/snapshots/${snapshot.snapshotId}`}>
+                    {snapshot.snapshotId}
+                  </Link>
                 </td>
                 <td>
                   {snapshot.name && <strong>{snapshot.name}</strong>}
