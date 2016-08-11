@@ -12,33 +12,38 @@ class C extends TablePage {
     const { t, dispatch, servicePath } = this.props;
     dispatch(Actions.setHeader(t('activityManage'), `${servicePath}/activities`));
 
-    this.initTable(routerKey, { status: ['pending', 'running', 'finished', 'error'] });
+    this.initTable(routerKey, { searchWord: undefined, status: undefined });
   }
 
   refreshAction(routerKey, filters) {
     const { region } = this.props;
-    return ActivityActions.requestDescribeJobs(routerKey, region.regionId, filters);
+    return ActivityActions.requestDescribeOperations(routerKey, region.regionId, filters);
   }
 
-  getResourceUrl(resourceId) {
+  buildResourceLinks(operation) {
     const { servicePath } = this.props;
-    const mapKey = resourceId.split('-')[0];
     const map = {
-      i: 'instances',
-      net: 'networks',
-      snt: 'subnets',
-      v: 'volumes',
-      img: 'images',
+      instance: 'instances',
+      network: 'networks',
+      subnet: 'subnets',
+      portForwarding: 'portForwardings',
+      volume: 'volumes',
+      image: 'images',
       snapshot: 'snapshots',
       eip: 'eips',
-      kp: 'key_pairs',
+      keyPair: 'key_pairs',
     };
-    return `${servicePath}/${map[mapKey]}/${resourceId}`;
+    return operation.resourceIds.map((item, index) => {
+      return (<span key={index}>
+        <Link to={`${servicePath}/${map[operation.resourceType]}/${item}`}>{item}</Link>
+        {operation.resourceIds.length - 1 !== index && <span>, </span>}
+      </span>);
+    });
   }
 
   renderTable() {
     const { t } = this.props;
-    return this.props.context.total > 0 && this.props.context.jobSet.length > 0 && (
+    return this.props.context.total > 0 && this.props.context.operationSet.length > 0 && (
       <table className="table">
         <thead>
           <tr>
@@ -49,20 +54,21 @@ class C extends TablePage {
           </tr>
         </thead>
         <tbody>
-          {this.props.context.jobSet.map((job) => {
+          {this.props.context.operationSet.map((operation) => {
+            const result = operation.retCode ? 'error' : 'finished';
             return (
-              <tr key={job.jobId}>
+              <tr key={operation.operationId}>
                 <td>
-                  {t(`actionTranslation.${job.action}`)}
+                  {t(`actionTranslation.${operation.action}`)}
                 </td>
                 <td>
-                  <Link to={this.getResourceUrl(job.resourceIds[0])}>{job.resourceIds[0]}</Link>
+                  {this.buildResourceLinks(operation)}
                 </td>
-                <td className={`i-status i-status-${job.status}`}>
+                <td className={`i-status i-status-${result}`}>
                   <i className="icon"></i>
-                  {t(`jobStatus.${job.status}`)}
+                  {t(`operationStatus.${result}`)}
                 </td>
-                <td className="light"><Time value={job.created} format="YYYY-MM-DD HH:mm:ss" /></td>
+                <td className="light"><Time value={operation.created} format="YYYY-MM-DD HH:mm:ss" /></td>
               </tr>
             );
           })}
