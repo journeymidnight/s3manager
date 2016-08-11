@@ -52,3 +52,18 @@ export function requestDeleteSnapshots(routerKey, regionId, snapshotIds) {
   };
 }
 
+
+export function requestModifySnapshotAttributes(routerKey, regionId, snapshotId, name, description) {
+  return dispatch => {
+    return IaaS
+    .modifySnapshotAttributes(regionId, snapshotId, name, description)
+    .promise
+    .then(() => {
+      dispatch(notify(i18n.t('updateSuccessed')));
+      return dispatch(requestDescribeSnapshot(routerKey, regionId, snapshotId));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
