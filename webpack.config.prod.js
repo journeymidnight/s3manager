@@ -6,7 +6,39 @@ var _ = require('lodash');
 function generateConfig(module) {
   var config = _.clone(devConfig, true);
   config.devtool = undefined;
-  config.entry = './' + module + '/index.js';
+  config.entry = {
+    app: './' + module + '/index.js',
+    vendor: [
+      'axios',
+      'bootstrap',
+      'c3',
+      'd3',
+      'history',
+      'i18next',
+      'i18next-xhr-backend',
+      'jquery',
+      'lodash',
+      'mixpanel-browser',
+      'moment',
+      'okay',
+      'promise',
+      'react',
+      'react-c3-component',
+      'react-dom',
+      'react-i18next',
+      'react-redux',
+      'react-router',
+      'react-router-redux',
+      'react-select',
+      'react-time',
+      'redux',
+      'redux-form',
+      'redux-logger',
+      'redux-thunk',
+      'store',
+      'superagent'
+    ]
+  };
   config.output = {
     path: __dirname + '/dist/' + module,
     filename: '[name].[hash].js',
@@ -14,6 +46,7 @@ function generateConfig(module) {
   },
   config.plugins = [
     new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js'),
     new webpack.optimize.UglifyJsPlugin({
       compressor: {
         warnings: false,
