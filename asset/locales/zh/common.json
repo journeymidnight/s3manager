@@ -171,10 +171,12 @@
     },
 
     "networkStatus": {
-        "pending": "准备中",
+        "pending": "创建中",
         "active": "运行中",
-        "deleted": "已删除",
-        "ceased": "已删除"
+        "building": "构建中",
+        "disabled": "已禁用",
+        "error": "错误",
+        "deleted": "已删除"
     },
 
     "instanceStatus": {
