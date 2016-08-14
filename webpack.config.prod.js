@@ -46,6 +46,10 @@ function generateConfig(module) {
   },
   config.plugins = [
     new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.ProvidePlugin({
+      $: "jquery",
+      jQuery: "jquery"
+    }),
     new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js'),
     new webpack.optimize.UglifyJsPlugin({
       compressor: {
