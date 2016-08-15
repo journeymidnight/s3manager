@@ -5,24 +5,14 @@ class IaaS {
     const payload = Object.assign({}, params);
     return rawCall('post', `/api/r/${regionId}/${action}`, payload);
   }
-  describeKeyPairs(regionId, filter = {}) {
-    return this.call(regionId, 'DescribeKeyPairs', filter);
+  doAction(regionId, actionName, data) {
+    return this.call(regionId, actionName, data);
   }
-  createKeyPair(regionId, keyPair) {
-    return this.call(regionId, 'CreateKeyPair', keyPair);
-  }
-  deleteKeyPairs(regionId, keyPairIds) {
-    return this.call(regionId, 'DeleteKeyPairs', {
-      keyPairIds,
-    });
-  }
-  modifyKeyPairAttributes(regionId, keyPairId, name, description) {
-    return this.call(regionId, 'ModifyKeyPairAttributes', {
-      keyPairId,
-      name,
-      description,
-    });
-  }
+
+
+
+
+
   describeVolumes(regionId, filter = {}) {
     return this.call(regionId, 'DescribeVolumes', filter);
   }
@@ -261,4 +251,60 @@ class IaaS {
   }
 }
 
+export const ACTION_NAMES = {
+  describeKeyPairs: 'DescribeKeyPairs',
+  createKeyPair: 'CreateKeyPair',
+  deleteKeyPairs: 'DeleteKeyPairs',
+  modifyKeyPairAttributes: 'ModifyKeyPairAttributes',
+  describeVolumes: 'DescribeVolumes',
+  createVolumes: 'CreateVolumes',
+  deleteVolumes: 'DeleteVolumes',
+  modifyVolumeAttributes: 'ModifyVolumeAttributes',
+  attachVolume: 'AttachVolume',
+  detachVolumes: 'DetachVolumes',
+  resizeVolumes: 'ResizeVolumes',
+  describeEips: 'DescribeEips',
+  allocateEips: 'AllocateEips',
+  releaseEips: 'ReleaseEips',
+  associateEip: 'AssociateEip',
+  dissociateEips: 'DissociateEips',
+  updateBandwidth: 'UpdateBandwidth',
+  modifyEipAttributes: 'ModifyEipAttributes',
+  describeImages: 'DescribeImages',
+  deleteImages: 'DeleteImages',
+  modifyImageAttributes: 'ModifyImageAttributes',
+  describeNetworks: 'DescribeNetworks',
+  describeSubnets: 'DescribeSubnets',
+  createSubnet: 'CreateSubnet',
+  DeleteSubnets: 'DeleteSubnets',
+  createNetwork: 'CreateNetwork',
+  setExternalGateway: 'SetExternalGateway',
+  unsetExternalGateway: 'UnsetExternalGateway',
+  deleteNetworks: 'DeleteNetworks',
+  modifyNetworkAttributes: 'ModifyNetworkAttributes',
+  describeInstanceTypes: 'DescribeInstanceTypes',
+  describeInstances: 'DescribeInstances',
+  createInstances: 'CreateInstances',
+  modifyInstanceAttributes: 'ModifyInstanceAttributes',
+  startInstances: 'StartInstances',
+  stopInstances: 'StopInstances',
+  restartInstances: 'RestartInstances',
+  resetInstances: 'ResetInstances',
+  resizeInstances: 'ResizeInstances',
+  captureInstance: 'CaptureInstance',
+  deleteInstances: 'DeleteInstances',
+  connectVNC: 'ConnectVNC',
+  getInstanceOutput: 'GetInstanceOutput',
+  getMonitor: 'GetMonitor',
+  describeSnapshots: 'DescribeSnapshots',
+  createSnapshots: 'CreateSnapshots',
+  deleteSnapshots: 'DeleteSnapshots',
+  modifySnapshotAttributes: 'ModifySnapshotAttributes',
+  describeJobs: 'DescribeJobs',
+  describeOperations: 'DescribeOperations',
+  describeQuotas: 'DescribeQuotas',
+  describePortForwardings: 'DescribePortForwardings',
+  createPortForwarding: 'CreatePortForwarding',
+  deletePortForwardings: 'DeletePortForwardings',
+};
 export default new IaaS();

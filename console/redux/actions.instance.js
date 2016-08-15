@@ -1,5 +1,5 @@
 import { notify, notifyAlert, extendContext } from './actions';
-import IaaS from '../services/iaas';
+import IaaS, { ACTION_NAMES } from '../services/iaas';
 import i18n from '../../shared/i18n';
 
 export function requestDescribePrerequisites(routerKey, regionId) {
@@ -56,7 +56,7 @@ export function requestDescribePrerequisites(routerKey, regionId) {
       }, routerKey));
 
       return IaaS
-      .describeKeyPairs(regionId, {
+      .doAction(regionId, ACTION_NAMES.describeKeyPairs, {
         status: ['active'],
         limit: 100,
       })

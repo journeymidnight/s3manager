@@ -1,11 +1,11 @@
 import { notify, notifyAlert, extendContext } from './actions';
-import IaaS from '../services/iaas';
+import IaaS, { ACTION_NAMES } from '../services/iaas';
 import i18n from '../../shared/i18n';
 
 export function requestDescribeVolume(routerKey, regionId, volumeId) {
   return dispatch => {
     return IaaS
-    .describeVolumes(regionId, {
+    .doAction(regionId, ACTION_NAMES.describeVolumes, {
       volumeIds: [volumeId],
     })
     .promise
@@ -23,7 +23,7 @@ export function requestDescribeVolume(routerKey, regionId, volumeId) {
 export function requestDescribeVolumes(routerKey, regionId, filters) {
   return dispatch => {
     return IaaS
-      .describeVolumes(regionId, filters)
+      .doAction(regionId, ACTION_NAMES.describeVolumes, filters)
       .promise
       .then((payload) => {
         dispatch(extendContext(Object.assign(payload, {
