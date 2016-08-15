@@ -13,42 +13,6 @@ class IaaS {
 
 
 
-  describeVolumes(regionId, filter = {}) {
-    return this.call(regionId, 'DescribeVolumes', filter);
-  }
-  createVolume(regionId, volume) {
-    return this.call(regionId, 'CreateVolumes', volume);
-  }
-  deleteVolumes(regionId, volumeIds) {
-    return this.call(regionId, 'DeleteVolumes', {
-      volumeIds,
-    });
-  }
-  modifyVolumeAttributes(regionId, volumeId, name, description) {
-    return this.call(regionId, 'ModifyVolumeAttributes', {
-      volumeId,
-      name,
-      description,
-    });
-  }
-  attachVolume(regionId, volumeId, instanceId) {
-    return this.call(regionId, 'AttachVolume', {
-      volumeId,
-      instanceId,
-    });
-  }
-  detachVolumes(regionId, volumeIds, instanceId) {
-    return this.call(regionId, 'DetachVolumes', {
-      volumeIds,
-      instanceId,
-    });
-  }
-  resizeVolumes(regionId, volumeIds, size) {
-    return this.call(regionId, 'ResizeVolumes', {
-      volumeIds,
-      size,
-    });
-  }
   describeEips(regionId, filter = {}) {
     return this.call(regionId, 'DescribeEips', filter);
   }
