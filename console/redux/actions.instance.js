@@ -17,7 +17,7 @@ export function requestDescribePrerequisites(routerKey, regionId) {
       }, routerKey));
 
       return IaaS
-      .describeImages(regionId, {
+      .doAction(regionId, ACTION_NAMES.describeImages, {
         status: ['active'],
         isPublic: true,
         limit: 100,
@@ -30,7 +30,7 @@ export function requestDescribePrerequisites(routerKey, regionId) {
       }, routerKey));
 
       return IaaS
-      .describeImages(regionId, {
+      .doAction(regionId, ACTION_NAMES.describeImages, {
         status: ['active'],
         isPublic: false,
         limit: 100,

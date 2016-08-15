@@ -14,21 +14,6 @@ class IaaS {
 
 
 
-  describeImages(regionId, filter = {}) {
-    return this.call(regionId, 'DescribeImages', filter);
-  }
-  deleteImages(regionId, imageIds) {
-    return this.call(regionId, 'DeleteImages', {
-      imageIds,
-    });
-  }
-  modifyImageAttributes(regionId, imageId, name, description) {
-    return this.call(regionId, 'ModifyImageAttributes', {
-      imageId,
-      name,
-      description,
-    });
-  }
   describeNetworks(regionId, filter = {}) {
     return this.call(regionId, 'DescribeNetworks', filter);
   }
