@@ -13,41 +13,7 @@ class IaaS {
 
 
 
-  describeEips(regionId, filter = {}) {
-    return this.call(regionId, 'DescribeEips', filter);
-  }
-  allocateEips(regionId, eip) {
-    return this.call(regionId, 'AllocateEips', eip);
-  }
-  releaseEips(regionId, eipIds) {
-    return this.call(regionId, 'ReleaseEips', {
-      eipIds,
-    });
-  }
-  associateEip(regionId, eipId, instanceId) {
-    return this.call(regionId, 'AssociateEip', {
-      eipId,
-      instanceId,
-    });
-  }
-  dissociateEips(regionId, eipIds) {
-    return this.call(regionId, 'DissociateEips', {
-      eipIds,
-    });
-  }
-  updateBandwidth(regionId, eipIds, bandwidth) {
-    return this.call(regionId, 'UpdateBandwidth', {
-      eipIds,
-      bandwidth,
-    });
-  }
-  modifyEipAttributes(regionId, eipId, name, description) {
-    return this.call(regionId, 'ModifyEipAttributes', {
-      eipId,
-      name,
-      description,
-    });
-  }
+
   describeImages(regionId, filter = {}) {
     return this.call(regionId, 'DescribeImages', filter);
   }
