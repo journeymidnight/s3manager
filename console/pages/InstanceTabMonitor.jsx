@@ -116,7 +116,7 @@ class C extends Page {
               config={generateLineChartConfig(this.props.context[`period-${this.state.period}-instance.memory`].timeSeries, {
                 total: { name: t('monitor.total') },
                 used: { name: t('monitor.used') },
-              }, 'percentage')}
+              }, 'megabytes')}
             />}
             {!this.props.context[`period-${this.state.period}-instance.memory`] && <div className="chart loading">
               <i className="fa fa-refresh fa-spin"></i>

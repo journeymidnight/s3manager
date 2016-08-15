@@ -109,12 +109,27 @@ export function generateChartConfig(data, cols, yFormat) {
       } else if (bytes < 1024) {
         return `${fmt(bytes)}B`;
       } else if (bytes < 1024 * 1024) {
-        return `${fmt(bytes / 1024)}kB`;
+        return `${fmt(bytes / 1024)}KB`;
       } else if (bytes < 1024 * 1024 * 1024) {
         return `${fmt(bytes / 1024 / 1024)}MB`;
       }
 
       return `${fmt(bytes / 1024 / 1024 / 1024)}GB`;
+    };
+  } else if (yFormat === 'megabytes') {
+    config.axis.y.min = 0;
+    config.axis.y.tick.format = (bytes) => {
+      const fmt = d3.format('.1f');
+
+      if (bytes < 0) {
+        return '';
+      } else if (bytes < 1024) {
+        return `${fmt(bytes)}MB`;
+      } else if (bytes < 1024 * 1024) {
+        return `${fmt(bytes / 1024)}GB`;
+      }
+
+      return `${fmt(bytes / 1024 / 1024)}TB`;
     };
   } else if (yFormat === 'yuan') {
     config.axis.y.min = 0;
