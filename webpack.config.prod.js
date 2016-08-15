@@ -1,4 +1,5 @@
 var webpack = require('webpack');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var devConfig = require('./webpack.config.dev.js');
 var _ = require('lodash');
@@ -7,7 +8,7 @@ function generateConfig(module) {
   var config = _.clone(devConfig, true);
   config.devtool = undefined;
   config.entry = {
-    app: './' + module + '/index.js',
+    main: './' + module + '/index.js',
     vendor: [
       'axios',
       'bootstrap',
@@ -45,12 +46,13 @@ function generateConfig(module) {
     publicPath: '/',
   },
   config.plugins = [
+    new ExtractTextPlugin('main.[hash].css'),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.ProvidePlugin({
-      $: "jquery",
-      jQuery: "jquery"
+      $: 'jquery',
+      jQuery: 'jquery'
     }),
-    new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js'),
+    new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.v1.20160815.js'),
     new webpack.optimize.UglifyJsPlugin({
       compressor: {
         warnings: false,

@@ -1,4 +1,5 @@
 var webpack = require('webpack');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
   devtool: 'eval-cheap-module-source-map',
@@ -57,8 +58,8 @@ module.exports = {
       { test: /\.eot(?:\?.*|)?$/, loader: 'file'},
       { test: /\.svg(?:\?.*|)?$/, loader: 'url?limit=10000&mimetype=image/svg+xml'},
       { test: /\.(jpe?g|png|gif)(?:\?.*|)$/i, loader: 'file' },
-      { test: /\.css$/, loader: 'style!css' },
-      { test: /\.scss$/, loader: 'style!css!sass' },
+      { test: /\.css$/, loader: ExtractTextPlugin.extract('style', 'css') },
+      { test: /\.scss$/, loader: ExtractTextPlugin.extract('style', 'css!sass') },
       { test: /\.jsx*$/, loader: 'babel!eslint',
         includes: [
           /console/,
@@ -74,10 +75,11 @@ module.exports = {
   },
 
   plugins: [
+    new ExtractTextPlugin('main.css'),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.ProvidePlugin({
-      $: "jquery",
-      jQuery: "jquery"
+      $: 'jquery',
+      jQuery: 'jquery'
     }),
     new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js'),
     new webpack.DefinePlugin({

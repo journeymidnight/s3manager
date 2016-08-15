@@ -33,9 +33,14 @@ function createApp(module) {
   app.use(hotMiddleware);
 
   app.use((req, res) => {
-    const html = fs.readFileSync(`${__dirname}/../index.html`).toString();
+    const html = fs
+    .readFileSync(`${__dirname}/../index.html`)
+    .toString()
+    .replace('<!-- JS_MODULE -->', `<script src="/dist/vendor.js"></script><script src="/dist/${module}.js"></script>`)
+    .replace('<!-- CSS_MODULE -->', `<link href="/dist/main.css" rel="stylesheet">`);
+
     res.set('Content-Type', 'text/html');
-    res.send(html.replace('<!-- MODULE -->', `<script src="/dist/vendor.js"></script><script src="/dist/${module}.js"></script>`));
+    res.send(html);
   });
 
   return app;
