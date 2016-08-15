@@ -75,7 +75,7 @@ module.exports = {
   },
 
   plugins: [
-    new ExtractTextPlugin('main.css'),
+    new ExtractTextPlugin('[name].css'),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.ProvidePlugin({
       $: 'jquery',

@@ -46,7 +46,7 @@ function generateConfig(module) {
     publicPath: '/',
   },
   config.plugins = [
-    new ExtractTextPlugin('main.[hash].css'),
+    new ExtractTextPlugin('[name].[hash].css'),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.ProvidePlugin({
       $: 'jquery',
