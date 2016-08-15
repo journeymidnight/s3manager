@@ -93,7 +93,8 @@ class C extends Page {
         </div>
         <div className="row">
           <div className="col-md-6 chart-panel">
-            <span>{t('monitor.eipTraffic')}</span>
+            <span>{t('monitor.networkTraffic')}</span>
+            <span className="pull-right text-muted">{t(`monitor.intervals.${this.state.period}`)}</span>
             {this.props.context[`period-${this.state.period}-eip.traffic`] && <Chart
               className="chart"
               config={generateLineChartConfig(this.props.context[`period-${this.state.period}-eip.traffic`].timeSeries, {
@@ -106,7 +107,8 @@ class C extends Page {
             </div>}
           </div>
           <div className="col-md-6 chart-panel">
-            <span>{t('monitor.eipPackets')}</span>
+            <span>{t('monitor.networkPackets')}</span>
+            <span className="pull-right text-muted">{t(`monitor.intervals.${this.state.period}`)}</span>
             {this.props.context[`period-${this.state.period}-eip.packets`] && <Chart
               className="chart"
               config={generateLineChartConfig(this.props.context[`period-${this.state.period}-eip.packets`].timeSeries, {

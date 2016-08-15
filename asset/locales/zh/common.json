@@ -539,8 +539,8 @@
         "diskUsage": "硬盘使用率",
         "diskIO": "硬盘吞吐量",
         "diskIOPS": "硬盘 IOPS",
-        "eipTraffic": "流量",
-        "eipPackets": "数据包"
+        "networkTraffic": "网络流量",
+        "networkPackets": "网络数据包"
     },
 
     "promptOperationCheck": {

@@ -214,10 +214,10 @@ class IaaS {
       instanceId,
     });
   }
-  getMonitor(regionId, resourceId, metric, period) {
+  getMonitor(regionId, resourceIds, metrics, period) {
     return this.call(regionId, 'GetMonitor', {
-      resourceId,
-      metric,
+      resourceIds,
+      metrics,
       period,
     });
   }

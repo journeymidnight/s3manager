@@ -1,6 +1,6 @@
 import React from 'react';
 import Chart from 'react-c3-component';
-import { generateLineChartConfig } from '../../shared/utils/chart';
+import { generateLineChartConfig, generateAreaChartConfig } from '../../shared/utils/chart';
 import Page, { attach } from '../../shared/pages/Page';
 import * as Actions from '../redux/actions';
 import * as MonitorActions from '../redux/actions.monitor';
@@ -35,6 +35,8 @@ class C extends Page {
       'instance.disk.io',
       'instance.disk.iops',
       'instance.disk.usage',
+      'instance.network.traffic',
+      'instance.network.packets',
     ];
 
     this.state = {
@@ -59,11 +61,9 @@ class C extends Page {
 
       const { dispatch, region, routerKey, instance } = this.props;
 
-      this.metrics.forEach((metric) => {
-        dispatch(MonitorActions.requestGetMonitor(routerKey, region.regionId, instance.instanceId, metric, period))
-        .then(() => {
-          dispatch(Actions.extendContext({ loading: false }, routerKey));
-        });
+      dispatch(MonitorActions.requestGetMonitor(routerKey, region.regionId, instance.instanceId, this.metrics, period))
+      .then(() => {
+        dispatch(Actions.extendContext({ loading: false }, routerKey));
       });
 
       this.setState({ period });
@@ -113,7 +113,7 @@ class C extends Page {
             <span className="pull-right text-muted">{t(`monitor.intervals.${this.state.period}`)}</span>
             {this.props.context[`period-${this.state.period}-instance.memory`] && <Chart
               className="chart"
-              config={generateLineChartConfig(this.props.context[`period-${this.state.period}-instance.memory`].timeSeries, {
+              config={generateAreaChartConfig(this.props.context[`period-${this.state.period}-instance.memory`].timeSeries, {
                 total: { name: t('monitor.total') },
                 used: { name: t('monitor.used') },
               }, 'megabytes')}
@@ -123,11 +123,39 @@ class C extends Page {
             </div>}
           </div>
           <div className="col-md-6 chart-panel">
+            <span>{t('monitor.networkTraffic')}</span>
+            <span className="pull-right text-muted">{t(`monitor.intervals.${this.state.period}`)}</span>
+            {this.props.context[`period-${this.state.period}-instance.network.traffic`] && <Chart
+              className="chart"
+              config={generateAreaChartConfig(this.props.context[`period-${this.state.period}-instance.network.traffic`].timeSeries, {
+                in: { name: t('monitor.in') },
+                out: { name: t('monitor.out') },
+              }, 'bps')}
+            />}
+            {!this.props.context[`period-${this.state.period}-instance.network.traffic`] && <div className="chart loading">
+              <i className="fa fa-refresh fa-spin"></i>
+            </div>}
+          </div>
+          <div className="col-md-6 chart-panel">
+            <span>{t('monitor.networkPackets')}</span>
+            <span className="pull-right text-muted">{t(`monitor.intervals.${this.state.period}`)}</span>
+            {this.props.context[`period-${this.state.period}-instance.network.packets`] && <Chart
+              className="chart"
+              config={generateLineChartConfig(this.props.context[`period-${this.state.period}-instance.network.packets`].timeSeries, {
+                in: { name: t('monitor.in') },
+                out: { name: t('monitor.out') },
+              })}
+            />}
+            {!this.props.context[`period-${this.state.period}-instance.network.packets`] && <div className="chart loading">
+              <i className="fa fa-refresh fa-spin"></i>
+            </div>}
+          </div>
+          <div className="col-md-6 chart-panel">
             <span>{t('monitor.diskUsage')}</span>
             <span className="pull-right text-muted">{t(`monitor.intervals.${this.state.period}`)}</span>
             {this.props.context[`period-${this.state.period}-instance.disk.usage`] && <Chart
               className="chart"
-              config={generateLineChartConfig(this.props.context[`period-${this.state.period}-instance.disk.usage`].timeSeries, {
+              config={generateAreaChartConfig(this.props.context[`period-${this.state.period}-instance.disk.usage`].timeSeries, {
                 total: { name: t('monitor.total') },
                 used: { name: t('monitor.used') },
               }, 'bytes')}
@@ -141,7 +169,7 @@ class C extends Page {
             <span className="pull-right text-muted">{t(`monitor.intervals.${this.state.period}`)}</span>
             {this.props.context[`period-${this.state.period}-instance.disk.io`] && <Chart
               className="chart"
-              config={generateLineChartConfig(this.props.context[`period-${this.state.period}-instance.disk.io`].timeSeries, {
+              config={generateAreaChartConfig(this.props.context[`period-${this.state.period}-instance.disk.io`].timeSeries, {
                 read: { name: t('monitor.read') },
                 write: { name: t('monitor.write') },
               }, 'bytes')}

@@ -80,7 +80,7 @@ export function generateChartConfig(data, cols, yFormat) {
     },
     padding: {
       top: 10,
-      left: 50,
+      left: 60,
       right: 0,
       bottom: 0,
     },
@@ -115,6 +115,23 @@ export function generateChartConfig(data, cols, yFormat) {
       }
 
       return `${fmt(bytes / 1024 / 1024 / 1024)}GB`;
+    };
+  } else if (yFormat === 'bps') {
+    config.axis.y.min = 0;
+    config.axis.y.tick.format = (bytes) => {
+      const fmt = d3.format('.1f');
+
+      if (bytes < 0) {
+        return '';
+      } else if (bytes < 1024) {
+        return `${fmt(bytes)}bps`;
+      } else if (bytes < 1024 * 1024) {
+        return `${fmt(bytes / 1024)}kbps`;
+      } else if (bytes < 1024 * 1024 * 1024) {
+        return `${fmt(bytes / 1024 / 1024)}mbps`;
+      }
+
+      return `${fmt(bytes / 1024 / 1024 / 1024)}gbps`;
     };
   } else if (yFormat === 'megabytes') {
     config.axis.y.min = 0;
