@@ -364,6 +364,7 @@
 
     "pageNetwork": {
         "basic": "基本信息",
+        "monitor": "公网网关流量",
         "subnets": "子网",
         "router": "路由",
         "protocol": "端口协议",
