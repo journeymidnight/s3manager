@@ -1,5 +1,6 @@
 import React from 'react';
 import Time from 'react-time';
+import { Link } from 'react-router';
 import TablePage from '../../shared/pages/TablePage';
 import StatusFilter from '../../shared/components/StatusFilter';
 import TimeSorter from '../../shared/components/TimeSorter';
@@ -10,7 +11,7 @@ class C extends TablePage {
 
   initialize(routerKey) {
     const { t, dispatch, servicePath } = this.props;
-    dispatch(Actions.setHeader(t('publicImageManage'), `${servicePath}/images_snapshots/public_images`));
+    dispatch(Actions.setHeader(t('publicImageManage'), `${servicePath}/images_snapshots`));
 
     this.initTable(routerKey, {
       isTabPage: true,
@@ -30,7 +31,7 @@ class C extends TablePage {
   }
 
   renderTable() {
-    const { t } = this.props;
+    const { t, servicePath } = this.props;
     return this.props.context.total > 0 && this.props.context.imageSet.length > 0 && (
       <table className="table">
         <thead>
@@ -52,7 +53,10 @@ class C extends TablePage {
                 <td>
                   <input type="checkbox" className="selected" onChange={this.onSelect(image.imageId)} checked={this.props.context.selected[image.imageId] === true} />
                 </td>
-                <td>{image.imageId}</td>
+                <td>
+                  {!this.isPublicImage() && <Link to={`${servicePath}/images/${image.imageId}`}>{image.imageId}</Link>}
+                  {this.isPublicImage() && <span>{image.imageId}</span>}
+                </td>
                 <td>
                   {image.name && <strong>{image.name}</strong>}
                   {!image.name && <i className="text-muted">{t('noName')}</i>}

@@ -97,6 +97,18 @@ class IaaS {
   describeImages(regionId, filter = {}) {
     return this.call(regionId, 'DescribeImages', filter);
   }
+  deleteImages(regionId, imageIds) {
+    return this.call(regionId, 'DeleteImages', {
+      imageIds,
+    });
+  }
+  modifyImageAttributes(regionId, imageId, name, description) {
+    return this.call(regionId, 'ModifyImageAttributes', {
+      imageId,
+      name,
+      description,
+    });
+  }
   describeNetworks(regionId, filter = {}) {
     return this.call(regionId, 'DescribeNetworks', filter);
   }
@@ -218,6 +230,13 @@ class IaaS {
   deleteSnapshots(regionId, snapshotIds) {
     return this.call(regionId, 'DeleteSnapshots', {
       snapshotIds,
+    });
+  }
+  modifySnapshotAttributes(regionId, snapshotId, name, description) {
+    return this.call(regionId, 'ModifySnapshotAttributes', {
+      snapshotId,
+      name,
+      description,
     });
   }
   describeJobs(regionId, filter = {}) {

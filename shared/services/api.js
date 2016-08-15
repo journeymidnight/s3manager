@@ -46,8 +46,9 @@ export const call = (method, url, payload, hook) => {
         });
       } else {
         const data = val.data;
+        const dt = data.data;
         if (data.retCode === 0) {
-          resolve(data.data);
+          resolve(dt);
         } else {
           const _ = require('lodash');
           if (data.retCode === 4101 && !_.endsWith(url, 'authorize')) {

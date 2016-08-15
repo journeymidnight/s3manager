@@ -216,6 +216,18 @@
         "ceased": "已删除"
     },
 
+    "pageImage":{
+        "basic": "基本信息",
+        "updateImage": "更新",
+        "deleteImage": "删除"
+    },
+
+    "pageSnapshot":{
+        "basic": "基本信息",
+        "updateSnapshot": "更新",
+        "deleteSnapshot": "删除"
+    },
+
     "volumeSnapshotsStatus": {
         "pending": "创建中",
         "active": "可用",
