@@ -1,13 +1,21 @@
 import React from 'react';
+import _ from 'lodash';
 import Time from 'react-time';
 import { Link } from 'react-router';
 import TablePage from '../../shared/pages/TablePage';
+import ButtonForm from '../../shared/forms/ButtonForm';
 import StatusFilter from '../../shared/components/StatusFilter';
 import TimeSorter from '../../shared/components/TimeSorter';
 import * as Actions from '../redux/actions';
 import * as ImageActions from '../redux/actions.image';
 
 class C extends TablePage {
+
+  constructor(props) {
+    super(props);
+
+    this.onDelete = this.onDelete.bind(this);
+  }
 
   initialize(routerKey) {
     const { t, dispatch, servicePath } = this.props;
@@ -23,6 +31,35 @@ class C extends TablePage {
   isPublicImage() {
   }
 
+  formatImageSize(size) {
+    let result = '';
+    if (size / (1024 * 1024 * 1024) >= 1) {
+      result = `${(size / (1024 * 1024 * 1024)).toFixed(2)}GB`;
+    } else if (size / (1024 * 1024) >= 1) {
+      result = `${(size / (1024 * 1024)).toFixed(2)}MB`;
+    } else if (size / (1024) >= 1) {
+      result = `${(size / 1024).toFixed(2)}KB`;
+    } else {
+      result = `${size}B`;
+    }
+    return result;
+  }
+
+  onDelete() {
+    const { dispatch, routerKey, region } = this.props;
+    const imageIds = _.keys(this.props.context.selected);
+
+    return new Promise((resolve, reject) => {
+      dispatch(ImageActions.requestDeleteImages(routerKey, region.regionId, imageIds))
+        .then(() => {
+          resolve();
+          this.onRefresh({}, false)();
+        }).catch(() => {
+          reject();
+        });
+    });
+  }
+
   refreshAction(routerKey, filters) {
     const { region } = this.props;
     const isPublic = this.isPublicImage();
@@ -36,9 +73,9 @@ class C extends TablePage {
       <table className="table">
         <thead>
           <tr>
-            <th width="40">
+            {!this.isPublicImage() && <th width="40">
               <input type="checkbox" className="selected" onChange={this.onSelectAll(this.props.context.imageSet.map((u) => { return u.imageId; }))} />
-            </th>
+            </th>}
             <th width="150">{t('id')}</th>
             <th>{t('name')}</th>
             <th>{t('size')}</th>
@@ -50,9 +87,9 @@ class C extends TablePage {
           {this.props.context.imageSet.map((image) => {
             return (
               <tr key={image.imageId}>
-                <td>
+                {!this.isPublicImage() && <td>
                   <input type="checkbox" className="selected" onChange={this.onSelect(image.imageId)} checked={this.props.context.selected[image.imageId] === true} />
-                </td>
+                </td>}
                 <td>
                   {!this.isPublicImage() && <Link to={`${servicePath}/images/${image.imageId}`}>{image.imageId}</Link>}
                   {this.isPublicImage() && <span>{image.imageId}</span>}
@@ -61,7 +98,7 @@ class C extends TablePage {
                   {image.name && <strong>{image.name}</strong>}
                   {!image.name && <i className="text-muted">{t('noName')}</i>}
                 </td>
-                <td>{image.size}MB</td>
+                <td>{this.formatImageSize(image.size)}</td>
                 <td className={`i-status i-status-${image.status}`}>
                   <i className="icon"></i>
                   {t(`imageStatus.${image.status}`)}
@@ -106,6 +143,11 @@ class C extends TablePage {
             <TimeSorter isReverse={this.props.context.reverse} onRefresh={this.onRefresh} />
           </div>
         </div>
+        {!this.isPublicImage() && <div className={Object.keys(this.props.context.selected).length > 0 ? '' : 'hidden'}>
+          <div className="filter-item inline">
+            <ButtonForm onSubmit={this.onDelete} text={t('delete')} type="btn-danger" />
+          </div>
+        </div>}
       </div>
     );
   }
