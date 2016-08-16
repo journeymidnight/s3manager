@@ -27,7 +27,7 @@ class C extends Page {
     const { dispatch, region, routerKey, servicePath } = this.props;
 
     return new Promise((resolve, reject) => {
-      const name = values.name;
+      const name = values.hostname;
       const imageId = values.imageId;
       const instanceTypeId = values.instanceTypeId;
       const subnetId = values.subnetId;
