@@ -5,7 +5,7 @@ import i18n from '../../shared/i18n';
 export function requestDescribePrerequisites(routerKey, regionId) {
   return dispatch => {
     return IaaS
-    .describeInstanceTypes(regionId, {
+    .doAction(regionId, ACTION_NAMES.describeInstanceTypes, {
       status: ['active'],
       limit: 100,
     })
@@ -43,7 +43,7 @@ export function requestDescribePrerequisites(routerKey, regionId) {
       }, routerKey));
 
       return IaaS
-      .doAction(regionId, ACTION_NAMES.describeNetworks, {      
+      .doAction(regionId, ACTION_NAMES.describeNetworks, {
         status: ['active'],
         limit: 100,
         verbose: true,
@@ -76,7 +76,7 @@ export function requestDescribePrerequisites(routerKey, regionId) {
 export function requestDescribeInstances(routerKey, regionId, filters) {
   return dispatch => {
     return IaaS
-    .describeInstances(regionId, filters)
+    .doAction(regionId, ACTION_NAMES.describeInstances, filters)
     .promise
     .then((payload) => {
       dispatch(extendContext(payload, routerKey));
@@ -90,7 +90,7 @@ export function requestDescribeInstances(routerKey, regionId, filters) {
 export function requestDescribeInstance(routerKey, regionId, instanceId) {
   return dispatch => {
     return IaaS
-    .describeInstances(regionId, {
+    .doAction(regionId, ACTION_NAMES.describeInstances, {
       instanceIds: [instanceId],
       verbose: true,
     })
@@ -109,7 +109,7 @@ export function requestDescribeInstance(routerKey, regionId, instanceId) {
 export function requestCreateInstances(routerKey, regionId, params) {
   return dispatch => {
     return IaaS
-    .createInstances(regionId, params)
+    .doAction(regionId, ACTION_NAMES.createInstances, params)
     .promise
     .then(() => {
       dispatch(notify(i18n.t('createSuccessed')));
@@ -120,7 +120,9 @@ export function requestCreateInstances(routerKey, regionId, params) {
 export function requestStartInstances(routerKey, regionId, instanceIds) {
   return dispatch => {
     return IaaS
-    .startInstances(regionId, instanceIds)
+    .doAction(regionId, ACTION_NAMES.startInstances, {
+      instanceIds,
+    })
     .promise
     .then(() => {
     })
@@ -133,7 +135,9 @@ export function requestStartInstances(routerKey, regionId, instanceIds) {
 export function requestStopInstances(routerKey, regionId, instanceIds) {
   return dispatch => {
     return IaaS
-    .stopInstances(regionId, instanceIds)
+    .doAction(regionId, ACTION_NAMES.stopInstances, {
+      instanceIds,
+    })
     .promise
     .then(() => {
     })
@@ -146,7 +150,9 @@ export function requestStopInstances(routerKey, regionId, instanceIds) {
 export function requestRestartInstances(routerKey, regionId, instanceIds) {
   return dispatch => {
     return IaaS
-    .restartInstances(regionId, instanceIds)
+    .doAction(regionId, ACTION_NAMES.restartInstances, {
+      instanceIds,
+    })
     .promise
     .then(() => {
     })
@@ -159,7 +165,9 @@ export function requestRestartInstances(routerKey, regionId, instanceIds) {
 export function requestDeleteInstances(routerKey, regionId, instanceIds) {
   return dispatch => {
     return IaaS
-    .deleteInstances(regionId, instanceIds)
+    .doAction(regionId, ACTION_NAMES.deleteInstances, {
+      instanceIds,
+    })
     .promise
     .then(() => {
     })
@@ -172,7 +180,11 @@ export function requestDeleteInstances(routerKey, regionId, instanceIds) {
 export function requestModifyInstanceAttributes(routerKey, regionId, instanceId, name, description) {
   return dispatch => {
     return IaaS
-    .modifyInstanceAttributes(regionId, instanceId, name, description)
+    .doAction(regionId, ACTION_NAMES.modifyInstanceAttributes, {
+      instanceId,
+      name,
+      description,
+    })
     .promise
     .then(() => {
       dispatch(notify(i18n.t('updateSuccessed')));
@@ -187,7 +199,12 @@ export function requestModifyInstanceAttributes(routerKey, regionId, instanceId,
 export function requestResetInstances(routerKey, regionId, instanceIds, loginMode, loginPassword, keyPairId) {
   return dispatch => {
     return IaaS
-    .resetInstances(regionId, instanceIds, loginMode, loginPassword, keyPairId)
+    .doAction(regionId, ACTION_NAMES.resetInstances, {
+      instanceIds,
+      loginMode,
+      loginPassword,
+      keyPairId,
+    })
     .promise
     .then(() => {
       dispatch(notify(i18n.t('resetPending')));
@@ -201,7 +218,10 @@ export function requestResetInstances(routerKey, regionId, instanceIds, loginMod
 export function requestResizeInstances(routerKey, regionId, instanceIds, instanceTypeId) {
   return dispatch => {
     return IaaS
-    .resizeInstances(regionId, instanceIds, instanceTypeId)
+    .doAction(regionId, ACTION_NAMES.resizeInstances, {
+      instanceIds,
+      instanceTypeId,
+    })
     .promise
     .then(() => {
       dispatch(notify(i18n.t('resizePending')));
@@ -215,7 +235,9 @@ export function requestResizeInstances(routerKey, regionId, instanceIds, instanc
 export function requestConnectVNC(routerKey, regionId, instanceId) {
   return dispatch => {
     return IaaS
-    .connectVNC(regionId, instanceId)
+    .doAction(regionId, ACTION_NAMES.connectVNC, {
+      instanceId,
+    })
     .promise
     .then((payload) => {
       const top = window.top.outerHeight / 4 + window.top.screenY;
@@ -243,7 +265,9 @@ export function requestConnectVNC(routerKey, regionId, instanceId) {
 export function requestInstanceOutput(routerKey, regionId, instanceId) {
   return dispatch => {
     return IaaS
-    .getInstanceOutput(regionId, instanceId)
+    .doAction(regionId, ACTION_NAMES.getInstanceOutput, {
+      instanceId,
+    })
     .promise
     .then((payload) => {
       dispatch(extendContext(payload, routerKey));
@@ -257,7 +281,10 @@ export function requestInstanceOutput(routerKey, regionId, instanceId) {
 export function requestCaptureInstance(routerKey, regionId, instanceId, name) {
   return dispatch => {
     return IaaS
-    .captureInstance(regionId, instanceId, name)
+    .doAction(regionId, ACTION_NAMES.captureInstance, {
+      instanceId,
+      name,
+    })
     .promise
     .then(() => {
       dispatch(notify(i18n.t('capturePending')));

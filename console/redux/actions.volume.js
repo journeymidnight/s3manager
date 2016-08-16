@@ -126,7 +126,7 @@ export function requestResizeVolumes(routerKey, regionId, volumeIds, size) {
 export function requestCreateSnapshots(routerKey, regionId, snapshot) {
   return dispatch => {
     return IaaS
-      .createSnapshots(regionId, snapshot)
+      .doAction(regionId, ACTION_NAMES.createSnapshots, snapshot)
       .promise
       .then((payload) => {
         dispatch(extendContext({ snapshot: payload }));

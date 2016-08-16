@@ -156,7 +156,7 @@ export function requestUnsetExternalGateway(routerKey, regionId, networkIds) {
 export function requestDescribePortForwardings(routerKey, regionId, filters) {
   return dispatch => {
     return IaaS
-    .describePortForwardings(regionId, filters)
+    .doAction(regionId, ACTION_NAMES.describePortForwardings, filters)
     .promise
     .then((payload) => {
       dispatch(extendContext(payload, routerKey));
@@ -170,7 +170,7 @@ export function requestDescribePortForwardings(routerKey, regionId, filters) {
 export function requestCreatePortForwarding(routerKey, regionId, portForwarding) {
   return dispatch => {
     return IaaS
-    .createPortForwarding(regionId, portForwarding)
+    .doAction(regionId, ACTION_NAMES.createPortForwarding, portForwarding)
     .promise
     .then(() => {
       dispatch(notify(i18n.t('createSuccessed')));
@@ -184,7 +184,9 @@ export function requestCreatePortForwarding(routerKey, regionId, portForwarding)
 export function requestDeletePortForwardings(routerKey, regionId, portForwardingIds) {
   return dispatch => {
     return IaaS
-    .deletePortForwardings(regionId, portForwardingIds)
+    .doAction(regionId, ACTION_NAMES.deletePortForwardings, {
+      portForwardingIds,
+    })
     .promise
     .then(() => {
       dispatch(notify(i18n.t('deleteSuccessed')));

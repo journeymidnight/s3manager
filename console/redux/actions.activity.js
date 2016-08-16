@@ -1,10 +1,10 @@
 import { notifyAlert, extendContext } from './actions';
-import IaaS from '../services/iaas';
+import IaaS, { ACTION_NAMES } from '../services/iaas';
 
 export function requestDescribeJobs(routerKey, regionId, filters) {
   return dispatch => {
     return IaaS
-      .describeJobs(regionId, filters)
+      .doAction(regionId, ACTION_NAMES.describeJobs, filters)
       .promise
       .then((payload) => {
         dispatch(extendContext(Object.assign(payload, {
@@ -22,7 +22,7 @@ export function requestDescribeJobs(routerKey, regionId, filters) {
 export function requestDescribeOperations(routerKey, regionId, filters) {
   return dispatch => {
     return IaaS
-      .describeOperations(regionId, filters)
+      .doAction(regionId, ACTION_NAMES.describeOperations, filters)
       .promise
       .then((payload) => {
         dispatch(extendContext(Object.assign(payload, {
