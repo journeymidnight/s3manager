@@ -1,11 +1,11 @@
 import { notify, notifyAlert, extendContext } from './actions';
-import IaaS from '../services/iaas';
+import IaaS, { ACTION_NAMES } from '../services/iaas';
 import i18n from '../../shared/i18n';
 
 export function requestDescribeVolume(routerKey, regionId, volumeId) {
   return dispatch => {
     return IaaS
-    .describeVolumes(regionId, {
+    .doAction(regionId, ACTION_NAMES.describeVolumes, {
       volumeIds: [volumeId],
     })
     .promise
@@ -23,7 +23,7 @@ export function requestDescribeVolume(routerKey, regionId, volumeId) {
 export function requestDescribeVolumes(routerKey, regionId, filters) {
   return dispatch => {
     return IaaS
-      .describeVolumes(regionId, filters)
+      .doAction(regionId, ACTION_NAMES.describeVolumes, filters)
       .promise
       .then((payload) => {
         dispatch(extendContext(Object.assign(payload, {
@@ -41,7 +41,7 @@ export function requestDescribeVolumes(routerKey, regionId, filters) {
 export function requestCreateVolume(routerKey, regionId, volume) {
   return dispatch => {
     return IaaS
-      .createVolume(regionId, volume)
+      .doAction(regionId, ACTION_NAMES.createVolume, volume)
       .promise
       .then((payload) => {
         dispatch(extendContext({ volume: payload }));
@@ -55,7 +55,11 @@ export function requestCreateVolume(routerKey, regionId, volume) {
 export function requestModifyVolumeAttributes(routerKey, regionId, volumeId, name, description) {
   return dispatch => {
     return IaaS
-    .modifyVolumeAttributes(regionId, volumeId, name, description)
+    .doAction(regionId, ACTION_NAMES.modifyVolumeAttributes, {
+      volumeId,
+      name,
+      description,
+    })
     .promise
     .then(() => {
       dispatch(notify(i18n.t('updateSuccessed')));
@@ -70,7 +74,10 @@ export function requestModifyVolumeAttributes(routerKey, regionId, volumeId, nam
 export function requestAttachVolume(routerKey, regionId, volumeId, instanceId) {
   return dispatch => {
     return IaaS
-    .attachVolume(regionId, volumeId, instanceId)
+    .doAction(regionId, ACTION_NAMES.attachVolume, {
+      volumeId,
+      instanceId,
+    })
     .promise
     .then(() => {
       dispatch(notify(i18n.t('attachSuccessed')));
@@ -85,7 +92,10 @@ export function requestAttachVolume(routerKey, regionId, volumeId, instanceId) {
 export function requestDetachVolumes(routerKey, regionId, volumeIds, instanceId) {
   return dispatch => {
     return IaaS
-    .detachVolumes(regionId, volumeIds, instanceId)
+    .doAction(regionId, ACTION_NAMES.detachVolumes, {
+      volumeIds,
+      instanceId,
+    })
     .promise
     .then(() => {
       dispatch(notify(i18n.t('detachSuccessed')));
@@ -99,7 +109,10 @@ export function requestDetachVolumes(routerKey, regionId, volumeIds, instanceId)
 export function requestResizeVolumes(routerKey, regionId, volumeIds, size) {
   return dispatch => {
     return IaaS
-    .resizeVolumes(regionId, volumeIds, size)
+    .doAction(regionId, ACTION_NAMES.resizeVolumes, {
+      volumeIds,
+      size,
+    })
     .promise
     .then(() => {
       dispatch(notify(i18n.t('resizeSuccessed')));
@@ -113,7 +126,7 @@ export function requestResizeVolumes(routerKey, regionId, volumeIds, size) {
 export function requestCreateSnapshots(routerKey, regionId, snapshot) {
   return dispatch => {
     return IaaS
-      .createSnapshots(regionId, snapshot)
+      .doAction(regionId, ACTION_NAMES.createSnapshots, snapshot)
       .promise
       .then((payload) => {
         dispatch(extendContext({ snapshot: payload }));
@@ -130,7 +143,7 @@ export function requestCreateSnapshots(routerKey, regionId, snapshot) {
 export function requestDeleteVolumes(routerKey, regionId, volumeIds) {
   return dispatch => {
     return IaaS
-    .deleteVolumes(regionId, volumeIds)
+    .doAction(regionId, ACTION_NAMES.deleteVolumes, { volumeIds })
     .promise
     .then(() => {
       dispatch(notify(i18n.t('deleteSuccessed')));

@@ -1,11 +1,15 @@
 import _ from 'lodash';
 import { notifyAlert, extendContext } from './actions';
-import IaaS from '../services/iaas';
+import IaaS, { ACTION_NAMES } from '../services/iaas';
 
 export function requestGetMonitor(routerKey, regionId, resourceId, metrics, period) {
   return dispatch => {
     return IaaS
-    .getMonitor(regionId, [resourceId], metrics, period)
+    .doAction(regionId, ACTION_NAMES.getMonitor, {
+      resourceIds: [resourceId],
+      metrics,
+      period,
+    })
     .promise
     .then((payload) => {
       const d = {};
