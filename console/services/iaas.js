@@ -14,45 +14,6 @@ class IaaS {
 
 
 
-  describeNetworks(regionId, filter = {}) {
-    return this.call(regionId, 'DescribeNetworks', filter);
-  }
-  describeSubnets(regionId, filter = {}) {
-    return this.call(regionId, 'DescribeSubnets', filter);
-  }
-  createSubnet(regionId, subnet) {
-    return this.call(regionId, 'CreateSubnet', subnet);
-  }
-  deleteSubnets(regionId, subnetIds) {
-    return this.call(regionId, 'DeleteSubnets', {
-      subnetIds,
-    });
-  }
-  createNetwork(regionId, network) {
-    return this.call(regionId, 'CreateNetwork', network);
-  }
-  setExternalGateway(regionId, networkIds) {
-    return this.call(regionId, 'SetExternalGateway', {
-      networkIds,
-    });
-  }
-  unsetExternalGateway(regionId, networkIds) {
-    return this.call(regionId, 'UnsetExternalGateway', {
-      networkIds,
-    });
-  }
-  deleteNetworks(regionId, networkIds) {
-    return this.call(regionId, 'DeleteNetworks', {
-      networkIds,
-    });
-  }
-  modifyNetworkAttributes(regionId, networkId, name, description) {
-    return this.call(regionId, 'ModifyNetworkAttributes', {
-      networkId,
-      name,
-      description,
-    });
-  }
   describeInstanceTypes(regionId, filter = {}) {
     return this.call(regionId, 'DescribeInstanceTypes', filter);
   }

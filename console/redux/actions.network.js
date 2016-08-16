@@ -1,11 +1,11 @@
 import { notify, notifyAlert, extendContext } from './actions';
-import IaaS from '../services/iaas';
+import IaaS, { ACTION_NAMES } from '../services/iaas';
 import i18n from '../../shared/i18n';
 
 export function requestDescribeNetwork(routerKey, regionId, networkId) {
   return dispatch => {
     return IaaS
-    .describeNetworks(regionId, {
+    .doAction(regionId, ACTION_NAMES.describeNetworks, {
       networkIds: [networkId],
     })
     .promise
@@ -23,7 +23,7 @@ export function requestDescribeNetwork(routerKey, regionId, networkId) {
 export function requestDescribeNetworks(routerKey, regionId, filters) {
   return dispatch => {
     return IaaS
-    .describeNetworks(regionId, filters)
+    .doAction(regionId, ACTION_NAMES.describeNetworks, filters)
     .promise
     .then((payload) => {
       dispatch(extendContext(payload, routerKey));
@@ -37,7 +37,7 @@ export function requestDescribeNetworks(routerKey, regionId, filters) {
 export function requestDescribeSubnets(routerKey, regionId, filters) {
   return dispatch => {
     return IaaS
-    .describeSubnets(regionId, filters)
+    .doAction(regionId, ACTION_NAMES.describeSubnets, filters)
     .promise
     .then((payload) => {
       dispatch(extendContext(payload, routerKey));
@@ -51,7 +51,7 @@ export function requestDescribeSubnets(routerKey, regionId, filters) {
 export function requestCreateNetwork(routerKey, regionId, network) {
   return dispatch => {
     return IaaS
-    .createNetwork(regionId, network)
+    .doAction(regionId, ACTION_NAMES.createNetwork, network)
     .promise
     .then(() => {
       dispatch(notify(i18n.t('createSuccessed')));
@@ -62,7 +62,9 @@ export function requestCreateNetwork(routerKey, regionId, network) {
 export function requestDeleteNetworks(routerKey, regionId, networkIds) {
   return dispatch => {
     return IaaS
-    .deleteNetworks(regionId, networkIds)
+    .doAction(regionId, ACTION_NAMES.deleteNetworks, {
+      networkIds,
+    })
     .promise
     .then(() => {
       dispatch(notify(i18n.t('deleteSuccessed')));
@@ -76,7 +78,11 @@ export function requestDeleteNetworks(routerKey, regionId, networkIds) {
 export function requestModifyNetworkAttributes(routerKey, regionId, networkId, name, description) {
   return dispatch => {
     return IaaS
-    .modifyNetworkAttributes(regionId, networkId, name, description)
+    .doAction(regionId, ACTION_NAMES.modifyNetworkAttributes, {
+      networkId,
+      name,
+      description,
+    })
     .promise
     .then(() => {
       dispatch(notify(i18n.t('updateSuccessed')));
@@ -91,7 +97,9 @@ export function requestModifyNetworkAttributes(routerKey, regionId, networkId, n
 export function requestDeleteSubnets(routerKey, regionId, subnetIds) {
   return dispatch => {
     return IaaS
-    .deleteSubnets(regionId, subnetIds)
+    .doAction(regionId, ACTION_NAMES.deleteSubnets, {
+      subnetIds,
+    })
     .promise
     .then(() => {
       dispatch(notify(i18n.t('deleteSuccessed')));
@@ -105,7 +113,7 @@ export function requestDeleteSubnets(routerKey, regionId, subnetIds) {
 export function requestCreateSubnet(routerKey, regionId, subnet) {
   return dispatch => {
     return IaaS
-    .createSubnet(regionId, subnet)
+    .doAction(regionId, ACTION_NAMES.createSubnet, subnet)
     .promise
     .then(() => {
       dispatch(notify(i18n.t('createSuccessed')));
@@ -116,7 +124,9 @@ export function requestCreateSubnet(routerKey, regionId, subnet) {
 export function requestSetExternalGateway(routerKey, regionId, networkIds) {
   return dispatch => {
     return IaaS
-    .setExternalGateway(regionId, networkIds)
+    .doAction(regionId, ACTION_NAMES.setExternalGateway, {
+      networkIds,
+    })
     .promise
     .then(() => {
       dispatch(notify(i18n.t('updateSuccessed')));
@@ -130,7 +140,9 @@ export function requestSetExternalGateway(routerKey, regionId, networkIds) {
 export function requestUnsetExternalGateway(routerKey, regionId, networkIds) {
   return dispatch => {
     return IaaS
-    .unsetExternalGateway(regionId, networkIds)
+    .doAction(regionId, ACTION_NAMES.unsetExternalGateway, {
+      networkIds,
+    })
     .promise
     .then(() => {
       dispatch(notify(i18n.t('updateSuccessed')));

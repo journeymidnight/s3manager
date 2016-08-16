@@ -43,7 +43,7 @@ export function requestDescribePrerequisites(routerKey, regionId) {
       }, routerKey));
 
       return IaaS
-      .describeNetworks(regionId, {
+      .doAction(regionId, ACTION_NAMES.describeNetworks, {      
         status: ['active'],
         limit: 100,
         verbose: true,
