@@ -364,6 +364,7 @@
 
     "pageNetwork": {
         "basic": "基本信息",
+        "monitor": "公网网关流量",
         "subnets": "子网",
         "router": "路由",
         "protocol": "端口协议",
@@ -539,8 +540,8 @@
         "diskUsage": "硬盘使用率",
         "diskIO": "硬盘吞吐量",
         "diskIOPS": "硬盘 IOPS",
-        "eipTraffic": "流量",
-        "eipPackets": "数据包"
+        "networkTraffic": "网络流量",
+        "networkPackets": "网络数据包"
     },
 
     "promptOperationCheck": {

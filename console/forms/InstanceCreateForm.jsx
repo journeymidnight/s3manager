@@ -87,7 +87,7 @@ class F extends React.Component {
 
   render() {
     const { fields:
-      { name, imageType, imageId, vcpus, memory, disk, instanceTypeId, subnetId, count, keyPairId, loginPassword, loginMode },
+      { hostname, imageType, imageId, vcpus, memory, disk, instanceTypeId, subnetId, count, keyPairId, loginPassword, loginMode },
       handleSubmit,
       submitting,
       submitFailed,
@@ -112,11 +112,11 @@ class F extends React.Component {
     }
 
     return (
-      <form className="form-horizontal" onSubmit={handleSubmit}>
+      <form className="form-horizontal" onSubmit={handleSubmit} autoComplete="off">
         <div className="form-group">
           <label className="control-label" >{t('pageInstanceCreate.imageType')}</label>
           <div className="col-sm-10">
-            <label className="radio-inline">
+            <label className="radio inline">
               <input type="radio" value="public" onClick={() => { this.onChangeImageType('public'); }} checked={imageType.value === 'public'} /> {t('public_images')}
             </label>
             {this.props.privateImageSet.length > 0 && <label className="radio-inline">
@@ -243,11 +243,11 @@ class F extends React.Component {
         <fieldset className="features">
           <legend>{t('pageInstanceCreate.basic')}</legend>
 
-          <div className={submitFailed && name.error ? 'form-group has-error' : 'form-group'}>
+          <div className={submitFailed && hostname.error ? 'form-group has-error' : 'form-group'}>
             <label className="control-label" >{t('pageInstanceCreate.hostname')}</label>
             <div className="col-sm-10">
-              <input type="text" className="form-control" {...name} />
-              {submitFailed && name.error && <div className="text-danger"><small>{name.error}</small></div>}
+              <input type="text" className="form-control" {...hostname} />
+              {submitFailed && hostname.error && <div className="text-danger"><small>{hostname.error}</small></div>}
             </div>
           </div>
 
@@ -348,6 +348,6 @@ F.validate = values => {
 
 export default reduxForm({
   form: 'InstanceCreateForm',
-  fields: ['name', 'imageType', 'imageId', 'vcpus', 'memory', 'disk', 'instanceTypeId', 'subnetId', 'count', 'keyPairId', 'loginPassword', 'loginMode'],
+  fields: ['hostname', 'imageType', 'imageId', 'vcpus', 'memory', 'disk', 'instanceTypeId', 'subnetId', 'count', 'keyPairId', 'loginPassword', 'loginMode'],
   validate: F.validate,
 })(translate()(F));

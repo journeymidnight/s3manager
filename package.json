@@ -27,6 +27,7 @@
     "express": "^4.13.4",
     "express-domain-middleware": "^0.1.0",
     "express-http-proxy": "^0.6.0",
+    "extract-text-webpack-plugin": "^1.0.1",
     "font-awesome": "^4.6.1",
     "history": "^2.1.0",
     "i18next": "^2.5.1",

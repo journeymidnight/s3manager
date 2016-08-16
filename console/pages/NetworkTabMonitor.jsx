@@ -43,7 +43,7 @@ class C extends Page {
 
   initialize() {
     const { t, dispatch, servicePath } = this.props;
-    dispatch(Actions.setHeader(t('eipManage'), `${servicePath}/eips`));
+    dispatch(Actions.setHeader(t('networkManage'), `${servicePath}/networks`));
 
     this.refresh('120mins')();
   }
@@ -54,9 +54,9 @@ class C extends Page {
         e.preventDefault();
       }
 
-      const { dispatch, region, routerKey, eip } = this.props;
+      const { dispatch, region, routerKey, network } = this.props;
 
-      dispatch(MonitorActions.requestGetMonitor(routerKey, region.regionId, eip.eipId, this.metrics, period))
+      dispatch(MonitorActions.requestGetMonitor(routerKey, region.regionId, network.networkId, this.metrics, period))
       .then(() => {
         dispatch(Actions.extendContext({ loading: false }, routerKey));
       });
