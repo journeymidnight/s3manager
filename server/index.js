@@ -47,4 +47,4 @@ function createApp(module) {
 }
 
 createApp('boss').listen(9013);
-createApp('console').listen(9014);
+createApp('lcs').listen(9014);
