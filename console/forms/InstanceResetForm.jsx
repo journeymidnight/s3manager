@@ -1,7 +1,7 @@
 import React from 'react';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
-import IaaS from '../services/iaas';
+import IaaS, { ACTION_NAMES } from '../services/iaas';
 import * as Validations from '../../shared/utils/validations';
 import i18n from '../../shared/i18n';
 
@@ -27,7 +27,7 @@ class InstanceResetForm extends React.Component {
     this.props.initializeForm(initialValues);
 
     IaaS
-    .describeKeyPairs(region.regionId, {
+    .doAction(region.regionId, ACTION_NAMES.describeKeyPairs, {
       status: ['active'],
       limit: 100,
     })

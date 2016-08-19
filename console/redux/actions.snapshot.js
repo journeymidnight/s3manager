@@ -1,11 +1,11 @@
 import { notify, notifyAlert, extendContext } from './actions';
-import IaaS from '../services/iaas';
+import IaaS, { ACTION_NAMES } from '../services/iaas';
 import i18n from '../../shared/i18n';
 
 export function requestDescribeSnapshot(routerKey, regionId, snapshotId) {
   return dispatch => {
     return IaaS
-    .describeSnapshots(regionId, {
+    .doAction(regionId, ACTION_NAMES.describeSnapshots, {
       snapshotIds: [snapshotId],
     })
     .promise
@@ -23,7 +23,7 @@ export function requestDescribeSnapshot(routerKey, regionId, snapshotId) {
 export function requestDescribeSnapshots(routerKey, regionId, filters) {
   return dispatch => {
     return IaaS
-      .describeSnapshots(regionId, filters)
+      .doAction(regionId, ACTION_NAMES.describeSnapshots, filters)
       .promise
       .then((payload) => {
         dispatch(extendContext(Object.assign(payload, {
@@ -41,7 +41,9 @@ export function requestDescribeSnapshots(routerKey, regionId, filters) {
 export function requestDeleteSnapshots(routerKey, regionId, snapshotIds) {
   return dispatch => {
     return IaaS
-    .deleteSnapshots(regionId, snapshotIds)
+    .doAction(regionId, ACTION_NAMES.deleteSnapshots, {
+      snapshotIds,
+    })
     .promise
     .then(() => {
       dispatch(notify(i18n.t('deleteSuccessed')));
@@ -56,7 +58,11 @@ export function requestDeleteSnapshots(routerKey, regionId, snapshotIds) {
 export function requestModifySnapshotAttributes(routerKey, regionId, snapshotId, name, description) {
   return dispatch => {
     return IaaS
-    .modifySnapshotAttributes(regionId, snapshotId, name, description)
+    .doAction(regionId, ACTION_NAMES.modifySnapshotAttributes, {
+      snapshotId,
+      name,
+      description,
+    })
     .promise
     .then(() => {
       dispatch(notify(i18n.t('updateSuccessed')));
