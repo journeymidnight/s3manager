@@ -1,33 +1,75 @@
 import React from 'react';
-import Form, { Input, TextArea, Action, attach } from '../../shared/components/Form';
+import { translate } from 'react-i18next';
+import { reduxForm } from 'redux-form';
 import * as Validations from '../../shared/utils/validations';
 
-class F extends Form {
+const F = (props) => {
+  const { fields:
+    { name, description, publicKey },
+    handleSubmit,
+    submitting,
+    submitFailed,
+    resetForm,
+    t,
+  } = props;
+  return (
+    <form className="form-horizontal" onSubmit={handleSubmit}>
 
-  static fields = ['name', 'publicKey', 'description'];
+      <div className={submitFailed && name.error ? 'form-group has-error' : 'form-group'}>
+        <label className="control-label" >{t('name')}</label>
+        <div className="col-sm-10">
+          <input type="text" className="form-control" {...name} />
+          {submitFailed && name.error && <div className="text-danger"><small>{name.error}</small></div>}
+        </div>
+      </div>
 
-  static validate(values) {
-    const errors = {};
-    errors.name = Validations.required(values.name);
-    return errors;
-  }
+      <div className={submitFailed && description.error ? 'form-group has-error' : 'form-group'}>
+        <label className="control-label" >{t('description')}</label>
+        <div className="col-sm-10">
+          <input type="text" className="form-control" {...description} />
+          {submitFailed && description.error && <div className="text-danger"><small>{description.error}</small></div>}
+        </div>
+      </div>
 
-  render() {
-    const {
-      fields: { name, description, publicKey },
-      handleSubmit, t,
-    } = this.props;
-    return (
-      <form className="form-horizontal" onSubmit={handleSubmit}>
+      <div className={submitFailed && publicKey.error ? 'form-group has-error' : 'form-group'}>
+        <label className="control-label" >{t('formKeyPairForm.publicKey')}</label>
+        <div className="col-sm-10">
+          <textarea className="form-control" rows="10" {...publicKey} />
+          {submitFailed && publicKey.error && <div className="text-danger"><small>{publicKey.error}</small></div>}
+        </div>
+      </div>
 
-        <Input form={this.props} field={name} label={t('name')} />
-        <Input form={this.props} field={description} label={t('description')} />
-        <TextArea form={this.props} field={publicKey} label={t('formKeyPairForm.publicKey')} />
+      <div className="form-actions">
+        <button type="submit" className="btn btn-save" disabled={submitting}>
+          {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('create')}
+        </button>
+        &nbsp;
+        <button type="button" className="btn btn-cancel" disabled={submitting} onClick={resetForm}>
+          {t('reset')}
+        </button>
+      </div>
+    </form>
+  );
+};
 
-        <Action form={this.props} submitLabel={t('create')} />
-      </form>
-    );
-  }
-}
+F.propTypes = {
+  fields: React.PropTypes.object.isRequired,
+  error: React.PropTypes.string,
+  handleSubmit: React.PropTypes.func.isRequired,
+  submitting: React.PropTypes.bool.isRequired,
+  submitFailed: React.PropTypes.bool.isRequired,
+  resetForm: React.PropTypes.func.isRequired,
+  t: React.PropTypes.any,
+};
 
-export default attach(F);
+F.validate = values => {
+  const errors = {};
+  errors.name = Validations.required(values.name);
+  return errors;
+};
+
+export default reduxForm({
+  form: 'KeyPairForm',
+  fields: ['name', 'publicKey', 'description'],
+  validate: F.validate,
+})(translate()(F));

@@ -169,8 +169,6 @@ class C extends Page {
     let active = 'subnets';
     if (_.endsWith(this.props.location.pathname, 'subnets')) {
       active = 'subnets';
-    } else if (_.endsWith(this.props.location.pathname, 'monitor')) {
-      active = 'monitor';
     } else if (_.endsWith(this.props.location.pathname, 'port-forwarding')) {
       active = 'portForwarding';
     }
@@ -258,11 +256,6 @@ class C extends Page {
                       {t('pageNetwork.subnets')}
                     </Link>
                   </li>
-                  {network.externalGatewayIp && <li className={`pull-left ${(active === 'monitor') ? 'active' : ''}`}>
-                    <Link data-placement="left" to={`${servicePath}/networks/${network.networkId}/monitor`}>
-                      {t('pageNetwork.monitor')}
-                    </Link>
-                  </li>}
                   {network.externalGatewayIp && <li className={`pull-left ${(active === 'portForwarding') ? 'active' : ''}`}>
                     <Link data-placement="left" to={`${servicePath}/networks/${network.networkId}/port-forwarding`}>
                       {t('pageNetwork.portForwarding')}

@@ -1,22 +1,14 @@
-import _ from 'lodash';
 import { notifyAlert, extendContext } from './actions';
-import IaaS, { ACTION_NAMES } from '../services/iaas';
+import IaaS from '../services/iaas';
 
-export function requestGetMonitor(routerKey, regionId, resourceId, metrics, period) {
+export function requestGetMonitor(routerKey, regionId, resourceId, metric, period) {
   return dispatch => {
     return IaaS
-    .doAction(regionId, ACTION_NAMES.getMonitor, {
-      resourceIds: [resourceId],
-      metrics,
-      period,
-    })
+    .getMonitor(regionId, resourceId, metric, period)
     .promise
     .then((payload) => {
       const d = {};
-
-      _.each(payload.monitorSet, (m) => {
-        d[`period-${period}-${m.metric}`] = m;
-      });
+      d[`period-${payload.period}-${payload.metric}`] = payload;
 
       dispatch(extendContext(d, routerKey));
     })

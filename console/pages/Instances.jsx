@@ -241,7 +241,7 @@ class C extends TablePage {
               onSubmit: this.onDelete,
               text: t('delete'),
               type: 'btn-danger',
-              disabled: this.isBatchActionDisabled(['active', 'stopped', 'error']),
+              disabled: this.isBatchActionDisabled(['active', 'error']),
             })}
           </div>
         </div>}

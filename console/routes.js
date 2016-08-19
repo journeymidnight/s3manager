@@ -12,7 +12,6 @@ import KeyPairCreate from './pages/KeyPairCreate.jsx';
 import Network from './pages/Network.jsx';
 import NetworkTabPortForwarding from './pages/NetworkTabPortForwarding.jsx';
 import NetworkTabSubnets from './pages/NetworkTabSubnets.jsx';
-import NetworkTabMonitor from './pages/NetworkTabMonitor.jsx';
 import Networks from './pages/Networks.jsx';
 import NetworkCreate from './pages/NetworkCreate.jsx';
 import VNC from './pages/VNC.jsx';
@@ -123,7 +122,6 @@ export default function configureRoutes(store) {
               <Route path=":networkId" component={Network} >
                 <IndexRoute component={NetworkTabSubnets} />
                 <Route path="subnets" component={NetworkTabSubnets} />
-                <Route path="monitor" component={NetworkTabMonitor} />
                 <Route path="port-forwarding" component={NetworkTabPortForwarding} />
               </Route>
             </Route>

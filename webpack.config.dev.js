@@ -1,5 +1,4 @@
 var webpack = require('webpack');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
   devtool: 'eval-cheap-module-source-map',
@@ -7,36 +6,6 @@ module.exports = {
   entry: {
     console: './console/index.js',
     boss: './boss/index.js',
-    vendor: [
-      'axios',
-      'bootstrap',
-      'c3',
-      'd3',
-      'history',
-      'i18next',
-      'i18next-xhr-backend',
-      'jquery',
-      'lodash',
-      'mixpanel-browser',
-      'moment',
-      'okay',
-      'promise',
-      'react',
-      'react-c3-component',
-      'react-dom',
-      'react-i18next',
-      'react-redux',
-      'react-router',
-      'react-router-redux',
-      'react-select',
-      'react-time',
-      'redux',
-      'redux-form',
-      'redux-logger',
-      'redux-thunk',
-      'store',
-      'superagent'
-    ]
   },
 
   output: {
@@ -58,8 +27,8 @@ module.exports = {
       { test: /\.eot(?:\?.*|)?$/, loader: 'file'},
       { test: /\.svg(?:\?.*|)?$/, loader: 'url?limit=10000&mimetype=image/svg+xml'},
       { test: /\.(jpe?g|png|gif)(?:\?.*|)$/i, loader: 'file' },
-      { test: /\.css$/, loader: ExtractTextPlugin.extract('style', 'css') },
-      { test: /\.scss$/, loader: ExtractTextPlugin.extract('style', 'css!sass') },
+      { test: /\.css$/, loader: 'style!css' },
+      { test: /\.scss$/, loader: 'style!css!sass' },
       { test: /\.jsx*$/, loader: 'babel!eslint',
         includes: [
           /console/,
@@ -75,13 +44,7 @@ module.exports = {
   },
 
   plugins: [
-    new ExtractTextPlugin('[name].css'),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.ProvidePlugin({
-      $: 'jquery',
-      jQuery: 'jquery'
-    }),
-    new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js'),
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify('development'),

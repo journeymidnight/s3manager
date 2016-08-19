@@ -1,11 +1,11 @@
 import { notify, notifyAlert, extendContext } from './actions';
-import IaaS, { ACTION_NAMES } from '../services/iaas';
+import IaaS from '../services/iaas';
 import i18n from '../../shared/i18n';
 
 export function requestDescribeKeyPair(routerKey, regionId, keyPairId) {
   return dispatch => {
     return IaaS
-      .doAction(regionId, ACTION_NAMES.describeKeyPairs, { keyPairIds: [keyPairId] })
+      .describeKeyPairs(regionId, { keyPairIds: [keyPairId] })
       .promise
       .then((payload) => {
         dispatch(extendContext({ keyPair: payload.keyPairSet[0] }, routerKey));
@@ -18,7 +18,7 @@ export function requestDescribeKeyPair(routerKey, regionId, keyPairId) {
 export function requestDescribeKeyPairs(routerKey, regionId, filters) {
   return dispatch => {
     return IaaS
-      .doAction(regionId, ACTION_NAMES.describeKeyPairs, filters)
+      .describeKeyPairs(regionId, filters)
       .promise
       .then((payload) => {
         dispatch(extendContext(Object.assign(payload, {
@@ -36,7 +36,7 @@ export function requestDescribeKeyPairs(routerKey, regionId, filters) {
 export function requestCreateKeyPair(routerKey, regionId, keyPair) {
   return dispatch => {
     return IaaS
-      .doAction(regionId, ACTION_NAMES.createKeyPair, keyPair)
+      .createKeyPair(regionId, keyPair)
       .promise
       .then((payload) => {
         dispatch(extendContext({ keyPair: payload }));
@@ -47,11 +47,7 @@ export function requestCreateKeyPair(routerKey, regionId, keyPair) {
 export function requestModifyKeyPairAttributes(routerKey, regionId, keyPairId, name, description) {
   return dispatch => {
     return IaaS
-    .doAction(regionId, ACTION_NAMES.modifyKeyPairAttributes, {
-      keyPairId,
-      name,
-      description,
-    })
+    .modifyKeyPairAttributes(regionId, keyPairId, name, description)
     .promise
     .then(() => {
       dispatch(notify(i18n.t('updateSuccessed')));
@@ -66,7 +62,7 @@ export function requestModifyKeyPairAttributes(routerKey, regionId, keyPairId, n
 export function requestDeleteKeyPairs(routerKey, regionId, keyPairIds) {
   return dispatch => {
     return IaaS
-    .doAction(regionId, ACTION_NAMES.deleteKeyPairs, { keyPairIds })
+    .deleteKeyPairs(regionId, keyPairIds)
     .promise
     .then(() => {
       dispatch(notify(i18n.t('deleteSuccessed')));

@@ -56,9 +56,11 @@ class C extends Page {
 
       const { dispatch, region, routerKey, eip } = this.props;
 
-      dispatch(MonitorActions.requestGetMonitor(routerKey, region.regionId, eip.eipId, this.metrics, period))
-      .then(() => {
-        dispatch(Actions.extendContext({ loading: false }, routerKey));
+      this.metrics.forEach((metric) => {
+        dispatch(MonitorActions.requestGetMonitor(routerKey, region.regionId, eip.eipId, metric, period))
+        .then(() => {
+          dispatch(Actions.extendContext({ loading: false }, routerKey));
+        });
       });
 
       this.setState({ period });
@@ -91,8 +93,7 @@ class C extends Page {
         </div>
         <div className="row">
           <div className="col-md-6 chart-panel">
-            <span>{t('monitor.networkTraffic')}</span>
-            <span className="pull-right text-muted">{t(`monitor.intervals.${this.state.period}`)}</span>
+            <span>{t('monitor.eipTraffic')}</span>
             {this.props.context[`period-${this.state.period}-eip.traffic`] && <Chart
               className="chart"
               config={generateLineChartConfig(this.props.context[`period-${this.state.period}-eip.traffic`].timeSeries, {
@@ -105,8 +106,7 @@ class C extends Page {
             </div>}
           </div>
           <div className="col-md-6 chart-panel">
-            <span>{t('monitor.networkPackets')}</span>
-            <span className="pull-right text-muted">{t(`monitor.intervals.${this.state.period}`)}</span>
+            <span>{t('monitor.eipPackets')}</span>
             {this.props.context[`period-${this.state.period}-eip.packets`] && <Chart
               className="chart"
               config={generateLineChartConfig(this.props.context[`period-${this.state.period}-eip.packets`].timeSeries, {

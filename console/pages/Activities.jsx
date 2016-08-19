@@ -35,8 +35,7 @@ class C extends TablePage {
     };
     return operation.resourceIds.map((item, index) => {
       return (<span key={index}>
-        {(operation.resourceType === 'subnet' || operation.resourceType === 'portForwarding') ?
-          <span>{item}</span> : <Link to={`${servicePath}/${map[operation.resourceType]}/${item}`}>{item}</Link>}
+        <Link to={`${servicePath}/${map[operation.resourceType]}/${item}`}>{item}</Link>
         {operation.resourceIds.length - 1 !== index && <span>, </span>}
       </span>);
     });

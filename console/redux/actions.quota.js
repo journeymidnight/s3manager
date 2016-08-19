@@ -1,10 +1,10 @@
 import { notifyAlert, extendContext } from './actions';
-import IaaS, { ACTION_NAMES } from '../services/iaas';
+import Iaas from '../services/iaas';
 
 export function requestDescribeQuotas(regionId) {
   return dispatch => {
-    return IaaS
-      .doAction(regionId, ACTION_NAMES.describeQuotas)
+    return Iaas
+      .describeQuotas(regionId)
       .promise
       .then((payload) => {
         dispatch(extendContext(payload));

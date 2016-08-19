@@ -1,11 +1,11 @@
 import { notify, notifyAlert, extendContext } from './actions';
-import IaaS, { ACTION_NAMES } from '../services/iaas';
+import IaaS from '../services/iaas';
 import i18n from '../../shared/i18n';
 
 export function requestDescribeNetwork(routerKey, regionId, networkId) {
   return dispatch => {
     return IaaS
-    .doAction(regionId, ACTION_NAMES.describeNetworks, {
+    .describeNetworks(regionId, {
       networkIds: [networkId],
     })
     .promise
@@ -23,7 +23,7 @@ export function requestDescribeNetwork(routerKey, regionId, networkId) {
 export function requestDescribeNetworks(routerKey, regionId, filters) {
   return dispatch => {
     return IaaS
-    .doAction(regionId, ACTION_NAMES.describeNetworks, filters)
+    .describeNetworks(regionId, filters)
     .promise
     .then((payload) => {
       dispatch(extendContext(payload, routerKey));
@@ -37,7 +37,7 @@ export function requestDescribeNetworks(routerKey, regionId, filters) {
 export function requestDescribeSubnets(routerKey, regionId, filters) {
   return dispatch => {
     return IaaS
-    .doAction(regionId, ACTION_NAMES.describeSubnets, filters)
+    .describeSubnets(regionId, filters)
     .promise
     .then((payload) => {
       dispatch(extendContext(payload, routerKey));
@@ -51,7 +51,7 @@ export function requestDescribeSubnets(routerKey, regionId, filters) {
 export function requestCreateNetwork(routerKey, regionId, network) {
   return dispatch => {
     return IaaS
-    .doAction(regionId, ACTION_NAMES.createNetwork, network)
+    .createNetwork(regionId, network)
     .promise
     .then(() => {
       dispatch(notify(i18n.t('createSuccessed')));
@@ -62,9 +62,7 @@ export function requestCreateNetwork(routerKey, regionId, network) {
 export function requestDeleteNetworks(routerKey, regionId, networkIds) {
   return dispatch => {
     return IaaS
-    .doAction(regionId, ACTION_NAMES.deleteNetworks, {
-      networkIds,
-    })
+    .deleteNetworks(regionId, networkIds)
     .promise
     .then(() => {
       dispatch(notify(i18n.t('deleteSuccessed')));
@@ -78,11 +76,7 @@ export function requestDeleteNetworks(routerKey, regionId, networkIds) {
 export function requestModifyNetworkAttributes(routerKey, regionId, networkId, name, description) {
   return dispatch => {
     return IaaS
-    .doAction(regionId, ACTION_NAMES.modifyNetworkAttributes, {
-      networkId,
-      name,
-      description,
-    })
+    .modifyNetworkAttributes(regionId, networkId, name, description)
     .promise
     .then(() => {
       dispatch(notify(i18n.t('updateSuccessed')));
@@ -97,9 +91,7 @@ export function requestModifyNetworkAttributes(routerKey, regionId, networkId, n
 export function requestDeleteSubnets(routerKey, regionId, subnetIds) {
   return dispatch => {
     return IaaS
-    .doAction(regionId, ACTION_NAMES.deleteSubnets, {
-      subnetIds,
-    })
+    .deleteSubnets(regionId, subnetIds)
     .promise
     .then(() => {
       dispatch(notify(i18n.t('deleteSuccessed')));
@@ -113,7 +105,7 @@ export function requestDeleteSubnets(routerKey, regionId, subnetIds) {
 export function requestCreateSubnet(routerKey, regionId, subnet) {
   return dispatch => {
     return IaaS
-    .doAction(regionId, ACTION_NAMES.createSubnet, subnet)
+    .createSubnet(regionId, subnet)
     .promise
     .then(() => {
       dispatch(notify(i18n.t('createSuccessed')));
@@ -124,9 +116,7 @@ export function requestCreateSubnet(routerKey, regionId, subnet) {
 export function requestSetExternalGateway(routerKey, regionId, networkIds) {
   return dispatch => {
     return IaaS
-    .doAction(regionId, ACTION_NAMES.setExternalGateway, {
-      networkIds,
-    })
+    .setExternalGateway(regionId, networkIds)
     .promise
     .then(() => {
       dispatch(notify(i18n.t('updateSuccessed')));
@@ -140,9 +130,7 @@ export function requestSetExternalGateway(routerKey, regionId, networkIds) {
 export function requestUnsetExternalGateway(routerKey, regionId, networkIds) {
   return dispatch => {
     return IaaS
-    .doAction(regionId, ACTION_NAMES.unsetExternalGateway, {
-      networkIds,
-    })
+    .unsetExternalGateway(regionId, networkIds)
     .promise
     .then(() => {
       dispatch(notify(i18n.t('updateSuccessed')));
@@ -156,7 +144,7 @@ export function requestUnsetExternalGateway(routerKey, regionId, networkIds) {
 export function requestDescribePortForwardings(routerKey, regionId, filters) {
   return dispatch => {
     return IaaS
-    .doAction(regionId, ACTION_NAMES.describePortForwardings, filters)
+    .describePortForwardings(regionId, filters)
     .promise
     .then((payload) => {
       dispatch(extendContext(payload, routerKey));
@@ -170,7 +158,7 @@ export function requestDescribePortForwardings(routerKey, regionId, filters) {
 export function requestCreatePortForwarding(routerKey, regionId, portForwarding) {
   return dispatch => {
     return IaaS
-    .doAction(regionId, ACTION_NAMES.createPortForwarding, portForwarding)
+    .createPortForwarding(regionId, portForwarding)
     .promise
     .then(() => {
       dispatch(notify(i18n.t('createSuccessed')));
@@ -184,9 +172,7 @@ export function requestCreatePortForwarding(routerKey, regionId, portForwarding)
 export function requestDeletePortForwardings(routerKey, regionId, portForwardingIds) {
   return dispatch => {
     return IaaS
-    .doAction(regionId, ACTION_NAMES.deletePortForwardings, {
-      portForwardingIds,
-    })
+    .deletePortForwardings(regionId, portForwardingIds)
     .promise
     .then(() => {
       dispatch(notify(i18n.t('deleteSuccessed')));

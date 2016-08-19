@@ -1,11 +1,11 @@
 import { notify, notifyAlert, extendContext } from './actions';
-import IaaS, { ACTION_NAMES } from '../services/iaas';
+import IaaS from '../services/iaas';
 import i18n from '../../shared/i18n';
 
 export function requestDescribePrerequisites(routerKey, regionId) {
   return dispatch => {
     return IaaS
-    .doAction(regionId, ACTION_NAMES.describeInstanceTypes, {
+    .describeInstanceTypes(regionId, {
       status: ['active'],
       limit: 100,
     })
@@ -17,7 +17,7 @@ export function requestDescribePrerequisites(routerKey, regionId) {
       }, routerKey));
 
       return IaaS
-      .doAction(regionId, ACTION_NAMES.describeImages, {
+      .describeImages(regionId, {
         status: ['active'],
         isPublic: true,
         limit: 100,
@@ -30,7 +30,7 @@ export function requestDescribePrerequisites(routerKey, regionId) {
       }, routerKey));
 
       return IaaS
-      .doAction(regionId, ACTION_NAMES.describeImages, {
+      .describeImages(regionId, {
         status: ['active'],
         isPublic: false,
         limit: 100,
@@ -43,7 +43,7 @@ export function requestDescribePrerequisites(routerKey, regionId) {
       }, routerKey));
 
       return IaaS
-      .doAction(regionId, ACTION_NAMES.describeNetworks, {
+      .describeNetworks(regionId, {
         status: ['active'],
         limit: 100,
         verbose: true,
@@ -56,7 +56,7 @@ export function requestDescribePrerequisites(routerKey, regionId) {
       }, routerKey));
 
       return IaaS
-      .doAction(regionId, ACTION_NAMES.describeKeyPairs, {
+      .describeKeyPairs(regionId, {
         status: ['active'],
         limit: 100,
       })
@@ -76,7 +76,7 @@ export function requestDescribePrerequisites(routerKey, regionId) {
 export function requestDescribeInstances(routerKey, regionId, filters) {
   return dispatch => {
     return IaaS
-    .doAction(regionId, ACTION_NAMES.describeInstances, filters)
+    .describeInstances(regionId, filters)
     .promise
     .then((payload) => {
       dispatch(extendContext(payload, routerKey));
@@ -90,7 +90,7 @@ export function requestDescribeInstances(routerKey, regionId, filters) {
 export function requestDescribeInstance(routerKey, regionId, instanceId) {
   return dispatch => {
     return IaaS
-    .doAction(regionId, ACTION_NAMES.describeInstances, {
+    .describeInstances(regionId, {
       instanceIds: [instanceId],
       verbose: true,
     })
@@ -109,7 +109,7 @@ export function requestDescribeInstance(routerKey, regionId, instanceId) {
 export function requestCreateInstances(routerKey, regionId, params) {
   return dispatch => {
     return IaaS
-    .doAction(regionId, ACTION_NAMES.createInstances, params)
+    .createInstances(regionId, params)
     .promise
     .then(() => {
       dispatch(notify(i18n.t('createSuccessed')));
@@ -120,9 +120,7 @@ export function requestCreateInstances(routerKey, regionId, params) {
 export function requestStartInstances(routerKey, regionId, instanceIds) {
   return dispatch => {
     return IaaS
-    .doAction(regionId, ACTION_NAMES.startInstances, {
-      instanceIds,
-    })
+    .startInstances(regionId, instanceIds)
     .promise
     .then(() => {
     })
@@ -135,9 +133,7 @@ export function requestStartInstances(routerKey, regionId, instanceIds) {
 export function requestStopInstances(routerKey, regionId, instanceIds) {
   return dispatch => {
     return IaaS
-    .doAction(regionId, ACTION_NAMES.stopInstances, {
-      instanceIds,
-    })
+    .stopInstances(regionId, instanceIds)
     .promise
     .then(() => {
     })
@@ -150,9 +146,7 @@ export function requestStopInstances(routerKey, regionId, instanceIds) {
 export function requestRestartInstances(routerKey, regionId, instanceIds) {
   return dispatch => {
     return IaaS
-    .doAction(regionId, ACTION_NAMES.restartInstances, {
-      instanceIds,
-    })
+    .restartInstances(regionId, instanceIds)
     .promise
     .then(() => {
     })
@@ -165,9 +159,7 @@ export function requestRestartInstances(routerKey, regionId, instanceIds) {
 export function requestDeleteInstances(routerKey, regionId, instanceIds) {
   return dispatch => {
     return IaaS
-    .doAction(regionId, ACTION_NAMES.deleteInstances, {
-      instanceIds,
-    })
+    .deleteInstances(regionId, instanceIds)
     .promise
     .then(() => {
     })
@@ -180,11 +172,7 @@ export function requestDeleteInstances(routerKey, regionId, instanceIds) {
 export function requestModifyInstanceAttributes(routerKey, regionId, instanceId, name, description) {
   return dispatch => {
     return IaaS
-    .doAction(regionId, ACTION_NAMES.modifyInstanceAttributes, {
-      instanceId,
-      name,
-      description,
-    })
+    .modifyInstanceAttributes(regionId, instanceId, name, description)
     .promise
     .then(() => {
       dispatch(notify(i18n.t('updateSuccessed')));
@@ -199,12 +187,7 @@ export function requestModifyInstanceAttributes(routerKey, regionId, instanceId,
 export function requestResetInstances(routerKey, regionId, instanceIds, loginMode, loginPassword, keyPairId) {
   return dispatch => {
     return IaaS
-    .doAction(regionId, ACTION_NAMES.resetInstances, {
-      instanceIds,
-      loginMode,
-      loginPassword,
-      keyPairId,
-    })
+    .resetInstances(regionId, instanceIds, loginMode, loginPassword, keyPairId)
     .promise
     .then(() => {
       dispatch(notify(i18n.t('resetPending')));
@@ -218,10 +201,7 @@ export function requestResetInstances(routerKey, regionId, instanceIds, loginMod
 export function requestResizeInstances(routerKey, regionId, instanceIds, instanceTypeId) {
   return dispatch => {
     return IaaS
-    .doAction(regionId, ACTION_NAMES.resizeInstances, {
-      instanceIds,
-      instanceTypeId,
-    })
+    .resizeInstances(regionId, instanceIds, instanceTypeId)
     .promise
     .then(() => {
       dispatch(notify(i18n.t('resizePending')));
@@ -235,9 +215,7 @@ export function requestResizeInstances(routerKey, regionId, instanceIds, instanc
 export function requestConnectVNC(routerKey, regionId, instanceId) {
   return dispatch => {
     return IaaS
-    .doAction(regionId, ACTION_NAMES.connectVNC, {
-      instanceId,
-    })
+    .connectVNC(regionId, instanceId)
     .promise
     .then((payload) => {
       const top = window.top.outerHeight / 4 + window.top.screenY;
@@ -265,9 +243,7 @@ export function requestConnectVNC(routerKey, regionId, instanceId) {
 export function requestInstanceOutput(routerKey, regionId, instanceId) {
   return dispatch => {
     return IaaS
-    .doAction(regionId, ACTION_NAMES.getInstanceOutput, {
-      instanceId,
-    })
+    .getInstanceOutput(regionId, instanceId)
     .promise
     .then((payload) => {
       dispatch(extendContext(payload, routerKey));
@@ -281,10 +257,7 @@ export function requestInstanceOutput(routerKey, regionId, instanceId) {
 export function requestCaptureInstance(routerKey, regionId, instanceId, name) {
   return dispatch => {
     return IaaS
-    .doAction(regionId, ACTION_NAMES.captureInstance, {
-      instanceId,
-      name,
-    })
+    .captureInstance(regionId, instanceId, name)
     .promise
     .then(() => {
       dispatch(notify(i18n.t('capturePending')));
