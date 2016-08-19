@@ -27,20 +27,19 @@ export default function configureRoutes(store) {
       <Route path="/login" component={Login} />
       <Route path="/logout" component={Logout} />
       <Route path="/" component={App} onEnter={requireAuth} >
-          <IndexRedirect to="profile" />
-
-          <Route path="profile" component={Settings} />
-          <Route path="access_keys">
-            <IndexRoute component={AccessKeys} />
-            <Route path="create" component={AccessKeyCreate} />
-          </Route>
-          <Route path="settings" component={Settings} />
-          <Route path="tickets">
-            <IndexRoute component={Tickets} />
-            <Route path="create" component={TicketCreate} />
-            <Route path=":ticketId" component={Ticket} />
-          </Route>
-          <Route path="security" component={Settings} />        
+        <IndexRedirect to="profile" />
+        <Route path="profile" component={Settings} />
+        <Route path="access_keys">
+          <IndexRoute component={AccessKeys} />
+          <Route path="create" component={AccessKeyCreate} />
+        </Route>
+        <Route path="settings" component={Settings} />
+        <Route path="tickets">
+          <IndexRoute component={Tickets} />
+          <Route path="create" component={TicketCreate} />
+          <Route path=":ticketId" component={Ticket} />
+        </Route>
+        <Route path="security" component={Settings} />
       </Route>
       <Route path="*" component={NotFound} />
     </Route >

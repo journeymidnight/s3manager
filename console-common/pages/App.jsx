@@ -23,7 +23,7 @@ class App extends React.Component {
   }
 
   checkService(props) {
-    const { routing, dispatch, service, global, params } = props;
+    const { dispatch, service, global } = props;
 
     const currentService = window.location.pathname.split('/')[1];
     this.currentService = currentService;
@@ -47,7 +47,7 @@ class App extends React.Component {
         return;
       }
 
-      let currentRegion = window.location.hostname.split('.')[0];//params.regionId;
+      let currentRegion = window.location.hostname.split('.')[0];
       if (currentRegion && !_.find(serviceMached.quotas, (q) => {
         return q.regionId === currentRegion;
       })) {

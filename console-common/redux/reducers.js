@@ -13,12 +13,7 @@ export const serviceReducer = (state = null, action) => {
     case ActionTypes.SELECT_SERVICE:
       if (action.service) {
         store.set('region', action.service.region);
-
-        if (action.service.region) {
-          action.service.servicePath = ``;
-        } else {
-          action.service.servicePath = ``;
-        }
+        action.service.servicePath = '';
       }
 
       return action.service;

@@ -6,7 +6,6 @@ import App from '../console-common/pages/App.jsx';
 import Login from '../console-common/pages/Login.jsx';
 import Logout from '../console-common/pages/Logout.jsx';
 import Settings from '../console-common/pages/Settings.jsx';
-import GotoDefaultRegion from './pages/GotoDefaultRegion.jsx';
 import KeyPair from './pages/KeyPair.jsx';
 import KeyPairs from './pages/KeyPairs.jsx';
 import KeyPairCreate from './pages/KeyPairCreate.jsx';
@@ -48,7 +47,7 @@ export default function configureRoutes(store) {
   }
 
   return (
-        <Route>
+    <Route>
       <Route path="/login" component={Login} />
       <Route path="/logout" component={Logout} />
       <Route path="/vnc" onEnter={requireAuth}>
@@ -56,7 +55,6 @@ export default function configureRoutes(store) {
       </Route>
       <Route path="/" component={App} onEnter={requireAuth} >
         <IndexRedirect to="overview" />
-
         <Route path="overview" component={Usage} />
         <Route path="instances" >
           <IndexRoute component={Instances} />
