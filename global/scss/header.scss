@@ -1,0 +1,92 @@
+header.navbar-gitlab {
+    z-index: 1001;
+    margin-left: 0;
+    background: #0e90d2;
+    border-bottom: none;
+
+    .container-fluid {
+        .navbar-brand {
+            padding: 9px 20px;
+            margin-left: -20px;
+            background: #0d85bf;
+            height: $header-height;
+            width: $sidebar_collapsed_width;
+
+            img {
+                height: 28px;
+            }
+        }
+
+        .header-content {
+            margin-left: $sidebar_collapsed_width;
+
+            .title a {
+                color: #fff;
+            }
+
+            .title,
+            .navbar-toggle,
+            .navbar-nav > li > a {
+                font-size: 15px;
+                color: #fff;
+                height: $header-height;
+                line-height: $header-height;
+                padding: 0px 15px;
+                border-left: 1px solid transparent;
+                border-right: 1px solid transparent;
+
+                &:active,
+                &:focus,
+                &:hover {
+                    background: #0d85bf;
+                    border-left: 1px solid #0a7cd1;
+                    border-right: 1px solid #0a7cd1;
+                }
+            }
+
+            .navbar-collapse {
+                .navbar-nav > li > a {
+                    border-left: 1px solid #0a7cd1;
+
+                    &:hover {
+                        border-right: 1px solid transparent;
+                    }
+                }
+            }
+
+            .navbar-left {
+                .navbar-nav > li > a {
+                    font-size: 16px;
+                    padding: 0px 25px;
+                }
+            }
+
+            .dropdown-menu {
+                margin-top: 0px;
+            }
+
+            .nav .open > a,
+            .nav .open > a:hover,
+            .nav .open > a:focus {
+                background: #0d85bf;
+            }
+
+            .navbar-collapse {
+                ul.nav li.dropdown:hover > ul.dropdown-menu {
+                    left: inherit;
+                    right: 0;
+                }
+            }
+
+            ul.nav li.dropdown:hover > ul.dropdown-menu {
+                display: block;
+            }
+
+            @media (min-width: 979px) {
+                ul.nav li.dropdown:hover > ul.dropdown-menu {
+                    display: block;
+                }
+            }
+        }
+    }
+}

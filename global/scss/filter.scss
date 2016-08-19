@@ -1,0 +1,12 @@
+.gray-content-block.second-block {
+    .dropdown-content {
+        overflow-y: auto;
+    }
+}
+
+
+@media (max-width: $screen-sm-max) {
+    .gray-content-block {
+        display: none;
+    }
+}
