@@ -1,6 +1,6 @@
 import expect from 'expect';
 import deepFreeze from 'deep-freeze';
-import reducer from '../reducers';
+import reducer from '../../../console-common/redux/reducers';
 import * as ActionTypes from '../../../console-common/redux/constants';
 
 describe('AuthReducers', () => {
