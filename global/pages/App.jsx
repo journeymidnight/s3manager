@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import { translate } from 'react-i18next';
 import ConsoleHeader from '../../console-common/components/ConsoleHeader.jsx';
-import ConsoleSidebar from '../components/ConsoleSidebar.jsx';
+import ConsoleSidebar from '../../console-common/components/ConsoleSidebar.jsx';
 import Notify from '../../shared/components/Notify.jsx';
 import * as Actions from '../redux/actions';
 
