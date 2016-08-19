@@ -15,9 +15,9 @@ export const serviceReducer = (state = null, action) => {
         store.set('region', action.service.region);
 
         if (action.service.region) {
-          action.service.servicePath = `/${action.service.serviceKey}/${action.service.region.regionId}`;
+          action.service.servicePath = ``;
         } else {
-          action.service.servicePath = `/${action.service.serviceKey}`;
+          action.service.servicePath = ``;
         }
       }
 

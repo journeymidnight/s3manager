@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import { translate } from 'react-i18next';
-import ConsoleHeader from '../components/ConsoleHeader.jsx';
+import ConsoleHeader from '../../console-common/components/ConsoleHeader.jsx';
 import ConsoleSidebar from '../components/ConsoleSidebar.jsx';
 import Notify from '../../shared/components/Notify.jsx';
 import * as Actions from '../redux/actions';
@@ -25,7 +25,7 @@ class App extends React.Component {
   checkService(props) {
     const { routing, dispatch, service, global, params } = props;
 
-    const currentService = routing.locationBeforeTransitions.pathname.split('/')[1];
+    const currentService = window.location.pathname.split('/')[1];
     this.currentService = currentService;
 
     if (!currentService) {
@@ -47,12 +47,12 @@ class App extends React.Component {
         return;
       }
 
-      let currentRegion = params.regionId;
+      let currentRegion = window.location.hostname.split('.')[0];//params.regionId;
       if (currentRegion && !_.find(serviceMached.quotas, (q) => {
         return q.regionId === currentRegion;
       })) {
         currentRegion = serviceMached.quotas[0].regionId;
-        dispatch(push(`/${service.serviceKey}/${currentRegion}/`));
+        dispatch(push('/'));
         return;
       } else if (!currentRegion) {
         currentRegion = serviceMached.quotas[0].regionId;
