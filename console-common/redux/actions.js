@@ -66,7 +66,7 @@ export function authLogout() {
 export function requestLogout() {
   return dispatch => {
     dispatch(authLogout());
-    dispatch(push('/login'));
+    window.location.hash = '#/login';
   };
 }
 

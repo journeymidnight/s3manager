@@ -77,7 +77,7 @@ const C = (props) => {
                 </ul>
               </li>}
               <li>
-                <a href="/g#/tickets">
+                <a href="/g/#/tickets">
                   <i className="fa fa-ticket"></i>&nbsp;{t('ticket')}
                 </a>
               </li>
@@ -86,9 +86,9 @@ const C = (props) => {
                   {auth.username} <span className="caret"></span>
                 </a>
                 <ul className="dropdown-menu dropdown-menu-right">
-                  <li><a href="/g#/profile">{t('profile')}</a></li>
-                  <li><a href="/g#/security">{t('security')}</a></li>
-                  <li><a href="/g#/access_keys">{t('sidebarAccessKey')}</a></li>
+                  <li><a href="/g/#/profile">{t('profile')}</a></li>
+                  <li><a href="/g/#/security">{t('security')}</a></li>
+                  <li><a href="/g/#/access_keys">{t('sidebarAccessKey')}</a></li>
                   <li role="separator" className="divider"></li>
                   <li>
                     <Link className="logout" to="/logout">

@@ -1,5 +1,4 @@
 import React from 'react';
-import { push } from 'react-router-redux';
 import Page, { attach } from '../../shared/pages/Page';
 import Header from '../../shared/components/Header';
 import * as Actions from '../../console-common/redux/actions';
@@ -32,7 +31,7 @@ class C extends Page {
         .then((context) => {
           resolve();
           dispatch(Actions.authLogin(context, token));
-          dispatch(push('/lcs'));
+          window.location.hash = '#/';
         })
         .catch((error) => {
           reject();
