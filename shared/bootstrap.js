@@ -36,7 +36,7 @@ export function removeLoader() {
         document.querySelector('.sp-container').classList.add(`sp-${i}`);
         i++;
         handleLoader();
-      }, 500);
+      }, 100);
     }
   }
   handleLoader();

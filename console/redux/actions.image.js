@@ -1,11 +1,11 @@
 import { notify, notifyAlert, extendContext } from './actions';
-import IaaS from '../services/iaas';
+import IaaS, { ACTION_NAMES } from '../services/iaas';
 import i18n from '../../shared/i18n';
 
 export function requestDescribeImages(routerKey, regionId, filters) {
   return dispatch => {
     return IaaS
-      .describeImages(regionId, filters)
+      .doAction(regionId, ACTION_NAMES.describeImages, filters)
       .promise
       .then((payload) => {
         dispatch(extendContext(Object.assign(payload, {
@@ -23,7 +23,7 @@ export function requestDescribeImages(routerKey, regionId, filters) {
 export function requestDescribeImage(routerKey, regionId, imageId) {
   return dispatch => {
     return IaaS
-    .describeImages(regionId, {
+    .doAction(regionId, ACTION_NAMES.describeImages, {
       imageIds: [imageId],
     })
     .promise
@@ -41,7 +41,9 @@ export function requestDescribeImage(routerKey, regionId, imageId) {
 export function requestDeleteImages(routerKey, regionId, imageIds) {
   return dispatch => {
     return IaaS
-    .deleteImages(regionId, imageIds)
+    .doAction(regionId, ACTION_NAMES.deleteImages, {
+      imageIds,
+    })
     .promise
     .then(() => {
       dispatch(notify(i18n.t('deleteSuccessed')));
@@ -55,7 +57,11 @@ export function requestDeleteImages(routerKey, regionId, imageIds) {
 export function requestModifyImageAttributes(routerKey, regionId, imageId, name, description) {
   return dispatch => {
     return IaaS
-    .modifyImageAttributes(regionId, imageId, name, description)
+    .doAction(regionId, ACTION_NAMES.modifyImageAttributes, {
+      imageId,
+      name,
+      description,
+    })
     .promise
     .then(() => {
       dispatch(notify(i18n.t('updateSuccessed')));

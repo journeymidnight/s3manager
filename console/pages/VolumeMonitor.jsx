@@ -57,11 +57,9 @@ class C extends Page {
 
       const { dispatch, region, routerKey, volume } = this.props;
 
-      this.metrics.forEach((metric) => {
-        dispatch(MonitorActions.requestGetMonitor(routerKey, region.regionId, volume.volumeId, metric, period))
-        .then(() => {
-          dispatch(Actions.extendContext({ loading: false }, routerKey));
-        });
+      dispatch(MonitorActions.requestGetMonitor(routerKey, region.regionId, volume.volumeId, this.metrics, period))
+      .then(() => {
+        dispatch(Actions.extendContext({ loading: false }, routerKey));
       });
 
       this.setState({ period });
