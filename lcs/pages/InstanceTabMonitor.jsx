@@ -2,7 +2,7 @@ import React from 'react';
 import Chart from 'react-c3-component';
 import { generateLineChartConfig, generateAreaChartConfig } from '../../shared/utils/chart';
 import Page, { attach } from '../../shared/pages/Page';
-import * as Actions from '../redux/actions';
+import * as Actions from '../../console-common/redux/actions';
 import * as MonitorActions from '../redux/actions.monitor';
 
 class C extends Page {

@@ -1,6 +1,6 @@
 import './scss/sub.scss';
 
-import Auth from './services/auth';
+import Auth from '../console-common/services/auth';
 import rootReducer from './redux/reducers';
 import configureStore from '../shared/redux/store';
 import configureRoutes from './routes';

@@ -6,7 +6,7 @@ import { Link } from 'react-router';
 import _ from 'lodash';
 import Page, { attach } from '../../shared/pages/Page';
 import Modal, { confirmModal } from '../../shared/components/Modal';
-import * as Actions from '../redux/actions';
+import * as Actions from '../../console-common/redux/actions';
 import * as NetworkActions from '../redux/actions.network';
 
 let NetworkUpdateForm = (props) => {

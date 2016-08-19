@@ -7,7 +7,7 @@ import StatusFilter from '../../shared/components/StatusFilter';
 import TimeSorter from '../../shared/components/TimeSorter';
 import { attach } from '../../shared/pages/Page';
 import TablePage from '../../shared/pages/TablePage';
-import * as Actions from '../redux/actions';
+import * as Actions from '../../console-common/redux/actions';
 import * as SnapshotActions from '../redux/actions.snapshot';
 
 class C extends TablePage {

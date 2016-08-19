@@ -3,7 +3,7 @@ import Time from 'react-time';
 import { Link } from 'react-router';
 import { attach } from '../../shared/pages/Page';
 import TablePage from '../../shared/pages/TablePage';
-import * as Actions from '../redux/actions';
+import * as Actions from '../../console-common/redux/actions';
 import * as ActivityActions from '../redux/actions.activity';
 
 class C extends TablePage {

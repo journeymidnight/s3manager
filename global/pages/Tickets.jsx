@@ -6,7 +6,7 @@ import { attach } from '../../shared/pages/Page';
 import TablePage from '../../shared/pages/TablePage';
 import ButtonForm from '../../shared/forms/ButtonForm';
 import TimeSorter from '../../shared/components/TimeSorter';
-import * as Actions from '../redux/actions';
+import * as Actions from '../../console-common/redux/actions';
 import * as TicketActions from '../redux/actions.ticket';
 
 class C extends TablePage {

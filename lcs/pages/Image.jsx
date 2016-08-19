@@ -4,7 +4,7 @@ import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
 import Time from 'react-time';
 import Modal, { confirmModal } from '../../shared/components/Modal';
-import * as Actions from '../redux/actions';
+import * as Actions from '../../console-common/redux/actions';
 import * as ImageActions from '../redux/actions.image';
 
 let ImageUpdateForm = (props) => {

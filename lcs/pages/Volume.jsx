@@ -7,7 +7,7 @@ import Page, { attach } from '../../shared/pages/Page';
 import i18n from '../../shared/i18n';
 import Modal, { confirmModal } from '../../shared/components/Modal';
 import VolumeMonitor from './VolumeMonitor';
-import * as Actions from '../redux/actions';
+import * as Actions from '../../console-common/redux/actions';
 import * as VolumeActions from '../redux/actions.volume';
 import * as InstanceActions from '../redux/actions.instance';
 import * as Validations from '../../shared/utils/validations';

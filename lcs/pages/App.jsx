@@ -6,7 +6,7 @@ import { translate } from 'react-i18next';
 import ConsoleHeader from '../../console-common/components/ConsoleHeader.jsx';
 import ConsoleSidebar from '../../console-common/components/ConsoleSidebar.jsx';
 import Notify from '../../shared/components/Notify.jsx';
-import * as Actions from '../redux/actions';
+import * as Actions from '../../console-common/redux/actions';
 
 class App extends React.Component {
 

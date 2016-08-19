@@ -13,7 +13,7 @@ import InstanceEipForm from '../forms/InstanceEipForm';
 import InstanceCaptureForm from '../forms/InstanceCaptureForm';
 import InstanceVolumeForm from '../forms/InstanceVolumeForm';
 import * as EipActions from '../redux/actions.eip';
-import * as Actions from '../redux/actions';
+import * as Actions from '../../console-common/redux/actions';
 import * as InstanceActions from '../redux/actions.instance';
 import * as VolumeActions from '../redux/actions.volume';
 

@@ -6,7 +6,7 @@ import Modal, { confirmModal } from '../../shared/components/Modal';
 import { buttonForm } from '../../shared/forms/ButtonForm';
 import TablePage from '../../shared/pages/TablePage';
 import SubnetCreateForm from '../forms/SubnetCreateForm';
-import * as Actions from '../redux/actions';
+import * as Actions from '../../console-common/redux/actions';
 import * as NetworkActions from '../redux/actions.network';
 
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import Page, { attach } from '../../shared/pages/Page';
-import * as Actions from '../redux/actions';
+import * as Actions from '../../console-common/redux/actions';
 import * as QuotaActions from '../redux/actions.quota';
 
 class C extends Page {

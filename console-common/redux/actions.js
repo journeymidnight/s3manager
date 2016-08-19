@@ -1,4 +1,4 @@
-import * as ActionTypes from '../../console-common/redux/constants';
+import * as ActionTypes from './constants';
 import { push } from 'react-router-redux';
 import Auth from '../services/auth';
 

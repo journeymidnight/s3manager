@@ -2,7 +2,7 @@ import React from 'react';
 import { push } from 'react-router-redux';
 import Page, { attach } from '../../shared/pages/Page';
 import VolumeForm from '../forms/VolumeForm';
-import { notifyAlert } from '../redux/actions';
+import { notifyAlert } from '../../console-common/redux/actions';
 import * as SnapshotActions from '../redux/actions.snapshot';
 import * as VolumeActions from '../redux/actions.volume';
 

@@ -3,7 +3,7 @@ import Time from 'react-time';
 import Page, { attach } from '../../shared/pages/Page';
 import { confirmModal } from '../../shared/components/Modal';
 import TicketReplyForm from '../forms/TicketReplyForm';
-import * as Actions from '../redux/actions';
+import * as Actions from '../../console-common/redux/actions';
 import * as TicketActions from '../redux/actions.ticket';
 
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { push } from 'react-router-redux';
 import Page, { attach } from '../../shared/pages/Page';
 import NetworkCreateForm from '../forms/NetworkCreateForm';
-import * as Actions from '../redux/actions';
+import * as Actions from '../../console-common/redux/actions';
 import * as NetworkActions from '../redux/actions.network';
 
 class C extends Page {

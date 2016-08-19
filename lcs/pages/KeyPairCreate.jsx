@@ -2,7 +2,7 @@ import React from 'react';
 import { push } from 'react-router-redux';
 import Page, { attach } from '../../shared/pages/Page';
 import KeyPairForm from '../forms/KeyPairForm';
-import { notify, notifyAlert } from '../redux/actions';
+import { notify, notifyAlert } from '../../console-common/redux/actions';
 import * as KeyPairActions from '../redux/actions.key_pair';
 
 class C extends Page {

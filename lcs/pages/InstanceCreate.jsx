@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import { push } from 'react-router-redux';
 import Page, { attach } from '../../shared/pages/Page';
 import InstanceCreateForm from '../forms/InstanceCreateForm';
-import * as Actions from '../redux/actions';
+import * as Actions from '../../console-common/redux/actions';
 import * as InstanceActions from '../redux/actions.instance';
 
 class C extends Page {

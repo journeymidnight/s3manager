@@ -5,7 +5,7 @@ import { reduxForm } from 'redux-form';
 import Time from 'react-time';
 import Modal, { confirmModal } from '../../shared/components/Modal';
 import EipMonitor from './EipMonitor';
-import * as Actions from '../redux/actions';
+import * as Actions from '../../console-common/redux/actions';
 import * as EipActions from '../redux/actions.eip';
 import * as InstanceActions from '../redux/actions.instance';
 import * as Validations from '../../shared/utils/validations';

@@ -2,8 +2,8 @@ import React from 'react';
 import { push } from 'react-router-redux';
 import Page, { attach } from '../../shared/pages/Page';
 import Header from '../../shared/components/Header';
-import * as Actions from '../redux/actions';
-import Auth from '../services/auth';
+import * as Actions from '../../console-common/redux/actions';
+import Auth from '../../console-common/services/auth';
 import Notify from '../../shared/components/Notify.jsx';
 import LoginForm from '../../shared/forms/LoginForm';
 

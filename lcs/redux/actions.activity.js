@@ -1,4 +1,4 @@
-import { notifyAlert, extendContext } from './actions';
+import { notifyAlert, extendContext } from '../../console-common/redux/actions';
 import IaaS, { ACTION_NAMES } from '../services/iaas';
 
 export function requestDescribeJobs(routerKey, regionId, filters) {

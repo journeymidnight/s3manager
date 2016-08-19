@@ -1,4 +1,4 @@
-import { notify, notifyAlert, extendContext } from './actions';
+import { notify, notifyAlert, extendContext } from '../../console-common/redux/actions';
 import IaaS, { ACTION_NAMES } from '../services/iaas';
 import i18n from '../../shared/i18n';
 

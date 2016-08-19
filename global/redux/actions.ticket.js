@@ -1,5 +1,5 @@
-import { notify, notifyAlert, extendContext } from './actions';
-import Auth from '../services/auth';
+import { notify, notifyAlert, extendContext } from '../../console-common/redux/actions';
+import Auth from '../../console-common/services/auth';
 import i18n from '../../shared/i18n';
 
 export function requestDescribeTicket(routerKey, ticketId) {

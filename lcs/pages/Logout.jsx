@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import * as Actions from '../redux/actions';
+import * as Actions from '../../console-common/redux/actions';
 
 class C extends React.Component {
 

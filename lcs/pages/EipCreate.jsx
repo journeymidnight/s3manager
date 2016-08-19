@@ -2,7 +2,7 @@ import React from 'react';
 import { push } from 'react-router-redux';
 import Page, { attach } from '../../shared/pages/Page';
 import EipForm from '../forms/EipForm';
-import { notifyAlert } from '../redux/actions';
+import { notifyAlert } from '../../console-common/redux/actions';
 import * as EipActions from '../redux/actions.eip';
 
 class C extends Page {
