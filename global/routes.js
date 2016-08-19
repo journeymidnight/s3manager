@@ -2,10 +2,10 @@ import React from 'react';
 import { Route, IndexRoute, IndexRedirect } from 'react-router';
 
 import NotFound from '../shared/pages/NotFound.jsx';
-import App from './pages/App.jsx';
-import Login from './pages/Login.jsx';
-import Logout from './pages/Logout.jsx';
-import Settings from './pages/Settings.jsx';
+import App from '../console-common/pages/App.jsx';
+import Login from '../console-common/pages/Login.jsx';
+import Logout from '../console-common/pages/Logout.jsx';
+import Settings from '../console-common/pages/Settings.jsx';
 import AccessKeyCreate from './pages/AccessKeyCreate.jsx';
 import AccessKeys from './pages/AccessKeys.jsx';
 import TicketCreate from './pages/TicketCreate.jsx';
