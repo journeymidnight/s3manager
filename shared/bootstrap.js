@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { Router, browserHistory } from 'react-router';
+import { Router } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import { Provider } from 'react-redux';
 import { I18nextProvider } from 'react-i18next';
@@ -42,15 +42,15 @@ export function removeLoader() {
   handleLoader();
 }
 
-function renderPage(store, routes) {
-  const history = syncHistoryWithStore(browserHistory, store);
+function renderPage(store, routes, history) {
+  const syncHistory = syncHistoryWithStore(history, store);
 
   if (process.env.NODE_ENV !== 'production') {
     render((
       <Provider store={store}>
         <div>
           <I18nextProvider i18n={i18n}>
-            <Router history={history} routes={routes} />
+            <Router history={syncHistory} routes={routes} />
           </I18nextProvider>
           <DevTools />
         </div>
@@ -61,7 +61,7 @@ function renderPage(store, routes) {
       <Provider store={store}>
         <div>
           <I18nextProvider i18n={i18n}>
-            <Router history={history} routes={routes} />
+            <Router history={syncHistory} routes={routes} />
           </I18nextProvider>
         </div>
       </Provider>

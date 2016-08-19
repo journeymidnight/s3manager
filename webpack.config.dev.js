@@ -6,6 +6,7 @@ module.exports = {
 
   entry: {
     lcs: './lcs/index.js',
+    global: './global/index.js',
     boss: './boss/index.js',
     vendor: [
       'axios',
@@ -63,7 +64,9 @@ module.exports = {
       { test: /\.jsx*$/, loader: 'babel!eslint',
         includes: [
           /lcs/,
+          /global/,
           /boss/,
+          /console-common/,
           /shared/,
         ],
         exclude: [

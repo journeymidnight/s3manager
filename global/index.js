@@ -2,6 +2,7 @@ import './scss/sub.scss';
 
 import Auth from '../console-common/services/auth';
 import rootReducer from '../console-common/redux/reducers';
+import { hashHistory } from 'react-router';
 import configureStore from '../shared/redux/store';
 import configureRoutes from './routes';
 
@@ -22,12 +23,12 @@ bootstrap((token, state, callback) => {
 
       store = configureStore(rootReducer, state);
       routes = configureRoutes(store);
-      callback(store, routes);
+      callback(store, routes, hashHistory);
     })
     .catch(() => {
-      callback(store, routes);
+      callback(store, routes, hashHistory);
     });
   } else {
-    callback(store, routes);
+    callback(store, routes, hashHistory);
   }
 });

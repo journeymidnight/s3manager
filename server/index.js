@@ -46,5 +46,48 @@ function createApp(module) {
   return app;
 }
 
+function createConsole() {
+  const endpoint = process.env[`lcs_endpoint`.toUpperCase()] || 'http://localhost:8080';
+
+  const app = new Express();
+  app.use(logger('dev'));
+  app.use('/asset', Express.static(path.resolve(__dirname, '../asset')));
+  app.use('/p', proxy(endpoint, {
+    forwardPath: (req) => {
+      return url.parse(req.url).path;
+    },
+  }));
+
+  app.use(devMiddleware);
+  app.use(hotMiddleware);
+
+  app.get('/lcs/', (req, res) => {
+    const html = fs
+    .readFileSync(`${__dirname}/../index.html`)
+    .toString()
+    .replace('<!-- JS_MODULE -->', `<script src="/dist/vendor.js"></script><script src="/dist/lcs.js"></script>`)
+    .replace('<!-- CSS_MODULE -->', `<link href="/dist/lcs.css" rel="stylesheet">`);
+
+    res.set('Content-Type', 'text/html');
+    res.send(html);
+  });
+
+  app.get('/g/', (req, res) => {
+    const html = fs
+    .readFileSync(`${__dirname}/../index.html`)
+    .toString()
+    .replace('<!-- JS_MODULE -->', `<script src="/dist/vendor.js"></script><script src="/dist/global.js"></script>`)
+    .replace('<!-- CSS_MODULE -->', `<link href="/dist/global.css" rel="stylesheet">`);
+
+    res.set('Content-Type', 'text/html');
+    res.send(html);
+  });
+
+  app.get('/', (req, res) => {
+    res.redirect('/lcs/');
+  });
+  return app;
+}
+
 createApp('boss').listen(9013);
-createApp('lcs').listen(9014);
+createConsole().listen(9014);
