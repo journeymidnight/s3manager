@@ -2,7 +2,7 @@ import store from 'store';
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 import { reducer as formReducer } from 'redux-form';
-import * as ActionTypes from './constants';
+import * as ActionTypes from '../../console-common/redux/constants';
 
 export const constReducer = (state = {}) => {
   return state;
