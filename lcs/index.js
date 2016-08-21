@@ -1,4 +1,4 @@
-import './scss/sub.scss';
+import '../console-common/scss/sub.scss';
 
 import Auth from '../console-common/services/auth';
 import rootReducer from '../console-common/redux/reducers';
