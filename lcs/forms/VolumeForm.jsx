@@ -1,10 +1,10 @@
 import React from 'react';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
+import NumericTextBox from '../../shared/components/NumericTextBox';
 import * as Validations from '../../shared/utils/validations';
 
 class F extends React.Component {
-
   componentDidMount() {
     const initialValues = {
       name: '',
@@ -14,6 +14,7 @@ class F extends React.Component {
     };
     this.props.initializeForm(initialValues);
   }
+
   render() {
     const { fields:
       { name, snapshotId, size, count },
@@ -65,13 +66,14 @@ class F extends React.Component {
           </div>
         </div>}
 
-        <div className={submitFailed && count.error ? 'form-group has-error' : 'form-group'}>
+        {count.value && <div className={submitFailed && count.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('count')}</label>
           <div className="col-sm-10">
-            <input type="text" className="form-control" {...count} />
-            {submitFailed && count.error && <div className="text-danger"><small>{count.error}</small></div>}
+            <input type="hidden" className="form-control" {...count} />
+            <NumericTextBox min={1} max={20} step={1} value={count.value} onChange={param => count.onChange(param)} />
+            {(submitFailed || count.error) && <div className="text-danger"><small>{count.error}</small></div>}
           </div>
-        </div>
+        </div>}
 
         <div className="form-actions">
           <button type="submit" className="btn btn-save" disabled={submitting}>
