@@ -72,6 +72,17 @@ function createConsole() {
     res.send(html);
   });
 
+  app.get('/los/', (req, res) => {
+    const html = fs
+      .readFileSync(`${__dirname}/../index.html`)
+      .toString()
+      .replace('<!-- JS_MODULE -->', `<script src="/dist/vendor.js"></script><script src="/dist/los.js"></script>`)
+      .replace('<!-- CSS_MODULE -->', `<link href="/dist/los.css" rel="stylesheet">`);
+
+    res.set('Content-Type', 'text/html');
+    res.send(html);
+  });
+
   app.get('/g/', (req, res) => {
     const html = fs
     .readFileSync(`${__dirname}/../index.html`)

@@ -60,6 +60,11 @@ class C extends React.Component {
         title: t('sidebarActivity'),
         icon: 'fa-sticky-note',
       }],
+      los: [{
+        path: 'demo',
+        title: t('demo'),
+        icon: 'fa-sticky-note',
+      }],
     };
   }
 

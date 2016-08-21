@@ -6,6 +6,7 @@ module.exports = {
 
   entry: {
     lcs: './lcs/index.js',
+    los: './los/index.js',
     global: './global/index.js',
     boss: './boss/index.js',
     vendor: [
@@ -64,6 +65,7 @@ module.exports = {
       { test: /\.jsx*$/, loader: 'babel!eslint',
         includes: [
           /lcs/,
+          /los/,
           /global/,
           /boss/,
           /console-common/,
