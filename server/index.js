@@ -84,7 +84,7 @@ function createConsole() {
     const defaultPath = allPaths.filter((item) => {
       return item.isDefault === true;
     })[0];
-    res.redirect(defaultPath);
+    res.redirect(defaultPath.path);
   });
 
   return app;
