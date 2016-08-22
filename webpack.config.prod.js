@@ -73,5 +73,7 @@ function generateConfig(module) {
 
 module.exports = [
   generateConfig('boss'),
-  generateConfig('console'),
+  generateConfig('lcs'),
+  generateConfig('los'),
+  generateConfig('global'),
 ];
