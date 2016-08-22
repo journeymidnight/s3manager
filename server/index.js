@@ -47,7 +47,7 @@ function createApp(module) {
 }
 
 function createConsole() {
-  const endpoint = process.env[`lcs_endpoint`.toUpperCase()] || 'http://localhost:8080';
+  const endpoint = process.env['console_endpoint'.toUpperCase()] || 'http://localhost:8080';
 
   const app = new Express();
   app.use(logger('dev'));
@@ -64,7 +64,7 @@ function createConsole() {
   const allPaths = [
     { path: '/lcs/', packageName: 'lcs', isDefault: true },
     { path: '/los/', packageName: 'los' },
-    { path: '/g/', packageName: 'global' }
+    { path: '/g/', packageName: 'global' },
   ];
 
   allPaths.forEach((item) => {
