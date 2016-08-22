@@ -1,7 +1,7 @@
 import expect from 'expect';
 import deepFreeze from 'deep-freeze';
-import * as Reducer from '../reducers';
-import * as ActionTypes from '../../../console-common/redux/reducers';
+import * as Reducer from '../../../console-common/redux/reducers';
+import * as ActionTypes from '../../../console-common/redux/constants';
 
 describe('RootReducer', () => {
   it('#EXTEND_CONTEXT', () => {
