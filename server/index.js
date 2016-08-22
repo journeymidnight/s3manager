@@ -34,10 +34,10 @@ function createApp(module) {
 
   app.use((req, res) => {
     const html = fs
-    .readFileSync(`${__dirname}/../index.html`)
-    .toString()
-    .replace('<!-- JS_MODULE -->', `<script src="/dist/vendor.js"></script><script src="/dist/${module}.js"></script>`)
-    .replace('<!-- CSS_MODULE -->', `<link href="/dist/${module}.css" rel="stylesheet">`);
+      .readFileSync(`${__dirname}/../index.html`)
+      .toString()
+      .replace('<!-- JS_MODULE -->', `<script src="/dist/vendor.js"></script><script src="/dist/${module}.js"></script>`)
+      .replace('<!-- CSS_MODULE -->', `<link href="/dist/${module}.css" rel="stylesheet">`);
 
     res.set('Content-Type', 'text/html');
     res.send(html);
@@ -61,42 +61,32 @@ function createConsole() {
   app.use(devMiddleware);
   app.use(hotMiddleware);
 
-  app.get('/lcs/', (req, res) => {
-    const html = fs
-    .readFileSync(`${__dirname}/../index.html`)
-    .toString()
-    .replace('<!-- JS_MODULE -->', `<script src="/dist/vendor.js"></script><script src="/dist/lcs.js"></script>`)
-    .replace('<!-- CSS_MODULE -->', `<link href="/dist/lcs.css" rel="stylesheet">`);
+  const allPaths = [
+    { path: '/lcs/', packageName: 'lcs', isDefault: true },
+    { path: '/los/', packageName: 'los' },
+    { path: '/g/', packageName: 'global' }
+  ];
 
-    res.set('Content-Type', 'text/html');
-    res.send(html);
-  });
+  allPaths.forEach((item) => {
+    app.get(item.path, (req, res) => {
+      const html = fs
+        .readFileSync(`${__dirname}/../index.html`)
+        .toString()
+        .replace('<!-- JS_MODULE -->', `<script src="/dist/vendor.js"></script><script src="/dist/${item.packageName}.js"></script>`)
+        .replace('<!-- CSS_MODULE -->', `<link href="/dist/${item.packageName}.css" rel="stylesheet">`);
 
-  app.get('/los/', (req, res) => {
-    const html = fs
-      .readFileSync(`${__dirname}/../index.html`)
-      .toString()
-      .replace('<!-- JS_MODULE -->', `<script src="/dist/vendor.js"></script><script src="/dist/los.js"></script>`)
-      .replace('<!-- CSS_MODULE -->', `<link href="/dist/los.css" rel="stylesheet">`);
-
-    res.set('Content-Type', 'text/html');
-    res.send(html);
-  });
-
-  app.get('/g/', (req, res) => {
-    const html = fs
-    .readFileSync(`${__dirname}/../index.html`)
-    .toString()
-    .replace('<!-- JS_MODULE -->', `<script src="/dist/vendor.js"></script><script src="/dist/global.js"></script>`)
-    .replace('<!-- CSS_MODULE -->', `<link href="/dist/global.css" rel="stylesheet">`);
-
-    res.set('Content-Type', 'text/html');
-    res.send(html);
+      res.set('Content-Type', 'text/html');
+      res.send(html);
+    });
   });
 
   app.get('/', (req, res) => {
-    res.redirect('/lcs/');
+    const defaultPath = allPaths.filter((item) => {
+      return item.isDefault === true;
+    })[0];
+    res.redirect(defaultPath);
   });
+
   return app;
 }
 
