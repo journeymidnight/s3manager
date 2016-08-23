@@ -62,9 +62,9 @@ function createConsole() {
   app.use(hotMiddleware);
 
   const allPaths = [
-    { path: '/lcs/', packageName: 'lcs', isDefault: true },
+    { path: '/lcs/', packageName: 'lcs' },
     { path: '/los/', packageName: 'los' },
-    { path: '/g/', packageName: 'global' },
+    { path: '/g/', packageName: 'global', isDefault: true },
   ];
 
   allPaths.forEach((item) => {
@@ -84,7 +84,7 @@ function createConsole() {
     const defaultPath = allPaths.filter((item) => {
       return item.isDefault === true;
     })[0];
-    res.redirect(defaultPath);
+    res.redirect(defaultPath.path);
   });
 
   return app;

@@ -42,7 +42,7 @@ const C = (props) => {
                 </a>
                 <ul className="dropdown-menu dropdown-menu-right">
                   {serviceSet.map((_service) => {
-                    return <li key={_service.serviceKey}><a href={`/${_service.serviceKey}`}>{t(`services.${_service.serviceKey}`)}</a></li>;
+                    return <li key={_service.serviceKey}><a href={`/${_service.serviceKey}/`}>{t(`services.${_service.serviceKey}`)}</a></li>;
                   })}
                 </ul>
               </li>}
