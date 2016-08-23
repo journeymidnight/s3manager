@@ -11,6 +11,10 @@ class DevOps {
   getMonitorData(region, params) {
     return this.call(region, 'GetMonitorData', params);
   }
+
+  describeAlerts(region, filters = {}) {
+    return this.call(region, 'DescribeAlarms', filters);
+  }
 }
 
 export default new DevOps();
