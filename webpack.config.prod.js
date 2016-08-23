@@ -43,8 +43,8 @@ function generateConfig(module) {
   config.output = {
     path: __dirname + '/dist/' + module,
     filename: '[name].[hash].js',
-    publicPath: '/',
-  },
+    publicPath: '/' + module + '/',
+  };
   config.plugins = [
     new ExtractTextPlugin('[name].[hash].css'),
     new webpack.optimize.OccurenceOrderPlugin(),
@@ -68,10 +68,21 @@ function generateConfig(module) {
     })
   ];
 
+  // hard coded
+  if (module !== 'boss') {
+    if (module === 'global') {
+      module = 'g';
+    }
+    config.output.path = __dirname + '/dist/console/' + module;
+    config.output.publicPath = '/' + module + '/';
+  }
+
   return config;
 }
 
 module.exports = [
   generateConfig('boss'),
-  generateConfig('console'),
+  generateConfig('lcs'),
+  generateConfig('los'),
+  generateConfig('global'),
 ];
