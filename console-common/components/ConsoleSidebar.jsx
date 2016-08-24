@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import NavLink from '../../shared/components/NavLink';
@@ -88,14 +87,14 @@ class C extends React.Component {
     return (
       <div className="nicescroll sidebar-wrapper" tabIndex="0">
         <div className="header-logo">
-          <Link to={`/${serviceKey}/`}>
+          <a href={`/${serviceKey}/`}>
             <img src="/asset/plato.white.svg" alt="logo" />
-          </Link>
-          <Link className="gitlab-text-container-link" to={`/${serviceKey}/`}>
+          </a>
+          <a className="gitlab-text-container-link" href={`/${serviceKey}/`}>
             <div className="gitlab-text-container">
               <h3>{t(`services.${serviceKey}`)}</h3>
             </div>
-          </Link>
+          </a>
         </div>
         <ul className="nav nav-sidebar">
           {navs.map((_nav) => {
