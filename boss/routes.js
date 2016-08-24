@@ -130,7 +130,9 @@ export default function configureRoutes(store) {
           <Route path="eips" component={RegionTab} >
             <Route path=":regionId" component={DevOpsEips} />
           </Route>
-          <Route path="alerts" component={DevOpsAlerts} />
+          <Route path="alerts" component={RegionTab} >
+            <Route path=":regionId" component={DevOpsAlerts} />
+          </Route>
         </Route>
       </Route>
       <Route path="*" component={NotFound} />
