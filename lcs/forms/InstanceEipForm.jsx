@@ -1,7 +1,7 @@
 import React from 'react';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
-import IaaS from '../services/iaas';
+import IaaS, { ACTION_NAMES } from '../services/iaas';
 import * as Validations from '../../shared/utils/validations';
 
 class InstanceEipForm extends React.Component {
@@ -16,7 +16,7 @@ class InstanceEipForm extends React.Component {
     const { region } = this.props;
 
     IaaS
-      .describeEips(region.regionId, {
+      .doAction(region.regionId, ACTION_NAMES.describeEips, {
         status: ['active'],
         limit: 100,
       })

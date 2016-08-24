@@ -68,7 +68,7 @@ class C extends TablePage {
                   <input type="checkbox" className="selected" onChange={this.onSelect(ticket.ticket)} checked={this.props.context.selected[ticket.ticket] === true} />
                 </td>
                 <td>
-                  <Link to={`/g/tickets/${ticket.ticketId}`}>
+                  <Link to={`/tickets/${ticket.ticketId}`}>
                     {ticket.ticketId}
                   </Link>
                 </td>

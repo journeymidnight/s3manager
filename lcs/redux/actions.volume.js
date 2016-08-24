@@ -41,7 +41,7 @@ export function requestDescribeVolumes(routerKey, regionId, filters) {
 export function requestCreateVolume(routerKey, regionId, volume) {
   return dispatch => {
     return IaaS
-      .doAction(regionId, ACTION_NAMES.createVolume, volume)
+      .doAction(regionId, ACTION_NAMES.createVolumes, volume)
       .promise
       .then((payload) => {
         dispatch(extendContext({ volume: payload }));
