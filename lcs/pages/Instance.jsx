@@ -530,7 +530,7 @@ class C extends Page {
                         <li>
                           <button
                             className="btn-page-action"
-                            disabled={['active', 'stopped'].indexOf(instance.status) === -1}
+                            disabled={['active', 'stopped'].indexOf(instance.status) === -1 || instance.eip}
                             onClick={this.associateEip}
                           >
                             {t('pageInstance.associateEip')}
@@ -539,7 +539,7 @@ class C extends Page {
                         <li>
                           <button
                             className="btn-page-action"
-                            disabled={['active', 'stopped'].indexOf(instance.status) === -1}
+                            disabled={['active', 'stopped'].indexOf(instance.status) === -1 || !instance.eip}
                             onClick={this.dissociateEip}
                           >
                             {t('pageInstance.dissociateEip')}
