@@ -167,7 +167,8 @@
 
     "services": {
         "g": "帐号信息",
-        "lcs": "云主机"
+        "lcs": "云主机",
+        "los": "对象存储"
     },
 
     "networkStatus": {

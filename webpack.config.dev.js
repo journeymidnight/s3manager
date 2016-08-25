@@ -5,7 +5,9 @@ module.exports = {
   devtool: 'eval-cheap-module-source-map',
 
   entry: {
-    console: './console/index.js',
+    lcs: './lcs/index.js',
+    los: './los/index.js',
+    global: './global/index.js',
     boss: './boss/index.js',
     vendor: [
       'axios',
@@ -62,8 +64,11 @@ module.exports = {
       { test: /\.scss$/, loader: ExtractTextPlugin.extract('style', 'css!sass') },
       { test: /\.jsx*$/, loader: 'babel!eslint',
         includes: [
-          /console/,
+          /lcs/,
+          /los/,
+          /global/,
           /boss/,
+          /console-common/,
           /shared/,
         ],
         exclude: [

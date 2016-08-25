@@ -21,3 +21,18 @@ export function requestGetMonitorData(routerKey, region, period, params) {
     });
   };
 }
+
+export function requestDescribeAlerts(routerKey, region, filters = {}) {
+  return dispatch => {
+    return DevOps
+    .describeAlerts(region, filters)
+    .promise
+    .then((payload) => {
+      payload.alertSet = payload.alarmSet;
+      dispatch(extendContext(payload, routerKey));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
