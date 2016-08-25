@@ -43,7 +43,7 @@ function generateConfig(module) {
   config.output = {
     path: __dirname + '/dist/' + module,
     filename: '[name].[hash].js',
-    publicPath: '/' + module + '/',
+    publicPath: '/',
   };
   config.plugins = [
     new ExtractTextPlugin('[name].[hash].css'),
