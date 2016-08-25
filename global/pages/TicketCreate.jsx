@@ -30,7 +30,7 @@ class C extends Page {
       ))
       .then(() => {
         resolve();
-        dispatch(push('/g/tickets'));
+        dispatch(push('/tickets'));
       }).catch((error) => {
         dispatch(Actions.notifyAlert(error.message));
         reject({ _error: error.message });
