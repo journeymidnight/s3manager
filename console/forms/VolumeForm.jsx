@@ -2,6 +2,7 @@ import React from 'react';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
 import NumericTextBox from '../../shared/components/NumericTextBox';
+import Slider from '../../shared/components/Slider';
 import * as Validations from '../../shared/utils/validations';
 
 class F extends React.Component {
@@ -51,18 +52,20 @@ class F extends React.Component {
           </div>
         </div>}
 
-        {!selectedSnapshot && <div className={submitFailed && size.error ? 'form-group has-error' : 'form-group'}>
+        {size.value && !selectedSnapshot && <div className={submitFailed && size.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('size')}</label>
           <div className="col-sm-10">
-            <input type="text" className="form-control" {...size} />
-            {submitFailed && size.error && <div className="text-danger"><small>{size.error}</small></div>}
+            <input type="hidden" className="form-control" {...size} />
+            <Slider min={1} max={100} step={10} value={size.value} onChange={param => size.onChange(param)} />
+            {(submitFailed || size.error) && <div className="text-danger"><small>{size.error}</small></div>}
           </div>
         </div>}
 
-        {selectedSnapshot && <div className="form-group">
+        {size.value && selectedSnapshot && <div className="form-group">
           <label className="control-label" >{t('size')}</label>
           <div className="col-sm-10">
-            <input type="text" className="form-control" value={selectedSnapshot.size} disabled="disabled" />
+            <input type="hidden" className="form-control" value={selectedSnapshot.size} disabled="disabled" />
+            <Slider min={1} max={100} step={10} value={size.value} onChange={param => size.onChange(param)} />
           </div>
         </div>}
 
