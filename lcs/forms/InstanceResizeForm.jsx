@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React from 'react';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
-import IaaS from '../services/iaas';
+import IaaS, { ACTION_NAMES } from '../services/iaas';
 import * as Validations from '../../shared/utils/validations';
 
 class InstanceResizeForm extends React.Component {
@@ -18,40 +18,40 @@ class InstanceResizeForm extends React.Component {
     const { region } = this.props;
 
     IaaS
-    .describeInstanceTypes(region.regionId, {
-      status: ['active'],
-      limit: 100,
-    })
-    .promise
-    .then((payload) => {
-      this.instanceTypeSet = payload.instanceTypeSet;
+      .doAction(region.regionId, ACTION_NAMES.describeInstanceTypes, {
+        status: ['active'],
+        limit: 100,
+      })
+      .promise
+      .then((payload) => {
+        this.instanceTypeSet = payload.instanceTypeSet;
 
-      const instanceTypes = {};
-      this.instanceTypeSet.forEach((instanceType) => {
-        if (!instanceTypes[instanceType.vcpus]) {
-          instanceTypes[instanceType.vcpus] = {};
-        }
-        if (!instanceTypes[instanceType.vcpus][instanceType.memory]) {
-          instanceTypes[instanceType.vcpus][instanceType.memory] = {};
-        }
-        if (!instanceTypes[instanceType.vcpus][instanceType.memory][instanceType.disk]) {
-          instanceTypes[instanceType.vcpus][instanceType.memory][instanceType.disk] = [];
-        }
-        instanceTypes[instanceType.vcpus][instanceType.memory][instanceType.disk].push(instanceType);
+        const instanceTypes = {};
+        this.instanceTypeSet.forEach((instanceType) => {
+          if (!instanceTypes[instanceType.vcpus]) {
+            instanceTypes[instanceType.vcpus] = {};
+          }
+          if (!instanceTypes[instanceType.vcpus][instanceType.memory]) {
+            instanceTypes[instanceType.vcpus][instanceType.memory] = {};
+          }
+          if (!instanceTypes[instanceType.vcpus][instanceType.memory][instanceType.disk]) {
+            instanceTypes[instanceType.vcpus][instanceType.memory][instanceType.disk] = [];
+          }
+          instanceTypes[instanceType.vcpus][instanceType.memory][instanceType.disk].push(instanceType);
+        });
+
+        const initialValues = {
+          vcpus: _.keys(instanceTypes)[0],
+          memory: _.keys(_.values(instanceTypes)[0])[0],
+          disk: _.keys(_.values(_.values(instanceTypes)[0])[0])[0],
+          instanceTypeId: _.values(_.values(_.values(instanceTypes)[0])[0])[0][0].instanceTypeId,
+        };
+
+        this.instanceTypes = instanceTypes;
+        this.props.initializeForm(initialValues);
+
+        this.setState({ initialized: true });
       });
-
-      const initialValues = {
-        vcpus: _.keys(instanceTypes)[0],
-        memory: _.keys(_.values(instanceTypes)[0])[0],
-        disk: _.keys(_.values(_.values(instanceTypes)[0])[0])[0],
-        instanceTypeId: _.values(_.values(_.values(instanceTypes)[0])[0])[0][0].instanceTypeId,
-      };
-
-      this.instanceTypes = instanceTypes;
-      this.props.initializeForm(initialValues);
-
-      this.setState({ initialized: true });
-    });
   }
 
   onChangeInstanceType(values) {
