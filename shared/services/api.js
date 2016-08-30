@@ -57,6 +57,7 @@ export const call = (method, url, payload, hook) => {
             window.location.reload();
             return;
           } else if (data.retCode === -1) {
+            window.console.log(data);
             reject({
               retCode: -1,
               message: i18n.t('networkIssue'),
