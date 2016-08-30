@@ -1,6 +1,7 @@
 import axios from 'axios';
 import store from 'store';
 import Promise from 'promise';
+import i18n from '../../shared/i18n';
 
 export const call = (method, url, payload, hook) => {
   const headers = {
@@ -55,8 +56,15 @@ export const call = (method, url, payload, hook) => {
             store.remove('token');
             window.location.reload();
             return;
+          } else if (data.retCode === -1) {
+            reject({
+              retCode: -1,
+              message: i18n.t('networkIssue'),
+              data: null,
+            });
+          } else {
+            reject(data);
           }
-          reject(data);
         }
       }
     })
@@ -64,9 +72,10 @@ export const call = (method, url, payload, hook) => {
       if (error.data.retCode) {
         reject(error.data);
       } else {
+        window.console.log(error);
         reject({
           retCode: -1,
-          message: error.data,
+          message: i18n.t('networkIssue'),
           data: null,
         });
       }
