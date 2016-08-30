@@ -40,7 +40,7 @@ class C extends Page {
         });
       }).catch((error) => {
         reject();
-        if (error.retCode === 1402) {
+        if (error.retCode === 4102) {
           dispatch(Actions.extendContext({
             projectSet: error.data.projectSet,
           }));
