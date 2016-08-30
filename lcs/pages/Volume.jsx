@@ -497,7 +497,7 @@ class C extends Page {
                         <li>
                           <button
                             className="btn-page-action"
-                            disabled={['active', 'inuse'].indexOf(volume.status) === -1}
+                            disabled={volume.status !== 'active'}
                             onClick={this.resizeVolume}
                           >
                             {t('pageVolume.resizeVolume')}
