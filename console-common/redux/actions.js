@@ -1,3 +1,4 @@
+import { push } from 'react-router-redux';
 import * as ActionTypes from './constants';
 import Auth from '../services/auth';
 
@@ -65,7 +66,7 @@ export function authLogout() {
 export function requestLogout() {
   return dispatch => {
     dispatch(authLogout());
-    window.location.hash = '#/login';
+    dispatch(push('/'));
   };
 }
 

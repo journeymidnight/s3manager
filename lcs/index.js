@@ -12,7 +12,7 @@ bootstrap((token, state, callback) => {
   document.title = state.env.appName;
   window.$('body').toggleClass('ui_charcoal ui_console');
 
-  let store = configureStore(rootReducer, state);
+  let store = configureStore(rootReducer, state, hashHistory);
   let routes = configureRoutes(store);
 
   if (token) {
@@ -21,7 +21,11 @@ bootstrap((token, state, callback) => {
     .then((context) => {
       state.global = context;
 
+<<<<<<< HEAD
       store = configureStore(rootReducer, state);
+=======
+      store = configureStore(rootReducer, state, hashHistory);
+>>>>>>> 9ad097915462551f4b1b9874cc3d223e42565025
       routes = configureRoutes(store);
       callback(store, routes, hashHistory);
     })

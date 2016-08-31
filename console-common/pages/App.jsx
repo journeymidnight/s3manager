@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
-import { push } from 'react-router-redux';
 import { translate } from 'react-i18next';
 import ConsoleHeader from '../../console-common/components/ConsoleHeader.jsx';
 import ConsoleSidebar from '../../console-common/components/ConsoleSidebar.jsx';
@@ -51,9 +50,14 @@ class App extends React.Component {
       if (currentRegion && !_.find(serviceMached.quotas, (q) => {
         return q.regionId === currentRegion;
       })) {
+        window.console.log(`Could not find service ${serviceMached.serviceKey} on region ${currentRegion}`);
         currentRegion = serviceMached.quotas[0].regionId;
+<<<<<<< HEAD:console-common/pages/App.jsx
         dispatch(push('/'));
         return;
+=======
+        window.console.log(`Redirect to region ${currentRegion}`);
+>>>>>>> 9ad097915462551f4b1b9874cc3d223e42565025:console-common/pages/App.jsx
       } else if (!currentRegion) {
         currentRegion = serviceMached.quotas[0].regionId;
       }

@@ -26,6 +26,15 @@ describe('AuthActions', () => {
   it('#requestLogout', () => {
     const expectedActions = [
       { type: ActionTypes.AUTH_LOGOUT },
+      {
+        payload: {
+          args: [
+            '/',
+          ],
+          method: 'push',
+        },
+        type: '@@router/CALL_HISTORY_METHOD',
+      },
     ];
 
     const store = mockStore();

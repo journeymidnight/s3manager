@@ -21,7 +21,7 @@ export const ACTION_NAMES = {
   modifyVolumeAttributes: 'ModifyVolumeAttributes',
   attachVolume: 'AttachVolume',
   detachVolumes: 'DetachVolumes',
-  resizeVolumes: 'ExtendVolumes',
+  resizeVolumes: 'ResizeVolumes',
   describeEips: 'DescribeEips',
   allocateEips: 'AllocateEips',
   releaseEips: 'ReleaseEips',
