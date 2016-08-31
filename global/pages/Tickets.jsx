@@ -52,7 +52,7 @@ class C extends TablePage {
         <thead>
           <tr>
             <th width="40">
-              <input type="checkbox" className="selected" onChange={this.onSelectAll(this.props.context.ticketSet.map((u) => { return u.ticket; }))} />
+              <input type="checkbox" className="selected" onChange={this.onSelectAll(this.props.context.ticketSet.map((u) => { return u.ticketId; }))} />
             </th>
             <th width="150">{t('id')}</th>
             <th>{t('title')}</th>
@@ -65,7 +65,7 @@ class C extends TablePage {
             return (
               <tr key={ticket.ticketId}>
                 <td>
-                  <input type="checkbox" className="selected" onChange={this.onSelect(ticket.ticket)} checked={this.props.context.selected[ticket.ticket] === true} />
+                  <input type="checkbox" className="selected" onChange={this.onSelect(ticket.ticketId)} checked={this.props.context.selected[ticket.ticketId] === true} />
                 </td>
                 <td>
                   <Link to={`/tickets/${ticket.ticketId}`}>
