@@ -208,44 +208,49 @@ class C extends Page {
                       </button>
                     </div>}
                   </div>
-                  <table className="table">
+                  <table className="table table-detail">
                     <tbody>
                       <tr>
                         <td>{t('id')}</td>
-                        <td>{network.networkId}</td>
+                        <td><span>{network.networkId}</span></td>
                       </tr>
                       <tr>
                         <td>{t('name')}</td>
                         <td>
-                        {network.name && <strong>{network.name}</strong>}
-                        {!network.name && <i className="text-muted">{t('noName')}</i>}
+                          <span>
+                          {network.name && <strong>{network.name}</strong>}
+                          {!network.name && <i className="text-muted">{t('noName')}</i>}
+                          </span>
                         </td>
                       </tr>
                       <tr>
                         <td>{t('description')}</td>
                         <td>
-                        {network.description && <strong>{network.description}</strong>}
-                        {!network.description && <i className="text-muted">{t('noName')}</i>}
+                          <span>{network.description || <i className="text-muted">{t('noName')}</i>}</span>
                         </td>
                       </tr>
                       <tr>
                         <td>{t('pageNetwork.externalGatewayIp')}</td>
                         <td>
-                        {network.externalGatewayIp && <strong>{network.externalGatewayIp}</strong>}
-                        {!network.externalGatewayIp && <i className="text-muted">{t('noName')}</i>}
+                          <span>
+                          {network.externalGatewayIp && <strong>{network.externalGatewayIp}</strong>}
+                          {!network.externalGatewayIp && <i className="text-muted">{t('noName')}</i>}
+                          </span>
                         </td>
                       </tr>
                       <tr>
                         <td>{t('status')}</td>
                         <td className={`i-status i-status-${network.status}`}>
-                          <i className="icon"></i>
-                          {t(`networkStatus.${network.status}`)}
-                          <br />
+                          <span>
+                            <i className="icon"></i>
+                            {t(`networkStatus.${network.status}`)}
+                            <br />
+                          </span>
                         </td>
                       </tr>
                       <tr>
                         <td>{t('created')}</td>
-                        <td>{moment.utc(network.created).local().format('YYYY-MM-DD HH:mm:ss')}</td>
+                        <td><span>{moment.utc(network.created).local().format('YYYY-MM-DD HH:mm:ss')}</span></td>
                       </tr>
                     </tbody>
                   </table>
