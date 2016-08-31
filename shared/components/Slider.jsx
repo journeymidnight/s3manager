@@ -7,20 +7,12 @@ class Slider extends React.Component {
     super(props);
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleKeyDown = this.handleKeyDown.bind(this);
     this.handleMouseDown = this.handleMouseDown.bind(this);
     this.handleBlur = this.handleBlur.bind(this);
     this.state = {
       min: this.props.min, max: this.props.max, step: this.props.step, value: this.props.value,
     };
-  }
-
-  componentDidMount() {
-    const myInput = parseInt(this.refs.myInput.value.trim(), 10);
-    const sliderBar = ReactDOM.findDOMNode(this.refs.sliderBar);
-    const sliderDot = ReactDOM.findDOMNode(this.refs.sliderDot);
-    const widthStep = 600 / this.state.max;
-    sliderBar.style.width = (myInput * widthStep).toString().concat('px');
-    sliderDot.style.left = (myInput * widthStep - 4).toString().concat('px');
   }
 
   handleMouseDown(e) {
@@ -46,13 +38,14 @@ class Slider extends React.Component {
       }
       sliderDot.style.left = dotLeft.toString().concat('px');
       sliderBar.style.width = barLeft.toString().concat('px');
-      that.refs.myInput.value = myValue;
       that.setState({
         min: that.state.min,
         max: that.state.max,
         step: that.state.step,
         value: myValue,
       });
+      that.refs.myInput.value = myValue;
+      that.props.onChange(myValue);
     };
     document.onmouseup = function () {
       document.onmousemove = null;
@@ -60,31 +53,19 @@ class Slider extends React.Component {
     };
   }
 
-  handleChange(e) {
+  handleKeyDown(e) {
     if (e.keyCode === 13) {
-      const sliderBar = ReactDOM.findDOMNode(this.refs.sliderBar);
-      const sliderDot = ReactDOM.findDOMNode(this.refs.sliderDot);
-      const widthStep = 600 / this.state.max;
       let myInput = Math.round(parseInt(this.refs.myInput.value.trim(), 10) / this.state.step) * this.state.step;
       if (myInput === 0) {
         myInput = this.state.min;
       }
 
-      let barLeft = myInput * widthStep;
-      let dotLeft = barLeft - 4;
-
       let myValue = myInput;
       if (myInput < 0) {
-        barLeft = this.state.min * widthStep;
-        dotLeft = (barLeft - 4 < 0) ? barLeft : (barLeft - 4);
         myValue = this.state.min;
       } else if (myInput >= this.state.max) {
-        barLeft = this.state.max * widthStep;
-        dotLeft = barLeft - 9;
         myValue = this.state.max;
       }
-      sliderDot.style.left = dotLeft.toString().concat('px');
-      sliderBar.style.width = barLeft.toString().concat('px');
       this.setState({
         min: this.state.min,
         max: this.state.max,
@@ -96,30 +77,45 @@ class Slider extends React.Component {
     }
   }
 
-  handleBlur() {
-    const sliderBar = ReactDOM.findDOMNode(this.refs.sliderBar);
-    const sliderDot = ReactDOM.findDOMNode(this.refs.sliderDot);
+  handleChange() {
+    console.log(this.refs.myInput.value);
+    console.log(this.state.step);
+    let myInput = parseInt(this.refs.myInput.value.trim(), 10);
+    console.log(myInput);
+    if (myInput === 0) {
+      myInput = this.state.min;
+    }
 
-    const widthStep = 600 / this.state.max;
+    let myValue = myInput;
+    if (myInput < 0) {
+      myValue = this.state.min;
+    } else if (myInput >= this.state.max) {
+      myValue = this.state.max;
+    }
+    this.setState({
+      min: this.state.min,
+      max: this.state.max,
+      step: this.state.step,
+      value: myValue,
+    });
+    this.refs.myInput.value = myValue;
+    if (myValue) {
+      this.props.onChange(myValue);
+    }
+  }
+
+  handleBlur() {
     let myInput = Math.round(parseInt(this.refs.myInput.value.trim(), 10) / this.state.step) * this.state.step;
     if (myInput === 0) {
       myInput = this.state.min;
     }
 
-    let barLeft = myInput * widthStep;
-    let dotLeft = barLeft - 4;
     let myValue = myInput;
     if (myInput < 0) {
-      barLeft = this.state.min * widthStep;
-      dotLeft = (barLeft - 4 < 0) ? barLeft : (barLeft - 4);
       myValue = this.state.min;
     } else if (myInput >= this.state.max) {
-      barLeft = this.state.max * widthStep;
-      dotLeft = barLeft - 9;
       myValue = this.state.max;
     }
-    sliderDot.style.left = dotLeft.toString().concat('px');
-    sliderBar.style.width = barLeft.toString().concat('px');
     this.setState({
       min: this.state.min,
       max: this.state.max,
@@ -131,13 +127,16 @@ class Slider extends React.Component {
   }
 
   render() {
+    const value = (this.state.value !== this.props.value && this.state.value) ? this.props.value : this.state.value;
+    const widthStep = 600 / this.state.max;
+    console.log((value * widthStep).toString().concat('px'));
     return (
       <div className="slider form-control col-sm-10" ref="slider">
         <div className="bar col-sm-5" ref="bar">
-          <div className="sliderBar" ref="sliderBar" />
-          <div className="sliderDot" ref="sliderDot" onMouseDown={this.handleMouseDown} />
+          <div className="sliderBar" ref="sliderBar" style={{ width: (value * widthStep).toString().concat('px') }} />
+          <div className="sliderDot" ref="sliderDot" onMouseDown={this.handleMouseDown} style={{ left: (value * widthStep - 4).toString().concat('px') }} />
         </div>
-        <input type="text" className="sliderInput" defaultValue={this.state.value} ref="myInput" onKeyDown={this.handleChange} onBlur={this.handleBlur} />
+        <input type="text" className="sliderInput" value={value} ref="myInput" onKeyDown={this.handleKeyDown} onBlur={this.handleBlur} onChange={this.handleChange} />
       </div>
     );
   }
