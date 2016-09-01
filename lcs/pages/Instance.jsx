@@ -455,38 +455,44 @@ class C extends Page {
                       </button>
                     </div>}
                   </div>
-                  <table className="table">
+                  <table className="table table-detail">
                     <tbody>
                       <tr>
                         <td width="100">{t('id')}</td>
                         <td>
-                          {instance.instanceId}
+                          <span>{instance.instanceId}</span>
                         </td>
                       </tr>
                       <tr>
                         <td>{t('name')}</td>
                         <td>
-                        {instance.name && <strong>{instance.name}</strong>}
-                        {!instance.name && <i className="text-muted">{t('noName')}</i>}
+                          <span>
+                          {instance.name && <strong>{instance.name}</strong>}
+                          {!instance.name && <i className="text-muted">{t('noName')}</i>}
+                          </span>
                         </td>
                       </tr>
                       <tr>
                         <td>{t('description')}</td>
                         <td>
-                        {instance.description && <span>{instance.description}</span>}
-                        {!instance.description && <i className="text-muted">{t('noName')}</i>}
+                          <span>
+                          {instance.description && <span>{instance.description}</span>}
+                          {!instance.description && <i className="text-muted">{t('noName')}</i>}
+                          </span>
                         </td>
                       </tr>
                       <tr>
                         <td>{t('status')}</td>
                         <td className={`i-status i-status-${instance.status}`}>
-                          <i className="icon"></i>
-                          {t(`instanceStatus.${instance.status}`)}
+                          <span>
+                            <i className="icon"></i>
+                            {t(`instanceStatus.${instance.status}`)}
+                          </span>
                         </td>
                       </tr>
                       <tr>
                         <td>{t('created')}</td>
-                        <td>{moment.utc(instance.created).local().format('YYYY-MM-DD HH:mm:ss')}</td>
+                        <td><span>{moment.utc(instance.created).local().format('YYYY-MM-DD HH:mm:ss')}</span></td>
                       </tr>
                     </tbody>
                   </table>
@@ -557,35 +563,36 @@ class C extends Page {
                       </ul>
                     </div>}
                   </div>
-                  <table className="table">
+                  <table className="table table-detail">
                     <tbody>
                       <tr>
                         <td>{t('image')}</td>
                         <td>
-                        {instance.image.name}
+                          <span>{instance.image.name}</span>
                         </td>
                       </tr>
                       <tr>
                         <td>{t('vcpus')}</td>
                         <td>
-                        {instance.currentVCPUs}
+                          <span>{instance.currentVCPUs}</span>
                         </td>
                       </tr>
                       <tr>
                         <td>{t('memory')}</td>
                         <td>
-                        {instance.currentMemory} MB
+                          <span>{instance.currentMemory} MB</span>
                         </td>
                       </tr>
                       <tr>
                         <td>{t('disk')}</td>
                         <td>
-                        {instance.currentDisk} GB
+                          <span>{instance.currentDisk} GB</span>
                         </td>
                       </tr>
                       <tr>
                         <td>{t('volume')}</td>
                         <td>
+                          <span>
                           {instance.volumes.map((volume) => {
                             return (<div>
                               <Link to={`${servicePath}/volumes/${volume.volumeId}`}>
@@ -593,31 +600,38 @@ class C extends Page {
                               </Link>
                             </div>);
                           })}
+                          </span>
                         </td>
                       </tr>
                       <tr>
                         <td>{t('network')}</td>
                         <td>
+                          <span>
                           {instance.networkId && <Link to={`${servicePath}/networks/${instance.networkId}`}>
                             {instance.networkId}
                           </Link>}
                           {!instance.networkId && <i className="text-muted">{t('noName')}</i>}
+                          </span>
                         </td>
                       </tr>
                       <tr>
                         <td>{t('privateIP')}</td>
                         <td>
-                        {instance.address && <span>{instance.address}</span>}
-                        {!instance.address && <i className="text-muted">{t('noName')}</i>}
+                          <span>
+                            {instance.address && <span>{instance.address}</span>}
+                            {!instance.address && <i className="text-muted">{t('noName')}</i>}
+                          </span>
                         </td>
                       </tr>
                       <tr>
                         <td>{t('publicIP')}</td>
                         <td>
+                          <span>
                           {instance.eip && <Link to={`${servicePath}/eips/${instance.eip.eipId}`}>
                             {instance.eip.eipId} ({instance.eip.address})
                           </Link>}
                           {!instance.eip && <i className="text-muted">{t('noName')}</i>}
+                          </span>
                         </td>
                       </tr>
                     </tbody>

@@ -60,6 +60,7 @@ class C extends TablePage {
             <th width="150">{t('id')}</th>
             <th>{t('name')}</th>
             <th>{t('status')}</th>
+            <th>{t('pageNetwork.externalGatewayIp')}</th>
             <th width="200">{t('created')}</th>
           </tr>
         </thead>
@@ -82,6 +83,9 @@ class C extends TablePage {
                 <td className={`i-status i-status-${network.status}`}>
                   <i className="icon"></i>
                   {t(`networkStatus.${network.status}`)}
+                </td>
+                <td>
+                  {network.externalGatewayIp || t('noName')}
                 </td>
                 <td><Time value={network.created} format="YYYY-MM-DD HH:mm:ss" /></td>
               </tr>

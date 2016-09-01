@@ -159,30 +159,34 @@ class C extends Page {
                       </ul>
                     </div>}
                   </div>
-                  <table className="table">
+                  <table className="table table-detail">
                     <tbody>
                       <tr>
                         <td>{t('id')}</td>
-                        <td>{keyPair.keyPairId}</td>
+                        <td><span>{keyPair.keyPairId}</span></td>
                       </tr>
                       <tr>
                         <td>{t('name')}</td>
                         <td>
-                        {keyPair.name && <strong>{keyPair.name}</strong>}
-                        {!keyPair.name && <i className="text-muted">{t('noName')}</i>}
+                          <span>
+                          {keyPair.name && <strong>{keyPair.name}</strong>}
+                          {!keyPair.name && <i className="text-muted">{t('noName')}</i>}
+                          </span>
                         </td>
                       </tr>
                       <tr>
                         <td>{t('status')}</td>
                         <td className={`i-status i-status-${keyPair.status}`}>
-                          <i className="icon"></i>
-                          {t(`keyPairStatus.${keyPair.status}`)}
-                          <br />
+                          <span>
+                            <i className="icon"></i>
+                            {t(`keyPairStatus.${keyPair.status}`)}
+                            <br />
+                          </span>
                         </td>
                       </tr>
                       <tr>
                         <td>{t('created')}</td>
-                        <td><Time value={keyPair.created} format="YYYY-MM-DD HH:mm:ss" /></td>
+                        <td><span><Time value={keyPair.created} format="YYYY-MM-DD HH:mm:ss" /></span></td>
                       </tr>
                     </tbody>
                   </table>
