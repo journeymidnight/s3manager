@@ -28,9 +28,7 @@ class C extends Page {
     const { dispatch } = this.props;
 
     const context = {
-      status: ['pending', 'active'],
-      selected: {
-      },
+      selected: {},
       currentPage: 1,
       size: 20,
       reverse: true,
