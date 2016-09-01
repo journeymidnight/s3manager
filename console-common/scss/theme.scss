@@ -11,6 +11,12 @@
                     border-bottom: none;
                 }
 
+                .table-detail > tbody > tr > td:nth-child(2) > span {
+                    max-width: 250px;
+                    display: inline-block;
+                    word-wrap: break-word;
+                }
+
                 .tabs {
                     @media (min-width: $screen-md-min) {
                         padding-left: 0px;

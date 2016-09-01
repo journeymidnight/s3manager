@@ -443,44 +443,48 @@ class C extends Page {
                       </ul>
                     </div>}
                   </div>
-                  <table className="table">
+                  <table className="table table-detail">
                     <tbody>
                       <tr>
                         <td>{t('id')}</td>
-                        <td>{eip.eipId}</td>
+                        <td><span>{eip.eipId}</span></td>
                       </tr>
                       <tr>
                         <td>{t('name')}</td>
                         <td>
-                        {eip.name && <strong>{eip.name}</strong>}
-                        {!eip.name && <i className="text-muted">{t('noName')}</i>}
+                          <span>
+                          {eip.name && <strong>{eip.name}</strong>}
+                          {!eip.name && <i className="text-muted">{t('noName')}</i>}
+                          </span>
                         </td>
                       </tr>
                       <tr>
                         <td>{t('bandwidth')}</td>
-                        <td>{eip.bandwidth}Mb</td>
+                        <td><span>{eip.bandwidth}Mb</span></td>
                       </tr>
                       <tr>
                         <td>{t('associateResource')}</td>
                         <td>
-                        {eip.resourceId || <i className="text-muted">{t('noName')}</i>}
+                          <span>{eip.resourceId || <i className="text-muted">{t('noName')}</i>}</span>
                         </td>
                       </tr>
                       <tr>
                         <td>{t('ip')}</td>
-                        <td>{eip.address}</td>
+                        <td><span>{eip.address}</span></td>
                       </tr>
                       <tr>
                         <td>{t('status')}</td>
                         <td className={`i-status i-status-${eip.status}`}>
-                          <i className="icon"></i>
-                          {t(`eipStatus.${eip.status}`)}
-                          <br />
+                          <span>
+                            <i className="icon"></i>
+                            {t(`eipStatus.${eip.status}`)}
+                            <br />
+                          </span>
                         </td>
                       </tr>
                       <tr>
                         <td>{t('created')}</td>
-                        <td><Time value={eip.created} format="YYYY-MM-DD HH:mm:ss" /></td>
+                        <td><span><Time value={eip.created} format="YYYY-MM-DD HH:mm:ss" /></span></td>
                       </tr>
                     </tbody>
                   </table>
