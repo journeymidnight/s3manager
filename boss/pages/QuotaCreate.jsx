@@ -21,6 +21,8 @@ class C extends Page {
       volumes: 2,
       volumeSize: 100,
       keyPairs: 2,
+      networks: 10,
+      snapshots: 10,
     };
   }
 

@@ -26,6 +26,8 @@ describe('AuthActions', () => {
   it('#requestLogout', () => {
     const expectedActions = [
       { type: ActionTypes.AUTH_LOGOUT },
+<<<<<<< HEAD:global/redux/__tests__/auth.actions.spec.js
+=======
       {
         payload: {
           args: [
@@ -35,6 +37,7 @@ describe('AuthActions', () => {
         },
         type: '@@router/CALL_HISTORY_METHOD',
       },
+>>>>>>> 9ad097915462551f4b1b9874cc3d223e42565025:global/redux/__tests__/auth.actions.spec.js
     ];
 
     const store = mockStore();

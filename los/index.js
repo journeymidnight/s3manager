@@ -12,6 +12,7 @@ bootstrap((token, state, callback) => {
   document.title = state.env.appName;
   window.$('body').toggleClass('ui_charcoal ui_console');
 
+
   let store = configureStore(rootReducer, state, hashHistory);
   let routes = configureRoutes(store);
 
@@ -20,6 +21,7 @@ bootstrap((token, state, callback) => {
     .promise
     .then((context) => {
       state.global = context;
+
 
       store = configureStore(rootReducer, state, hashHistory);
       routes = configureRoutes(store);
