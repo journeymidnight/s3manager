@@ -31,8 +31,10 @@ class Selector extends React.Component {
   }
 
   componentWillUpdate(nextProps) {
-    this.refs.showRegion.innerText = nextProps.defaultValue;
-    this.state.selectedSnapshot = nextProps.selectedSnapshot;
+    if (!nextProps.selectedSnapshot) {
+      this.refs.showRegion.innerText = nextProps.defaultValue;
+      this.state.selectedSnapshot = nextProps.selectedSnapshot;
+    }
   }
 
   handleClick(e) {
@@ -44,9 +46,13 @@ class Selector extends React.Component {
     if (regExp1.test(target.tagName)) {
       if (/hidden/.test(oUl.className)) {
         oUl.className = oUl.className.replace('hidden', 'show');
+      } else if (/show/.test(oUl.className)) {
+        oUl.className = oUl.className.replace('show', 'hidden');
       }
       if (/down/.test(oTriangle.className)) {
         oTriangle.className = oTriangle.className.replace('down', 'up');
+      } else if (/up/.test(oTriangle.className)) {
+        oTriangle.className = oTriangle.className.replace('up', 'down');
       }
     } else if (regExp2.test(target.tagName)) {
       this.refs.showRegion.innerText = target.innerText;
@@ -54,23 +60,22 @@ class Selector extends React.Component {
       if (/up/.test(oTriangle.className)) {
         oTriangle.className = oTriangle.className.replace('up', 'down');
       }
-      const data = this.props.data;
+      const data = this.state.data;
       for (let i = 0; i < data.length; i++) {
         if (data[i].name === target.innerText) {
           this.props.onChange(data[i].snapshotId);
-          this.setState({
-            data: this.state.data, defaultValue: this.state.defaultValue, selectedSnapshot: data[i],
-          });
+          this.setState({ data: this.state.data, defaultValue: this.state.defaultValue, selectedSnapshot: data[i] });
         }
       }
-    } else {
+    }
+    document.onclick = function () {
       if (/show/.test(oUl.className)) {
         oUl.className = oUl.className.replace('show', 'hidden');
       }
       if (/up/.test(oTriangle.className)) {
         oTriangle.className = oTriangle.className.replace('up', 'down');
       }
-    }
+    };
   }
 
   render() {

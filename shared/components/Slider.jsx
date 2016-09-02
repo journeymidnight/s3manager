@@ -72,45 +72,41 @@ class Slider extends React.Component {
         step: this.state.step,
         value: myValue,
       });
-      this.props.onChange(myInput);
+      this.props.onChange(myValue);
       this.refs.myInput.value = myValue;
     }
   }
 
   handleChange() {
     let myInput = parseInt(this.refs.myInput.value.trim(), 10);
-    if (myInput === 0) {
-      myInput = this.state.min;
+    if (!myInput) {
+      myInput = '';
     }
-
-    let myValue = myInput;
-    if (myInput < 0) {
-      myValue = this.state.min;
-    } else if (myInput >= this.state.max) {
-      myValue = this.state.max;
+    if (myInput > this.state.max) {
+      myInput = this.state.max;
     }
     this.setState({
       min: this.state.min,
       max: this.state.max,
       step: this.state.step,
-      value: myValue,
+      value: myInput,
     });
-    this.refs.myInput.value = myValue;
-    if (myValue) {
-      this.props.onChange(myValue);
+    this.refs.myInput.value = myInput;
+    if (myInput) {
+      this.props.onChange(myInput);
     }
   }
 
   handleBlur() {
     let myInput = Math.round(parseInt(this.refs.myInput.value.trim(), 10) / this.state.step) * this.state.step;
-    if (myInput === 0) {
+    if (!myInput) {
       myInput = this.state.min;
     }
 
     let myValue = myInput;
     if (myInput < 0) {
       myValue = this.state.min;
-    } else if (myInput >= this.state.max) {
+    } else if (myInput > this.state.max) {
       myValue = this.state.max;
     }
     this.setState({
@@ -119,7 +115,7 @@ class Slider extends React.Component {
       step: this.state.step,
       value: myValue,
     });
-    this.props.onChange(myInput);
+    this.props.onChange(myValue);
     this.refs.myInput.value = myValue;
   }
 
