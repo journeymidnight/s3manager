@@ -46,7 +46,7 @@ class F extends React.Component {
             {/* <select className="form-control" {...snapshotId}>
               <option value="">{t('pageVolume.selectSnapshotPlease')}</option>
               {this.props.availableSnapshots.map((snapshot) => {
-                return <option key={snapshot.snapshotId} value={snapshot.snapshotId}>{snapshot.name}</option>;
+                return <option key={snapshot.snapshotId} value={snapshot.snapshotId}>{snapshot.name} ({snapshot.snapshotId})</option>;
               })}
             </select> */}
             <Selector data={this.props.availableSnapshots} selectedSnapshot={selectedSnapshot} defaultValue={t('pageVolume.selectSnapshotPlease')} onChange={param => snapshotId.onChange(param)} />

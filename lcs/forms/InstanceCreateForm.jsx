@@ -116,11 +116,13 @@ class F extends React.Component {
         <div className="form-group">
           <label className="control-label" >{t('pageInstanceCreate.imageType')}</label>
           <div className="col-sm-10">
-            <label className="radio inline">
-              <input type="radio" value="public" onClick={() => { this.onChangeImageType('public'); }} checked={imageType.value === 'public'} /> {t('public_images')}
+            <label className="radio-inline">
+              <input type="radio" value="public" onChange={() => {}} onClick={() => { this.onChangeImageType('public'); }} checked={imageType.value === 'public'} />
+              {t('public_images')}
             </label>
             {this.props.privateImageSet.length > 0 && <label className="radio-inline">
-              <input type="radio" value="private" onClick={() => { this.onChangeImageType('private'); }} checked={imageType.value === 'private'} /> {t('private_images')}
+              <input type="radio" value="private" onChange={() => {}} onClick={() => { this.onChangeImageType('private'); }} checked={imageType.value === 'private'} />
+              {t('private_images')}
             </label>}
           </div>
         </div>
@@ -129,7 +131,9 @@ class F extends React.Component {
           <div className="col-sm-10">
             <select className="form-control" {...imageId}>
               {imageSet.map((image) => {
-                return <option key={image.imageId} value={image.imageId}>{image.name}</option>;
+                return imageType.value === 'public' ?
+                  <option key={image.imageId} value={image.imageId}>{image.name}</option> :
+                  <option key={image.imageId} value={image.imageId}>{image.name} ({image.imageId})</option>;
               })}
             </select>
           </div>
