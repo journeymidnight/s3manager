@@ -42,6 +42,11 @@ const C = (props) => {
             {props.totalPage}
           </a>
         </li>}
+        <li>
+          <span>
+            {props.t('totalItems')}{props.total}
+          </span>
+        </li>
       </ul>
     </div>
   );
@@ -52,6 +57,7 @@ C.propTypes = {
   totalPage: React.PropTypes.any,
   onRefresh: React.PropTypes.func,
   t: React.PropTypes.any,
+  total: React.PropTypes.number,
 };
 
 export default translate()(C);

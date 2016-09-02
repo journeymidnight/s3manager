@@ -68,7 +68,7 @@ class Selector extends React.Component {
         }
       }
     }
-    document.onclick = function () {
+    document.onclick = function A() {
       if (/show/.test(oUl.className)) {
         oUl.className = oUl.className.replace('show', 'hidden');
       }
