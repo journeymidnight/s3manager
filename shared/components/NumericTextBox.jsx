@@ -13,8 +13,16 @@ class NumericTextBox extends React.Component {
     };
   }
 
-  numChanged() {
-    this.props.onChange(this.state.data.value);
+  componentWillReceiveProps(nextProps) {
+    this.setState({ data: { value: nextProps.value, init: false, min: this.state.data.min, max: this.state.data.max, step: this.state.data.step } });
+  }
+
+  shouldComponentUpdate(nextProps) {
+    return nextProps.value !== this.state.data.value;
+  }
+
+  componentWillUpdate(nextProps) {
+    this.state.data.value = nextProps.value;
   }
 
   handleBlur() {
@@ -28,7 +36,7 @@ class NumericTextBox extends React.Component {
     this.refs.myInput.value = myInput;
     this.setState({ data: { value: myInput, init: false, min: this.state.data.min, max: this.state.data.max, step: this.state.data.step } });
     if (myInput !== 1) {
-      this.numChanged();
+      this.props.onChange(myInput);
     }
   }
 
@@ -36,7 +44,9 @@ class NumericTextBox extends React.Component {
     const myInput = this.refs.myInput.value.trim();
     this.refs.myInput.value = myInput;
     this.setState({ data: { value: myInput, init: false, min: this.state.data.min, max: this.state.data.max, step: this.state.data.step } });
-    setTimeout(this.numChanged, 1000);
+    if (this.refs.myInput.value) {
+      this.props.onChange(myInput);
+    }
   }
 
   handleClick(event) {
@@ -57,8 +67,9 @@ class NumericTextBox extends React.Component {
         this.refs.myInput.value = myInput;
       }
       this.setState({ data: { value: myInput, init: false, min: this.state.data.min, max: this.state.data.max, step: this.state.data.step } });
-      this.numChanged();
+      this.props.onChange(myInput);
     }
+    // const value = (this.state.data.value !== this.props.value && this.state.data.value) ? this.props.value : this.state.data.value;
   }
 
   render() {
