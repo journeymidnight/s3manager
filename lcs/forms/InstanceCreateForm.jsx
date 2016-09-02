@@ -131,7 +131,9 @@ class F extends React.Component {
           <div className="col-sm-10">
             <select className="form-control" {...imageId}>
               {imageSet.map((image) => {
-                return <option key={image.imageId} value={image.imageId}>{image.name}</option>;
+                return imageType.value === 'public' ?
+                  <option key={image.imageId} value={image.imageId}>{image.name}</option> :
+                  <option key={image.imageId} value={image.imageId}>{image.name} ({image.imageId})</option>;
               })}
             </select>
           </div>

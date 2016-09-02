@@ -44,7 +44,7 @@ class F extends React.Component {
             <select className="form-control" {...snapshotId}>
               <option value="">{t('pageVolume.selectSnapshotPlease')}</option>
               {this.props.availableSnapshots.map((snapshot) => {
-                return <option key={snapshot.snapshotId} value={snapshot.snapshotId}>{snapshot.name}</option>;
+                return <option key={snapshot.snapshotId} value={snapshot.snapshotId}>{snapshot.name} ({snapshot.snapshotId})</option>;
               })}
             </select>
             {submitFailed && snapshotId.error && <div className="text-danger"><small>{snapshotId.error}</small></div>}
