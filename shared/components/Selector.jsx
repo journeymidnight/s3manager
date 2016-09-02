@@ -6,7 +6,7 @@ class Selector extends React.Component {
     super(props);
 
     this.handleClick = this.handleClick.bind(this);
-    this.state = { data: this.props.data, defaultValue: this.props.defaultValue, selectedSnapshot: this.props.selectedSnapshot, };
+    this.state = { data: this.props.data, defaultValue: this.props.defaultValue, selectedSnapshot: this.props.selectedSnapshot };
   }
 
   componentDidMount() {
@@ -20,7 +20,7 @@ class Selector extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ data: nextProps.data, defaultValue: nextProps.defaultValue, selectedSnapshot: nextProps.selectedSnapshot, });
+    this.setState({ data: nextProps.data, defaultValue: nextProps.defaultValue, selectedSnapshot: nextProps.selectedSnapshot });
   }
 
   shouldComponentUpdate(nextProps) {

@@ -78,10 +78,7 @@ class Slider extends React.Component {
   }
 
   handleChange() {
-    console.log(this.refs.myInput.value);
-    console.log(this.state.step);
     let myInput = parseInt(this.refs.myInput.value.trim(), 10);
-    console.log(myInput);
     if (myInput === 0) {
       myInput = this.state.min;
     }
@@ -129,7 +126,6 @@ class Slider extends React.Component {
   render() {
     const value = (this.state.value !== this.props.value && this.state.value) ? this.props.value : this.state.value;
     const widthStep = 600 / this.state.max;
-    console.log((value * widthStep).toString().concat('px'));
     return (
       <div className="slider form-control col-sm-10" ref="slider">
         <div className="bar col-sm-5" ref="bar">

@@ -68,11 +68,7 @@ const C = (props) => {
 
                     return (
                       <li key={_region.regionId}>
-<<<<<<< HEAD:console-common/components/ConsoleHeader.jsx
-                        <a href={`${_region.consoleEndpoint || ''}/${service.serviceKey}`}>
-=======
                         <a href={`${_region.consoleEndpoint || ''}/${service.serviceKey}/`}>
->>>>>>> 9ad097915462551f4b1b9874cc3d223e42565025:console-common/components/ConsoleHeader.jsx
                           {_region.name}
                         </a>
                       </li>

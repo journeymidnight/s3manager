@@ -52,12 +52,7 @@ class App extends React.Component {
       })) {
         window.console.log(`Could not find service ${serviceMached.serviceKey} on region ${currentRegion}`);
         currentRegion = serviceMached.quotas[0].regionId;
-<<<<<<< HEAD:console-common/pages/App.jsx
-        dispatch(push('/'));
-        return;
-=======
         window.console.log(`Redirect to region ${currentRegion}`);
->>>>>>> 9ad097915462551f4b1b9874cc3d223e42565025:console-common/pages/App.jsx
       } else if (!currentRegion) {
         currentRegion = serviceMached.quotas[0].regionId;
       }
