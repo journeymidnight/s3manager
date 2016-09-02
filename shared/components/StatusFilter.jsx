@@ -2,10 +2,13 @@ import React from 'react';
 import { translate } from 'react-i18next';
 
 const C = (props) => {
+  const selectedFilter = props.statusOption.filter((option) => {
+    return props.filterStatus.toString() === option.status.toString();
+  })[0];
   return (
     <div className="dropdown">
       <button className="dropdown-menu-toggle" data-toggle="dropdown" type="button">
-        <span className="dropdown-toggle-text">{props.t('status')}</span>
+        <span className="dropdown-toggle-text">{props.t('status')} {selectedFilter ? ` (${selectedFilter.name})` : null}</span>
         <i className="fa fa-chevron-down"></i>
       </button>
       <div className="dropdown-menu dropdown-select dropdown-menu-selectable">
