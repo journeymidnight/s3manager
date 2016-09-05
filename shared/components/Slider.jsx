@@ -22,7 +22,7 @@ class Slider extends React.Component {
     const wholeLeft = e.clientX - sliderDot.offsetLeft;
     const widthStep = 600 / this.state.max;
 
-    document.onmousemove = function A(event) {
+    document.onmousemove = (event) => {
       let barLeft = parseInt(event.clientX - wholeLeft, 10);
       barLeft = Math.round(barLeft / that.state.step / widthStep) * that.state.step * widthStep;
       let myValue = Math.round(barLeft / widthStep);
@@ -47,7 +47,7 @@ class Slider extends React.Component {
       that.refs.myInput.value = myValue;
       that.props.onChange(myValue);
     };
-    document.onmouseup = function B() {
+    document.onmouseup = () => {
       document.onmousemove = null;
       document.onmouseup = null;
     };
