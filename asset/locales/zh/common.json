@@ -68,6 +68,8 @@
     "address": "地址",
     "resource": "资源",
 
+    "totalItems": "总条数 ",
+
     "lastCreated": "最新创建",
     "firstCreated": "最早创建",
 

@@ -74,6 +74,7 @@ export function requestDescribePrerequisites(routerKey, regionId) {
 }
 
 export function requestDescribeInstances(routerKey, regionId, filters) {
+  filters.verbose = true;
   return dispatch => {
     return IaaS
     .doAction(regionId, ACTION_NAMES.describeInstances, filters)

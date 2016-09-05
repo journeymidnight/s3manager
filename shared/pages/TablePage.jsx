@@ -148,6 +148,7 @@ class C extends Page {
       <div>
         {this.props.context.total > 0 && (
           <Pagination
+            total={total}
             onRefresh={this.onRefresh}
             currentPage={parseInt(offset / limit, 10) + 1}
             totalPage={parseInt((total - 1) / limit, 10) + 1}

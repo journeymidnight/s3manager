@@ -49,7 +49,12 @@ class F extends React.Component {
                 return <option key={snapshot.snapshotId} value={snapshot.snapshotId}>{snapshot.name} ({snapshot.snapshotId})</option>;
               })}
             </select> */}
-            <Selector data={this.props.availableSnapshots} selectedSnapshot={selectedSnapshot} defaultValue={t('pageVolume.selectSnapshotPlease')} onChange={param => snapshotId.onChange(param)} />
+            <Selector
+              data={this.props.availableSnapshots}
+              selectedSnapshot={selectedSnapshot}
+              defaultValue={t('pageVolume.selectSnapshotPlease')}
+              onChange={param => snapshotId.onChange(param)}
+            />
             {submitFailed && snapshotId.error && <div className="text-danger"><small>{snapshotId.error}</small></div>}
           </div>
         </div>}
