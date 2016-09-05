@@ -175,6 +175,15 @@ class C extends Page {
                         </td>
                       </tr>
                       <tr>
+                        <td>{t('description')}</td>
+                        <td>
+                          <span>
+                          {keyPair.description && <span>{keyPair.description}</span>}
+                          {!keyPair.description && <i className="text-muted">{t('noName')}</i>}
+                          </span>
+                        </td>
+                      </tr>
+                      <tr>
                         <td>{t('status')}</td>
                         <td className={`i-status i-status-${keyPair.status}`}>
                           <span>

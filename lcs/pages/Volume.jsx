@@ -543,6 +543,15 @@ class C extends Page {
                         </td>
                       </tr>
                       <tr>
+                        <td>{t('description')}</td>
+                        <td>
+                          <span>
+                          {volume.description && <span>{volume.description}</span>}
+                          {!volume.description && <i className="text-muted">{t('noName')}</i>}
+                          </span>
+                        </td>
+                      </tr>
+                      <tr>
                         <td>{t('size')}</td>
                         <td>
                           <span>

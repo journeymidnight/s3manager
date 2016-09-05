@@ -459,6 +459,15 @@ class C extends Page {
                         </td>
                       </tr>
                       <tr>
+                        <td>{t('description')}</td>
+                        <td>
+                          <span>
+                          {eip.description && <span>{eip.description}</span>}
+                          {!eip.description && <i className="text-muted">{t('noName')}</i>}
+                          </span>
+                        </td>
+                      </tr>
+                      <tr>
                         <td>{t('bandwidth')}</td>
                         <td><span>{eip.bandwidth}Mb</span></td>
                       </tr>
