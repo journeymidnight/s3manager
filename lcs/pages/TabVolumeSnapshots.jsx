@@ -24,7 +24,7 @@ class C extends TablePage {
 
     this.initTable(routerKey, {
       isTabPage: true,
-      status: ['pending', 'active', 'error'],
+      status: ['pending', 'active'],
     });
   }
 

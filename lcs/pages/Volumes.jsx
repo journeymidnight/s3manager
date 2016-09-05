@@ -23,7 +23,7 @@ class C extends TablePage {
     dispatch(Actions.setHeader(t('volumeManage'), `${servicePath}/volumes`));
 
     this.initTable(routerKey, {
-      status: ['pending', 'active', 'attaching', 'inuse', 'backup_ing', 'backup_restoring', 'error'],
+      status: ['pending', 'active', 'attaching', 'inuse', 'backup_ing', 'backup_restoring'],
     });
   }
 

@@ -32,7 +32,7 @@ import TabPrivateImages from './pages/TabPrivateImages.jsx';
 import TabPublicImages from './pages/TabPublicImages.jsx';
 import Image from './pages/Image.jsx';
 import TabVolumeSnapshots from './pages/TabVolumeSnapshots.jsx';
-import TabVolumeSnapshot from './pages/TabVolumeSnapshot.jsx';
+import VolumeSnapshot from './pages/VolumeSnapshot.jsx';
 import Activities from './pages/Activities.jsx';
 import Usage from './pages/Usage.jsx';
 
@@ -77,13 +77,13 @@ export default function configureRoutes(store) {
           <Route path="volume_snapshots" component={TabVolumeSnapshots} />
         </Route>
         <Route path="images/:imageId" component={Image} />
-        <Route path="snapshots/:snapshotId" component={TabVolumeSnapshot} />
+        <Route path="snapshots/:snapshotId" component={VolumeSnapshot} />
         <Route path="eips">
           <IndexRoute component={Eips} />
           <Route path="create" component={EipCreate} />
           <Route path=":eipId" component={Eip} />
         </Route>
-        <Route path="key_pairs" >
+        <Route path="key_pairs">
           <IndexRoute component={KeyPairs} />
           <Route path="create" component={KeyPairCreate} />
           <Route path=":keyPairId" component={KeyPair} />
