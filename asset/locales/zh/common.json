@@ -34,7 +34,7 @@
     "admin": "管理员",
     "cidr": "网段地址",
     "status": "状态",
-    "volume": "硬盘",
+    "volume": "云硬盘",
     "image": "映像",
     "instance": "云主机",
     "instanceType": "主机配置",
