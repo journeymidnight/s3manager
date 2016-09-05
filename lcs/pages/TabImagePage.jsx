@@ -159,7 +159,7 @@ class C extends TablePage {
       <div className="top-area">
         <div className="nav-text">
           <span className="light">
-            {t('publicImageManageDescription')}
+            {this.isPublicImage() ? t('publicImageManageDescription') : t('privateImageManageDescription')}
           </span>
         </div>
       </div>
