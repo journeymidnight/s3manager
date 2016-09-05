@@ -387,8 +387,8 @@
 
     "pageKeyPair": {
         "basic": "基本信息",
-        "updateKeyPair": "更新基本信息",
-        "deleteKeyPair": "删除秘钥"
+        "updateKeyPair": "更新",
+        "deleteKeyPair": "删除"
     },
 
     "pageEip": {
