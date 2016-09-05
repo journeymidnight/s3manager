@@ -105,6 +105,7 @@ class C extends TablePage {
             <th>{t('vcpus')}</th>
             <th>{t('memory')}</th>
             <th>{t('privateIP')}</th>
+            <th>{t('publicIP')}</th>
             <th width="200">{t('created')}</th>
           </tr>
         </thead>
@@ -134,6 +135,7 @@ class C extends TablePage {
               <td>{instance.currentVCPUs}</td>
               <td>{instance.currentMemory} MB</td>
               <td>{instance.address}</td>
+              <td>{instance.eipId ? instance.eip.address : t('noName')}</td>
               <td>{moment.utc(instance.created).local().format('YYYY-MM-DD HH:mm:ss')}</td>
             </tr>
           );

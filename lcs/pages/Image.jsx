@@ -159,30 +159,34 @@ class C extends Page {
                       </ul>
                     </div>}
                   </div>
-                  <table className="table">
+                  <table className="table table-detail">
                     <tbody>
                       <tr>
                         <td>{t('id')}</td>
-                        <td>{image.imageId}</td>
+                        <td><span>{image.imageId}</span></td>
                       </tr>
                       <tr>
                         <td>{t('name')}</td>
                         <td>
-                        {image.name && <strong>{image.name}</strong>}
-                        {!image.name && <i className="text-muted">{t('noName')}</i>}
+                          <span>
+                          {image.name && <strong>{image.name}</strong>}
+                          {!image.name && <i className="text-muted">{t('noName')}</i>}
+                          </span>
                         </td>
                       </tr>
                       <tr>
                         <td>{t('status')}</td>
                         <td className={`i-status i-status-${image.status}`}>
-                          <i className="icon"></i>
-                          {t(`imageStatus.${image.status}`)}
-                          <br />
+                          <span>
+                            <i className="icon"></i>
+                            {t(`imageStatus.${image.status}`)}
+                            <br />
+                          </span>
                         </td>
                       </tr>
                       <tr>
                         <td>{t('created')}</td>
-                        <td><Time value={image.created} format="YYYY-MM-DD HH:mm:ss" /></td>
+                        <td><span><Time value={image.created} format="YYYY-MM-DD HH:mm:ss" /></span></td>
                       </tr>
                     </tbody>
                   </table>

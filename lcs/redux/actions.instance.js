@@ -74,6 +74,7 @@ export function requestDescribePrerequisites(routerKey, regionId) {
 }
 
 export function requestDescribeInstances(routerKey, regionId, filters) {
+  filters.verbose = true;
   return dispatch => {
     return IaaS
     .doAction(regionId, ACTION_NAMES.describeInstances, filters)
@@ -246,7 +247,7 @@ export function requestConnectVNC(routerKey, regionId, instanceId) {
       const height = 430;
 
       const { host, port, token } = payload;
-      const url = `/vnc/${host}/${port}/${token}`;
+      const url = `lcs/#/vnc/${host}/${port}/${token}`;
       const id = Math.random().toString(36).slice(2);
 
       const newWindow = window.open(url, id, `height=${height},width=${width},modal=yes,alwaysRaised=yes,top=${top},left=${left}`);

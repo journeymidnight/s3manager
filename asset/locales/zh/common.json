@@ -68,6 +68,8 @@
     "address": "地址",
     "resource": "资源",
 
+    "totalItems": "总条数 ",
+
     "lastCreated": "最新创建",
     "firstCreated": "最早创建",
 
@@ -84,6 +86,7 @@
     "nothingHere": "没有任何数据。",
     "notSupportedYet": "暂时不支持此功能。",
     "noAnyAvailableRegions": "当前没有任何相关联的集群信息，请联系管理员分配集群配额。",
+    "networkIssue": "请检查网络状态。",
     "relogin": "点击重新登录",
     "attachSuccessed": "挂载成功。",
     "detachSuccessed": "卸载成功。",
@@ -334,7 +337,7 @@
         "keyPair": "SSH 密钥",
         "loginPassword": "密码",
         "passwordNotValid": "密码不符合规范。",
-        "passwordHint": "密码至少8位，并包括大小写字母及数字。",
+        "passwordHint": "密码至少8位，并包括字母及数字。",
         "instanceType": "选择配置",
         "image": "选择映像",
         "imageType": "映像类型",

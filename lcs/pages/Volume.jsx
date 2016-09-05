@@ -497,7 +497,7 @@ class C extends Page {
                         <li>
                           <button
                             className="btn-page-action"
-                            disabled={['active', 'inuse'].indexOf(volume.status) === -1}
+                            disabled={volume.status !== 'active'}
                             onClick={this.resizeVolume}
                           >
                             {t('pageVolume.resizeVolume')}
@@ -529,37 +529,45 @@ class C extends Page {
                       </button>
                     </div>}
                   </div>
-                  <table className="table">
+                  <table className="table table-detail">
                     <tbody>
                       <tr>
                         <td>{t('id')}</td>
-                        <td>{volume.volumeId}</td>
+                        <td><span>{volume.volumeId}</span></td>
                       </tr>
                       <tr>
                         <td>{t('name')}</td>
                         <td>
-                        {volume.name && <strong>{volume.name}</strong>}
-                        {!volume.name && <i className="text-muted">{t('noName')}</i>}
+                          <span>
+                          {volume.name && <strong>{volume.name}</strong>}
+                          {!volume.name && <i className="text-muted">{t('noName')}</i>}
+                          </span>
                         </td>
                       </tr>
                       <tr>
                         <td>{t('size')}</td>
                         <td>
-                          <strong>{volume.size}G</strong>
+                          <span>
+                            <strong>{volume.size}G</strong>
+                          </span>
                         </td>
                       </tr>
                       <tr>
                         <td>{t('attachInstance')}</td>
                         <td>
-                        {volume.instanceId || <i className="text-muted">{t('noName')}</i>}
+                          <span>
+                          {volume.instanceId || <i className="text-muted">{t('noName')}</i>}
+                          </span>
                         </td>
                       </tr>
                       <tr>
                         <td>{t('status')}</td>
                         <td className={`i-status i-status-${volume.status}`}>
-                          <i className="icon"></i>
-                          {t(`volumeStatus.${volume.status}`)}
-                          <br />
+                          <span>
+                            <i className="icon"></i>
+                            {t(`volumeStatus.${volume.status}`)}
+                            <br />
+                          </span>
                         </td>
                       </tr>
                       <tr>

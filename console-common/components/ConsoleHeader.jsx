@@ -68,7 +68,7 @@ const C = (props) => {
 
                     return (
                       <li key={_region.regionId}>
-                        <a href={`${_region.consoleEndpoint || ''}/${service.serviceKey}`}>
+                        <a href={`${_region.consoleEndpoint || ''}/${service.serviceKey}/`}>
                           {_region.name}
                         </a>
                       </li>

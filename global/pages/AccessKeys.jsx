@@ -22,7 +22,9 @@ class C extends TablePage {
     const { t, dispatch } = this.props;
     dispatch(Actions.setHeader(t('accessKeyManage'), '/access_keys'));
 
-    this.initTable(routerKey);
+    this.initTable(routerKey, {
+      status: ['active'],
+    });
   }
 
   refreshAction(routerKey, filters) {

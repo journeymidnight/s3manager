@@ -1,0 +1,54 @@
+.show {
+  display: block;
+}
+.hidden {
+  display: none;
+}
+.select ul {
+  list-style-type: none;
+  position: absolute;
+  top: 35px;
+  width: 97%;
+  border: 1px solid rgb(229,229,229);
+  padding-top: 5px;
+  z-index: 3;
+  background: white;
+}
+.select li {
+  margin-left: -35px;
+  margin-top: 3px;
+}
+.select li:hover {
+  cursor: default;
+  background: rgb(14,144,210);
+}
+.select p {
+  padding: 5px;
+  padding-left: 10px;
+}
+.select p:hover {
+  cursor: pointer;
+}
+.up{
+  position: absolute;
+  top: 10px;
+  left: 97%;
+	width: 0;
+  height: 0;
+  border: 5px solid rgb(85,85,85);
+  border-left-color: transparent;
+  border-top-color: transparent;
+  border-right-color: transparent;
+  margin-bottom: 3px;
+}
+.down{
+  position: absolute;
+  top: 15px;
+  left: 97%;
+	width: 0;
+  height: 0;
+  border: 5px solid rgb(85,85,85);
+  border-left-color: transparent;
+  border-bottom-color: transparent;
+  border-right-color: transparent;
+}
