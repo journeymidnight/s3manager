@@ -410,13 +410,13 @@
         "detachVolume": "卸载",
         "resizeVolume": "扩容",
         "monitor": "监控",
-        "snapshot": "快照",
-        "createSnapshot": "创建快照",
+        "snapshot": "备份",
+        "createSnapshot": "创建备份",
         "confirmDetachVolume": "确认要卸载云硬盘吗?",
         "noAvailableInstance": "没有可用的云主机",
         "validateSizeGreatThanInitialSize": "扩容的大小须大于当前大小",
-        "noSelectableSnapshot": "无可选快照",
-        "selectSnapshotPlease": "请选择快照"
+        "noSelectableSnapshot": "无可选备份",
+        "selectSnapshotPlease": "请选择备份"
     },
 
     "pageUsage": {
@@ -425,7 +425,7 @@
         "keyPairs": "SSH 密钥",
         "instances": "云主机",
         "vcpus": "vCPU",
-        "snapshots": "快照",
+        "snapshots": "备份",
         "volumes": "云硬盘个数",
         "memory": "内存(GB)",
         "images": "映像",
@@ -511,7 +511,7 @@
         "volumeSize": "云硬盘容量(GB)",
         "keyPairs": "SSH 密钥",
         "networks": "私有网络个数",
-        "snapshots": "快照个数"
+        "snapshots": "备份个数"
     },
 
     "monitor": {
@@ -597,9 +597,9 @@
         "CreatePortForwarding": "创建端口转发",
         "DeletePortForwardings": "删除端口转发",
         "ModifyPortForwardingAttributes": "修改端口转发属性",
-        "CreateSnapshots": "创建快照",
-        "DeleteSnapshots": "删除快照",
-        "ModifySnapshotAttributes": "更新快照属性"
+        "CreateSnapshots": "创建备份",
+        "DeleteSnapshots": "删除备份",
+        "ModifySnapshotAttributes": "更新备份属性"
     },
     
     "sidebarInstance": "主机列表",
