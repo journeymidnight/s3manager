@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import Time from 'react-time';
 import _ from 'lodash';
 import ButtonForm from '../../shared/forms/ButtonForm';
+import { confirmModal } from '../../shared/components/Modal';
 import StatusFilter from '../../shared/components/StatusFilter';
 import TimeSorter from '../../shared/components/TimeSorter';
 import { attach } from '../../shared/pages/Page';
@@ -34,17 +35,19 @@ class C extends TablePage {
   }
 
   onDelete() {
-    const { dispatch, routerKey, region } = this.props;
+    const { t, dispatch, routerKey, region } = this.props;
     const snapshotIds = _.keys(this.props.context.selected);
 
-    return new Promise((resolve, reject) => {
-      dispatch(SnapshotActions.requestDeleteSnapshots(routerKey, region.regionId, snapshotIds))
-        .then(() => {
-          resolve();
-          this.onRefresh({}, false)();
-        }).catch(() => {
-          reject();
-        });
+    confirmModal(t('confirmDelete'), () => {
+      return new Promise((resolve, reject) => {
+        dispatch(SnapshotActions.requestDeleteSnapshots(routerKey, region.regionId, snapshotIds))
+          .then(() => {
+            resolve();
+            this.onRefresh({}, false)();
+          }).catch(() => {
+            reject();
+          });
+      });
     });
   }
 

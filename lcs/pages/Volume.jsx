@@ -451,9 +451,7 @@ class C extends Page {
           <div className="clearfix">
             <div className="top-area">
               <div className="nav-text">
-                <i className="light">
-                  {volume.volumeId}
-                </i>
+                <span>{t('volume')}&nbsp;<i>{volume.volumeId}</i></span>
               </div>
             </div>
 
@@ -541,6 +539,15 @@ class C extends Page {
                           <span>
                           {volume.name && <strong>{volume.name}</strong>}
                           {!volume.name && <i className="text-muted">{t('noName')}</i>}
+                          </span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>{t('description')}</td>
+                        <td>
+                          <span>
+                          {volume.description && <span>{volume.description}</span>}
+                          {!volume.description && <i className="text-muted">{t('noName')}</i>}
                           </span>
                         </td>
                       </tr>

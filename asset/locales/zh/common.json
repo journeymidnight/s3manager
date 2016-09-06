@@ -34,7 +34,7 @@
     "admin": "管理员",
     "cidr": "网段地址",
     "status": "状态",
-    "volume": "硬盘",
+    "volume": "云硬盘",
     "image": "映像",
     "instance": "云主机",
     "instanceType": "主机配置",
@@ -387,8 +387,8 @@
 
     "pageKeyPair": {
         "basic": "基本信息",
-        "updateKeyPair": "更新基本信息",
-        "deleteKeyPair": "删除秘钥"
+        "updateKeyPair": "更新",
+        "deleteKeyPair": "删除"
     },
 
     "pageEip": {
@@ -428,7 +428,7 @@
         "snapshots": "快照",
         "volumes": "云硬盘个数",
         "memory": "内存(GB)",
-        "images": "镜像",
+        "images": "映像",
         "networks": "私有网络个数",
         "volumeSize": "云硬盘容量(GB)"
     },
@@ -505,7 +505,7 @@
         "instances": "云主机",
         "vCPUs": "vCPU",
         "memory": "内存(MB)",
-        "images": "镜像",
+        "images": "映像",
         "eIPs": "公网 IP",
         "volumes": "云硬盘个数",
         "volumeSize": "云硬盘容量(GB)",

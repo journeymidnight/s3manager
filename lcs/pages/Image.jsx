@@ -141,7 +141,7 @@ class C extends Page {
           <div className="clearfix">
             <div className="top-area">
               <div className="nav-text">
-                <span>{t('images')}&nbsp;<i>{image.imageId}</i></span>
+                <span>{t('image')}&nbsp;<i>{image.imageId}</i></span>
               </div>
             </div>
             <div className="row">
@@ -171,6 +171,15 @@ class C extends Page {
                           <span>
                           {image.name && <strong>{image.name}</strong>}
                           {!image.name && <i className="text-muted">{t('noName')}</i>}
+                          </span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>{t('description')}</td>
+                        <td>
+                          <span>
+                          {image.description && <span>{image.description}</span>}
+                          {!image.description && <i className="text-muted">{t('noName')}</i>}
                           </span>
                         </td>
                       </tr>
