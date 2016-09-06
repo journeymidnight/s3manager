@@ -358,7 +358,7 @@ class C extends Page {
       name: this.props.context.eip.name,
     };
     return (
-      <Modal title={t('pageEip.associateEip')} ref="associateModal" >
+      <Modal title={t('pageEip.associateResource')} ref="associateModal" >
         <EipAssociateForm onSubmit={this.onAssociate} availableInstances={availableInstances} initialValues={initialValues} />
       </Modal>
     );
