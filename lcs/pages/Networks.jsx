@@ -5,6 +5,7 @@ import Time from 'react-time';
 import { attach } from '../../shared/pages/Page';
 import TablePage from '../../shared/pages/TablePage';
 import ButtonForm from '../../shared/forms/ButtonForm';
+import { confirmModal } from '../../shared/components/Modal';
 import StatusFilter from '../../shared/components/StatusFilter';
 import TimeSorter from '../../shared/components/TimeSorter';
 import * as Actions from '../../console-common/redux/actions';
@@ -33,17 +34,20 @@ class C extends TablePage {
   }
 
   onDelete() {
-    const { dispatch, routerKey, region } = this.props;
-    const networkIds = _.keys(this.props.context.selected);
+    const { t, dispatch, routerKey, region } = this.props;
 
-    return new Promise((resolve, reject) => {
-      dispatch(NetworkActions.requestDeleteNetworks(routerKey, region.regionId, networkIds))
-        .then(() => {
-          resolve();
-          this.onRefresh({}, false)();
-        }).catch(() => {
-          reject();
-        });
+    confirmModal(t('confirmDelete'), () => {
+      const networkIds = _.keys(this.props.context.selected);
+
+      return new Promise((resolve, reject) => {
+        dispatch(NetworkActions.requestDeleteNetworks(routerKey, region.regionId, networkIds))
+          .then(() => {
+            resolve();
+            this.onRefresh({}, false)();
+          }).catch(() => {
+            reject();
+          });
+      });
     });
   }
 

@@ -4,6 +4,7 @@ import Time from 'react-time';
 import { Link } from 'react-router';
 import TablePage from '../../shared/pages/TablePage';
 import ButtonForm from '../../shared/forms/ButtonForm';
+import { confirmModal } from '../../shared/components/Modal';
 import StatusFilter from '../../shared/components/StatusFilter';
 import TimeSorter from '../../shared/components/TimeSorter';
 import * as Actions from '../../console-common/redux/actions';
@@ -46,17 +47,19 @@ class C extends TablePage {
   }
 
   onDelete() {
-    const { dispatch, routerKey, region } = this.props;
+    const { t, dispatch, routerKey, region } = this.props;
     const imageIds = _.keys(this.props.context.selected);
 
-    return new Promise((resolve, reject) => {
-      dispatch(ImageActions.requestDeleteImages(routerKey, region.regionId, imageIds))
-        .then(() => {
-          resolve();
-          this.onRefresh({}, false)();
-        }).catch(() => {
-          reject();
-        });
+    confirmModal(t('confirmDelete'), () => {
+      return new Promise((resolve, reject) => {
+        dispatch(ImageActions.requestDeleteImages(routerKey, region.regionId, imageIds))
+          .then(() => {
+            resolve();
+            this.onRefresh({}, false)();
+          }).catch(() => {
+            reject();
+          });
+      });
     });
   }
 
