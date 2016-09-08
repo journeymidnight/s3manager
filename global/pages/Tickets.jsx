@@ -115,7 +115,7 @@ class C extends TablePage {
             </a>
           </div>
           <div className="filter-item inline">
-            <input type="search" ref="search" placeholder={t('filterByIdorName')} className="form-control" onKeyPress={this.onSearchKeyPress} />
+            <input type="search" ref="search" placeholder={t('filterByIdorTitle')} className="form-control" onKeyPress={this.onSearchKeyPress} />
           </div>
           <div className="pull-right">
             <TimeSorter isReverse={this.props.context.reverse} onRefresh={this.onRefresh} />
