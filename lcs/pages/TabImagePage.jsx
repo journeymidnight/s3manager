@@ -20,7 +20,7 @@ class C extends TablePage {
 
   initialize(routerKey) {
     const { t, dispatch, servicePath } = this.props;
-    dispatch(Actions.setHeader(t('publicImageManage'), `${servicePath}/images_snapshots`));
+    dispatch(Actions.setHeader(this.isPublicImage() ? t('publicImageManage') : t('privateImageManage'), `${servicePath}/images_snapshots`));
 
     this.initTable(routerKey, {
       isTabPage: true,
