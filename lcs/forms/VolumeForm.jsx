@@ -3,7 +3,6 @@ import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
 import NumericTextBox from '../../shared/components/NumericTextBox';
 import Slider from '../../shared/components/Slider';
-import Selector from '../../shared/components/Selector';
 import * as Validations from '../../shared/utils/validations';
 
 class F extends React.Component {
@@ -40,15 +39,16 @@ class F extends React.Component {
           </div>
         </div>
 
-        {this.props.availableSnapshots.length > 0 && <div className={submitFailed && snapshotId.error ? 'form-group has-error' : 'form-group'}>
+        <input type="hidden" className="form-control" {...snapshotId} />
+        {/* this.props.availableSnapshots.length > 0 && <div className={submitFailed && snapshotId.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('pageVolume.snapshot')}</label>
           <div className="col-sm-10">
-            {/* <select className="form-control" {...snapshotId}>
+            { <select className="form-control" {...snapshotId}>
               <option value="">{t('pageVolume.selectSnapshotPlease')}</option>
               {this.props.availableSnapshots.map((snapshot) => {
                 return <option key={snapshot.snapshotId} value={snapshot.snapshotId}>{snapshot.name} ({snapshot.snapshotId})</option>;
               })}
-            </select> */}
+            </select> }
             <Selector
               data={this.props.availableSnapshots}
               selectedSnapshot={selectedSnapshot}
@@ -57,7 +57,7 @@ class F extends React.Component {
             />
             {submitFailed && snapshotId.error && <div className="text-danger"><small>{snapshotId.error}</small></div>}
           </div>
-        </div>}
+        </div> */}
 
         {size.value && !selectedSnapshot && <div className={submitFailed && size.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('size')}</label>

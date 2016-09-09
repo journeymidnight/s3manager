@@ -3,7 +3,6 @@ import { push } from 'react-router-redux';
 import Page, { attach } from '../../shared/pages/Page';
 import VolumeForm from '../forms/VolumeForm';
 import { notifyAlert } from '../../console-common/redux/actions';
-import * as SnapshotActions from '../redux/actions.snapshot';
 import * as VolumeActions from '../redux/actions.volume';
 
 class C extends Page {
@@ -13,10 +12,10 @@ class C extends Page {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  initialize() {
+  /* initialize() {
     const { dispatch, region, routerKey } = this.props;
     dispatch(SnapshotActions.requestDescribeSnapshots(routerKey, region.regionId, { status: ['active'] }));
-  }
+  }*/
 
   onSubmit(values) {
     const { dispatch, region, routerKey, servicePath } = this.props;

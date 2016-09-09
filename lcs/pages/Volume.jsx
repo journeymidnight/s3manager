@@ -501,7 +501,7 @@ class C extends Page {
                             {t('pageVolume.resizeVolume')}
                           </button>
                         </li>
-                        <li>
+                        {/* <li>
                           <button
                             className="btn-page-action"
                             disabled={['active', 'inuse'].indexOf(volume.status) === -1}
@@ -509,7 +509,7 @@ class C extends Page {
                           >
                             {t('pageVolume.createSnapshot')}
                           </button>
-                        </li>
+                        </li>*/}
                         <li>
                           <button
                             className="btn-page-action"
