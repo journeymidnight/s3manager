@@ -32,7 +32,7 @@ class C extends Page {
           dispatch(push(`${servicePath}/networks`));
           resolve();
         }).catch((error) => {
-          dispatch(Actions.notifyAlert(error.message));
+          dispatch(Actions.notifyAlert(error.displayMsg || error.message));
           reject({ _error: error.message });
         });
     });

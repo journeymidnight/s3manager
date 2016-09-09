@@ -289,9 +289,6 @@ export function requestCaptureInstance(routerKey, regionId, instanceId, name) {
     .promise
     .then(() => {
       dispatch(notify(i18n.t('capturePending')));
-    })
-    .catch((error) => {
-      dispatch(notifyAlert(error.message));
     });
   };
 }
