@@ -289,8 +289,9 @@ class C extends Page {
       .then(() => {
         resolve();
         this.refs.resizeModal.hide();
-      }).catch(() => {
-        reject();
+      }).catch((error) => {
+        dispatch(Actions.notifyAlert(error.displayMsg || error.message));
+        reject({ _error: error.message });
       });
     });
   }

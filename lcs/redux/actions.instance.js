@@ -226,9 +226,6 @@ export function requestResizeInstances(routerKey, regionId, instanceIds, instanc
     .promise
     .then(() => {
       dispatch(notify(i18n.t('resizePending')));
-    })
-    .catch((error) => {
-      dispatch(notifyAlert(error.message));
     });
   };
 }
