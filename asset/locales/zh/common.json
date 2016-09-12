@@ -153,7 +153,7 @@
     "usageManage": "资源概览",
 
     "ticketManage": "工单管理",
-    "ticketManageDescription": "添加、删除和修改工单信息。",
+    "ticketManageDescription": "添加、追加和关闭工单。",
 
     "projectRoleAdmin": "管理账号",
     "projectRoleUser": "使用账户",
