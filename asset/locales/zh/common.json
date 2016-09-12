@@ -450,7 +450,8 @@
         "closeTicket": "关闭工单",
         "reply": "回复",
         "closed": "此工单已关闭。",
-        "created": "创建时间"
+        "created": "创建时间",
+        "confirmClose": "确认要关闭该工单吗？"
     },
 
     "pageVolumeCreate": {

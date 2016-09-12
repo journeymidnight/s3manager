@@ -48,7 +48,7 @@ class C extends Page {
 
     const { t, dispatch, routerKey, params } = this.props;
 
-    confirmModal(t('confirmDelete'), () => {
+    confirmModal(t('pageTicket.confirmClose'), () => {
       dispatch(TicketActions.requestCloseTickets(routerKey, [params.ticketId]));
     });
   }
