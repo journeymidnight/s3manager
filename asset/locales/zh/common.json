@@ -75,7 +75,8 @@
 
     "selectRegion": "选择区域",
     "filterByIdorName": "用ID或名称过滤...",
-    "filterByIdorTitle": "用ID或名称标题...",
+    "filterByIdorTitle": "用ID或标题过滤...",
+    "filterByName": "用名称过滤...",
 
     "createSuccessed": "添加成功。",
     "updateSuccessed": "保存成功。",
