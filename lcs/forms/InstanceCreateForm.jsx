@@ -104,7 +104,7 @@ class F extends React.Component {
     if (isSelectedWindowsImage) {
       loginMode.onChange('password');
     }
-    const defaultUser = isSelectedWindowsImage ? 'admin' : 'root';
+    const defaultUser = isSelectedWindowsImage ? 'leuser' : 'leuser';
 
     if (!vcpus.value) {
       // not initialized
@@ -116,11 +116,11 @@ class F extends React.Component {
         <div className="form-group">
           <label className="control-label" >{t('pageInstanceCreate.imageType')}</label>
           <div className="col-sm-10">
-            <label className="radio-inline">
+            <label className="radio inline">
               <input type="radio" value="public" onChange={() => {}} onClick={() => { this.onChangeImageType('public'); }} checked={imageType.value === 'public'} />
               {t('public_images')}
             </label>
-            {this.props.privateImageSet.length > 0 && <label className="radio-inline">
+            {this.props.privateImageSet.length > 0 && <label className="radio inline">
               <input type="radio" value="private" onChange={() => {}} onClick={() => { this.onChangeImageType('private'); }} checked={imageType.value === 'private'} />
               {t('private_images')}
             </label>}
