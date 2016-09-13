@@ -45,11 +45,11 @@ class C extends Page {
                   {t('private_images')}
                 </Link>
               </li>
-              <li className={`pull-left ${(active === 'volume_snapshots') ? 'active' : ''}`}>
+              {/* <li className={`pull-left ${(active === 'volume_snapshots') ? 'active' : ''}`}>
                 <Link data-placement="left" to={`${servicePath}/images_snapshots/volume_snapshots`}>
                   {t('volume_snapshots')}
                 </Link>
-              </li>
+              </li>*/}
             </ul>
             <div>
               {this.props.children}

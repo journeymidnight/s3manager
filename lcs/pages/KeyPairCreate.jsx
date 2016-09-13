@@ -35,7 +35,7 @@ class C extends Page {
             dispatch(notify(t('createSuccessed')));
           }, 200);
         }).catch((error) => {
-          dispatch(notifyAlert(error.message));
+          dispatch(notifyAlert(error.displayMsg || error.message));
           reject({ _error: error.message });
         });
     });

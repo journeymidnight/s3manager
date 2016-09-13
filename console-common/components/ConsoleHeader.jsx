@@ -37,7 +37,7 @@ const C = (props) => {
           <div className="navbar-left">
             <ul className="nav navbar-nav">
               {serviceSet && <li className="dropdown">
-                <a href="#" className="dropdown-toggle" role="button">
+                <a href="javascript:void(0);" className="dropdown-toggle" role="button">
                   {t('productAndService')} <span className="caret"></span>
                 </a>
                 <ul className="dropdown-menu dropdown-menu-right">
@@ -51,7 +51,7 @@ const C = (props) => {
           <div className="navbar-collapse collapse">
             <ul className="nav navbar-nav pull-right">
               {regionSet && <li className="dropdown">
-                <a href="#" className="dropdown-toggle" role="button">
+                <a href="javascript:void(0);" className="dropdown-toggle" role="button">
                   {service.region && <span><i className="fa fa-codepen"></i> {service.region.name}</span>}
                   {!service.region && <span><i className="fa fa-globe"></i> {t('globalRegion')}</span>}
                   &nbsp;<span className="caret"></span>
@@ -82,7 +82,7 @@ const C = (props) => {
                 </a>
               </li>
               <li className="dropdown">
-                <a href="#" className="dropdown-toggle" role="button">
+                <a href="javascript:void(0);" className="dropdown-toggle" role="button">
                   {auth.username} <span className="caret"></span>
                 </a>
                 <ul className="dropdown-menu dropdown-menu-right">
@@ -98,7 +98,7 @@ const C = (props) => {
                 </ul>
               </li>
               <li className="dropdown">
-                <a href="#" className="dropdown-toggle" role="button">
+                <a href="javascript:void(0);" className="dropdown-toggle" role="button">
                   <i className="fa fa-language"></i>
                 </a>
                 <ul className="dropdown-menu dropdown-menu-right">
