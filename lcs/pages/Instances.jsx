@@ -8,6 +8,7 @@ import { buttonForm } from '../../shared/forms/ButtonForm';
 import StatusFilter from '../../shared/components/StatusFilter';
 import TimeSorter from '../../shared/components/TimeSorter';
 import TablePage from '../../shared/pages/TablePage';
+import SearchBox from '../../shared/components/SearchBox';
 import * as Actions from '../../console-common/redux/actions';
 import * as InstanceActions from '../redux/actions.instance';
 
@@ -194,7 +195,7 @@ class C extends TablePage {
             <StatusFilter statusOption={statusOption} filterStatus={this.props.context.status} onRefresh={this.onRefresh} />
           </div>
           <div className="filter-item inline">
-            <input type="search" ref="search" placeholder={t('filterByIdorName')} className="form-control" onKeyPress={this.onSearchKeyPress} />
+            <SearchBox ref="searchBox" placeholder={t('filterByIdorName')} onEnterPress={this.onSearchKeyPress} onButtonClick={this.onSearchButtonClick} />
           </div>
           <div className="pull-right">
             <TimeSorter isReverse={this.props.context.reverse} onRefresh={this.onRefresh} />

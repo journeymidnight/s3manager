@@ -5,6 +5,7 @@ import { Link } from 'react-router';
 import { attach } from '../../shared/pages/Page';
 import TablePage from '../../shared/pages/TablePage';
 import ButtonForm from '../../shared/forms/ButtonForm';
+import SearchBox from '../../shared/components/SearchBox';
 import * as ProjectActions from '../redux/actions.project';
 import * as Actions from '../redux/actions';
 
@@ -107,7 +108,7 @@ class C extends TablePage {
             </a>
           </div>
           <div className="filter-item inline">
-            <input type="search" ref="search" placeholder={t('filterByIdorName')} className="form-control" onKeyPress={this.onSearchKeyPress} />
+            <SearchBox ref="searchBox" placeholder={t('filterByIdorName')} onEnterPress={this.onSearchKeyPress} onButtonClick={this.onSearchButtonClick} />
           </div>
           <div className="pull-right">
             <div className="dropdown inline prepend-left-10">
