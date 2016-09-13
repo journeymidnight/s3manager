@@ -4,7 +4,6 @@ import _ from 'lodash';
 import Time from 'react-time';
 import { attach } from '../../shared/pages/Page';
 import TablePage from '../../shared/pages/TablePage';
-import ButtonForm from '../../shared/forms/ButtonForm';
 import StatusFilter from '../../shared/components/StatusFilter';
 import TimeSorter from '../../shared/components/TimeSorter';
 import SearchBox from '../../shared/components/SearchBox';
@@ -53,9 +52,6 @@ class C extends TablePage {
       <table className="table">
         <thead>
           <tr>
-            <th width="40">
-              <input type="checkbox" className="selected" onChange={this.onSelectAll(this.props.context.ticketSet.map((u) => { return u.ticketId; }))} />
-            </th>
             <th width="150">{t('id')}</th>
             <th>{t('title')}</th>
             <th width="150">{t('status')}</th>
@@ -66,9 +62,6 @@ class C extends TablePage {
           {this.props.context.ticketSet.map((ticket) => {
             return (
               <tr key={ticket.ticketId}>
-                <td>
-                  <input type="checkbox" className="selected" onChange={this.onSelect(ticket.ticketId)} checked={this.props.context.selected[ticket.ticketId] === true} />
-                </td>
                 <td>
                   <Link to={`/tickets/${ticket.ticketId}`}>
                     {ticket.ticketId}
@@ -138,11 +131,6 @@ class C extends TablePage {
           </div>
           <div className="pull-right">
             <TimeSorter isReverse={this.props.context.reverse} onRefresh={this.onRefresh} />
-          </div>
-        </div>
-        <div className={Object.keys(this.props.context.selected).length > 0 ? '' : 'hidden'}>
-          <div className="filter-item inline">
-            <ButtonForm onSubmit={this.onDelete} text={t('delete')} type="btn-danger" />
           </div>
         </div>
       </div>
