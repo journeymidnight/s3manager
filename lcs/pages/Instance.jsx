@@ -646,11 +646,6 @@ class C extends Page {
                       {t('pageInstance.monitor')}
                     </Link>
                   </li>
-                  <li className={`pull-left ${(active === 'output') ? 'active' : ''}`}>
-                    <Link data-placement="left" to={`${servicePath}/instances/${instance.instanceId}/output`}>
-                      {t('pageInstance.output')}
-                    </Link>
-                  </li>
                 </ul>
                 <div>
                   {React.cloneElement(this.props.children, { instance })}

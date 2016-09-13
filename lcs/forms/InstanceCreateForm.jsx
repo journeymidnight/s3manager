@@ -104,7 +104,7 @@ class F extends React.Component {
     if (isSelectedWindowsImage) {
       loginMode.onChange('password');
     }
-    const defaultUser = isSelectedWindowsImage ? 'admin' : 'root';
+    const defaultUser = isSelectedWindowsImage ? 'leuser' : 'leuser';
 
     if (!vcpus.value) {
       // not initialized
