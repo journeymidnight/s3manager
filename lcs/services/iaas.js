@@ -49,6 +49,7 @@ export const ACTION_NAMES = {
   unsetExternalGateway: 'UnsetExternalGateway',
   deleteNetworks: 'DeleteNetworks',
   modifyNetworkAttributes: 'ModifyNetworkAttributes',
+  updateExternalGatewayBandwidth: 'UpdateExternalGatewayBandwidth',
   describeInstanceTypes: 'DescribeInstanceTypes',
   describeInstances: 'DescribeInstances',
   createInstances: 'CreateInstances',

@@ -5,10 +5,10 @@ import { reduxForm } from 'redux-form';
 import Time from 'react-time';
 import Modal, { confirmModal } from '../../shared/components/Modal';
 import EipMonitor from './EipMonitor';
+import BandwidthUpdateForm from '../forms/BandwidthUpdateForm';
 import * as Actions from '../../console-common/redux/actions';
 import * as EipActions from '../redux/actions.eip';
 import * as InstanceActions from '../redux/actions.instance';
-import * as Validations from '../../shared/utils/validations';
 
 let EipUpdateForm = (props) => {
   const { fields:
@@ -123,75 +123,6 @@ EipAssociateForm = reduxForm({
   fields: ['name', 'instanceId'],
   validate: EipAssociateForm.validate,
 })(translate()(EipAssociateForm));
-
-class BandwidthUpdateForm extends React.Component {
-
-  componentDidMount() {
-    this.props.initializeForm({ name: this.props.eip.name });
-  }
-
-  render() {
-    const { fields:
-      { name, bandwidth },
-      handleSubmit,
-      submitting,
-      submitFailed,
-      t,
-      invalid,
-    } = this.props;
-    return (
-      <form className="form-horizontal" onSubmit={handleSubmit}>
-        <div className="modal-body">
-          <div className={submitFailed && name.error ? 'form-group has-error' : 'form-group'}>
-            <label className="control-label" >{t('name')}</label>
-            <div className="col-sm-10">
-              <input type="text" className="form-control" disabled {...name} />
-              {submitFailed && name.error && <div className="text-danger"><small>{name.error}</small></div>}
-            </div>
-          </div>
-          <div className={submitFailed && bandwidth.error ? 'form-group has-error' : 'form-group'}>
-            <label className="control-label" >{t('bandwidth')}</label>
-            <div className="col-sm-10">
-              <input type="text" className="form-control" {...bandwidth} />
-              {submitFailed && bandwidth.error && <div className="text-danger"><small>{bandwidth.error}</small></div>}
-            </div>
-          </div>
-        </div>
-        <div className="modal-footer">
-          <button type="button" className="btn btn-default" data-dismiss="modal">{t('closeModal')}</button>
-          <button type="submit" className="btn btn-save" disabled={submitting || invalid}>
-            {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('submit')}
-          </button>
-        </div>
-      </form>
-    );
-  }
-}
-
-
-BandwidthUpdateForm.propTypes = {
-  fields: React.PropTypes.object.isRequired,
-  error: React.PropTypes.string,
-  invalid: React.PropTypes.bool,
-  handleSubmit: React.PropTypes.func.isRequired,
-  submitting: React.PropTypes.bool.isRequired,
-  submitFailed: React.PropTypes.bool.isRequired,
-  initializeForm: React.PropTypes.func.isRequired,
-  eip: React.PropTypes.object.isRequired,
-  t: React.PropTypes.any,
-};
-
-BandwidthUpdateForm.validate = (values) => {
-  const errors = {};
-  errors.bandwidth = Validations.integer(values.bandwidth);
-  return errors;
-};
-
-BandwidthUpdateForm = reduxForm({
-  form: 'BandwidthUpdateForm',
-  fields: ['name', 'bandwidth'],
-  validate: BandwidthUpdateForm.validate,
-})(translate()(BandwidthUpdateForm));
 
 class C extends Page {
 
@@ -509,7 +440,7 @@ class C extends Page {
           <EipUpdateForm onSubmit={this.onUpdate} initialValues={eip} />
         </Modal>
         <Modal title={t('pageEip.updateBandwidth')} ref="bandwidthUpdateModal" >
-          <BandwidthUpdateForm onSubmit={this.onUpdateBandwidth} eip={eip} />
+          <BandwidthUpdateForm onSubmit={this.onUpdateBandwidth} resourceName={eip.name} originalBandwidth={eip.bandwidth} />
         </Modal>
         {this.props.context.availableInstances && this.props.context.availableInstances.length && this.renderAssociateModal()}
       </div>

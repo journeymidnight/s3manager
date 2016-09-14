@@ -380,6 +380,8 @@
         "updateNetwork": "更新",
         "setExternalGateway": "开通公网网关",
         "unsetExternalGateway": "关闭公网网关",
+        "updateExternalGatewayBandwidth": "更新外网网关带宽",
+        "externalGatewayBandwidth":"外网网关带宽",
         "portForwarding": "端口转发",
         "deleteNetwork": "删除",
         "externalGatewayIp": "公网网关 IP",
