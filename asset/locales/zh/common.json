@@ -678,5 +678,14 @@
         }
     },
 
-    "smallScreen": "低宽度的屏幕中可能会影响组件的正常布局。"
+    "smallScreen": "低宽度的屏幕中可能会影响组件的正常布局。",
+
+
+    "bucketList": "空间管理",
+    "bucketListDescription": "存储空间管理",
+
+    "resourceMonitor": "资源监控",
+    "resourceMonitorDescription": "资源监控描述",
+
+    "bucketsDeletedSuccess": "Buckets删除成功"
 }

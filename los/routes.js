@@ -1,10 +1,13 @@
 import React from 'react';
-import { Route, IndexRedirect } from 'react-router';
+import { Route, IndexRoute, IndexRedirect } from 'react-router';
 import Login from '../console-common/pages/Login.jsx';
 import Logout from '../console-common/pages/Logout.jsx';
 import NotFound from '../shared/pages/NotFound.jsx';
 import App from '../console-common/pages/App.jsx';
-import Demo from './pages/Demo.jsx';
+import BucketList from './pages/BucketList.jsx';
+import BucketCreate from './pages/BucketCreate.jsx';
+import BucketDetail from './pages/BucketDetail.jsx';
+import ObjectManagement from './pages/ObjectManagement.jsx';
 
 export default function configureRoutes(store) {
   function requireAuth(nextState, replace) {
@@ -20,9 +23,16 @@ export default function configureRoutes(store) {
     <Route>
       <Route path="/login" component={Login} />
       <Route path="/logout" component={Logout} />
-      <Route path="/" component={App} onEnter={requireAuth} >
-        <IndexRedirect to="demo" />
-        <Route path="demo" component={Demo} />
+      <Route path="/" component={App} onEnter={requireAuth}>
+        <IndexRedirect to="buckets" />
+        <Route path="buckets">
+          <IndexRoute component={BucketList} />
+          <Route path="create" component={BucketCreate} />
+          <Route path=":bucketName">
+            <IndexRoute component={BucketDetail} />
+            <Route path="objects" component={ObjectManagement} />
+          </Route>
+        </Route>
       </Route>
       <Route path="*" component={NotFound} />
     </Route >
