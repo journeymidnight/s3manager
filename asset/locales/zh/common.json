@@ -687,5 +687,9 @@
     "resourceMonitor": "资源监控",
     "resourceMonitorDescription": "资源监控描述",
 
-    "bucketsDeletedSuccess": "Buckets删除成功"
+    "bucketsDeletedSuccess": "空间删除成功",
+
+    "pageBucketCreate": {
+        "createBucket": "添加空间"
+    }
 }
