@@ -38,7 +38,7 @@ class IAM {
     });
   }
   deleteProjectRole(projectId, userIds) {
-    return this.call('DeleteProjectRole', {
+    return this.call('DeleteProjectRoles', {
       projectId,
       userIds,
     });
