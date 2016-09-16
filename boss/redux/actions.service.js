@@ -235,3 +235,18 @@ export function requestCreateInstanceType(routerKey, service, instanceType) {
     });
   };
 }
+
+export function requestDeleteServices(routerKey, serviceIds) {
+  return dispatch => {
+    return IAM
+    .deleteServices(serviceIds)
+    .promise
+    .then((payload) => {
+      dispatch(notify(i18n.t('deleteSuccess')));
+      dispatch(extendContext(payload, routerKey));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}

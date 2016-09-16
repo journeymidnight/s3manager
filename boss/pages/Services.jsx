@@ -4,6 +4,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import { attach } from '../../shared/pages/Page';
 import TablePage from '../../shared/pages/TablePage';
+import ButtonForm from '../../shared/forms/ButtonForm';
 import * as ServiceActions from '../redux/actions.service';
 import * as Actions from '../redux/actions';
 
@@ -47,25 +48,32 @@ class C extends TablePage {
       <table className="table">
         <thead>
           <tr>
+            <th width="40">
+              <input type="checkbox" className="selected" onChange={this.onSelectAll(this.props.context.serviceSet.map((u) => { return u.serviceId; }))} />
+            </th>
             <th width="150">{t('name')}</th>
+            <th>{t('region')}</th>
+            <th>{t('service')}</th>
             <th>{t('formServiceForm.publicEndpoint')}</th>
-            <th>{t('formServiceForm.manageEndpoint')}</th>
-            <th width="200">{t('created')}</th>
-            <th />
+            <th width="250">{t('created')}</th>
           </tr>
         </thead>
         <tbody>
         {this.props.context.serviceSet.map((service) => {
           return (
             <tr key={service.serviceId}>
-              <td><Link to={`/services/${service.serviceId}`}>{service.serviceKey} ( {service.regionId} )</Link></td>
+              <td>
+                <input type="checkbox" className="selected" onChange={this.onSelect(service.serviceId)} checked={this.props.context.selected[service.serviceId] === true} />
+              </td>
+              <td>{service.regionId}</td>
+              <td>{t(`services.${service.serviceKey}`)}</td>
               <td>{service.publicEndpoint}</td>
-              <td>{service.manageEndpoint}</td>
               <td>{moment.utc(service.created).local().format('YYYY-MM-DD HH:mm:ss')}</td>
               <td>
-                <Link className="btn btn-sm btn-close" to={`/${service.serviceKey}/${service.serviceId}`}>
-                  <i className="fa fa-cog" /> 配置
-                </Link>
+                <div className="btn-group">
+                  <Link className="btn btn-sm btn-info" to={`/services/${service.serviceId}`}>基本配置</Link>
+                  <Link className="btn btn-sm btn-success" to={`/${service.serviceKey}/${service.serviceId}`}>服务配置</Link>
+                </div>
               </td>
             </tr>
           );
@@ -94,7 +102,16 @@ class C extends TablePage {
   }
 
   renderFilters() {
-    return <div />;
+    const { t } = this.props;
+    return (
+      <div>
+        <div className={Object.keys(this.props.context.selected).length > 0 ? 'gray-content-block second-block' : 'hidden'}>
+          <div className="filter-item inline">
+            <ButtonForm onSubmit={this.onDelete} text={t('delete')} type="btn-danger" />
+          </div>
+        </div>
+      </div>
+    );
   }
 }
 

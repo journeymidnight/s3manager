@@ -3,6 +3,9 @@ import { call as rawCall } from '../../shared/services/api';
 export const projectRoleAdmin = 1;
 export const projectRoleUser = 2;
 
+export const serviceKeyLCS = 'lcs';
+export const serviceKeyLOS = 'los';
+
 class IAM {
   call(action, params) {
     const payload = Object.assign({}, params);
@@ -65,6 +68,11 @@ class IAM {
   }
   modifyService(service) {
     return this.call('ModifyServiceAttributes', service);
+  }
+  deleteServices(serviceIds) {
+    return this.call('DeleteServices', {
+      serviceIds,
+    });
   }
   describeRegions(filters = {}) {
     return this.call('DescribeRegions', filters);
