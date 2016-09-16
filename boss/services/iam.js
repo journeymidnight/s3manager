@@ -99,6 +99,13 @@ class IAM {
       quota,
     });
   }
+  deleteQuotas(serviceKey, regionId, projectIds) {
+    return this.call('DeleteQuotas', {
+      serviceKey,
+      regionId,
+      projectIds,
+    });
+  }
   describeAdmins(filters = {}) {
     return this.call('DescribeAdmins', filters);
   }

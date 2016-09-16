@@ -69,6 +69,21 @@ export function requestAssignQuota(serviceKey, regionId, projectId, quota) {
   };
 }
 
+export function requestDeleteQuotas(routerKey, serviceKey, regionId, projectIds) {
+  return dispatch => {
+    return IAM
+    .deleteQuotas(serviceKey, regionId, projectIds)
+    .promise
+    .then((payload) => {
+      dispatch(notify(i18n.t('deleteSuccess')));
+      dispatch(extendContext(payload, routerKey));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
 export function requestDescribeService(serviceId) {
   return dispatch => {
     return IAM
@@ -145,7 +160,6 @@ export function requestDeleteImages(routerKey, service, imageIds) {
   };
 }
 
-
 export function requestSyncImages(routerKey, service) {
   return (dispatch) => {
     return Service
@@ -205,7 +219,6 @@ export function requestGenerateInstanceTypes(routerKey, service) {
     });
   };
 }
-
 
 export function requestDeleteInstanceTypes(routerKey, service, instanceTypeIds) {
   return (dispatch) => {
