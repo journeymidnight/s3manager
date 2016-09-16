@@ -58,7 +58,6 @@ class C extends TablePage {
             </th>
             <th width="150">{t('name')}</th>
             <th>{t('accessKey')}</th>
-            <th>{t('accessSecret')}</th>
             <th>{t('status')}</th>
             <th width="200">{t('created')}</th>
           </tr>
@@ -74,8 +73,13 @@ class C extends TablePage {
                   {accessKey.name && <strong>{accessKey.name}</strong>}
                   {!accessKey.name && <i className="text-muted">{t('noName')}</i>}
                 </td>
-                <td>{accessKey.accessKey}</td>
-                <td>{accessKey.accessSecret}</td>
+                <td>
+                  <div>
+                    {accessKey.accessKey}
+                    <br />
+                    {accessKey.accessSecret}
+                  </div>
+                </td>
                 <td className={`i-status i-status-${accessKey.status}`}>
                   <i className="icon"></i>
                   {t(`accessKeyStatus.${accessKey.status}`)}
