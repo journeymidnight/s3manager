@@ -14,14 +14,16 @@ class IAM {
   describeProjects(filters = {}) {
     return this.call('DescribeProjects', filters);
   }
-  deleteProjects(filters = {}) {
-    return this.call('DeleteProjects', filters);
-  }
   createProject(project) {
     return this.call('CreateProject', project);
   }
   modifyProject(project) {
     return this.call('ModifyProjectAttributes', project);
+  }
+  deleteProjects(projectIds) {
+    return this.call('DeleteProjects', {
+      projectIds,
+    });
   }
   describeProjectRoles(projectId) {
     return this.call('DescribeProjectRoles', {
