@@ -20,7 +20,7 @@ class Slider extends React.Component {
     const sliderDot = ReactDOM.findDOMNode(this.refs.sliderDot);
     const that = this;
     const wholeLeft = e.clientX - sliderDot.offsetLeft;
-    const widthStep = 600 / this.state.max;
+    const widthStep = 300 / this.state.max;
 
     document.onmousemove = (event) => {
       let barLeft = parseInt(event.clientX - wholeLeft, 10);
@@ -121,14 +121,18 @@ class Slider extends React.Component {
 
   render() {
     const value = (this.state.value !== this.props.value && this.state.value) ? this.props.value : this.state.value;
-    const widthStep = 600 / this.state.max;
+    const widthStep = 300 / this.state.max;
     return (
-      <div className="slider form-control col-sm-10" ref="slider">
-        <div className="bar col-sm-5" ref="bar">
-          <div className="sliderBar" ref="sliderBar" style={{ width: (value * widthStep).toString().concat('px') }} />
-          <div className="sliderDot" ref="sliderDot" onMouseDown={this.handleMouseDown} style={{ left: (value * widthStep - 4).toString().concat('px') }} />
+      <div className="slider-container">
+        <div className="slider slider-horizontal" ref="slider">
+          <div className="slider-track" ref="bar">
+            <div className="slider-selection" ref="sliderBar" style={{ width: (value * widthStep).toString().concat('px') }} />
+            <div className="slider-handle round" ref="sliderDot" onMouseDown={this.handleMouseDown} style={{ left: (value * widthStep + 4).toString().concat('px') }} />
+          </div>
         </div>
-        <input type="text" className="sliderInput" value={value} ref="myInput" onKeyDown={this.handleKeyDown} onBlur={this.handleBlur} onChange={this.handleChange} />
+        <input type="text" className="form-control preview mini" value={value} ref="myInput" onKeyDown={this.handleKeyDown} onBlur={this.handleBlur} onChange={this.handleChange} />
+        <span className="help inline">GB</span>
+        <p className="help-block">1GB - 1000GB</p>
       </div>
     );
   }
