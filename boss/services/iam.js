@@ -75,6 +75,11 @@ class IAM {
   modifyRegion(region) {
     return this.call('ModifyRegionAttributes', region);
   }
+  deleteRegions(regionIds) {
+    return this.call('DeleteRegions', {
+      regionIds,
+    });
+  }
   describeQuotas(filters = {}) {
     return this.call('DescribeQuotas', filters);
   }
