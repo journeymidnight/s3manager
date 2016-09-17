@@ -54,7 +54,7 @@ class App extends React.Component {
         currentRegion = serviceMached.quotas[0].regionId;
         window.console.log(`Redirect to region ${currentRegion}`);
 
-        if (window.DEBUG) {
+        if (!window.DEBUG) {
           const region = _.find(global.regionSet, (r) => {
             return r.regionId === currentRegion;
           });
