@@ -6,6 +6,18 @@ export const projectRoleUser = 2;
 export const serviceKeyLCS = 'lcs';
 export const serviceKeyLOS = 'los';
 
+export const cnNorth1 = 'cn-north-1';
+export const cnNorth2 = 'cn-north-2';
+export const cnEast1 = 'cn-east-1';
+export const cnEast2 = 'cn-east-2';
+export const cnSouth1 = 'cn-south-1';
+export const cnSouth2 = 'cn-south-2';
+export const apHongkong1 = 'ap-hongkong-1';
+export const usWest1 = 'us-west-1';
+export const usEast1 = 'us-east-1';
+export const cnTest1 = 'cn-Test-1';
+export const cnTest2 = 'cn-Test-2';
+
 class IAM {
   call(action, params) {
     const payload = Object.assign({}, params);
