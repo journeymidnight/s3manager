@@ -12,6 +12,7 @@ import './analytics';
 
 const dest = document.getElementById('root');
 
+window.DEBUG = process.env.NODE_ENV === 'development';
 window.$ = window.jQuery = require('jquery');
 window._ = require('lodash');
 require('bootstrap');
