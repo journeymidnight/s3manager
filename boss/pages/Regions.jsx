@@ -6,6 +6,7 @@ import { attach } from '../../shared/pages/Page';
 import TablePage from '../../shared/pages/TablePage';
 import ButtonForm from '../../shared/forms/ButtonForm';
 import SearchBox from '../../shared/components/SearchBox';
+import StatusFilter from '../../shared/components/StatusFilter';
 import * as RegionActions from '../redux/actions.region';
 import * as Actions from '../redux/actions';
 
@@ -21,7 +22,9 @@ class C extends TablePage {
     const { t, dispatch } = this.props;
     dispatch(Actions.setHeader(t('regionManage'), '/regions'));
 
-    this.initTable(routerKey);
+    this.initTable(routerKey, {
+      status: ['active'],
+    });
   }
 
   refreshAction(routerKey, filters) {
@@ -95,6 +98,13 @@ class C extends TablePage {
 
   renderFilters() {
     const { t } = this.props;
+    const statusOption = [{
+      status: ['active'],
+      name: t('regionStatus.active'),
+    }, {
+      status: ['deleted'],
+      name: t('regionStatus.deleted'),
+    }];
     return (
       <div className="gray-content-block second-block">
         <div className={Object.keys(this.props.context.selected).length > 0 ? 'hidden' : ''}>
@@ -102,6 +112,9 @@ class C extends TablePage {
             <a className="btn btn-default" onClick={this.onRefresh({}, false)}>
               <i className={`fa fa-refresh ${this.props.context.loading ? 'fa-spin' : ''}`}></i>
             </a>
+          </div>
+          <div className="filter-item inline labels-filter">
+            <StatusFilter statusOption={statusOption} filterStatus={this.props.context.status} onRefresh={this.onRefresh} />
           </div>
           <div className="filter-item inline">
             <SearchBox ref="searchBox" placeholder={t('filterByIdorName')} onEnterPress={this.onSearchKeyPress} onButtonClick={this.onSearchButtonClick} />

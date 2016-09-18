@@ -298,6 +298,26 @@
         "closed": "已解决"
     },
 
+    "serviceStatus": {
+        "active": "激活",
+        "deleted": "已删除"
+    },
+
+    "projectStatus": {
+        "active": "激活",
+        "deleted": "已删除"
+    },
+
+    "userStatus": {
+        "active": "激活",
+        "deleted": "已删除"
+    },
+
+    "regionStatus": {
+        "active": "激活",
+        "deleted": "已删除"
+    },
+
     "pageNetworkCreate": {
         "createNetwork": "添加私有网络",
         "cidr": "初始网段地址",

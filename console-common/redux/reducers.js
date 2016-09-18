@@ -1,4 +1,3 @@
-import store from 'store';
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 import { reducer as formReducer } from 'redux-form';
@@ -12,7 +11,10 @@ export const serviceReducer = (state = null, action) => {
   switch (action.type) {
     case ActionTypes.SELECT_SERVICE:
       if (action.service) {
-        store.set('region', action.service.region);
+        window.$.cookie('region', action.service.region, {
+          path: '/',
+          domain: !window.DEBUG ? 'console.lecloud.com' : undefined,
+        });
         action.service.servicePath = '';
       }
 
@@ -26,11 +28,17 @@ export const serviceReducer = (state = null, action) => {
 export const globalReducer = (state = null, action) => {
   switch (action.type) {
     case ActionTypes.AUTH_LOGIN:
-      store.set('token', action.token);
+      window.$.cookie('token', action.token, {
+        path: '/',
+        domain: !window.DEBUG ? 'console.lecloud.com' : undefined,
+      });
       return action.context;
 
     case ActionTypes.AUTH_LOGOUT:
-      store.remove('token');
+      window.$.removeCookie('token', {
+        path: '/',
+        domain: !window.DEBUG ? 'console.lecloud.com' : undefined,
+      });
       return null;
 
     default:

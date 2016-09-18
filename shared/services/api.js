@@ -9,12 +9,12 @@ export const call = (method, url, payload, hook) => {
     Accept: 'application/json',
   };
 
-  const token = store.get('token');
+  const token = window.$.cookie('token') || store.get('token');
   if (token) {
     headers['X-Le-Token'] = token.token;
   }
 
-  const region = store.get('region');
+  const region = window.$.cookie('region') || store.get('region');
   if (region) {
     headers['X-Le-Endpoint'] = region.endpoint;
     headers['X-Le-Key'] = region.accessKey;
@@ -54,6 +54,10 @@ export const call = (method, url, payload, hook) => {
           const _ = require('lodash');
           if (data.retCode === 4101 && !_.endsWith(url, 'authorize')) {
             store.remove('token');
+            window.$.removeCookie('token', {
+              path: '/',
+              domain: !window.DEBUG ? 'console.lecloud.com' : undefined,
+            });
             window.location.reload();
             return;
           } else if (data.retCode === -1) {
