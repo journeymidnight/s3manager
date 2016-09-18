@@ -4,6 +4,9 @@ import React from 'react';
 import { Link } from 'react-router';
 import { attach } from '../../shared/pages/Page';
 import TablePage from '../../shared/pages/TablePage';
+import ButtonForm from '../../shared/forms/ButtonForm';
+import SearchBox from '../../shared/components/SearchBox';
+import StatusFilter from '../../shared/components/StatusFilter';
 import * as ServiceActions from '../redux/actions.service';
 import * as Actions from '../redux/actions';
 
@@ -19,7 +22,9 @@ class C extends TablePage {
     const { t, dispatch } = this.props;
     dispatch(Actions.setHeader(t('serviceManage'), '/services'));
 
-    this.initTable(routerKey);
+    this.initTable(routerKey, {
+      status: ['active'],
+    });
   }
 
   refreshAction(routerKey, filters) {
@@ -47,25 +52,32 @@ class C extends TablePage {
       <table className="table">
         <thead>
           <tr>
+            <th width="40">
+              <input type="checkbox" className="selected" onChange={this.onSelectAll(this.props.context.serviceSet.map((u) => { return u.serviceId; }))} />
+            </th>
             <th width="150">{t('name')}</th>
+            <th>{t('region')}</th>
+            <th>{t('service')}</th>
             <th>{t('formServiceForm.publicEndpoint')}</th>
-            <th>{t('formServiceForm.manageEndpoint')}</th>
-            <th width="200">{t('created')}</th>
-            <th />
+            <th width="250">{t('created')}</th>
           </tr>
         </thead>
         <tbody>
         {this.props.context.serviceSet.map((service) => {
           return (
             <tr key={service.serviceId}>
-              <td><Link to={`/services/${service.serviceId}`}>{service.serviceKey} ( {service.regionId} )</Link></td>
+              <td>
+                <input type="checkbox" className="selected" onChange={this.onSelect(service.serviceId)} checked={this.props.context.selected[service.serviceId] === true} />
+              </td>
+              <td>{service.regionId}</td>
+              <td>{t(`services.${service.serviceKey}`)}</td>
               <td>{service.publicEndpoint}</td>
-              <td>{service.manageEndpoint}</td>
               <td>{moment.utc(service.created).local().format('YYYY-MM-DD HH:mm:ss')}</td>
               <td>
-                <Link className="btn btn-sm btn-close" to={`/${service.serviceKey}/${service.serviceId}`}>
-                  <i className="fa fa-cog" /> 配置
-                </Link>
+                <div className="btn-group">
+                  <Link className="btn btn-sm btn-info" to={`/services/${service.serviceId}`}>基本配置</Link>
+                  <Link className="btn btn-sm btn-success" to={`/${service.serviceKey}/${service.serviceId}`}>服务配置</Link>
+                </div>
               </td>
             </tr>
           );
@@ -94,7 +106,36 @@ class C extends TablePage {
   }
 
   renderFilters() {
-    return <div />;
+    const { t } = this.props;
+    const statusOption = [{
+      status: ['active'],
+      name: t('serviceStatus.active'),
+    }, {
+      status: ['deleted'],
+      name: t('serviceStatus.deleted'),
+    }];
+    return (
+      <div className="gray-content-block second-block">
+        <div className={Object.keys(this.props.context.selected).length > 0 ? 'hidden' : ''}>
+          <div className="filter-item inline">
+            <a className="btn btn-default" onClick={this.onRefresh({}, false)}>
+              <i className={`fa fa-refresh ${this.props.context.loading ? 'fa-spin' : ''}`}></i>
+            </a>
+          </div>
+          <div className="filter-item inline labels-filter">
+            <StatusFilter statusOption={statusOption} filterStatus={this.props.context.status} onRefresh={this.onRefresh} />
+          </div>
+          <div className="filter-item inline">
+            <SearchBox ref="searchBox" placeholder={t('filterByIdorName')} onEnterPress={this.onSearchKeyPress} onButtonClick={this.onSearchButtonClick} />
+          </div>
+        </div>
+        <div className={Object.keys(this.props.context.selected).length > 0 ? '' : 'hidden'}>
+          <div className="filter-item inline">
+            <ButtonForm onSubmit={this.onDelete} text={t('delete')} type="btn-danger" />
+          </div>
+        </div>
+      </div>
+    );
   }
 }
 

@@ -1,9 +1,9 @@
+import _ from 'lodash';
 import React from 'react';
 import { Link } from 'react-router';
 import { attach } from '../../shared/pages/Page';
 import ButtonForm from '../../shared/forms/ButtonForm';
 import TablePage from '../../shared/pages/TablePage';
-import { alertModal } from '../../shared/components/Modal';
 import * as Actions from '../redux/actions';
 import * as ServiceActions from '../redux/actions.service';
 
@@ -23,12 +23,22 @@ class C extends TablePage {
   }
 
   onDelete() {
-    const { t } = this.props;
-
-    alertModal(t('notSupportedYet'));
+    const { dispatch, routerKey, service2 } = this.props;
+    const projectIds = _.keys(this.props.context.selected);
 
     return new Promise((resolve, reject) => {
-      reject();
+      dispatch(ServiceActions.requestDeleteQuotas(
+        routerKey,
+        service2.serviceKey,
+        service2.regionId,
+        projectIds
+      ))
+      .then(() => {
+        resolve();
+        this.onRefresh({}, false)();
+      }).catch(() => {
+        reject();
+      });
     });
   }
 

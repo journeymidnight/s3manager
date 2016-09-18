@@ -63,7 +63,7 @@ class F extends React.Component {
           <label className="control-label" >{t('size')}</label>
           <div className="col-sm-10">
             <input type="hidden" className="form-control" {...size} />
-            <Slider min={1} max={100} step={10} value={size.value} onChange={param => size.onChange(param)} />
+            <Slider min={1} max={1024} step={1} value={size.value} onChange={param => size.onChange(param)} />
             {(submitFailed || size.error) && <div className="text-danger"><small>{size.error}</small></div>}
           </div>
         </div>}
@@ -72,7 +72,7 @@ class F extends React.Component {
           <label className="control-label" >{t('size')}</label>
           <div className="col-sm-10">
             <input type="hidden" className="form-control" value={selectedSnapshot.size} disabled="disabled" />
-            <Slider min={1} max={100} step={10} value={size.value} onChange={param => size.onChange(param)} />
+            <Slider min={1} max={1024} step={1} value={size.value} onChange={param => size.onChange(param)} />
           </div>
         </div>}
 
