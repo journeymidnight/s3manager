@@ -1,15 +1,77 @@
-import _ from 'lodash';
 import React from 'react';
-import { Link } from 'react-router';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
 import * as Validations from '../../shared/utils/validations';
 import i18n from '../../shared/i18n';
 
 class F extends React.Component {
+  componentDidMount() {
+    const initialValues = {
+      bucketName: '',
+      acl: 'private',
+    };
+    this.props.initializeForm(initialValues);
+  }
+
   render() {
+    const { fields:
+      { bucketName, acl },
+      handleSubmit,
+      submitting,
+      submitFailed,
+      resetForm,
+      t,
+    } = this.props;
+
     return (
-      <div>Hello World</div>
+      <form className="form-horizontal" onSubmit={handleSubmit} autoComplete="off">
+        <div className="form-group">
+          <label className="control-label" >{t('pageBucketCreate.bucketName')}</label>
+          <div className="col-sm-10">
+            <input type="text" className="form-control" {...bucketName} />
+            {submitFailed && bucketName.error && <div className="text-danger"><small>{bucketName.error}</small></div>}
+            <p className="help-block">{t('pageBucketCreate.bucketNameHint').split('\n').map((item) =>
+              <span>{item}<br /></span>
+            )}</p>
+          </div>
+        </div>
+
+        <div className="form-group">
+          <label className="control-label" >{t('pageBucketCreate.acl')}</label>
+          <div className="col-sm-10">
+            <label className="radio inline">
+              <input type="radio" value="private" onChange={() => {}} onClick={() => { acl.onChange('private'); }} checked={acl.value === 'private'} />
+              {t('pageBucketCreate.aclPrivate')}
+            </label>
+
+            <label className="radio inline">
+              <input type="radio" value="public-read" onChange={() => {}} onClick={() => { acl.onChange('public-read'); }} checked={acl.value === 'public-read'} />
+              {t('pageBucketCreate.aclPublicR')}
+            </label>
+
+            <label className="radio inline">
+              <input
+                type="radio"
+                value="public-read-write"
+                onChange={() => {}}
+                onClick={() => { acl.onChange('public-read-write'); }}
+                checked={acl.value === 'public-read-write'}
+              />
+              {t('pageBucketCreate.aclPublicRW')}
+            </label>
+          </div>
+        </div>
+
+        <div className="form-actions">
+          <button type="submit" className="btn btn-save" disabled={submitting}>
+            {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('create')}
+          </button>
+          &nbsp;
+          <button type="button" className="btn btn-cancel" disabled={submitting} onClick={resetForm}>
+            {t('reset')}
+          </button>
+        </div>
+      </form>
     );
   }
 }
@@ -33,20 +95,16 @@ F.propTypes = {
 
 F.validate = values => {
   const errors = {};
-  errors.imageId = Validations.required(values.imageId);
-  errors.instanceTypeId = Validations.required(values.instanceTypeId);
-  errors.subnetId = Validations.required(values.subnetId);
-  errors.count = Validations.required(values.count);
-  if (values.loginMode === 'password') {
-    if (Validations.isEmpty(values.loginPassword) || !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/i.test(values.loginPassword)) {
-      errors.loginPassword = i18n.t('pageInstanceCreate.passwordNotValid');
-    }
+  errors.bucketName = Validations.required(values.bucketName);
+  if (Validations.isEmpty(values.bucketName) || !/^[0-9a-z]{1}([a-z0-9]|[-]){1,61}[0-9a-z]{1}$/i.test(values.bucketName)) {
+    errors.bucketName = i18n.t('pageBucketCreate.bucketNameNotValid');
   }
+
   return errors;
 };
 
 export default reduxForm({
-  form: 'InstanceCreateForm',
-  fields: ['hostname', 'imageType', 'imageId', 'vcpus', 'memory', 'disk', 'instanceTypeId', 'subnetId', 'count', 'keyPairId', 'loginPassword', 'loginMode'],
+  form: 'BucketCreateForm',
+  fields: ['bucketName', 'acl'],
   validate: F.validate,
 })(translate()(F));

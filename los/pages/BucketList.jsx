@@ -5,8 +5,6 @@ import { Link } from 'react-router';
 import { attach } from '../../shared/pages/Page';
 import { confirmModal } from '../../shared/components/Modal';
 import { buttonForm } from '../../shared/forms/ButtonForm';
-import StatusFilter from '../../shared/components/StatusFilter';
-import TimeSorter from '../../shared/components/TimeSorter';
 import TablePage from '../../shared/pages/TablePage';
 import * as Actions from '../../console-common/redux/actions';
 import * as BucketActions from '../redux/actions.bucket';
@@ -27,9 +25,7 @@ class C extends TablePage {
     const { t, dispatch, servicePath } = this.props;
     dispatch(Actions.setHeader(t('bucketList'), `${servicePath}/buckets`));
 
-    this.initTable(routerKey, {
-      status: ['pending', 'active', 'starting', 'stopped', 'stopping', 'restarting', 'scheduling'],
-    });
+    this.initTable(routerKey, {});
   }
 
   refreshAction(routerKey, filters) {
@@ -120,29 +116,12 @@ class C extends TablePage {
 
   renderFilters() {
     const { t } = this.props;
-    const statusOption = [
-      {
-        status: ['pending', 'active', 'starting', 'stopped', 'stopping', 'restarting', 'scheduling'],
-        name: t('allAvaliableStatus'),
-      }, {
-        status: ['active'],
-        name: t('instanceStatus.active'),
-      }, {
-        status: ['stopped'],
-        name: t('instanceStatus.stopped'),
-      }, {
-        status: ['error'],
-        name: t('instanceStatus.error'),
-      }, {
-        status: ['deleted', 'ceased'],
-        name: t('instanceStatus.deleted'),
-      }];
     return (
       <div className="gray-content-block second-block">
         <div className={Object.keys(this.props.context.selected).length > 0 ? 'hidden' : ''}>
           <div className="filter-item inline">
             <a className="btn btn-default" onClick={this.onRefresh({}, false)}>
-              <i className={`fa fa-refresh ${this.props.context.loading ? 'fa-spin' : ''}`}></i>
+              <i className={`fa fa-refresh ${this.props.context.loading ? 'fa-spin' : ''}`} />
             </a>
           </div>
 

@@ -688,8 +688,18 @@
     "resourceMonitorDescription": "资源监控描述",
 
     "bucketsDeletedSuccess": "空间删除成功",
+    "bucketsCreatedSuccess": "空间添加成功",
+    "bucketPutCorsSuccess": "PutCORS成功",
+    "bucketPutAclSuccess": "PutACL成功",
 
     "pageBucketCreate": {
-        "createBucket": "添加空间"
+        "createBucket": "添加空间",
+        "bucketName": "空间名称",
+        "bucketNameHint": "Bucket命名规范: \n 1. 只能包含小写字母，数字和短横线 \n 2. 必须以小写字母和数字开头和结尾 \n 3. bucketName的长度限制在3-63之间",
+        "acl": "权限控制",
+        "aclPrivate": "私有",
+        "aclPublicR": "公共可读",
+        "aclPublicRW": "公共读写",
+        "bucketNameNotValid": "空间名称不符合要求"
     }
 }
