@@ -9,7 +9,8 @@ build:
     - npm run build
 notify:
   slack:
-    webhook_url: 'https://hooks.slack.com/services/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'
-    on_started: true
-    on_success: true
-    on_failure: true
+    webhook_url: https://hooks.slack.com/services/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
+    when:
+      success: true
+      failure: true
+      change: true
