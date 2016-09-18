@@ -8,9 +8,7 @@ class C extends Page {
   componentDidMount() {
     const { dispatch } = this.props;
 
-    const sessionId = window.$.cookie('lecloud_uc_jsessionid');
-
-    Auth.oAuthAccess(sessionId)
+    Auth.oAuthAccess()
     .promise
     .then((token) => {
       Auth.describeToken(token.token)
@@ -23,8 +21,11 @@ class C extends Page {
         dispatch(Actions.notifyAlert(error.message));
       });
     }).catch((error) => {
-      if (error.retCode === 4102) {
-        // TODO
+      if (error.retCode === 4110) {
+        dispatch(Actions.extendContext({
+          inActive: true,
+        }));
+      } else if (error.retCode === 4102) {
         dispatch(Actions.extendContext({
           projectSet: error.data.projectSet,
         }));
@@ -35,8 +36,12 @@ class C extends Page {
   }
 
   render() {
+    const { t } = this.props;
     return (
       <div>
+        {this.props.context.inActive && <div className="container">
+          <h3>{t('inActivedUser')}</h3>
+        </div>}
       </div>
     );
   }

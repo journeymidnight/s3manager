@@ -9,7 +9,7 @@ class Auth {
     });
   }
   oAuthAccess(sessionId) {
-    return call('post', '/api/iam/OAuthAccess', {
+    return call('post', '/api/iam/oAuthAccess', {
       sessionId,
     });
   }
