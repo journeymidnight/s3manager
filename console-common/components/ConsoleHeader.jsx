@@ -91,9 +91,9 @@ const C = (props) => {
                   <li><a href="/g/#/access_keys">{t('sidebarAccessKey')}</a></li>
                   <li role="separator" className="divider"></li>
                   <li>
-                    <Link className="logout" to="/logout">
+                    <a className="logout" href="/g/#/logout">
                       <i className="fa fa-sign-out"></i> {t('logout')}
-                    </Link>
+                    </a>
                   </li>
                 </ul>
               </li>

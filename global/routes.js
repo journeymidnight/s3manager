@@ -5,6 +5,7 @@ import NotFound from '../shared/pages/NotFound.jsx';
 import App from '../console-common/pages/App.jsx';
 import Login from '../console-common/pages/Login.jsx';
 import Logout from '../console-common/pages/Logout.jsx';
+import OAuth from '../console-common/pages/OAuth.jsx';
 import Settings from '../console-common/pages/Settings.jsx';
 import AccessKeyCreate from './pages/AccessKeyCreate.jsx';
 import AccessKeys from './pages/AccessKeys.jsx';
@@ -26,6 +27,7 @@ export default function configureRoutes(store) {
     <Route>
       <Route path="/login" component={Login} />
       <Route path="/logout" component={Logout} />
+      <Route path="/oauth/" component={OAuth} />
       <Route path="/" component={App} onEnter={requireAuth} >
         <IndexRedirect to="profile" />
         <Route path="profile" component={Settings} />

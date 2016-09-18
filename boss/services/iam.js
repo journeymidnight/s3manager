@@ -115,9 +115,11 @@ class IAM {
   }
   deleteQuotas(serviceKey, regionId, projectIds) {
     return this.call('DeleteQuotas', {
-      serviceKey,
-      regionId,
       projectIds,
+      services: [{
+        serviceKey,
+        regionId,
+      }],
     });
   }
   describeAdmins(filters = {}) {

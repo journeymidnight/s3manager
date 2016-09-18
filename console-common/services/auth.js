@@ -8,6 +8,11 @@ class Auth {
       projectId,
     });
   }
+  oAuthAccess(sessionId) {
+    return call('post', '/api/iam/OAuthAccess', {
+      sessionId,
+    });
+  }
   describeToken(token) {
     return call('post', '/api/iam/DescribeToken', {}, (options) => {
       options.headers['X-Le-Token'] = token;
