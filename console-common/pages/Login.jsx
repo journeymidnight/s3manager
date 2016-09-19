@@ -51,6 +51,11 @@ class C extends Page {
   }
 
   render() {
+    if (!window.DEBUG) {
+      window.location = `http://uc.lecloud.com/login.do?backUrl=${window.location.origin}/g/`;
+      return <div />;
+    }
+
     if (this.props.context.projectSet && this.props.context.projectSet.length > 0 && !this.initialValues.projectId) {
       this.initialValues.projectId = this.props.context.projectSet[0].projectId;
     }

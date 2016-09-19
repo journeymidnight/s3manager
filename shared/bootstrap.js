@@ -12,13 +12,13 @@ import './analytics';
 
 const dest = document.getElementById('root');
 
-window.DEBUG = process.env.NODE_ENV === 'development';
+window.DEBUG = process.env.NODE_ENV === 'development' || window.location.origin.indexOf('console.lecloud.com') === -1;
 window.$ = window.jQuery = require('jquery');
 window._ = require('lodash');
 require('bootstrap');
 
-require('jquery.cookie');
-window.$.cookie.json = true;
+const cookie = require('js-cookie');
+cookie.json = true;
 
 window.paceOptions = {
   ajax: true,
@@ -84,7 +84,7 @@ export default function bootstrap(callback) {
     };
 
     const store = require('store');
-    const token = window.$.cookie('token') || store.get('token');
+    const token = cookie.get('token') || store.get('token');
 
     callback(token, state, renderPage);
   })

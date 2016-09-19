@@ -20,12 +20,30 @@ const F = (props) => {
       </div>
       <div className={submitFailed && email.error ? 'form-group has-error' : 'form-group'}>
         <label className="control-label" >{t('email')}</label>
-        <input type="email" className="form-control" {...email} />
+        <input
+          type="email"
+          className="form-control"
+          value={email.value}
+          onBlur={email.onBlur}
+          onChange={email.onChange}
+          onDragStart={email.onDragStart}
+          onDrop={email.onDrop}
+          onFocus={email.onFocus}
+        />
         {submitFailed && email.error && <div className="text-danger"><small>{email.error}</small></div>}
       </div>
       <div className={submitFailed && password.error ? 'form-group has-error' : 'form-group'}>
         <label className="control-label" >{t('password')}</label>
-        <input type="password" className="form-control" {...password} />
+        <input
+          type="password"
+          className="form-control"
+          value={password.value}
+          onBlur={password.onBlur}
+          onChange={password.onChange}
+          onDragStart={password.onDragStart}
+          onDrop={password.onDrop}
+          onFocus={password.onFocus}
+        />
         {submitFailed && password.error && <div className="text-danger"><small>{password.error}</small></div>}
       </div>
       {projects && <div className={submitFailed && projectId.error ? 'form-group has-error' : 'form-group'}>

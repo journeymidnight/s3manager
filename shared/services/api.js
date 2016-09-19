@@ -1,6 +1,7 @@
 import axios from 'axios';
 import store from 'store';
 import Promise from 'promise';
+import cookie from 'js-cookie';
 import i18n from '../../shared/i18n';
 
 export const call = (method, url, payload, hook) => {
@@ -9,12 +10,12 @@ export const call = (method, url, payload, hook) => {
     Accept: 'application/json',
   };
 
-  const token = window.$.cookie('token') || store.get('token');
+  const token = cookie.get('token') || store.get('token');
   if (token) {
     headers['X-Le-Token'] = token.token;
   }
 
-  const region = window.$.cookie('region') || store.get('region');
+  const region = cookie.get('region') || store.get('region');
   if (region) {
     headers['X-Le-Endpoint'] = region.endpoint;
     headers['X-Le-Key'] = region.accessKey;
@@ -54,11 +55,11 @@ export const call = (method, url, payload, hook) => {
           const _ = require('lodash');
           if (data.retCode === 4101 && !_.endsWith(url, 'authorize')) {
             store.remove('token');
-            window.$.removeCookie('token', {
+            cookie.remove('token', {
               path: '/',
               domain: !window.DEBUG ? 'console.lecloud.com' : undefined,
             });
-            window.location.reload();
+            window.location = '/';
             return;
           } else if (data.retCode === -1) {
             window.console.log(data);

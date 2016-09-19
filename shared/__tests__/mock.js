@@ -12,8 +12,9 @@ global.window = document.defaultView;
 global.navigator = global.window.navigator;
 
 window.$ = window.jQuery = require('jquery');
-require('jquery.cookie');
-window.$.cookie.json = true;
+
+const cookie = require('js-cookie');
+cookie.json = true;
 
 expect.extend(expectJSX);
 
