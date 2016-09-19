@@ -16,17 +16,6 @@ import Tickets from './pages/Tickets.jsx';
 export default function configureRoutes(store) {
   function requireAuth(nextState, replace) {
     if (!store.getState().global || !store.getState().global.auth) {
-      if (!window.DEBUG) {
-        const referrer = document.referrer;
-        if (referrer.indexOf('uc.lecloud.com') !== -1) {
-          replace({
-            pathname: '/oauth',
-            state: { nextPathname: nextState.location.pathname },
-          });
-          return;
-        }
-      }
-
       replace({
         pathname: '/login',
         state: { nextPathname: nextState.location.pathname },
