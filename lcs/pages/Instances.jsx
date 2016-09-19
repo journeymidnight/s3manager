@@ -187,7 +187,7 @@ class C extends TablePage {
       <div className="gray-content-block second-block">
         <div className={Object.keys(this.props.context.selected).length > 0 ? 'hidden' : ''}>
           <div className="filter-item inline">
-            <a className="loading-display">
+            <a className="btn btn-default" onClick={this.doSearch}>
               <i className={`fa fa-refresh ${this.props.context.loading ? 'fa-spin' : ''}`}></i>
             </a>
           </div>
