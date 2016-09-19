@@ -5,12 +5,12 @@ import { Link } from 'react-router';
 import { attach } from '../../shared/pages/Page';
 import { confirmModal } from '../../shared/components/Modal';
 import { buttonForm } from '../../shared/forms/ButtonForm';
-import TablePage from '../../shared/pages/TablePage';
+import TablePageStatic from '../../shared/pages/TablePageStatic';
 import * as Actions from '../../console-common/redux/actions';
 import * as BucketActions from '../redux/actions.bucket';
 
 
-class C extends TablePage {
+class C extends TablePageStatic {
 
   constructor(props) {
     super(props);
@@ -30,7 +30,7 @@ class C extends TablePage {
 
   refreshAction(routerKey, filters) {
     const { region } = this.props;
-    return BucketActions.requestListBuckets(routerKey, region.regionId, filters);
+    return BucketActions.setVisibleBuckets(routerKey, region.regionId, filters);
   }
 
   isBatchActionDisabled(availabeStatuss) {
@@ -78,7 +78,7 @@ class C extends TablePage {
           </tr>
         </thead>
         <tbody>
-        {this.props.context.buckets.map((bucket) => {
+        {this.props.context.visibleBuckets.map((bucket) => {
           return (
             <tr key={bucket.name}>
               <td>
@@ -126,7 +126,7 @@ class C extends TablePage {
           </div>
 
           <div className="filter-item inline">
-            <input type="search" ref="search" placeholder={t('filterByIdorName')} className="form-control" onKeyPress={this.onSearchKeyPress} />
+            <input type="search" ref="search" placeholder={t('filterByBucketName')} className="form-control" onKeyPress={this.onSearchKeyPress} />
           </div>
         </div>
         {Object.keys(this.props.context.selected).length > 0 && <div>

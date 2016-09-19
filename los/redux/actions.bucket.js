@@ -15,7 +15,7 @@ export function requestGetS3Domain(routerKey, regionId) {
   };
 }
 
-export function requestListBuckets(routerKey, regionId, filters) {
+export function requestListBuckets(routerKey, regionId, filters = {}) {
   filters.verbose = true;
   return dispatch => {
     return Wcs
@@ -32,13 +32,42 @@ export function requestListBuckets(routerKey, regionId, filters) {
   };
 }
 
+export function setVisibleBuckets(routerKey, regionId, filters = {}) {
+  filters.verbose = true;
+  return dispatch => {
+    return Wcs
+      .doAction(regionId, ACTION_NAMES.listbuckets, filters)
+      .promise
+      .then((payload) => {
+        const { offset, limit, searchWord } = filters;
+        console.log(filters);
+        const matchedBuckets = payload.filter(
+          (bucket) => {
+            if (searchWord) return bucket.name.indexOf(searchWord) > -1;
+            return true;
+          }
+        );
+        const visibleBuckets = matchedBuckets.slice(offset, offset + limit);
+
+        dispatch(extendContext({
+          buckets: payload,
+          visibleBuckets,
+          total: matchedBuckets.length,
+        }, routerKey));
+      })
+      .catch((error) => {
+        dispatch(notifyAlert(error.message));
+      });
+  };
+}
+
 export function requestDeleteBuckets(routerKey, regionId, bucketNames) {
   return dispatch => {
     return Wcs
       .doAction(regionId, ACTION_NAMES.deletebucket, { bucket: bucketNames[0] }) // TODO: Modify to delete all buckets
       .promise
       .then(() => {
-        dispatch(notify(i18n.t('bucketsDeletedSuccess')));
+        notify(i18n.t('bucketsDeletedSuccess'));
       }).catch((error) => {
         dispatch(notifyAlert(error.message));
       });

@@ -1,3 +1,9 @@
+/* TablePageStatic is different from TablePage in:
+ * 1. No setInterval of onRefresh in initTable
+ * 2. No status in filters
+ * 3. Pagination
+ */
+
 import React from 'react';
 import _ from 'lodash';
 import Page from './Page';
@@ -38,8 +44,6 @@ class C extends Page {
     dispatch(Actions.extendContext(Object.assign(context, options), routerKey));
 
     setTimeout(this.onRefresh(), 100);
-
-    this.setInterval(this.onRefresh({}, false, true), 2000);
   }
 
   refresh(silent = true) {
@@ -48,7 +52,6 @@ class C extends Page {
     const filters = {
       offset: (this.props.context.currentPage - 1) * this.props.context.size,
       limit: this.props.context.size,
-      status: this.props.context.status,
       reverse: this.props.context.reverse,
       searchWord: this.props.context.searchWord,
     };
@@ -60,8 +63,7 @@ class C extends Page {
       } else {
         dispatch(Actions.extendContext({ initialized: true }, routerKey));
       }
-    })
-    ;
+    });
 
     if (!silent) {
       dispatch(Actions.extendContext({ loading: true }, routerKey));
@@ -144,15 +146,15 @@ class C extends Page {
   }
 
   renderPagination() {
-    const { offset, limit, total } = this.props.context;
+    const { total, currentPage, size } = this.props.context;
     return (
       <div>
-        {this.props.context.total > 0 && (
+        {total > 0 && (
           <Pagination
             total={total}
             onRefresh={this.onRefresh}
-            currentPage={parseInt(offset / limit, 10) + 1}
-            totalPage={parseInt((total - 1) / limit, 10) + 1}
+            currentPage={currentPage}
+            totalPage={parseInt((total - 1) / size, 10) + 1}
           />
         )}
       </div>

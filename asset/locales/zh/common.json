@@ -684,6 +684,8 @@
     "bucketList": "空间管理",
     "bucketListDescription": "存储空间管理",
 
+    "filterByBucketName": "按存储空间名称过滤",
+
     "resourceMonitor": "资源监控",
     "resourceMonitorDescription": "资源监控描述",
 
