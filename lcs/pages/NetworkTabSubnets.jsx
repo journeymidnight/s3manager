@@ -88,7 +88,12 @@ class C extends TablePage {
         <thead>
           <tr>
             <th width="40">
-              <input type="checkbox" className="selected" onChange={this.onSelectAll(this.props.context.subnetSet.map((u) => { return u.subnetId; }))} />
+              <input
+                type="checkbox"
+                className="selected"
+                onChange={this.onSelectAll(this.props.context.subnetSet.map((u) => { return u.subnetId; }))}
+                checked={this.isAllSelected(this.props.context.subnetSet.map((u) => { return u.subnetId; }))}
+              />
             </th>
             <th width="150">{t('id')}</th>
             <th>{t('cidr')}</th>

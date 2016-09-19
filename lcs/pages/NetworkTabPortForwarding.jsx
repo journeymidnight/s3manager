@@ -97,7 +97,12 @@ class C extends TablePage {
         <thead>
           <tr>
             <th width="40">
-              <input type="checkbox" className="selected" onChange={this.onSelectAll(this.props.context.portForwardingSet.map((u) => { return u.portForwardingId; }))} />
+              <input
+                type="checkbox"
+                className="selected"
+                onChange={this.onSelectAll(this.props.context.portForwardingSet.map((u) => { return u.portForwardingId; }))}
+                checked={this.isAllSelected(this.props.context.portForwardingSet.map((u) => { return u.portForwardingId; }))}
+              />
             </th>
             <th width="150">{t('id')}</th>
             <th>{t('pageNetwork.protocol')}</th>

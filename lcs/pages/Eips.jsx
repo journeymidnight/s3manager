@@ -67,7 +67,12 @@ class C extends TablePage {
         <thead>
           <tr>
             <th width="40">
-              <input type="checkbox" className="selected" onChange={this.onSelectAll(this.props.context.eipSet.map((u) => { return u.eipId; }))} />
+              <input
+                type="checkbox"
+                className="selected"
+                onChange={this.onSelectAll(this.props.context.eipSet.map((u) => { return u.eipId; }))}
+                checked={this.isAllSelected(this.props.context.eipSet.map((u) => { return u.eipId; }))}
+              />
             </th>
             <th width="150">{t('id')}</th>
             <th>{t('name')}</th>

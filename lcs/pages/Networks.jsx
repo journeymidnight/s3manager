@@ -60,7 +60,12 @@ class C extends TablePage {
         <thead>
           <tr>
             <th width="40">
-              <input type="checkbox" className="selected" onChange={this.onSelectAll(this.props.context.networkSet.map((u) => { return u.networkId; }))} />
+              <input
+                type="checkbox"
+                className="selected"
+                onChange={this.onSelectAll(this.props.context.networkSet.map((u) => { return u.networkId; }))}
+                checked={this.isAllSelected(this.props.context.networkSet.map((u) => { return u.networkId; }))}
+              />
             </th>
             <th width="150">{t('id')}</th>
             <th>{t('name')}</th>
