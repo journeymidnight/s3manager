@@ -127,7 +127,7 @@ class C extends TablePage {
             <StatusFilter statusOption={statusOption} filterStatus={this.props.context.status} onRefresh={this.onRefresh} />
           </div>
           <div className="filter-item inline">
-            <SearchBox ref="searchBox" placeholder={t('filterByIdorName')} onEnterPress={this.onSearchKeyPress} onButtonClick={this.onSearchButtonClick} />
+            <SearchBox ref="searchBox" placeholder={t('filterByIdorTitle')} onEnterPress={this.onSearchKeyPress} onButtonClick={this.onSearchButtonClick} />
           </div>
           <div className="pull-right">
             <TimeSorter isReverse={this.props.context.reverse} onRefresh={this.onRefresh} />

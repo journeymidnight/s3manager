@@ -12,9 +12,9 @@ class C extends Page {
     this.refresh = this.refresh.bind(this);
     this.onSelect = this.onSelect.bind(this);
     this.onSelectAll = this.onSelectAll.bind(this);
-    this.onRefresh = this.onRefresh.bind(this);    
+    this.onRefresh = this.onRefresh.bind(this);
     this.doSearch = this.doSearch.bind(this);
-    this.onSearchKeyPress = this.onSearchKeyPress.bind(this);    
+    this.onSearchKeyPress = this.onSearchKeyPress.bind(this);
     this.onSearchButtonClick = this.onSearchButtonClick.bind(this);
   }
 
