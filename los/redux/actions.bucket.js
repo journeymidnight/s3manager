@@ -40,7 +40,6 @@ export function setVisibleBuckets(routerKey, regionId, filters = {}) {
       .promise
       .then((payload) => {
         const { offset, limit, searchWord } = filters;
-        console.log(filters);
         const matchedBuckets = payload.filter(
           (bucket) => {
             if (searchWord) return bucket.name.indexOf(searchWord) > -1;
@@ -118,5 +117,94 @@ export function requestPutBucketAcl(s3, bucketName, acl) {
         }
       });
     });
+  };
+}
+
+export function requestGetBucketAcl(s3, bucketName, routerKey) {
+  return dispatch => {
+    return new Promise((resolve, reject) => {
+      const params = {
+        Bucket: bucketName,
+      };
+
+      s3.getBucketAcl(params, (error, data) => {
+        if (error) {
+          dispatch(notifyAlert(error.message));// TODO: does this error have message?
+          reject();
+        } else {
+          dispatch(extendContext({
+            acl: data.Grants[0].Permission,
+          }, routerKey));
+          resolve(data);
+        }
+      });
+    });
+  };
+}
+
+export function requestGetUsageByHour(routerKey, regionId, bucketName, startDate, endDate) {
+  return dispatch => {
+    return Wcs
+      .doAction(regionId, ACTION_NAMES.getusagebyhour, { bucket: bucketName, region: regionId, startdate: startDate, enddate: endDate })
+      .promise
+      .then((payload) => {
+        dispatch(extendContext({ usagebyhour: payload }, routerKey));
+      }).catch((error) => {
+        dispatch(notifyAlert(error.message));
+      });
+  };
+}
+
+export function requestGetOpByHour(routerKey, regionId, bucketName, startDate, endDate) {
+  return dispatch => {
+    return Wcs
+      .doAction(regionId, ACTION_NAMES.getopbyhour, { bucket: bucketName, region: regionId, startdate: startDate, enddate: endDate })
+      .promise
+      .then((payload) => {
+        dispatch(extendContext({ opbyhour: payload }, routerKey));
+      }).catch((error) => {
+        dispatch(notifyAlert(error.message));
+      });
+  };
+}
+
+export function requestGetFlowByHour(routerKey, regionId, bucketName, startDate, endDate) {
+  return dispatch => {
+    return Wcs
+      .doAction(regionId, ACTION_NAMES.getflowbyhour, { bucket: bucketName, region: regionId, startdate: startDate, enddate: endDate })
+      .promise
+      .then((payload) => {
+        dispatch(extendContext({ flowbyhour: payload }, routerKey));
+      }).catch((error) => {
+        dispatch(notifyAlert(error.message));
+      });
+  };
+}
+
+export function requestGetStaticsByDay(routerKey, regionId, bucketName, startDate, endDate) {
+  return dispatch => {
+    return Wcs
+      .doAction(regionId, ACTION_NAMES.getstaticsbyday, { bucket: bucketName, region: regionId, startdate: startDate, enddate: endDate })
+      .promise
+      .then((payload) => {
+        dispatch(extendContext({ staticsbyday: payload }, routerKey));
+      }).catch((error) => {
+        dispatch(notifyAlert(error.message));
+      });
+  };
+}
+
+// Pass bucket creation date to bucket detail page. The action will be handled by rootReducer and put date into this.props.global.currentBucketCreationDate
+export function setBucket(date) {
+  return {
+    type: 'SET_BUCKET',
+    date,
+  };
+}
+
+// Remove this.props.global.currentBucketCreationDate. Clean up of above action
+export function removeBucket() {
+  return {
+    type: 'REMOVE_BUCKET',
   };
 }

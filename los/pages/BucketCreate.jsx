@@ -37,20 +37,20 @@ class C extends Page {
       const s3 = new AWS.S3();
 
       dispatch(BucketActions.requestCreateBucket(routerKey, region.regionId, bucketName))
-          .then(() => {
-            return dispatch(BucketActions.requestPutCors(routerKey, region.regionId, bucketName));
-          })
-          .then(() => {
-            return dispatch(BucketActions.requestPutBucketAcl(s3, bucketName, acl));
-          })
-          .then(() => {
-            resolve();
-            dispatch(push(`${servicePath}/buckets`));
-          })
-          .catch((error) => {
-            dispatch(Actions.notifyAlert(error.message));
-            reject({ _error: error.message });
-          });
+        .then(() => {
+          return dispatch(BucketActions.requestPutCors(routerKey, region.regionId, bucketName));
+        })
+        .then(() => {
+          return dispatch(BucketActions.requestPutBucketAcl(s3, bucketName, acl));
+        })
+        .then(() => {
+          resolve();
+          dispatch(push(`${servicePath}/buckets`));
+        })
+        .catch((error) => {
+          dispatch(Actions.notifyAlert(error.message));
+          reject({ _error: error.message });
+        });
     });
   }
 

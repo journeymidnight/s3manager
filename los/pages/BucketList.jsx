@@ -65,7 +65,7 @@ class C extends TablePageStatic {
   }
 
   renderTable() {
-    const { t, servicePath } = this.props;
+    const { t, servicePath, dispatch } = this.props;
     return this.props.context.buckets.length > 0 && (
       <table className="table">
         <thead>
@@ -85,7 +85,12 @@ class C extends TablePageStatic {
                 <input type="checkbox" className="selected" onChange={this.onSelect(bucket.name)} checked={this.props.context.selected[bucket.name] === true} />
               </td>
               <td>
-                <Link to={`${servicePath}/buckets/${bucket.name}`}>
+                <Link
+                  to={`${servicePath}/buckets/${bucket.name}`}
+                  onClick={() => {
+                    dispatch(BucketActions.setBucket(bucket.creationDate));
+                  }}
+                >
                   {bucket.name}
                 </Link>
               </td>
