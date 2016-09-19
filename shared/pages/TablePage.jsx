@@ -46,6 +46,10 @@ class C extends Page {
   refresh(silent = true) {
     const { dispatch, routerKey } = this.props;
 
+    if (this.props.context.currentPage === undefined) {
+      return;
+    }
+
     const filters = {
       offset: (this.props.context.currentPage - 1) * this.props.context.size,
       limit: this.props.context.size,
