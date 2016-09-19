@@ -1,5 +1,4 @@
 import React from 'react';
-import $ from 'jquery';
 
 
 class NumericTextBox extends React.Component {
@@ -24,7 +23,7 @@ class NumericTextBox extends React.Component {
 
   checkAndAdjustValue(value) {
     let result = value;
-    if (value === '' || !$.isNumeric(value) || value < this.min) {
+    if (isNaN(value) || value < this.min) {
       result = this.min;
     } else if (value > this.max) {
       result = this.max;
