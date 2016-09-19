@@ -1,10 +1,8 @@
 import React from 'react';
 import { Route, IndexRoute, IndexRedirect } from 'react-router';
 
-import NotFound from '../shared/pages/NotFound.jsx';
 import App from '../console-common/pages/App.jsx';
-import Login from '../console-common/pages/Login.jsx';
-import Logout from '../console-common/pages/Logout.jsx';
+import NotFound from '../shared/pages/NotFound.jsx';
 import Settings from '../console-common/pages/Settings.jsx';
 import KeyPair from './pages/KeyPair.jsx';
 import KeyPairs from './pages/KeyPairs.jsx';
@@ -37,19 +35,14 @@ import Activities from './pages/Activities.jsx';
 import Usage from './pages/Usage.jsx';
 
 export default function configureRoutes(store) {
-  function requireAuth(nextState, replace) {
+  function requireAuth() {
     if (!store.getState().global || !store.getState().global.auth) {
-      replace({
-        pathname: '/login',
-        state: { nextPathname: nextState.location.pathname },
-      });
+      window.location = '/g/';
     }
   }
 
   return (
     <Route>
-      <Route path="/login" component={Login} />
-      <Route path="/logout" component={Logout} />
       <Route path="/vnc" onEnter={requireAuth}>
         <Route path=":host/:port/:token" component={VNC} />
       </Route>
