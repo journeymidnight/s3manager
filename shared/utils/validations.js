@@ -50,6 +50,13 @@ export function oneOf(enumeration) {
   };
 }
 
+export function cidr(value) {
+  if (!/^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$/.test(value)) {
+    return '网段地址格式错误';
+  }
+  return null;
+}
+
 export function createValidator(rules) {
   return (data = {}) => {
     const errors = {};

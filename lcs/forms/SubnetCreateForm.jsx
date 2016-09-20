@@ -19,7 +19,7 @@ const F = (props) => {
           <label className="control-label" >{t('cidr')}</label>
           <div className="col-sm-10">
             <input type="text" className="form-control" {...cidr} />
-            {submitFailed && cidr.error && <div className="text-danger"><small>{cidr.error}</small></div>}
+            {(submitFailed || cidr.touched) && cidr.error && <div className="text-danger"><small>{cidr.error}</small></div>}
           </div>
         </div>
       </div>
@@ -45,7 +45,7 @@ F.propTypes = {
 
 F.validate = values => {
   const errors = {};
-  errors.cidr = Validations.required(values.cidr);
+  errors.cidr = Validations.cidr(values.cidr);
   return errors;
 };
 
