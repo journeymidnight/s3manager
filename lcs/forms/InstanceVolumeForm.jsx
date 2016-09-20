@@ -21,7 +21,7 @@ let InstanceVolumeForm = (props) => {
               {props.availableVolumes.map((volume) => {
                 return (
                   <option key={volume.volumeId} value={volume.volumeId}>
-                    {volume.volumeId}({volume.name})
+                    {volume.name} ({volume.volumeId})
                   </option>
                 );
               })}

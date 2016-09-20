@@ -82,7 +82,7 @@ let EipAssociateForm = (props) => {
           <div className="col-sm-10">
             <select className="form-control" {...instanceId}>
               {props.availableInstances.map((instance) => {
-                return <option key={instance.instanceId} value={instance.instanceId}>{instance.name}</option>;
+                return <option key={instance.instanceId} value={instance.instanceId}>{instance.name} ({instance.instanceId})</option>;
               })}
             </select>
             {(submitFailed || instanceId.touched) && instanceId.error && <div className="text-danger"><small>{instanceId.error}</small></div>}
