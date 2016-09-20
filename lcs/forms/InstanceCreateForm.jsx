@@ -29,6 +29,17 @@ class F extends React.Component {
       instanceTypes[instanceType.vcpus][instanceType.memory][instanceType.disk].push(instanceType);
     });
 
+    function makeid() {
+      let text = '';
+      const possible = 'abcdefghijklmnopqrstuvwxyz0123456789';
+
+      for (let i = 0; i < 5; i++) {
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+      }
+
+      return text;
+    }
+
     const initialValues = {
       vcpus: _.keys(instanceTypes)[0],
       memory: _.keys(_.values(instanceTypes)[0])[0],
@@ -39,6 +50,8 @@ class F extends React.Component {
       imageType: 'public',
       imageId: this.props.publicImageSet[0].imageId,
       loginMode: 'password',
+      hostname: `instance-${makeid()}`,
+      loginPassword: '',
     };
 
     if (this.props.keyPairSet.length > 0) {
@@ -342,6 +355,9 @@ F.validate = values => {
   errors.instanceTypeId = Validations.required(values.instanceTypeId);
   errors.subnetId = Validations.required(values.subnetId);
   errors.count = Validations.required(values.count);
+  if (!/^[0-9a-zA-Z_\-]+$/i.test(values.hostname)) {
+    errors.hostname = i18n.t('pageInstanceCreate.hostnameNotValid');
+  }
   if (values.loginMode === 'password') {
     if (Validations.isEmpty(values.loginPassword) || !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/i.test(values.loginPassword)) {
       errors.loginPassword = i18n.t('pageInstanceCreate.passwordNotValid');
