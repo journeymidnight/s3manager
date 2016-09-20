@@ -369,7 +369,8 @@
     },
 
     "pageRegion": {
-        "basic": "基本信息"
+        "basic": "基本信息",
+        "consoleEndpoint": "控制台 URL"
     },
 
     "pageProject": {
