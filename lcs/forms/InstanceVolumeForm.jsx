@@ -9,7 +9,6 @@ let InstanceVolumeForm = (props) => {
     handleSubmit,
     submitting,
     t,
-    invalid,
   } = props;
   return (
     <form className="form-horizontal" onSubmit={handleSubmit}>
@@ -33,7 +32,7 @@ let InstanceVolumeForm = (props) => {
       </div>
       <div className="modal-footer">
         <button type="button" className="btn btn-default" data-dismiss="modal">{t('closeModal')}</button>
-        <button type="submit" className="btn btn-save" disabled={submitting || invalid}>
+        <button type="submit" className="btn btn-save" disabled={submitting}>
           {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('update')}
         </button>
       </div>
@@ -44,7 +43,6 @@ let InstanceVolumeForm = (props) => {
 InstanceVolumeForm.propTypes = {
   fields: React.PropTypes.object.isRequired,
   error: React.PropTypes.string,
-  invalid: React.PropTypes.bool,
   handleSubmit: React.PropTypes.func.isRequired,
   submitting: React.PropTypes.bool.isRequired,
   availableVolumes: React.PropTypes.array,

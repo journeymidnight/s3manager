@@ -33,7 +33,7 @@ class C extends Page {
           resolve();
         }).catch((error) => {
           dispatch(Actions.notifyAlert(error.displayMsg || error.message));
-          reject({ _error: error.message });
+          reject();
         });
     });
   }

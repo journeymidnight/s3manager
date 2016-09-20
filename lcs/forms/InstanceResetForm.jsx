@@ -49,7 +49,6 @@ class InstanceResetForm extends React.Component {
       submitting,
       submitFailed,
       t,
-      invalid,
     } = this.props;
     return (
       <form className="form-horizontal" onSubmit={handleSubmit}>
@@ -86,11 +85,11 @@ class InstanceResetForm extends React.Component {
             </div>
           </div>}
 
-          {loginMode.value === 'password' && <div className={submitFailed && loginPassword.error ? 'form-group has-error' : 'form-group'}>
+          {loginMode.value === 'password' && <div className={(submitFailed || loginPassword.touched) && loginPassword.error ? 'form-group has-error' : 'form-group'}>
             <label className="control-label" >{t('pageInstanceCreate.loginPassword')}</label>
             <div className="col-sm-10">
               <input type="password" className="form-control" {...loginPassword} />
-              {submitFailed && loginPassword.error && <div className="text-danger"><small>{loginPassword.error}</small></div>}
+              {(submitFailed || loginPassword.touched) && loginPassword.error && <div className="text-danger"><small>{loginPassword.error}</small></div>}
               <p className="help-block">{t('pageInstanceCreate.passwordHint')}</p>
             </div>
           </div>}
@@ -98,7 +97,7 @@ class InstanceResetForm extends React.Component {
         </div>
         <div className="modal-footer">
           <button type="button" className="btn btn-default" data-dismiss="modal">{t('closeModal')}</button>
-          <button type="submit" className="btn btn-save" disabled={submitting || invalid}>
+          <button type="submit" className="btn btn-save" disabled={submitting}>
             {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('update')}
           </button>
         </div>
@@ -110,7 +109,6 @@ class InstanceResetForm extends React.Component {
 InstanceResetForm.propTypes = {
   fields: React.PropTypes.object.isRequired,
   error: React.PropTypes.string,
-  invalid: React.PropTypes.bool,
   handleSubmit: React.PropTypes.func.isRequired,
   initializeForm: React.PropTypes.func.isRequired,
   submitting: React.PropTypes.bool.isRequired,

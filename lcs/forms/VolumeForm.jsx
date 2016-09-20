@@ -31,11 +31,11 @@ class F extends React.Component {
     return (
       <form className="form-horizontal" onSubmit={handleSubmit}>
 
-        <div className={submitFailed && name.error ? 'form-group has-error' : 'form-group'}>
+        <div className={(submitFailed || name.touched) && name.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('name')}</label>
           <div className="col-sm-10">
             <input type="text" className="form-control" {...name} />
-            {submitFailed && name.error && <div className="text-danger"><small>{name.error}</small></div>}
+            {(submitFailed || name.touched) && name.error && <div className="text-danger"><small>{name.error}</small></div>}
           </div>
         </div>
 
@@ -59,12 +59,12 @@ class F extends React.Component {
           </div>
         </div> */}
 
-        {size.value && !selectedSnapshot && <div className={submitFailed && size.error ? 'form-group has-error' : 'form-group'}>
+        {size.value && !selectedSnapshot && <div className={(submitFailed || size.touched) && size.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('size')}</label>
           <div className="col-sm-10">
             <input type="hidden" className="form-control" {...size} />
             <Slider min={1} max={1024} step={1} value={size.value} onChange={param => size.onChange(param)} />
-            {(submitFailed || size.error) && <div className="text-danger"><small>{size.error}</small></div>}
+            {((submitFailed || size.touched) || size.error) && <div className="text-danger"><small>{size.error}</small></div>}
           </div>
         </div>}
 
@@ -76,7 +76,7 @@ class F extends React.Component {
           </div>
         </div>}
 
-        {count.value && <div className={submitFailed && count.error ? 'form-group has-error' : 'form-group'}>
+        {count.value && <div className={(submitFailed || count.error) && count.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('count')}</label>
           <div className="col-sm-10">
             <input type="hidden" className="form-control" {...count} />
