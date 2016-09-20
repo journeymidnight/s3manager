@@ -52,7 +52,6 @@ class C extends Page {
 
   render() {
     if (!window.DEBUG) {
-      window.location = `http://uc.lecloud.com/login.do?backUrl=${window.location.origin}/g/`;
       return <div />;
     }
 
