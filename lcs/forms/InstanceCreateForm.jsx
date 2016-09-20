@@ -342,6 +342,9 @@ F.validate = values => {
   errors.instanceTypeId = Validations.required(values.instanceTypeId);
   errors.subnetId = Validations.required(values.subnetId);
   errors.count = Validations.required(values.count);
+  if (Validations.isEmpty(values.loginPassword) || !/^[0-9a-zA-Z_\-]+$/.test(values.hostname)) {
+    errors.hostname = i18n.t('pageInstanceCreate.hostnameNotValid');
+  }
   if (values.loginMode === 'password') {
     if (Validations.isEmpty(values.loginPassword) || !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/i.test(values.loginPassword)) {
       errors.loginPassword = i18n.t('pageInstanceCreate.passwordNotValid');
