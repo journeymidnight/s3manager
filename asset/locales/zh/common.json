@@ -12,6 +12,8 @@
     "delete": "删除",
     "submit": "提交",
     "action": "操作",
+    "success": "成功",
+    "fail": "失败",
 
     "id": "ID",
     "name": "名称",

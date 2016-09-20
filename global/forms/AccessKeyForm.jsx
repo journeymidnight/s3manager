@@ -9,7 +9,7 @@ const F = (props) => {
     submitting,
     submitFailed,
     resetForm,
-    t,    
+    t,
   } = props;
   return (
     <form className="form-horizontal" onSubmit={handleSubmit}>
