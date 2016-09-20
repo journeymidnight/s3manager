@@ -3,6 +3,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import AWS from 'aws-sdk';
 import Page, { attach } from '../../shared/pages/Page';
+import BucketMonitors from './BucketMonitors';
 import * as Actions from '../../console-common/redux/actions';
 import * as BucketActions from '../redux/actions.bucket';
 
@@ -30,11 +31,21 @@ class C extends Page {
     const now = new Date();
     const nowTime = moment.utc(now).local().format('YYYYMMDDHHmmss');
     const todayBeginTime = moment.utc(now).local().format('YYYYMMDD000000');
-    dispatch(BucketActions.requestGetUsageByHour(routerKey, region.regionId, bucketName, todayBeginTime, nowTime));
 
     const today = moment.utc(now).local().format('YYYYMMDD');
     const firstDayOfMonth = moment.utc(now).local().format('YYYYMM01');
-    dispatch(BucketActions.requestGetStaticsByDay(routerKey, region.regionId, bucketName, firstDayOfMonth, today));
+
+    Promise.all([
+      dispatch(BucketActions.requestGetUsageByHour(routerKey, region.regionId, bucketName, todayBeginTime, nowTime)),
+      dispatch(BucketActions.requestGetStaticsByDay(routerKey, region.regionId, bucketName, firstDayOfMonth, today)),
+      dispatch(BucketActions.requestGetOpByHour(routerKey, region.regionId, bucketName, todayBeginTime, nowTime)),
+      dispatch(BucketActions.requestGetFlowByHour(routerKey, region.regionId, bucketName, todayBeginTime, nowTime)),
+    ])
+      .then(() => {
+        dispatch(Actions.extendContext({ loading: false }, routerKey));
+      });
+
+    dispatch(Actions.extendContext({ loading: true }, routerKey));
   }
 
   render() {
@@ -134,14 +145,14 @@ class C extends Page {
               </div>
               <div className="col-md-8 tabs">
                 <ul className="nav-links clearfix">
-                  <li className="pull-left">
-                    <Link data-placement="left" to={`${servicePath}/buckets/${params.bucketName}/monitor`}>
+                  <li className="pull-left active">
+                    <Link data-placement="left" to={`${servicePath}/buckets/${params.bucketName}`}>
                       {t('pageBucket.monitor')}
                     </Link>
                   </li>
                 </ul>
                 <div>
-                  TODO{/* React.cloneElement(this.props.children, this.state) */}
+                  <BucketMonitors {...this.props} />
                 </div>
               </div>
             </div>

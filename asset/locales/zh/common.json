@@ -631,6 +631,21 @@
         "publicDomain": "外网域名",
         "privateDomain": "内网域名",
 
-        "monitor": "监控"
+        "monitor": "监控",
+
+        "usageMonitor": "存储空间",
+        "usageLegend": "存储占用量",
+
+        "flowMonitor": "使用流量",
+        "flowOutPublic": "公网流出",
+        "flowInPublic": "公网流入",
+        "flowOutPrivate": "内网流出",
+        "flowInPrivate": "内网流入",
+
+        "apiMonitor": "请求次数",
+        "apiGet": "API访问次数（GET）",
+        "apiPut": "API访问次数（PUT）",
+
+        "monitorIntervalOneHour": "间隔: 1小时"
     }
 }

@@ -148,6 +148,23 @@ export function generateChartConfig(data, cols, yFormat) {
 
       return `${fmt(bytes / 1024 / 1024)}TB`;
     };
+  } else if (yFormat === 'kilobytes') {
+    config.axis.y.min = 0;
+    config.axis.y.tick.format = (bytes) => {
+      const fmt = d3.format('.1f');
+
+      if (bytes < 0) {
+        return '';
+      } else if (bytes < 1024) {
+        return `${fmt(bytes)}kB`;
+      } else if (bytes < 1024 * 1024) {
+        return `${fmt(bytes / 1024)}MB`;
+      } else if (bytes < 1024 * 1024 * 1024) {
+        return `${fmt(bytes / 1024 / 1024)}GB`;
+      }
+
+      return `${fmt(bytes / 1024 / 1024)}TB`;
+    };
   } else if (yFormat === 'yuan') {
     config.axis.y.min = 0;
     config.axis.y.tick.format = (currency) => {
