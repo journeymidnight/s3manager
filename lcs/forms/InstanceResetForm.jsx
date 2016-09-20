@@ -3,7 +3,6 @@ import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
 import IaaS, { ACTION_NAMES } from '../services/iaas';
 import * as Validations from '../../shared/utils/validations';
-import i18n from '../../shared/i18n';
 
 class InstanceResetForm extends React.Component {
 
@@ -121,9 +120,7 @@ InstanceResetForm.propTypes = {
 InstanceResetForm.validate = values => {
   const errors = {};
   if (values.loginMode === 'password') {
-    if (Validations.isEmpty(values.loginPassword) || !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/i.test(values.loginPassword)) {
-      errors.loginPassword = i18n.t('pageInstanceCreate.passwordNotValid');
-    }
+    errors.loginPassword = Validations.loginPassword(values.loginPassword);
   }
   return errors;
 };

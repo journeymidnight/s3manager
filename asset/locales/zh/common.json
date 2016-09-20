@@ -363,6 +363,7 @@
         "loginPassword": "密码",
         "passwordNotValid": "密码不符合规范。",
         "passwordHint": "密码至少8位，并包括字母及数字。",
+        "hostnameNotValid": "主机名不符合规范。",
         "instanceType": "选择配置",
         "image": "选择映像",
         "imageType": "映像类型",

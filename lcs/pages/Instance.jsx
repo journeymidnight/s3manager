@@ -16,6 +16,7 @@ import * as EipActions from '../redux/actions.eip';
 import * as Actions from '../../console-common/redux/actions';
 import * as InstanceActions from '../redux/actions.instance';
 import * as VolumeActions from '../redux/actions.volume';
+import * as Validations from '../../shared/utils/validations';
 
 let InstanceUpdateForm = (props) => {
   const { fields:
@@ -64,8 +65,9 @@ InstanceUpdateForm.propTypes = {
   t: React.PropTypes.any,
 };
 
-InstanceUpdateForm.validate = () => {
+InstanceUpdateForm.validate = (values) => {
   const errors = {};
+  errors.name = Validations.hostname(values.name);
   return errors;
 };
 

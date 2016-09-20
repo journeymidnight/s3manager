@@ -4,7 +4,6 @@ import { Link } from 'react-router';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
 import * as Validations from '../../shared/utils/validations';
-import i18n from '../../shared/i18n';
 
 class F extends React.Component {
 
@@ -342,13 +341,9 @@ F.validate = values => {
   errors.instanceTypeId = Validations.required(values.instanceTypeId);
   errors.subnetId = Validations.required(values.subnetId);
   errors.count = Validations.required(values.count);
-  if (Validations.isEmpty(values.loginPassword) || !/^[0-9a-zA-Z_\-]+$/.test(values.hostname)) {
-    errors.hostname = i18n.t('pageInstanceCreate.hostnameNotValid');
-  }
+  errors.hostname = Validations.hostname(values.hostname);
   if (values.loginMode === 'password') {
-    if (Validations.isEmpty(values.loginPassword) || !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/i.test(values.loginPassword)) {
-      errors.loginPassword = i18n.t('pageInstanceCreate.passwordNotValid');
-    }
+    errors.loginPassword = Validations.loginPassword(values.loginPassword);
   }
   return errors;
 };
