@@ -307,7 +307,7 @@ class C extends Page {
 
     const { t, dispatch, routerKey, region } = this.props;
 
-    dispatch(VolumeActions.requestDescribeVolumes(routerKey, region.regionId, { status: ['active'] }))
+    dispatch(VolumeActions.requestDescribeVolumes(routerKey, region.regionId, { status: ['active'], limit: 100 }))
       .then(() => {
         if (this.props.context.volumeSet && this.props.context.volumeSet.length) {
           this.refs.attachVolumeModal.show();

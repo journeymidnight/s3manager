@@ -325,7 +325,7 @@ class C extends Page {
 
     const { t, dispatch, region, routerKey } = this.props;
 
-    dispatch(InstanceActions.requestDescribeInstances(routerKey, region.regionId, { status: ['active', 'stopped'] }))
+    dispatch(InstanceActions.requestDescribeInstances(routerKey, region.regionId, { status: ['active', 'stopped'], limit: 100 }))
       .then(() => {
         if (this.props.context.instanceSet && this.props.context.instanceSet.length) {
           this.refs.attachModal.show();
