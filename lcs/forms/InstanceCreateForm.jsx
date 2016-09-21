@@ -28,6 +28,17 @@ class F extends React.Component {
       instanceTypes[instanceType.vcpus][instanceType.memory][instanceType.disk].push(instanceType);
     });
 
+    function makeid() {
+      let text = '';
+      const possible = 'abcdefghijklmnopqrstuvwxyz0123456789';
+
+      for (let i = 0; i < 5; i++) {
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+      }
+
+      return text;
+    }
+
     const initialValues = {
       vcpus: _.keys(instanceTypes)[0],
       memory: _.keys(_.values(instanceTypes)[0])[0],
@@ -38,6 +49,8 @@ class F extends React.Component {
       imageType: 'public',
       imageId: this.props.publicImageSet[0].imageId,
       loginMode: 'password',
+      hostname: `instance-${makeid()}`,
+      loginPassword: '',
     };
 
     if (this.props.keyPairSet.length > 0) {
