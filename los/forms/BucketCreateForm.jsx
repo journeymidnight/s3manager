@@ -28,10 +28,10 @@ class F extends React.Component {
         <div className="form-group">
           <label className="control-label" >{t('pageBucketCreate.bucketName')}</label>
           <div className="col-sm-10">
-            <input type="text" className="form-control" {...bucketName} />
+            <input type="text" className="form-control" onChange={bucketName.onChange} />
             {submitFailed && bucketName.error && <div className="text-danger"><small>{bucketName.error}</small></div>}
             <p className="help-block">{t('pageBucketCreate.bucketNameHint').split('\n').map((item) =>
-              <span>{item}<br /></span>
+              <span key={Math.random()}>{item}<br /></span>
             )}</p>
           </div>
         </div>
