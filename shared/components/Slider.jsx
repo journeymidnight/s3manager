@@ -1,51 +1,61 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-
 
 class Slider extends React.Component {
   constructor(props) {
     super(props);
 
     this.handleChange = this.handleChange.bind(this);
-    this.handleKeyDown = this.handleKeyDown.bind(this);
     this.handleMouseDown = this.handleMouseDown.bind(this);
-    this.handleBlur = this.handleBlur.bind(this);
+    this.min = this.props.min;
+    this.max = this.props.max;
+    this.step = this.props.step;
+    this.atomicWidth = 300 / this.max;
+    this.atomicValue = 1 / this.atomicWidth;
     this.state = {
-      min: this.props.min, max: this.props.max, step: this.props.step, value: this.props.value,
+      value: this.props.value,
     };
   }
 
-  handleMouseDown(e) {
-    const sliderBar = ReactDOM.findDOMNode(this.refs.sliderBar);
-    const sliderDot = ReactDOM.findDOMNode(this.refs.sliderDot);
+  componentWillReceiveProps(nextProps) {
+    this.setState({ value: nextProps.value });
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextState.value !== this.state.value;
+  }
+
+  checkAndAdjustValue(value) {
+    let result = value;
+    if (isNaN(value) || value <= this.min) {
+      result = this.min;
+    } else if (value >= this.max) {
+      result = this.max;
+    } else if (value % this.step !== 0) {
+      result = Math.ceil(value / this.step) * this.step;
+    }
+
+    return result;
+  }
+
+  calcSelectionWidth(originalValue) {
+    const value = Number(originalValue);
+    if (isNaN(value) || value <= this.min) {
+      return this.min * this.atomicWidth;
+    } else if (value >= this.max) {
+      return this.max * this.atomicWidth;
+    }
+    return value * this.atomicWidth;
+  }
+
+  handleMouseDown() {
+    const sliderBar = this.refs.sliderBar;
     const that = this;
-    const wholeLeft = e.clientX - sliderDot.offsetLeft;
-    const widthStep = 300 / this.state.max;
 
     document.onmousemove = (event) => {
-      let barLeft = parseInt(event.clientX - wholeLeft, 10);
-      barLeft = Math.round(barLeft / that.state.step / widthStep) * that.state.step * widthStep;
-      let myValue = Math.round(barLeft / widthStep);
-      let dotLeft = barLeft - 4;
-      if (barLeft <= 0) {
-        barLeft = that.state.min * widthStep;
-        dotLeft = (barLeft - 4 < 0) ? barLeft : (barLeft - 4);
-        myValue = that.state.min;
-      } else if (barLeft >= that.state.max * widthStep) {
-        barLeft = that.state.max * widthStep;
-        dotLeft = barLeft - 9;
-        myValue = that.state.max;
-      }
-      sliderDot.style.left = dotLeft.toString().concat('px');
-      sliderBar.style.width = barLeft.toString().concat('px');
-      that.setState({
-        min: that.state.min,
-        max: that.state.max,
-        step: that.state.step,
-        value: myValue,
-      });
-      that.refs.myInput.value = myValue;
-      that.props.onChange(myValue);
+      const originalValue = (event.pageX - sliderBar.getBoundingClientRect().left) * that.atomicValue;
+      const value = this.checkAndAdjustValue(originalValue);
+      this.setState({ value });
+      this.props.onChange(value);
     };
     document.onmouseup = () => {
       document.onmousemove = null;
@@ -53,84 +63,30 @@ class Slider extends React.Component {
     };
   }
 
-  handleKeyDown(e) {
-    if (e.keyCode === 13) {
-      let myInput = Math.round(parseInt(this.refs.myInput.value.trim(), 10) / this.state.step) * this.state.step;
-      if (myInput === 0) {
-        myInput = this.state.min;
-      }
-
-      let myValue = myInput;
-      if (myInput < 0) {
-        myValue = this.state.min;
-      } else if (myInput >= this.state.max) {
-        myValue = this.state.max;
-      }
-      this.setState({
-        min: this.state.min,
-        max: this.state.max,
-        step: this.state.step,
-        value: myValue,
-      });
-      this.props.onChange(myValue);
-      this.refs.myInput.value = myValue;
-    }
-  }
-
   handleChange() {
-    let myInput = parseInt(this.refs.myInput.value.trim(), 10);
-    if (!myInput) {
-      myInput = '';
-    }
-    if (myInput > this.state.max) {
-      myInput = this.state.max;
-    }
-    this.setState({
-      min: this.state.min,
-      max: this.state.max,
-      step: this.state.step,
-      value: myInput,
-    });
-    this.refs.myInput.value = myInput;
-    if (myInput) {
-      this.props.onChange(myInput);
-    }
-  }
-
-  handleBlur() {
-    let myInput = Math.round(parseInt(this.refs.myInput.value.trim(), 10) / this.state.step) * this.state.step;
-    if (!myInput) {
-      myInput = this.state.min;
-    }
-
-    let myValue = myInput;
-    if (myInput < 0) {
-      myValue = this.state.min;
-    } else if (myInput > this.state.max) {
-      myValue = this.state.max;
-    }
-    this.setState({
-      min: this.state.min,
-      max: this.state.max,
-      step: this.state.step,
-      value: myValue,
-    });
-    this.props.onChange(myValue);
-    this.refs.myInput.value = myValue;
+    this.setState({ value: this.refs.myInput.value });
+    setTimeout(() => {
+      const value = this.checkAndAdjustValue(Number(this.refs.myInput.value.trim()));
+      this.setState({ value });
+      this.props.onChange(value);
+    }, 1500);
   }
 
   render() {
-    const value = (this.state.value !== this.props.value && this.state.value) ? this.props.value : this.state.value;
-    const widthStep = 300 / this.state.max;
+    const value = this.state.value;
     return (
       <div className="slider-container">
         <div className="slider slider-horizontal" ref="slider">
           <div className="slider-track" ref="bar">
-            <div className="slider-selection" ref="sliderBar" style={{ width: (value * widthStep).toString().concat('px') }} />
-            <div className="slider-handle round" ref="sliderDot" onMouseDown={this.handleMouseDown} style={{ left: (value * widthStep + 4).toString().concat('px') }} />
+            <div className="slider-selection" ref="sliderBar" style={{ width: this.calcSelectionWidth(value).toString().concat('px') }} />
+            <div
+              className="slider-handle round"
+              ref="sliderDot" onMouseDown={this.handleMouseDown}
+              style={{ left: (this.calcSelectionWidth(value) + 4).toString().concat('px') }}
+            />
           </div>
         </div>
-        <input type="text" className="form-control preview mini" value={value} ref="myInput" onKeyDown={this.handleKeyDown} onBlur={this.handleBlur} onChange={this.handleChange} />
+        <input type="text" className="form-control preview mini" value={value} ref="myInput" onChange={this.handleChange} />
         <span className="help inline">GB</span>
         <p className="help-block">1GB - 1000GB</p>
       </div>

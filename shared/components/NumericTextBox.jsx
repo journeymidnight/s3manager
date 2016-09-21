@@ -23,10 +23,12 @@ class NumericTextBox extends React.Component {
 
   checkAndAdjustValue(value) {
     let result = value;
-    if (isNaN(value) || value < this.min) {
+    if (isNaN(value) || value <= this.min) {
       result = this.min;
-    } else if (value > this.max) {
+    } else if (value >= this.max) {
       result = this.max;
+    } else if (value % this.step !== 0) {
+      result = Math.ceil(value / this.step) * this.step;
     }
 
     return result;
