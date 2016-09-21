@@ -5,10 +5,12 @@ class Slider extends React.Component {
     super(props);
 
     this.handleChange = this.handleChange.bind(this);
-    this.handleMouseDown = this.handleMouseDown.bind(this);
+    this.handleDotMouseDown = this.handleDotMouseDown.bind(this);
+    this.handleBarMouseDown = this.handleBarMouseDown.bind(this);
     this.min = this.props.min;
     this.max = this.props.max;
     this.step = this.props.step;
+    this.unit = this.props.unit;
     this.atomicWidth = 300 / this.max;
     this.atomicValue = 1 / this.atomicWidth;
     this.state = {
@@ -47,20 +49,27 @@ class Slider extends React.Component {
     return value * this.atomicWidth;
   }
 
-  handleMouseDown() {
+  handleMouseDown(event) {
     const sliderBar = this.refs.sliderBar;
     const that = this;
+    const originalValue = (event.pageX - sliderBar.getBoundingClientRect().left) * that.atomicValue;
+    const value = this.checkAndAdjustValue(originalValue);
+    this.setState({ value });
+    this.props.onChange(value);
+  }
 
+  handleDotMouseDown() {
     document.onmousemove = (event) => {
-      const originalValue = (event.pageX - sliderBar.getBoundingClientRect().left) * that.atomicValue;
-      const value = this.checkAndAdjustValue(originalValue);
-      this.setState({ value });
-      this.props.onChange(value);
+      this.handleMouseDown(event);
     };
     document.onmouseup = () => {
       document.onmousemove = null;
       document.onmouseup = null;
     };
+  }
+
+  handleBarMouseDown(event) {
+    this.handleMouseDown(event);
   }
 
   handleChange() {
@@ -77,18 +86,22 @@ class Slider extends React.Component {
     return (
       <div className="slider-container">
         <div className="slider slider-horizontal" ref="slider">
-          <div className="slider-track" ref="bar">
-            <div className="slider-selection" ref="sliderBar" style={{ width: this.calcSelectionWidth(value).toString().concat('px') }} />
+          <div className="slider-track" ref="bar" onMouseDown={this.handleBarMouseDown}>
+            <div
+              className="slider-selection"
+              ref="sliderBar"
+              style={{ width: this.calcSelectionWidth(value).toString().concat('px') }}
+            />
             <div
               className="slider-handle round"
-              ref="sliderDot" onMouseDown={this.handleMouseDown}
+              ref="sliderDot" onMouseDown={this.handleDotMouseDown}
               style={{ left: (this.calcSelectionWidth(value) + 4).toString().concat('px') }}
             />
           </div>
         </div>
         <input type="text" className="form-control preview mini" value={value} ref="myInput" onChange={this.handleChange} />
-        <span className="help inline">GB</span>
-        <p className="help-block">1GB - 1000GB</p>
+        <span className="help inline">{this.unit}</span>
+        <p className="help-block">{this.min}{this.unit} - {this.max}{this.unit}</p>
       </div>
     );
   }
@@ -98,6 +111,7 @@ Slider.propTypes = {
   min: React.PropTypes.number,
   max: React.PropTypes.number,
   step: React.PropTypes.number,
+  unit: React.PropTypes.string,
   value: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.number]),
   onChange: React.PropTypes.func,
 };
