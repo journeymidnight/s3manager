@@ -110,11 +110,13 @@ export function requestDescribeInstance(routerKey, regionId, instanceId) {
 export function requestCreateInstances(routerKey, regionId, params) {
   return dispatch => {
     return IaaS
-    .doAction(regionId, ACTION_NAMES.createInstances, params)
-    .promise
-    .then(() => {
-      dispatch(notify(i18n.t('createSuccessed')));
-    });
+      .doAction(regionId, ACTION_NAMES.createInstances, params)
+      .promise
+      .then(() => {
+        setTimeout(() => {
+          dispatch(notify(i18n.t('createSuccessed')));
+        }, 1000);
+      });
   };
 }
 
@@ -279,13 +281,15 @@ export function requestInstanceOutput(routerKey, regionId, instanceId) {
 export function requestCaptureInstance(routerKey, regionId, instanceId, name) {
   return dispatch => {
     return IaaS
-    .doAction(regionId, ACTION_NAMES.captureInstance, {
-      instanceId,
-      name,
-    })
-    .promise
-    .then(() => {
-      dispatch(notify(i18n.t('capturePending')));
-    });
+      .doAction(regionId, ACTION_NAMES.captureInstance, {
+        instanceId,
+        name,
+      })
+      .promise
+      .then(() => {
+        setTimeout(() => {
+          dispatch(notify(i18n.t('capturePending')));
+        }, 1000);
+      });
   };
 }

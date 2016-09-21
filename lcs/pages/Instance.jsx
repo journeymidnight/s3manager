@@ -253,7 +253,7 @@ class C extends Page {
   }
 
   onCaptureInstance(values) {
-    const { t, dispatch, region, routerKey, params, servicePath } = this.props;
+    const { dispatch, region, routerKey, params, servicePath } = this.props;
 
     return new Promise((resolve, reject) => {
       const name = values.name;
@@ -262,10 +262,7 @@ class C extends Page {
       .then(() => {
         resolve();
         this.refs.captureModal.hide();
-        setTimeout(() => {
-          dispatch(push(`${servicePath}/images_snapshots/private_images`));
-          dispatch(Actions.notify(t('createSuccessed')));
-        }, 200);
+        dispatch(push(`${servicePath}/images_snapshots/private_images`));
       }).catch((error) => {
         dispatch(Actions.notifyAlert(error.displayMsg || error.message));
         reject();

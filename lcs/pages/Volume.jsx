@@ -373,7 +373,7 @@ class C extends Page {
   }
 
   onCreateSnapshot(values) {
-    const { t, dispatch, region, routerKey, servicePath } = this.props;
+    const { dispatch, region, routerKey, servicePath } = this.props;
     const volume = this.props.context.volume || this.volume;
 
     return new Promise((resolve, reject) => {
@@ -386,10 +386,7 @@ class C extends Page {
         .then(() => {
           resolve();
           this.refs.snapshotCreateModal.hide();
-          setTimeout(() => {
-            dispatch(push(`${servicePath}/images_snapshots/volume_snapshots`));
-            dispatch(Actions.notify(t('createSuccessed')));
-          }, 200);
+          dispatch(push(`${servicePath}/images_snapshots/volume_snapshots`));
         }).catch(() => {
           reject();
         });

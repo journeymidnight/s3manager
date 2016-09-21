@@ -51,11 +51,13 @@ export function requestDescribeSubnets(routerKey, regionId, filters) {
 export function requestCreateNetwork(routerKey, regionId, network) {
   return dispatch => {
     return IaaS
-    .doAction(regionId, ACTION_NAMES.createNetwork, network)
-    .promise
-    .then(() => {
-      dispatch(notify(i18n.t('createSuccessed')));
-    });
+      .doAction(regionId, ACTION_NAMES.createNetwork, network)
+      .promise
+      .then(() => {
+        setTimeout(() => {
+          dispatch(notify(i18n.t('createSuccessed')));
+        }, 1000);
+      });
   };
 }
 
