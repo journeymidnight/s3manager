@@ -74,33 +74,23 @@ export function requestDeleteBuckets(routerKey, regionId, bucketNames) {
 }
 
 export function requestCreateBucket(routerKey, regionId, bucketName) {
-  return dispatch => {
+  return () => {
     return Wcs
       .doAction(regionId, ACTION_NAMES.createbucket, { bucket: bucketName })
-      .promise
-      .then(() => {
-        dispatch(notify(i18n.t('bucketCreatedSuccess')));
-      }).catch((error) => {
-        dispatch(notifyAlert(error.message));
-      });
+      .promise;
   };
 }
 
 export function requestPutCors(routerKey, regionId, bucketName) {
-  return dispatch => {
+  return () => {
     return Wcs
       .doAction(regionId, ACTION_NAMES.putcors, { bucket: bucketName })
-      .promise
-      .then(() => {
-        dispatch(notify(i18n.t('bucketPutCorsSuccess')));
-      }).catch((error) => {
-        dispatch(notifyAlert(error.message));
-      });
+      .promise;
   };
 }
 
 export function requestPutBucketAcl(s3, bucketName, acl) {
-  return dispatch => {
+  return () => {
     return new Promise((resolve, reject) => {
       const params = {
         Bucket: bucketName,
@@ -109,10 +99,8 @@ export function requestPutBucketAcl(s3, bucketName, acl) {
 
       s3.putBucketAcl(params, (error, data) => {
         if (error) {
-          dispatch(notifyAlert(error.message));// TODO: does this error have message?
-          reject();
+          reject(error);
         } else {
-          dispatch(notify(i18n.t('bucketPutAclSuccess')));
           resolve(data);
         }
       });
