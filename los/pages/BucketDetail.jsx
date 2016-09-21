@@ -29,6 +29,7 @@ class C extends Page {
       });
 
     const now = new Date();
+    dispatch(Actions.extendContext({ monitorTimestamp: now }, routerKey));
     const nowTime = moment.utc(now).local().format('YYYYMMDDHHmmss');
     const todayBeginTime = moment.utc(now).local().format('YYYYMMDD000000');
 
@@ -49,7 +50,7 @@ class C extends Page {
   }
 
   render() {
-    const { t, servicePath, params } = this.props;
+    const { t, servicePath, params, context } = this.props;
 
     return (
       <div className="container-fluid container-limited detail">
@@ -74,7 +75,7 @@ class C extends Page {
                         <td width="100">{t('pageBucket.usage')}</td>
                         <td>
                           <span>
-                            {this.props.context.usagebyhour ? (this.props.context.usagebyhour[this.props.context.usagebyhour.length - 1].usage / 1024).toFixed(1) : 0}MB
+                            {(context.usagebyhour && context.usagebyhour.length > 0) ? (context.usagebyhour[context.usagebyhour.length - 1].usage / 1024).toFixed(1) : 0}MB
                           </span>
                         </td>
                       </tr>
@@ -82,7 +83,7 @@ class C extends Page {
                         <td>{t('pageBucket.monthlyFlow')}</td>
                         <td>
                           <span>
-                          {this.props.context.staticsbyday ? (this.props.context.staticsbyday.reduce((previousValue, currentItem) =>
+                          {context.staticsbyday ? (context.staticsbyday.reduce((previousValue, currentItem) =>
                               (previousValue + Number(currentItem.flowInPrivate)
                               + Number(currentItem.flowOutPrivate)
                               + Number(currentItem.flowInPublic)
@@ -95,7 +96,7 @@ class C extends Page {
                         <td>{t('pageBucket.monthlyAPI')}</td>
                         <td>
                           <span>
-                            {this.props.context.staticsbyday ? this.props.context.staticsbyday.reduce((previousValue, currentItem) =>
+                            {context.staticsbyday ? context.staticsbyday.reduce((previousValue, currentItem) =>
                                 (previousValue + Number(currentItem.ops)
                                 ), 0) : 0}
                           </span>
@@ -118,7 +119,7 @@ class C extends Page {
                       <tr>
                         <td>{t('pageBucket.bucketAcl')}</td>
                         <td>
-                          <span>{this.props.context.acl}</span>
+                          <span>{context.acl}</span>
                         </td>
                       </tr>
                       <tr>
@@ -130,7 +131,7 @@ class C extends Page {
                       <tr>
                         <td>{t('pageBucket.publicDomain')}</td>
                         <td>
-                          <span>{params.bucketName}.{this.props.context.s3Domain}</span>
+                          <span>{params.bucketName}.{context.s3Domain}</span>
                         </td>
                       </tr>
                       <tr>

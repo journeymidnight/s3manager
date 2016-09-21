@@ -192,6 +192,19 @@ export function generateChartConfig(data, cols, yFormat) {
 
       return '';
     };
+  } else if (yFormat === 'count') {
+    config.axis.y.min = 0;
+    config.axis.y.tick.format = (count) => {
+      const fmt = d3.format('.f');
+
+      if (count < 0) {
+        return '';
+      } else if (count < 1000) {
+        return `${fmt(count)}`;
+      }
+
+      return `${fmt(count / 1000)}k`;
+    };
   } else {
     config.axis.y.min = 0;
     config.axis.y.tick.format = (d) => {
