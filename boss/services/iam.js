@@ -71,6 +71,16 @@ class IAM {
   createUser(user) {
     return this.call('CreateUser', user);
   }
+  activeUsers(userIds) {
+    return this.call('ActiveUsers', {
+      userIds,
+    });
+  }
+  deactiveUsers(userIds) {
+    return this.call('DeactiveUsers', {
+      userIds,
+    });
+  }
   modifyUser(user) {
     return this.call('ModifyUserAttributes', user);
   }

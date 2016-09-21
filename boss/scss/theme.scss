@@ -2,4 +2,30 @@ body {
   &.ui_boss {
     @include gitlab-theme(#e5e9ed, #32566f, #19415d, #002C4C);
   }
+
+  .content-wrapper {
+    .container-fluid {
+      min-height: 500px;
+
+      &.detail {
+        .top-area {
+          border-bottom: none;
+        }
+      }
+
+      .btn-page-action {
+        border: none;
+        background: none;
+        width: 100%;
+        text-align: left;
+        padding-left: 10px;
+        padding-right: 10px;
+
+        &:disabled{
+          cursor: not-allowed;
+          color:#ccc;
+        }
+      }
+    }
+  }
 }
