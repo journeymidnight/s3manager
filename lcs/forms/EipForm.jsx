@@ -1,7 +1,7 @@
 import React from 'react';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
-import NumericTextBox from '../../shared/components/NumericTextBox';
+import Slider from '../../shared/components/Slider';
 import * as Validations from '../../shared/utils/validations';
 
 class F extends React.Component {
@@ -39,9 +39,8 @@ class F extends React.Component {
           <label className="control-label" >{t('bandwidth')}</label>
           <div className="col-sm-10">
             <input type="hidden" className="form-control" {...bandwidth} />
-            <NumericTextBox min={1} max={300} step={1} value={bandwidth.value} onChange={param => bandwidth.onChange(param)} />
-            {(submitFailed || bandwidth.touched) && bandwidth.error && <div className="text-danger"><small>{bandwidth.error}</small></div>}
-            <p className="help-block">{t('pageEipCreate.bandwidthHint')}</p>
+            <Slider min={1} max={300} step={1} value={bandwidth.value} unit={'Mbps'} onChange={param => bandwidth.onChange(param)} />
+            {((submitFailed || bandwidth.touched) || bandwidth.error) && <div className="text-danger"><small>{bandwidth.error}</small></div>}
           </div>
         </div>
 

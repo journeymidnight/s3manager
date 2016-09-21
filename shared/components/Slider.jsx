@@ -59,13 +59,15 @@ class Slider extends React.Component {
   }
 
   handleDotMouseDown() {
-    document.onmousemove = (event) => {
+    const mousemoveListener = (event) => {
       this.handleMouseDown(event);
     };
-    document.onmouseup = () => {
-      document.onmousemove = null;
-      document.onmouseup = null;
+    const onmouseupListener = () => {
+      document.removeEventListener('mousemove', mousemoveListener, false);
+      document.removeEventListener('mouseup', onmouseupListener, false);
     };
+    document.addEventListener('mousemove', mousemoveListener, false);
+    document.addEventListener('mouseup', onmouseupListener, false);
   }
 
   handleBarMouseDown(event) {
