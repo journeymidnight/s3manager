@@ -16,6 +16,7 @@
   "license": "MIT",
   "dependencies": {
     "analytics.js-loader": "^2.1.2",
+    "aws-sdk": "^2.6.3",
     "axios": "^0.11.0",
     "babel-core": "^6.7.7",
     "body-parser": "^1.15.0",
