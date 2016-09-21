@@ -42,7 +42,7 @@ class C extends Component {
 
     const combinedDataArray = [];
     for (let i = 0, len = sortedDataArray.length; i < len; i++) {
-      if (sortedDataArray[i].time === sortedDataArray[i + 1].time) {
+      if (sortedDataArray[i + 1] && sortedDataArray[i].time === sortedDataArray[i + 1].time) {
         combinedDataArray.push(Object.assign({}, sortedDataArray[i]), sortedDataArray[i + 1]);
         i++;
       } else {

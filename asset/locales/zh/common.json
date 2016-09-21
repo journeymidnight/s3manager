@@ -13,6 +13,7 @@
     "action": "操作",
     "id": "ID",
     "name": "名称",
+    "fileName": "文件名",
     "noName": "无",
     "username": "用户名",
     "title": "标题",
@@ -53,6 +54,7 @@
     "publicIP": "公网 IP",
     "mountpoint": "挂载点",
     "size": "大小",
+    "category": "类型",
     "download": "下载",
     "key_pair": "SSH 密钥",
     "associateResource": "绑定资源",
@@ -629,8 +631,6 @@
     "resourceMonitorDescription": "资源监控描述",
     "bucketsDeletedSuccess": "空间删除成功",
     "bucketsCreatedSuccess": "空间添加成功",
-    "bucketPutCorsSuccess": "PutCORS成功",
-    "bucketPutAclSuccess": "PutACL成功",
     "pageBucketCreate": {
         "createBucket": "添加空间",
         "bucketName": "空间名称",
@@ -643,6 +643,7 @@
     },
     "bucketManage": "空间管理",
     "bucket": "空间",
+    "bucketDetail": "空间概览",
     "pageBucket": {
         "basicInfo": "基本信息",
         "usage": "容量",
@@ -672,5 +673,10 @@
         "apiPut": "API访问次数（PUT）",
 
         "monitorIntervalOneHour": "间隔: 1小时"
-    }
+    },
+
+    "objectManagement": "对象管理",
+    "filterByObjectName": "按对象名称过滤",
+    "uploadFile": "上传文件",
+    "createFolder": "新建文件夹"
 }

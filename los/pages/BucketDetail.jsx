@@ -8,14 +8,16 @@ import * as Actions from '../../console-common/redux/actions';
 import * as BucketActions from '../redux/actions.bucket';
 
 class C extends Page {
-  componentWillUnmount() {
-    const { dispatch } = this.props;
-    dispatch(BucketActions.removeBucket());
+
+  constructor(props) {
+    super(props);
+
+    this.formatBytes = this.formatBytes.bind(this);
   }
 
   initialize() {
     const { t, dispatch, servicePath, region, routerKey, params } = this.props;
-    dispatch(Actions.setHeader(t('bucketManage'), `${servicePath}/buckets`));
+    dispatch(Actions.setHeader(t('bucketDetail'), `${servicePath}/buckets`));
     const bucketName = params.bucketName;
 
     dispatch(BucketActions.requestGetS3Domain(routerKey, region.regionId))
@@ -47,6 +49,14 @@ class C extends Page {
       });
 
     dispatch(Actions.extendContext({ loading: true }, routerKey));
+  }
+
+  formatBytes(bytes) {
+    if (bytes < 1024) return (bytes + 'B');
+    else if (bytes < 1024 * 1024) return ((bytes / 1024).toFixed(1) + 'KB');
+    else if (bytes < 1024 * 1024 * 1024) return ((bytes / 1024 / 1024).toFixed(1) + 'MB');
+    else if (bytes < 1024 * 1024 * 1024 * 1024) return ((bytes / 1024 / 1024 / 1024).toFixed(1) + 'GB');
+    return ((bytes / 1024 / 1024 / 1024 / 1024).toFixed(1) + 'TB');
   }
 
   render() {
@@ -83,12 +93,12 @@ class C extends Page {
                         <td>{t('pageBucket.monthlyFlow')}</td>
                         <td>
                           <span>
-                          {context.staticsbyday ? (context.staticsbyday.reduce((previousValue, currentItem) =>
+                          {context.staticsbyday ? this.formatBytes(context.staticsbyday.reduce((previousValue, currentItem) =>
                               (previousValue + Number(currentItem.flowInPrivate)
                               + Number(currentItem.flowOutPrivate)
                               + Number(currentItem.flowInPublic)
                               + Number(currentItem.flowOutPublic)
-                              ), 0) / 1024).toFixed(1) : 0}MB
+                              ), 0)) : '0'}
                           </span>
                         </td>
                       </tr>

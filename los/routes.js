@@ -6,6 +6,7 @@ import NotFound from '../shared/pages/NotFound.jsx';
 import App from '../console-common/pages/App.jsx';
 import BucketList from './pages/BucketList.jsx';
 import BucketCreate from './pages/BucketCreate.jsx';
+import Bucket from './pages/Bucket.jsx';
 import BucketDetail from './pages/BucketDetail.jsx';
 import ObjectManagement from './pages/ObjectManagement.jsx';
 
@@ -25,8 +26,9 @@ export default function configureRoutes(store) {
         <Route path="buckets">
           <IndexRoute component={BucketList} />
           <Route path="create" component={BucketCreate} />
-          <Route path=":bucketName">
-            <IndexRoute component={BucketDetail} />
+          <Route path=":bucketName" component={Bucket}>
+            <IndexRedirect to="detail" />
+            <Route path="detail" component={BucketDetail} />
             <Route path="objects" component={ObjectManagement} />
           </Route>
         </Route>
