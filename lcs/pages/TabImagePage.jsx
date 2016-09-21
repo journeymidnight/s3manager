@@ -7,6 +7,7 @@ import ButtonForm from '../../shared/forms/ButtonForm';
 import { confirmModal } from '../../shared/components/Modal';
 import StatusFilter from '../../shared/components/StatusFilter';
 import TimeSorter from '../../shared/components/TimeSorter';
+import SearchBox from '../../shared/components/SearchBox';
 import * as Actions from '../../console-common/redux/actions';
 import * as ImageActions from '../redux/actions.image';
 
@@ -20,7 +21,7 @@ class C extends TablePage {
 
   initialize(routerKey) {
     const { t, dispatch, servicePath } = this.props;
-    dispatch(Actions.setHeader(t('publicImageManage'), `${servicePath}/images_snapshots`));
+    dispatch(Actions.setHeader(this.isPublicImage() ? t('publicImageManage') : t('privateImageManage'), `${servicePath}/images_snapshots`));
 
     this.initTable(routerKey, {
       isTabPage: true,
@@ -132,7 +133,7 @@ class C extends TablePage {
       <div className="gray-content-block second-block">
         <div className={Object.keys(this.props.context.selected).length > 0 ? 'hidden' : ''}>
           <div className="filter-item inline">
-            <a className="btn btn-default" onClick={this.onRefresh({}, false)}>
+            <a className="loading-display">
               <i className={`fa fa-refresh ${this.props.context.loading ? 'fa-spin' : ''}`}></i>
             </a>
           </div>
@@ -140,7 +141,7 @@ class C extends TablePage {
             <StatusFilter statusOption={statusOption} filterStatus={this.props.context.status} onRefresh={this.onRefresh} />
           </div>
           <div className="filter-item inline">
-            <input type="search" ref="search" placeholder={t('filterByIdorName')} className="form-control" onKeyPress={this.onSearchKeyPress} />
+            <SearchBox ref="searchBox" placeholder={t('filterByIdorName')} onEnterPress={this.onSearchKeyPress} onButtonClick={this.onSearchButtonClick} />
           </div>
           <div className="pull-right">
             <TimeSorter isReverse={this.props.context.reverse} onRefresh={this.onRefresh} />

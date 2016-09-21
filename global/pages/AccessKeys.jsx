@@ -7,6 +7,7 @@ import TablePage from '../../shared/pages/TablePage';
 import ButtonForm from '../../shared/forms/ButtonForm';
 import StatusFilter from '../../shared/components/StatusFilter';
 import TimeSorter from '../../shared/components/TimeSorter';
+import SearchBox from '../../shared/components/SearchBox';
 import * as Actions from '../../console-common/redux/actions';
 import * as AccessKeyActions from '../redux/actions.access_key';
 
@@ -57,7 +58,6 @@ class C extends TablePage {
             </th>
             <th width="150">{t('name')}</th>
             <th>{t('accessKey')}</th>
-            <th>{t('accessSecret')}</th>
             <th>{t('status')}</th>
             <th width="200">{t('created')}</th>
           </tr>
@@ -73,8 +73,13 @@ class C extends TablePage {
                   {accessKey.name && <strong>{accessKey.name}</strong>}
                   {!accessKey.name && <i className="text-muted">{t('noName')}</i>}
                 </td>
-                <td>{accessKey.accessKey}</td>
-                <td>{accessKey.accessSecret}</td>
+                <td>
+                  <div>
+                    {accessKey.accessKey}
+                    <br />
+                    {accessKey.accessSecret}
+                  </div>
+                </td>
                 <td className={`i-status i-status-${accessKey.status}`}>
                   <i className="icon"></i>
                   {t(`accessKeyStatus.${accessKey.status}`)}
@@ -120,7 +125,7 @@ class C extends TablePage {
       <div className="gray-content-block second-block">
         <div className={Object.keys(this.props.context.selected).length > 0 ? 'hidden' : ''}>
           <div className="filter-item inline">
-            <a className="btn btn-default" onClick={this.onRefresh({}, false)}>
+            <a className="loading-display">
               <i className={`fa fa-refresh ${this.props.context.loading ? 'fa-spin' : ''}`}></i>
             </a>
           </div>
@@ -128,7 +133,7 @@ class C extends TablePage {
             <StatusFilter statusOption={statusOption} filterStatus={this.props.context.status} onRefresh={this.onRefresh} />
           </div>
           <div className="filter-item inline">
-            <input type="search" ref="search" placeholder={t('filterByIdorName')} className="form-control" onKeyPress={this.onSearchKeyPress} />
+            <SearchBox ref="searchBox" placeholder={t('filterByIdorName')} onEnterPress={this.onSearchKeyPress} onButtonClick={this.onSearchButtonClick} />
           </div>
           <div className="pull-right">
             <TimeSorter isReverse={this.props.context.reverse} onRefresh={this.onRefresh} />

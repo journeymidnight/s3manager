@@ -286,7 +286,7 @@ class C extends Page {
 
     const { t, dispatch, region, routerKey } = this.props;
 
-    dispatch(InstanceActions.requestDescribeInstances(routerKey, region.regionId, { status: ['active', 'stopped'] }))
+    dispatch(InstanceActions.requestDescribeInstances(routerKey, region.regionId, { status: ['active', 'stopped'], limit: 100 }))
       .then(() => {
         if (this.props.context.instanceSet && this.props.context.instanceSet.length) {
           const availableInstances = this.props.context.instanceSet.filter((instance) => {
@@ -358,7 +358,7 @@ class C extends Page {
       name: this.props.context.eip.name,
     };
     return (
-      <Modal title={t('pageEip.associateEip')} ref="associateModal" >
+      <Modal title={t('pageEip.associateResource')} ref="associateModal" >
         <EipAssociateForm onSubmit={this.onAssociate} availableInstances={availableInstances} initialValues={initialValues} />
       </Modal>
     );

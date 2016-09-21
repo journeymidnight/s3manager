@@ -10,12 +10,9 @@ import BucketDetail from './pages/BucketDetail.jsx';
 import ObjectManagement from './pages/ObjectManagement.jsx';
 
 export default function configureRoutes(store) {
-  function requireAuth(nextState, replace) {
+  function requireAuth() {
     if (!store.getState().global || !store.getState().global.auth) {
-      replace({
-        pathname: '/login',
-        state: { nextPathname: nextState.location.pathname },
-      });
+      window.location = '/g/';
     }
   }
 

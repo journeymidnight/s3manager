@@ -70,6 +70,7 @@
     "firstCreated": "最早创建",
     "selectRegion": "选择区域",
     "filterByIdorName": "用ID或名称过滤...",
+    "filterByName": "用名称过滤...",
     "createSuccessed": "添加成功。",
     "updateSuccessed": "保存成功。",
     "deleteSuccessed": "删除成功。",
@@ -97,13 +98,13 @@
     "adminManageDescription": "添加、删除和修改管理员信息。",
     "userManage": "用户管理",
     "userManageDescription": "添加、删除和修改用户信息。",
-    "networkManage": "私有网络管理（VPC）",
+    "networkManage": "私有网络管理（VPC）管理",
     "networkManageDescription": "私有网络可以提供100%的安全隔离，而且有丰富的工具帮助您进行自动化管理。 ",
     "subnetManageDescription": "私有网络可以划分一到多个子网，云主机可以添加或迁移至在任意子网。",
     "portForwardingManageDescription": "添加端口转发规则，允许公网对您的私有网络内部服务的访问。",
-    "keyPairManage": "SSH 密钥",
+    "keyPairManage": "SSH 密钥管理",
     "keyPairManageDescription": "为 Linux 云主机提供 SSH 公钥/私钥验证身份。",
-    "eipManage": "公网 IP",
+    "eipManage": "公网 IP管理",
     "eipManageDescription": "为 Linux 云主机提供 可以被公网访问的IP地址。",
     "publicImageManage": "公共映像",
     "publicImageManageDescription": "为 Linux 云主机提供 公共映像。",
@@ -113,7 +114,7 @@
     "volumeSnapshotManageDescription": "为 Linux 云主机提供 硬盘备份。",
     "instanceTypeManage": "主机配置",
     "instanceTypeManageDescription": "为 Linux 云主机提供 主机配置。",
-    "volumeManage": "云硬盘",
+    "volumeManage": "云硬盘管理",
     "volumeManageDescription": "为 Linux 云主机提供 云硬盘。",
     "projectManage": "项目管理",
     "projectManageDescription": "可根据不同的企业或团队划分独立的项目, 分配相应的资源配额。",
@@ -123,11 +124,11 @@
     "regionManageDescription": "一个区域即独立完整的IaaS集群，包含OpenStack，Ceph及所有服务组建。可为项目分配不同区域不同配额的云资源，并统一管理。",
     "activityManage": "操作日志",
     "activityManageDescription": "记录用户的操作。",
-    "accessKeyManage": "API密钥",
+    "accessKeyManage": "API密钥管理",
     "accessKeyManageDescription": "为用户提供API安全凭证。",
     "usageManage": "资源概览",
     "ticketManage": "工单管理",
-    "ticketManageDescription": "添加、删除和修改工单信息。",
+    "ticketManageDescription": "添加、追加和关闭工单。",
     "projectRoleAdmin": "管理账号",
     "projectRoleUser": "使用账户",
     "allAvaliableStatus": "可用资源",
@@ -249,6 +250,27 @@
         "in-progress": "处理中",
         "closed": "已解决"
     },
+
+    "serviceStatus": {
+        "active": "激活",
+        "deleted": "已删除"
+    },
+
+    "projectStatus": {
+        "active": "激活",
+        "deleted": "已删除"
+    },
+
+    "userStatus": {
+        "active": "激活",
+        "deleted": "已删除"
+    },
+
+    "regionStatus": {
+        "active": "激活",
+        "deleted": "已删除"
+    },
+
     "pageNetworkCreate": {
         "createNetwork": "添加私有网络",
         "cidr": "初始网段地址",
@@ -286,7 +308,8 @@
         "defaultUser": "默认用户",
         "keyPair": "SSH 密钥",
         "loginPassword": "密码",
-        "passwordNotValid": "密码不符合规范。",
+        "hostnameNotValid": "主机名不符合规范, 不能包含数字、英文字母、-_ 之外其他字符。",
+        "passwordNotValid": "密码不符合规范，密码需至少8位，并包括字母及数字。",
         "passwordHint": "密码至少8位，并包括字母及数字。",
         "instanceType": "选择配置",
         "image": "选择映像",
@@ -353,13 +376,13 @@
         "detachVolume": "卸载",
         "resizeVolume": "扩容",
         "monitor": "监控",
-        "snapshot": "快照",
-        "createSnapshot": "创建快照",
+        "snapshot": "备份",
+        "createSnapshot": "创建备份",
         "confirmDetachVolume": "确认要卸载云硬盘吗?",
         "noAvailableInstance": "没有可用的云主机",
         "validateSizeGreatThanInitialSize": "扩容的大小须大于当前大小",
-        "noSelectableSnapshot": "无可选快照",
-        "selectSnapshotPlease": "请选择快照"
+        "noSelectableSnapshot": "无可选备份",
+        "selectSnapshotPlease": "请选择备份"
     },
     "pageUsage": {
         "usage": "资源使用概览",
@@ -367,7 +390,7 @@
         "keyPairs": "SSH 密钥",
         "instances": "云主机",
         "vcpus": "vCPU",
-        "snapshots": "快照",
+        "snapshots": "备份",
         "volumes": "云硬盘个数",
         "memory": "内存(GB)",
         "images": "映像",
@@ -387,7 +410,8 @@
         "closeTicket": "关闭工单",
         "reply": "回复",
         "closed": "此工单已关闭。",
-        "created": "创建时间"
+        "created": "创建时间",
+        "confirmClose": "确认要关闭该工单吗？"
     },
     "pageVolumeCreate": {
         "createVolume": "添加云硬盘"
@@ -439,7 +463,7 @@
         "volumeSize": "云硬盘容量(GB)",
         "keyPairs": "SSH 密钥",
         "networks": "私有网络个数",
-        "snapshots": "快照个数"
+        "snapshots": "备份个数"
     },
     "monitor": {
         "periods": {
@@ -478,7 +502,8 @@
     },
     "errorMsg": {
         "4701": "请给主机的网络增加外网网关，再重试。",
-        "4702": "尝试给主机解绑 Eip，再重试。"
+        "4702": "尝试给主机解绑 Eip，再重试。",
+        "4113": "申请的{resource}超过配额，请提交工单来申请提高配额。"
     },
     "actionTranslation": {
         "CreateInstances": "创建云主机",
@@ -518,9 +543,9 @@
         "CreatePortForwarding": "创建端口转发",
         "DeletePortForwardings": "删除端口转发",
         "ModifyPortForwardingAttributes": "修改端口转发属性",
-        "CreateSnapshots": "创建快照",
-        "DeleteSnapshots": "删除快照",
-        "ModifySnapshotAttributes": "更新快照属性"
+        "CreateSnapshots": "创建备份",
+        "DeleteSnapshots": "删除备份",
+        "ModifySnapshotAttributes": "更新备份属性"
     },
     "sidebarInstance": "主机列表",
     "sidebarInstanceType": "主机配置",

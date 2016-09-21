@@ -32,7 +32,7 @@ class C extends Page {
           resolve();
           dispatch(push(`${servicePath}/eips`));
         }).catch((error) => {
-          dispatch(notifyAlert(error.message));
+          dispatch(notifyAlert(error.displayMsg || error.message));
           reject({ _error: error.message });
         });
     });

@@ -226,9 +226,6 @@ export function requestResizeInstances(routerKey, regionId, instanceIds, instanc
     .promise
     .then(() => {
       dispatch(notify(i18n.t('resizePending')));
-    })
-    .catch((error) => {
-      dispatch(notifyAlert(error.message));
     });
   };
 }
@@ -289,9 +286,6 @@ export function requestCaptureInstance(routerKey, regionId, instanceId, name) {
     .promise
     .then(() => {
       dispatch(notify(i18n.t('capturePending')));
-    })
-    .catch((error) => {
-      dispatch(notifyAlert(error.message));
     });
   };
 }

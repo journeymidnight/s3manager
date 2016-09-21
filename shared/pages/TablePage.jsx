@@ -14,6 +14,7 @@ class C extends Page {
     this.onSelectAll = this.onSelectAll.bind(this);
     this.onRefresh = this.onRefresh.bind(this);
     this.onSearchKeyPress = this.onSearchKeyPress.bind(this);
+    this.onSearchButtonClick = this.onSearchButtonClick.bind(this);
   }
 
   // need inherit
@@ -44,6 +45,10 @@ class C extends Page {
 
   refresh(silent = true) {
     const { dispatch, routerKey } = this.props;
+
+    if (this.props.context.currentPage === undefined) {
+      return;
+    }
 
     const filters = {
       offset: (this.props.context.currentPage - 1) * this.props.context.size,
@@ -121,14 +126,22 @@ class C extends Page {
     };
   }
 
+  doSearch() {
+    let searchWord = this.refs.searchBox.refs.search.value;
+    if (_.isEmpty(searchWord)) {
+      searchWord = null;
+    }
+    this.onRefresh({ searchWord })();
+  }
+
   onSearchKeyPress(e) {
     if (e.key === 'Enter') {
-      let searchWord = this.refs.search.value;
-      if (_.isEmpty(searchWord)) {
-        searchWord = null;
-      }
-      this.onRefresh({ searchWord })();
+      this.doSearch();
     }
+  }
+
+  onSearchButtonClick() {
+    this.doSearch();
   }
 
   renderHeader() {
