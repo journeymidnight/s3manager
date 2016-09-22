@@ -133,9 +133,6 @@ export function requestUpdateBandwidth(routerKey, regionId, eipIds, bandwidth) {
       .promise
       .then(() => {
         dispatch(notify(i18n.t('updateBandwidthSuccessed')));
-      })
-      .catch((error) => {
-        dispatch(notifyAlert(error.message));
       });
   };
 }

@@ -273,7 +273,8 @@ class C extends Page {
         .then(() => {
           resolve();
           this.refs.bandwidthUpdateModal.hide();
-        }).catch(() => {
+        }).catch((error) => {
+          dispatch(Actions.notifyAlert(error.displayMsg || error.message));
           reject();
         });
     });

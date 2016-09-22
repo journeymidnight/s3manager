@@ -371,7 +371,8 @@ class C extends Page {
           resolve();
           this.refs.resizeModal.hide();
           dispatch(VolumeActions.requestDescribeVolume(routerKey, region.regionId, volume.volumeId));
-        }).catch(() => {
+        }).catch((error) => {
+          dispatch(Actions.notifyAlert(error.displayMsg || error.message));
           reject();
         });
     });
@@ -398,7 +399,8 @@ class C extends Page {
           resolve();
           this.refs.snapshotCreateModal.hide();
           dispatch(push(`${servicePath}/images_snapshots/volume_snapshots`));
-        }).catch(() => {
+        }).catch((error) => {
+          dispatch(Actions.notifyAlert(error.displayMsg || error.message));
           reject();
         });
     });

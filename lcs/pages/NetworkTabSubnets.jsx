@@ -70,7 +70,7 @@ class C extends TablePage {
           this.refs.subnetCreateModal.hide();
           this.onRefresh({}, false)();
         }).catch((error) => {
-          dispatch(Actions.notifyAlert(error.message));
+          dispatch(Actions.notifyAlert(error.displayMsg || error.message));
           reject();
         });
     });

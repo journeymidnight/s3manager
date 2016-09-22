@@ -52,7 +52,8 @@ class C extends TablePage {
         .then(() => {
           resolve();
           this.onRefresh({}, false)();
-        }).catch(() => {
+        }).catch((error) => {
+          dispatch(Actions.notifyAlert(error.displayMsg || error.message));
           reject();
         });
       });
