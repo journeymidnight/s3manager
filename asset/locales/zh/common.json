@@ -154,7 +154,7 @@
         "active": "运行中",
         "building": "构建中",
         "disabled": "已禁用",
-        "error": "错误",
+        "error": "状态异常",
         "deleted": "已删除"
     },
     "instanceStatus": {

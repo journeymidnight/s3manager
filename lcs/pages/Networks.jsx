@@ -25,7 +25,7 @@ class C extends TablePage {
     dispatch(Actions.setHeader(t('networkManage'), `${servicePath}/networks`));
 
     this.initTable(routerKey, {
-      status: ['pending', 'active', 'building', 'disabled'],
+      status: ['pending', 'active', 'building'],
     });
   }
 
@@ -128,14 +128,11 @@ class C extends TablePage {
     const { t } = this.props;
     const statusOption = [
       {
-        status: ['pending', 'active', 'building', 'disabled'],
+        status: ['pending', 'active', 'building'],
         name: t('allAvaliableStatus'),
       }, {
         status: ['active'],
         name: t('networkStatus.active'),
-      }, {
-        status: ['disabled'],
-        name: t('networkStatus.disabled'),
       }, {
         status: ['error'],
         name: t('networkStatus.error'),
