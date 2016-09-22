@@ -51,7 +51,7 @@ class C extends Page {
           dispatch(push(`${servicePath}/instances`));
         }).catch((error) => {
           dispatch(Actions.notifyAlert(error.displayMsg || error.message));
-          reject({ _error: error.message });
+          reject();
         });
     });
   }

@@ -29,7 +29,7 @@ class C extends Page {
     const { t, context } = this.props;
     const total = context.total;
     const usage = context.usage;
-    const resourceList = ['instances', 'vcpus', 'memory', 'volumes', 'volumeSize', 'snapshots', 'images', 'eips', 'networks', 'keyPairs'];
+    const resourceList = ['instances', 'vcpus', 'memory', 'volumes', 'volumeSize', 'images', 'eips', 'networks', 'keyPairs'];
     const rows = resourceList.map((resource) => {
       return (<div key={resource}>
         <div className="clearfix">

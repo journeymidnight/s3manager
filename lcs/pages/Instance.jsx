@@ -16,6 +16,7 @@ import * as EipActions from '../redux/actions.eip';
 import * as Actions from '../../console-common/redux/actions';
 import * as InstanceActions from '../redux/actions.instance';
 import * as VolumeActions from '../redux/actions.volume';
+import * as Validations from '../../shared/utils/validations';
 
 let InstanceUpdateForm = (props) => {
   const { fields:
@@ -24,31 +25,30 @@ let InstanceUpdateForm = (props) => {
     submitting,
     submitFailed,
     t,
-    invalid,
   } = props;
   return (
     <form className="form-horizontal" onSubmit={handleSubmit}>
       <div className="modal-body">
 
-        <div className={submitFailed && name.error ? 'form-group has-error' : 'form-group'}>
+        <div className={(submitFailed || name.touched) && name.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('name')}</label>
           <div className="col-sm-10">
             <input type="text" className="form-control" {...name} />
-            {submitFailed && name.error && <div className="text-danger"><small>{name.error}</small></div>}
+            {(submitFailed || name.touched) && name.error && <div className="text-danger"><small>{name.error}</small></div>}
           </div>
         </div>
 
-        <div className={submitFailed && description.error ? 'form-group has-error' : 'form-group'}>
+        <div className={(submitFailed || description.touched) && description.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('description')}</label>
           <div className="col-sm-10">
             <input type="text" className="form-control" {...description} />
-            {submitFailed && description.error && <div className="text-danger"><small>{description.error}</small></div>}
+            {(submitFailed || description.touched) && description.error && <div className="text-danger"><small>{description.error}</small></div>}
           </div>
         </div>
       </div>
       <div className="modal-footer">
         <button type="button" className="btn btn-default" data-dismiss="modal">{t('closeModal')}</button>
-        <button type="submit" className="btn btn-save" disabled={submitting || invalid}>
+        <button type="submit" className="btn btn-save" disabled={submitting}>
           {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('update')}
         </button>
       </div>
@@ -59,15 +59,15 @@ let InstanceUpdateForm = (props) => {
 InstanceUpdateForm.propTypes = {
   fields: React.PropTypes.object.isRequired,
   error: React.PropTypes.string,
-  invalid: React.PropTypes.bool,
   handleSubmit: React.PropTypes.func.isRequired,
   submitting: React.PropTypes.bool.isRequired,
   submitFailed: React.PropTypes.bool.isRequired,
   t: React.PropTypes.any,
 };
 
-InstanceUpdateForm.validate = () => {
+InstanceUpdateForm.validate = (values) => {
   const errors = {};
+  errors.name = Validations.hostname(values.name);
   return errors;
 };
 
@@ -253,7 +253,7 @@ class C extends Page {
   }
 
   onCaptureInstance(values) {
-    const { t, dispatch, region, routerKey, params, servicePath } = this.props;
+    const { dispatch, region, routerKey, params, servicePath } = this.props;
 
     return new Promise((resolve, reject) => {
       const name = values.name;
@@ -262,13 +262,10 @@ class C extends Page {
       .then(() => {
         resolve();
         this.refs.captureModal.hide();
-        setTimeout(() => {
-          dispatch(push(`${servicePath}/images_snapshots/private_images`));
-          dispatch(Actions.notify(t('createSuccessed')));
-        }, 200);
+        dispatch(push(`${servicePath}/images_snapshots/private_images`));
       }).catch((error) => {
         dispatch(Actions.notifyAlert(error.displayMsg || error.message));
-        reject({ _error: error.message });
+        reject();
       });
     });
   }
@@ -291,7 +288,7 @@ class C extends Page {
         this.refs.resizeModal.hide();
       }).catch((error) => {
         dispatch(Actions.notifyAlert(error.displayMsg || error.message));
-        reject({ _error: error.message });
+        reject();
       });
     });
   }
@@ -307,7 +304,7 @@ class C extends Page {
 
     const { t, dispatch, routerKey, region } = this.props;
 
-    dispatch(VolumeActions.requestDescribeVolumes(routerKey, region.regionId, { status: ['active'] }))
+    dispatch(VolumeActions.requestDescribeVolumes(routerKey, region.regionId, { status: ['active'], limit: 100 }))
       .then(() => {
         if (this.props.context.volumeSet && this.props.context.volumeSet.length) {
           this.refs.attachVolumeModal.show();

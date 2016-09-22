@@ -27,29 +27,29 @@ class F extends React.Component {
     return (
       <form className="form-horizontal" onSubmit={handleSubmit}>
 
-        <div className={submitFailed && name.error ? 'form-group has-error' : 'form-group'}>
+        <div className={(submitFailed || name.touched) && name.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('name')}</label>
           <div className="col-sm-10">
             <input type="text" className="form-control" {...name} />
-            {submitFailed && name.error && <div className="text-danger"><small>{name.error}</small></div>}
+            {(submitFailed || name.touched) && name.error && <div className="text-danger"><small>{name.error}</small></div>}
           </div>
         </div>
 
-        <div className={submitFailed && bandwidth.error ? 'form-group has-error' : 'form-group'}>
+        <div className={(submitFailed || bandwidth.touched) && bandwidth.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('bandwidth')}</label>
           <div className="col-sm-10">
             <input type="hidden" className="form-control" {...bandwidth} />
             <NumericTextBox min={1} max={300} step={1} value={bandwidth.value} onChange={param => bandwidth.onChange(param)} />
-            {submitFailed && bandwidth.error && <div className="text-danger"><small>{bandwidth.error}</small></div>}
+            {(submitFailed || bandwidth.touched) && bandwidth.error && <div className="text-danger"><small>{bandwidth.error}</small></div>}
             <p className="help-block">{t('pageEipCreate.bandwidthHint')}</p>
           </div>
         </div>
 
-        <div className={submitFailed && count.error ? 'form-group has-error' : 'form-group'}>
+        <div className={(submitFailed || count.touched) && count.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('count')}</label>
           <div className="col-sm-10">
             <input type="text" className="form-control" {...count} />
-            {submitFailed && count.error && <div className="text-danger"><small>{count.error}</small></div>}
+            {(submitFailed || count.touched) && count.error && <div className="text-danger"><small>{count.error}</small></div>}
           </div>
         </div>
 

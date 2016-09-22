@@ -54,7 +54,12 @@ class C extends TablePage {
         <thead>
           <tr>
             <th width="40">
-              <input type="checkbox" className="selected" onChange={this.onSelectAll(this.props.context.accessKeySet.map((u) => { return u.accessKey; }))} />
+              <input
+                type="checkbox"
+                className="selected"
+                onChange={this.onSelectAll(this.props.context.accessKeySet.map((u) => { return u.accessKey; }))}
+                checked={this.isAllSelected(this.props.context.accessKeySet.map((u) => { return u.accessKey; }))}
+              />
             </th>
             <th width="150">{t('name')}</th>
             <th>{t('accessKey')}</th>
@@ -125,7 +130,7 @@ class C extends TablePage {
       <div className="gray-content-block second-block">
         <div className={Object.keys(this.props.context.selected).length > 0 ? 'hidden' : ''}>
           <div className="filter-item inline">
-            <a className="loading-display">
+            <a className="btn btn-default" onClick={this.doSearch}>
               <i className={`fa fa-refresh ${this.props.context.loading ? 'fa-spin' : ''}`}></i>
             </a>
           </div>
@@ -133,7 +138,7 @@ class C extends TablePage {
             <StatusFilter statusOption={statusOption} filterStatus={this.props.context.status} onRefresh={this.onRefresh} />
           </div>
           <div className="filter-item inline">
-            <SearchBox ref="searchBox" placeholder={t('filterByIdorName')} onEnterPress={this.onSearchKeyPress} onButtonClick={this.onSearchButtonClick} />
+            <SearchBox ref="searchBox" placeholder={t('filterByName')} onEnterPress={this.onSearchKeyPress} onButtonClick={this.onSearchButtonClick} />
           </div>
           <div className="pull-right">
             <TimeSorter isReverse={this.props.context.reverse} onRefresh={this.onRefresh} />

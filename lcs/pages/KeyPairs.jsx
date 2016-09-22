@@ -57,7 +57,12 @@ class C extends TablePage {
         <thead>
           <tr>
             <th width="40">
-              <input type="checkbox" className="selected" onChange={this.onSelectAll(this.props.context.keyPairSet.map((u) => { return u.keyPairId; }))} />
+              <input
+                type="checkbox"
+                className="selected"
+                onChange={this.onSelectAll(this.props.context.keyPairSet.map((u) => { return u.keyPairId; }))}
+                checked={this.isAllSelected(this.props.context.keyPairSet.map((u) => { return u.keyPairId; }))}
+              />
             </th>
             <th width="150">{t('id')}</th>
             <th>{t('name')}</th>
@@ -126,7 +131,7 @@ class C extends TablePage {
       <div className="gray-content-block second-block">
         <div className={Object.keys(this.props.context.selected).length > 0 ? 'hidden' : ''}>
           <div className="filter-item inline">
-            <a className="btn btn-default" onClick={this.onRefresh({}, false)}>
+            <a className="btn btn-default" onClick={this.doSearch}>
               <i className={`fa fa-refresh ${this.props.context.loading ? 'fa-spin' : ''}`}></i>
             </a>
           </div>

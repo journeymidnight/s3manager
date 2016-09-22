@@ -21,12 +21,11 @@ class F extends React.Component {
       submitFailed,
       resetForm,
       t,
-      invalid,
     } = this.props;
     return (
       <form className="form-horizontal" onSubmit={handleSubmit}>
 
-        <div className={submitFailed && protocol.error ? 'form-group has-error' : 'form-group'}>
+        <div className={(submitFailed || protocol.touched) && protocol.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('formPortForwardingForm.protocol')}</label>
           <div className="col-sm-10">
             <select className="form-control" {...protocol}>
@@ -36,32 +35,32 @@ class F extends React.Component {
           </div>
         </div>
 
-        <div className={submitFailed && outsidePort.error ? 'form-group has-error' : 'form-group'}>
+        <div className={(submitFailed || outsidePort.touched) && outsidePort.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('formPortForwardingForm.outsidePort')}</label>
           <div className="col-sm-10">
             <input type="text" className="form-control" {...outsidePort} />
-            {submitFailed && outsidePort.error && <div className="text-danger"><small>{outsidePort.error}</small></div>}
+            {(submitFailed || outsidePort.touched) && outsidePort.error && <div className="text-danger"><small>{outsidePort.error}</small></div>}
           </div>
         </div>
 
-        <div className={submitFailed && insideAddress.error ? 'form-group has-error' : 'form-group'}>
+        <div className={(submitFailed || insideAddress.touched) && insideAddress.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('formPortForwardingForm.insideAddress')}</label>
           <div className="col-sm-10">
             <input type="text" className="form-control" {...insideAddress} />
-            {submitFailed && insideAddress.error && <div className="text-danger"><small>{insideAddress.error}</small></div>}
+            {(submitFailed || insideAddress.touched) && insideAddress.error && <div className="text-danger"><small>{insideAddress.error}</small></div>}
           </div>
         </div>
 
-        <div className={submitFailed && insidePort.error ? 'form-group has-error' : 'form-group'}>
+        <div className={(submitFailed || insidePort.touched) && insidePort.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('formPortForwardingForm.insidePort')}</label>
           <div className="col-sm-10">
             <input type="text" className="form-control" {...insidePort} />
-            {submitFailed && insidePort.error && <div className="text-danger"><small>{insidePort.error}</small></div>}
+            {(submitFailed || insidePort.touched) && insidePort.error && <div className="text-danger"><small>{insidePort.error}</small></div>}
           </div>
         </div>
 
         <div className="form-actions">
-          <button type="submit" className="btn btn-save" disabled={submitting || invalid}>
+          <button type="submit" className="btn btn-save" disabled={submitting}>
             {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('create')}
           </button>
           &nbsp;
@@ -77,7 +76,6 @@ class F extends React.Component {
 F.propTypes = {
   fields: React.PropTypes.object.isRequired,
   error: React.PropTypes.string,
-  invalid: React.PropTypes.bool,
   handleSubmit: React.PropTypes.func.isRequired,
   initializeForm: React.PropTypes.func.isRequired,
   submitting: React.PropTypes.bool.isRequired,

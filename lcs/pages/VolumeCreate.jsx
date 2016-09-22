@@ -38,7 +38,7 @@ class C extends Page {
           dispatch(push(`${servicePath}/volumes`));
         }).catch((error) => {
           dispatch(notifyAlert(error.displayMsg || error.message));
-          reject({ _error: error.message });
+          reject();
         });
     });
   }

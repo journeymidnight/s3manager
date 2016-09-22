@@ -10,18 +10,17 @@ const F = (props) => {
     submitting,
     submitFailed,
     t,
-    invalid,
   } = props;
   return (
     <form onSubmit={handleSubmit}>
 
-      <div className={submitFailed && content.error ? 'form-group has-error' : 'form-group'}>
+      <div className={(submitFailed || content.touched) && content.error ? 'form-group has-error' : 'form-group'}>
         <textarea rows="3" className="form-control" {...content} />
-        {submitFailed && content.error && <div className="text-danger"><small>{content.error}</small></div>}
+        {(submitFailed || content.touched) && content.error && <div className="text-danger"><small>{content.error}</small></div>}
       </div>
 
       <div>
-        <button type="submit" className="pull-right btn btn-save" disabled={submitting || invalid}>
+        <button type="submit" className="pull-right btn btn-save" disabled={submitting}>
           {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('pageTicket.reply')}
         </button>
       </div>
@@ -32,7 +31,6 @@ const F = (props) => {
 F.propTypes = {
   fields: React.PropTypes.object.isRequired,
   error: React.PropTypes.string,
-  invalid: React.PropTypes.bool,
   handleSubmit: React.PropTypes.func.isRequired,
   submitting: React.PropTypes.bool.isRequired,
   submitFailed: React.PropTypes.bool.isRequired,

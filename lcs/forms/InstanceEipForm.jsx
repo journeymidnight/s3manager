@@ -40,7 +40,6 @@ class InstanceEipForm extends React.Component {
       handleSubmit,
       submitting,
       t,
-      invalid,
     } = this.props;
     return (
       <form className="form-horizontal" onSubmit={handleSubmit}>
@@ -64,7 +63,7 @@ class InstanceEipForm extends React.Component {
         </div>
         <div className="modal-footer">
           <button type="button" className="btn btn-default" data-dismiss="modal">{t('closeModal')}</button>
-          <button type="submit" className="btn btn-save" disabled={submitting || invalid}>
+          <button type="submit" className="btn btn-save" disabled={submitting}>
             {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('update')}
           </button>
         </div>
@@ -76,7 +75,6 @@ class InstanceEipForm extends React.Component {
 InstanceEipForm.propTypes = {
   fields: React.PropTypes.object.isRequired,
   error: React.PropTypes.string,
-  invalid: React.PropTypes.bool,
   handleSubmit: React.PropTypes.func.isRequired,
   initializeForm: React.PropTypes.func.isRequired,
   submitting: React.PropTypes.bool.isRequired,

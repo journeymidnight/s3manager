@@ -25,7 +25,7 @@ class C extends TablePage {
 
     this.initTable(routerKey, {
       isTabPage: true,
-      status: ['pending', 'active'],
+      status: ['active'],
     });
   }
 
@@ -78,7 +78,12 @@ class C extends TablePage {
         <thead>
           <tr>
             {!this.isPublicImage() && <th width="40">
-              <input type="checkbox" className="selected" onChange={this.onSelectAll(this.props.context.imageSet.map((u) => { return u.imageId; }))} />
+              <input
+                type="checkbox"
+                className="selected"
+                onChange={this.onSelectAll(this.props.context.imageSet.map((u) => { return u.imageId; }))}
+                checked={this.isAllSelected(this.props.context.imageSet.map((u) => { return u.imageId; }))}
+              />
             </th>}
             <th width="150">{t('id')}</th>
             <th>{t('name')}</th>
@@ -120,9 +125,6 @@ class C extends TablePage {
     const { t } = this.props;
     const statusOption = [
       {
-        status: ['pending', 'active'],
-        name: t('allAvaliableStatus'),
-      }, {
         status: ['active'],
         name: t('imageStatus.active'),
       }, {
@@ -133,7 +135,7 @@ class C extends TablePage {
       <div className="gray-content-block second-block">
         <div className={Object.keys(this.props.context.selected).length > 0 ? 'hidden' : ''}>
           <div className="filter-item inline">
-            <a className="loading-display">
+            <a className="btn btn-default" onClick={this.doSearch}>
               <i className={`fa fa-refresh ${this.props.context.loading ? 'fa-spin' : ''}`}></i>
             </a>
           </div>

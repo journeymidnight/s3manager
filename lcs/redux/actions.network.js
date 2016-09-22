@@ -51,11 +51,13 @@ export function requestDescribeSubnets(routerKey, regionId, filters) {
 export function requestCreateNetwork(routerKey, regionId, network) {
   return dispatch => {
     return IaaS
-    .doAction(regionId, ACTION_NAMES.createNetwork, network)
-    .promise
-    .then(() => {
-      dispatch(notify(i18n.t('createSuccessed')));
-    });
+      .doAction(regionId, ACTION_NAMES.createNetwork, network)
+      .promise
+      .then(() => {
+        setTimeout(() => {
+          dispatch(notify(i18n.t('createSuccessed')));
+        }, 1000);
+      });
   };
 }
 
@@ -91,6 +93,24 @@ export function requestModifyNetworkAttributes(routerKey, regionId, networkId, n
     .catch((error) => {
       dispatch(notifyAlert(error.message));
     });
+  };
+}
+
+export function requestUpdateExternalGatewayBandwidth(routerKey, regionId, networkId, bandwidth) {
+  return dispatch => {
+    return IaaS
+      .doAction(regionId, ACTION_NAMES.updateExternalGatewayBandwidth, {
+        networkIds: [networkId],
+        bandwidth,
+      })
+      .promise
+      .then(() => {
+        dispatch(notify(i18n.t('updateSuccessed')));
+        return dispatch(requestDescribeNetwork(routerKey, regionId, networkId));
+      })
+      .catch((error) => {
+        dispatch(notifyAlert(error.message));
+      });
   };
 }
 

@@ -71,7 +71,7 @@ class C extends TablePage {
           this.onRefresh({}, false)();
         }).catch((error) => {
           dispatch(Actions.notifyAlert(error.message));
-          reject({ _error: error.message });
+          reject();
         });
     });
   }
@@ -88,7 +88,12 @@ class C extends TablePage {
         <thead>
           <tr>
             <th width="40">
-              <input type="checkbox" className="selected" onChange={this.onSelectAll(this.props.context.subnetSet.map((u) => { return u.subnetId; }))} />
+              <input
+                type="checkbox"
+                className="selected"
+                onChange={this.onSelectAll(this.props.context.subnetSet.map((u) => { return u.subnetId; }))}
+                checked={this.isAllSelected(this.props.context.subnetSet.map((u) => { return u.subnetId; }))}
+              />
             </th>
             <th width="150">{t('id')}</th>
             <th>{t('cidr')}</th>
@@ -144,7 +149,7 @@ class C extends TablePage {
       <div className="gray-content-block second-block">
         <div className={Object.keys(this.props.context.selected).length > 0 ? 'hidden' : ''}>
           <div className="filter-item inline">
-            <a className="loading-display">
+            <a className="btn btn-default" onClick={this.doSearch}>
               <i className={`fa fa-refresh ${this.props.context.loading ? 'fa-spin' : ''}`}></i>
             </a>
           </div>

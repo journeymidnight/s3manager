@@ -40,6 +40,9 @@ export function requestCreateKeyPair(routerKey, regionId, keyPair) {
       .promise
       .then((payload) => {
         dispatch(extendContext({ keyPair: payload }));
+        setTimeout(() => {
+          dispatch(notify(i18n.t('createSuccessed')));
+        }, 1000);
       });
   };
 }

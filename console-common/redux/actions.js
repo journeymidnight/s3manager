@@ -30,11 +30,9 @@ export function cleanNotify() {
 
 export function notify(message, type = 'success', delay = undefined) {
   return (dispatch) => {
-    if (delay) {
-      setTimeout(() => {
-        dispatch(cleanNotify());
-      }, delay);
-    }
+    setTimeout(() => {
+      dispatch(cleanNotify());
+    }, delay || 5000);
 
     dispatch(extendContext({
       notify: {

@@ -1,3 +1,5 @@
+import i18n from '../../shared/i18n';
+
 export const isEmpty = value => value === undefined || value === null || value === '';
 const join = (rules) => (value, data) => rules.map(rule => rule(value, data)).filter(error => !!error)[0];
 
@@ -48,6 +50,27 @@ export function oneOf(enumeration) {
     }
     return null;
   };
+}
+
+export function cidr(value) {
+  if (!/^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$/.test(value)) {
+    return '网段地址格式错误';
+  }
+  return null;
+}
+
+export function hostname(value) {
+  if (isEmpty(value) || !/^[0-9a-zA-Z_\-]+$/.test(value)) {
+    return i18n.t('pageInstanceCreate.hostnameNotValid');
+  }
+  return null;
+}
+
+export function loginPassword(value) {
+  if (isEmpty(value) || !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/i.test(value)) {
+    return i18n.t('pageInstanceCreate.passwordNotValid');
+  }
+  return null;
 }
 
 export function createValidator(rules) {
