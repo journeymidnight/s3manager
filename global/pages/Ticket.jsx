@@ -1,5 +1,6 @@
 import React from 'react';
 import Time from 'react-time';
+import { reset } from 'redux-form';
 import Page, { attach } from '../../shared/pages/Page';
 import { confirmModal } from '../../shared/components/Modal';
 import TicketReplyForm from '../forms/TicketReplyForm';
@@ -62,6 +63,7 @@ class C extends Page {
       dispatch(TicketActions.requestCreateTicketReply(routerKey, params.ticketId, content))
       .then(() => {
         resolve();
+        dispatch(reset('TicketReplyForm'));
       }).catch(() => {
         reject();
       });
