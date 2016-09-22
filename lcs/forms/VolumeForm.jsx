@@ -64,7 +64,7 @@ class F extends React.Component {
           <div className="col-sm-10">
             <input type="hidden" className="form-control" {...size} />
             <Slider min={10} max={1024} step={10} value={size.value} unit={'GB'} onChange={param => size.onChange(param)} />
-            {((submitFailed || size.touched) || size.error) && <div className="text-danger"><small>{size.error}</small></div>}
+            {(submitFailed || size.touched) && size.error && <div className="text-danger"><small>{size.error}</small></div>}
           </div>
         </div>}
 

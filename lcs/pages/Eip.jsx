@@ -396,7 +396,7 @@ class C extends Page {
                       </tr>
                       <tr>
                         <td>{t('bandwidth')}</td>
-                        <td><span>{eip.bandwidth}Mb</span></td>
+                        <td><span>{eip.bandwidth}Mbps</span></td>
                       </tr>
                       <tr>
                         <td>{t('associateResource')}</td>

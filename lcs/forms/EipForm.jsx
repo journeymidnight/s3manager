@@ -2,6 +2,7 @@ import React from 'react';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
 import Slider from '../../shared/components/Slider';
+import NumericTextBox from '../../shared/components/NumericTextBox';
 import * as Validations from '../../shared/utils/validations';
 
 class F extends React.Component {
@@ -40,14 +41,15 @@ class F extends React.Component {
           <div className="col-sm-10">
             <input type="hidden" className="form-control" {...bandwidth} />
             <Slider min={1} max={300} step={1} value={bandwidth.value} unit={'Mbps'} onChange={param => bandwidth.onChange(param)} />
-            {((submitFailed || bandwidth.touched) || bandwidth.error) && <div className="text-danger"><small>{bandwidth.error}</small></div>}
+            {(submitFailed || bandwidth.touched) && bandwidth.error && <div className="text-danger"><small>{bandwidth.error}</small></div>}
           </div>
         </div>
 
         <div className={(submitFailed || count.touched) && count.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('count')}</label>
           <div className="col-sm-10">
-            <input type="text" className="form-control" {...count} />
+            <input type="hidden" className="form-control" {...count} />
+            <NumericTextBox min={1} max={100} step={1} value={count.value} onChange={param => count.onChange(param)} />
             {(submitFailed || count.touched) && count.error && <div className="text-danger"><small>{count.error}</small></div>}
           </div>
         </div>
