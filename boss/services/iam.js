@@ -72,12 +72,12 @@ class IAM {
     return this.call('CreateUser', user);
   }
   activeUsers(userIds) {
-    return this.call('ActiveUsers', {
+    return this.call('ActivateUsers', {
       userIds,
     });
   }
   deactiveUsers(userIds) {
-    return this.call('DeactiveUsers', {
+    return this.call('DeactivateUsers', {
       userIds,
     });
   }
