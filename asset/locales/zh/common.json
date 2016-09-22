@@ -175,8 +175,7 @@
     "eipStatus": {
         "active": "运行中",
         "associated": "已关联",
-        "deleted": "已删除",
-        "ceased": "已删除"
+        "deleted": "已删除"
     },
     "instanceTypeStatus": {
         "active": "可用",

@@ -155,11 +155,11 @@ class C extends Page {
   }
 
   isEnabled(eip) {
-    return eip.status !== 'deleted' && eip.status !== 'ceased';
+    return eip.status !== 'deleted';
   }
 
   isDeletable(eip) {
-    return eip.status !== 'deleted' && eip.status !== 'ceased' && eip.status !== 'associated';
+    return eip.status !== 'deleted' && eip.status !== 'associated';
   }
 
   onUpdate(values) {
