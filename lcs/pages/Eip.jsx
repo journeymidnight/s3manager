@@ -21,11 +21,11 @@ let EipUpdateForm = (props) => {
   return (
     <form className="form-horizontal" onSubmit={handleSubmit}>
       <div className="modal-body">
-        <div className={(submitFailed || name.error) && name.error ? 'form-group has-error' : 'form-group'}>
+        <div className={(submitFailed || name.touched) && name.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('name')}</label>
           <div className="col-sm-10">
             <input type="text" className="form-control" {...name} />
-            {(submitFailed || name.error) && name.error && <div className="text-danger"><small>{name.error}</small></div>}
+            {(submitFailed || name.touched) && name.error && <div className="text-danger"><small>{name.error}</small></div>}
           </div>
         </div>
       </div>

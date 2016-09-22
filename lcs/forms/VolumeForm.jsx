@@ -76,12 +76,12 @@ class F extends React.Component {
           </div>
         </div>}
 
-        {count.value && <div className={(submitFailed || count.error) && count.error ? 'form-group has-error' : 'form-group'}>
+        {count.value && <div className={(submitFailed || count.touched) && count.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('count')}</label>
           <div className="col-sm-10">
             <input type="hidden" className="form-control" {...count} />
             <NumericTextBox min={1} max={20} step={1} value={count.value} onChange={param => count.onChange(param)} />
-            {(submitFailed || count.error) && <div className="text-danger"><small>{count.error}</small></div>}
+            {(submitFailed || count.touched) && count.error && <div className="text-danger"><small>{count.error}</small></div>}
           </div>
         </div>}
 
