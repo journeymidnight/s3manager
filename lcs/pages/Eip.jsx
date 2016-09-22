@@ -12,7 +12,7 @@ import * as InstanceActions from '../redux/actions.instance';
 
 let EipUpdateForm = (props) => {
   const { fields:
-    { name },
+    { name, description },
     handleSubmit,
     submitting,
     submitFailed,
@@ -26,6 +26,13 @@ let EipUpdateForm = (props) => {
           <div className="col-sm-10">
             <input type="text" className="form-control" {...name} />
             {(submitFailed || name.touched) && name.error && <div className="text-danger"><small>{name.error}</small></div>}
+          </div>
+        </div>
+        <div className={(submitFailed || description.touched) && description.error ? 'form-group has-error' : 'form-group'}>
+          <label className="control-label" >{t('description')}</label>
+          <div className="col-sm-10">
+            <input type="text" className="form-control" {...description} />
+            {(submitFailed || description.touched) && description.error && <div className="text-danger"><small>{description.error}</small></div>}
           </div>
         </div>
       </div>
@@ -55,7 +62,7 @@ EipUpdateForm.validate = () => {
 
 EipUpdateForm = reduxForm({
   form: 'EipUpdateForm',
-  fields: ['name'],
+  fields: ['name', 'description'],
   validate: EipUpdateForm.validate,
 })(translate()(EipUpdateForm));
 
@@ -168,8 +175,9 @@ class C extends Page {
 
     return new Promise((resolve, reject) => {
       const name = values.name;
+      const description = values.description;
 
-      dispatch(EipActions.requestModifyEipAttributes(routerKey, region.regionId, eip.eipId, name))
+      dispatch(EipActions.requestModifyEipAttributes(routerKey, region.regionId, eip.eipId, name, description))
       .then(() => {
         resolve();
         this.refs.updateModal.hide();
