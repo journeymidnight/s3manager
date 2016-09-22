@@ -99,7 +99,7 @@ class C extends TablePage {
                   {eip.name && <strong>{eip.name}</strong>}
                   {!eip.name && <i className="text-muted">{t('noName')}</i>}
                 </td>
-                <td>{eip.bandwidth}Mb</td>
+                <td>{eip.bandwidth}Mbps</td>
                 <td>
                   {eip.resourceId || <i className="text-muted">{t('noName')}</i>}
                 </td>

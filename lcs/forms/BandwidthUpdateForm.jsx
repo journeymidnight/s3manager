@@ -1,6 +1,7 @@
 import React from 'react';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
+import Slider from '../../shared/components/Slider';
 import * as Validations from '../../shared/utils/validations';
 
 class BandwidthUpdateForm extends React.Component {
@@ -30,7 +31,8 @@ class BandwidthUpdateForm extends React.Component {
           <div className={(submitFailed || bandwidth.touched) && bandwidth.error ? 'form-group has-error' : 'form-group'}>
             <label className="control-label" >{t('bandwidth')}</label>
             <div className="col-sm-10">
-              <input type="text" className="form-control" {...bandwidth} />
+              <input type="hidden" className="form-control" {...bandwidth} />
+              <Slider min={1} max={300} step={1} value={bandwidth.value} unit={'Mbps'} onChange={param => bandwidth.onChange(param)} />
               {(submitFailed || bandwidth.touched) && bandwidth.error && <div className="text-danger"><small>{bandwidth.error}</small></div>}
             </div>
           </div>

@@ -7,6 +7,7 @@ import Page, { attach } from '../../shared/pages/Page';
 import i18n from '../../shared/i18n';
 import Modal, { confirmModal } from '../../shared/components/Modal';
 import VolumeMonitor from './VolumeMonitor';
+import Slider from '../../shared/components/Slider';
 import * as Actions from '../../console-common/redux/actions';
 import * as VolumeActions from '../redux/actions.volume';
 import * as InstanceActions from '../redux/actions.instance';
@@ -128,6 +129,7 @@ let VolumeResizeForm = (props) => {
     { name, size },
     handleSubmit,
     submitting,
+    submitFailed,
     t,
   } = props;
   return (
@@ -139,11 +141,12 @@ let VolumeResizeForm = (props) => {
             <input type="text" className="form-control" disabled {...name} />
           </div>
         </div>
-        <div className={size.touched && size.error ? 'form-group has-error' : 'form-group'}>
+        <div className={(submitFailed || size.touched) && size.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('size')}</label>
           <div className="col-sm-10">
-            <input type="text" className="form-control" {...size} />
-            {size.touched && size.error && <div className="text-danger"><small>{size.error}</small></div>}
+            <input type="hidden" className="form-control" {...size} />
+            <Slider min={size.value} max={1024} step={10} value={size.value} unit={'GB'} onChange={param => size.onChange(param)} />
+            {(submitFailed || size.touched) && size.error && <div className="text-danger"><small>{size.error}</small></div>}
           </div>
         </div>
       </div>
