@@ -80,6 +80,7 @@
     "createSuccessed": "添加成功。",
     "updateSuccessed": "保存成功。",
     "deleteSuccessed": "删除成功。",
+    "closeSuccessed": "关闭成功。",
     "syncSuccessed": "同步成功。",
     "authorizeFailed": "验证失败。",
     "createFailed": "添加失败。",
