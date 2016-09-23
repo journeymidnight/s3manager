@@ -13,3 +13,5 @@ docker-compose.yml
 
 *.swo
 *.swp
+
+.idea

@@ -81,6 +81,16 @@ export function rootReducer(state = {}, action) {
       newState.context = Object.assign(newState.context, action.payload);
       return newState;
 
+    case ActionTypes.SET_BUCKET:
+      newState = Object.assign({}, state);
+      newState.global = Object.assign({ currentBucketCreationDate: action.date }, newState.global);
+      return newState;
+
+    case ActionTypes.REMOVE_BUCKET:
+      newState = Object.assign({}, state);
+      delete newState.global.currentBucketCreationDate;
+      return newState;
+
     default:
       return reducers(state, action);
   }

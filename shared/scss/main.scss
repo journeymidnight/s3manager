@@ -426,3 +426,9 @@ ul.options-vertical {
         }
     }
 }
+
+@media (min-width: 768px) {
+  .modal-dialog {
+    margin: 100px auto; 
+    }
+}

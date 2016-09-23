@@ -7,76 +7,60 @@ class NumericTextBox extends React.Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
-    this.handleBlur = this.handleBlur.bind(this);
-    this.state = {
-      data: { min: this.props.min, max: this.props.max, step: this.props.step, value: this.props.value },
-    };
+    this.min = props.min;
+    this.max = props.max;
+    this.step = props.step;
+    this.state = { value: props.value };
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ data: { value: nextProps.value, init: false, min: this.state.data.min, max: this.state.data.max, step: this.state.data.step } });
+    this.setState({ value: nextProps.value });
   }
 
-  shouldComponentUpdate(nextProps) {
-    return nextProps.value !== this.state.data.value;
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextState.value !== this.state.value;
   }
 
-  componentWillUpdate(nextProps) {
-    this.state.data.value = nextProps.value;
-  }
+  checkAndAdjustValue(value) {
+    let result = value;
+    if (isNaN(value) || value <= this.min) {
+      result = this.min;
+    } else if (value >= this.max) {
+      result = this.max;
+    } else if (value % this.step !== 0) {
+      result = Math.ceil(value / this.step) * this.step;
+    }
 
-  handleBlur() {
-    let myInput = this.refs.myInput.value.trim();
-    if (myInput < this.state.data.min || myInput === '') {
-      myInput = this.state.data.min;
-    }
-    if (myInput > this.state.data.max) {
-      myInput = this.state.data.max;
-    }
-    this.refs.myInput.value = myInput;
-    this.setState({ data: { value: myInput, init: false, min: this.state.data.min, max: this.state.data.max, step: this.state.data.step } });
-    if (myInput !== 1) {
-      this.props.onChange(myInput);
-    }
+    return result;
   }
 
   handleChange() {
-    const myInput = this.refs.myInput.value.trim();
-    this.refs.myInput.value = myInput;
-    this.setState({ data: { value: myInput, init: false, min: this.state.data.min, max: this.state.data.max, step: this.state.data.step } });
-    if (this.refs.myInput.value) {
-      this.props.onChange(myInput);
-    }
+    this.setState({ value: this.refs.myInput.value });
+    setTimeout(() => {
+      const value = this.checkAndAdjustValue(Number(this.refs.myInput.value.trim()));
+      this.setState({ value });
+      this.props.onChange(value);
+    }, 1500);
   }
 
   handleClick(event) {
-    let myInput = this.refs.myInput.value.trim();
     const target = event.target;
-    if (parseInt(myInput, 10)) {
-      if (target.className === 'upTriangle') {
-        myInput = Math.round(myInput) + Math.round(this.state.data.step);
-        if (myInput > this.state.data.max) {
-          myInput = this.state.data.max;
-        }
-        this.refs.myInput.value = myInput;
-      } else if (target.className === 'downTriangle') {
-        myInput = Math.round(myInput) - Math.round(this.state.data.step);
-        if (myInput < this.state.data.min) {
-          myInput = this.state.data.min;
-        }
-        this.refs.myInput.value = myInput;
-      }
-      this.setState({ data: { value: myInput, init: false, min: this.state.data.min, max: this.state.data.max, step: this.state.data.step } });
-      this.props.onChange(myInput);
+    const oldValue = Number(this.refs.myInput.value.trim());
+    let value = oldValue;
+    if (target.className === 'upTriangle') {
+      value = this.checkAndAdjustValue(oldValue + this.step);
+    } else if (target.className === 'downTriangle') {
+      value = this.checkAndAdjustValue(oldValue - this.step);
     }
-    // const value = (this.state.data.value !== this.props.value && this.state.data.value) ? this.props.value : this.state.data.value;
+    this.setState({ value });
+    this.props.onChange(value);
   }
 
   render() {
-    const value = this.state.data.value;
+    const value = this.state.value;
     return (
       <div className="numericTextBox">
-        <input className="form-control" ref="myInput" onBlur={this.handleBlur} onChange={this.handleChange} value={value} />
+        <input className="form-control" ref="myInput" onChange={this.handleChange} value={value} />
         <div className="clickDiv" onClick={this.handleClick}>
           <div className="upTriangle" />
           <div className="downTriangle" />
@@ -87,7 +71,6 @@ class NumericTextBox extends React.Component {
 }
 
 NumericTextBox.propTypes = {
-  data: React.PropTypes.object,
   min: React.PropTypes.number,
   max: React.PropTypes.number,
   step: React.PropTypes.number,

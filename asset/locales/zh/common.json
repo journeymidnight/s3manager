@@ -1,6 +1,5 @@
 {
     "appName": "LeCloud",
-
     "create": "添加",
     "update": "保存",
     "reset": "重置",
@@ -12,6 +11,8 @@
     "delete": "删除",
     "submit": "提交",
     "action": "操作",
+    "success": "成功",
+    "fail": "失败",
 
     "id": "ID",
     "name": "名称",
@@ -67,17 +68,12 @@
     "accessSecret": "密钥 Secret",
     "address": "地址",
     "resource": "资源",
-
     "totalItems": "总条数 ",
-
     "lastCreated": "最新创建",
     "firstCreated": "最早创建",
-
     "selectRegion": "选择区域",
     "filterByIdorName": "用ID或名称过滤...",
-    "filterByIdorTitle": "用ID或标题过滤...",
     "filterByName": "用名称过滤...",
-
     "createSuccessed": "添加成功。",
     "updateSuccessed": "保存成功。",
     "deleteSuccessed": "删除成功。",
@@ -99,83 +95,59 @@
     "dissociateSuccessed": "解绑成功。",
     "associateSuccessed": "绑定成功。",
     "updateBandwidthSuccessed": "调整带宽成功。",
-
     "instanceManage": "云主机管理",
     "instanceManageDescription": "添加、删除和修改云主机信息。",
-
     "adminManage": "管理员管理",
     "adminManageDescription": "添加、删除和修改管理员信息。",
-
     "userManage": "用户管理",
     "userManageDescription": "添加、删除和修改用户信息。",
-
     "networkManage": "私有网络管理（VPC）管理",
     "networkManageDescription": "私有网络可以提供100%的安全隔离，而且有丰富的工具帮助您进行自动化管理。 ",
     "subnetManageDescription": "私有网络可以划分一到多个子网，云主机可以添加或迁移至在任意子网。",
     "portForwardingManageDescription": "添加端口转发规则，允许公网对您的私有网络内部服务的访问。",
-
     "keyPairManage": "SSH 密钥管理",
     "keyPairManageDescription": "为 Linux 云主机提供 SSH 公钥/私钥验证身份。",
-    
     "eipManage": "公网 IP管理",
     "eipManageDescription": "为 Linux 云主机提供 可以被公网访问的IP地址。",
-
     "publicImageManage": "公共映像",
     "publicImageManageDescription": "为 Linux 云主机提供 公共映像。",
-
     "privateImageManage": "自有映像",
     "privateImageManageDescription": "为 Linux 云主机提供 自有映像。",
-
     "volumeSnapshotManage": "硬盘备份",
     "volumeSnapshotManageDescription": "为 Linux 云主机提供 硬盘备份。",
-
     "instanceTypeManage": "主机配置",
     "instanceTypeManageDescription": "为 Linux 云主机提供 主机配置。",
-
     "volumeManage": "云硬盘管理",
     "volumeManageDescription": "为 Linux 云主机提供 云硬盘。",
-
     "projectManage": "项目管理",
     "projectManageDescription": "可根据不同的企业或团队划分独立的项目, 分配相应的资源配额。",
-
     "serviceManage": "服务管理",
     "serviceManageDescription": "管理云主机（LCS），云存储（LOS）等服务的配置，配额等信息。",
-
     "regionManage": "区域管理",
     "regionManageDescription": "一个区域即独立完整的IaaS集群，包含OpenStack，Ceph及所有服务组建。可为项目分配不同区域不同配额的云资源，并统一管理。",
-
     "activityManage": "操作日志",
     "activityManageDescription": "记录用户的操作。",
-
     "accessKeyManage": "API密钥管理",
     "accessKeyManageDescription": "为用户提供API安全凭证。",
-
     "usageManage": "资源概览",
-
     "ticketManage": "工单管理",
     "ticketManageDescription": "添加、追加和关闭工单。",
-
     "projectRoleAdmin": "管理账号",
     "projectRoleUser": "使用账户",
-
     "allAvaliableStatus": "可用资源",
     "allStatus": "全部",
-
     "closeModal": "关闭",
     "confirmModal": "确认",
     "confirmDelete": "确认删除吗?",
-
     "languages": {
         "chinese": "中文",
         "english": "English"
     },
-
     "services": {
         "g": "帐号信息",
         "lcs": "云主机",
         "los": "对象存储"
     },
-
     "networkStatus": {
         "pending": "创建中",
         "active": "运行中",
@@ -184,7 +156,6 @@
         "error": "错误",
         "deleted": "已删除"
     },
-
     "instanceStatus": {
         "pending": "准备中",
         "active": "运行中",
@@ -197,43 +168,36 @@
         "deleted": "已删除",
         "ceased": "已删除"
     },
-
     "keyPairStatus": {
         "active": "运行中",
         "deleted": "已删除"
     },
-
     "eipStatus": {
         "active": "运行中",
         "associated": "已关联",
         "deleted": "已删除",
         "ceased": "已删除"
     },
-
     "instanceTypeStatus": {
         "active": "可用",
         "deleted": "已删除"
     },
-
     "imageStatus": {
         "pending": "上传中",
         "active": "可用",
         "deleted": "已删除",
         "ceased": "已删除"
     },
-
-    "pageImage":{
+    "pageImage": {
         "basic": "基本信息",
         "updateImage": "更新",
         "deleteImage": "删除"
     },
-
-    "pageSnapshot":{
+    "pageSnapshot": {
         "basic": "基本信息",
         "updateSnapshot": "更新",
         "deleteSnapshot": "删除"
     },
-
     "volumeSnapshotsStatus": {
         "pending": "创建中",
         "active": "可用",
@@ -241,19 +205,16 @@
         "ceased": "已删除",
         "error": "状态异常"
     },
-
     "osPlatforms": {
         "linux": "Linux",
         "windows": "Windows",
         "unknown": "未知"
     },
-
     "osProcessorTypes": {
         "32": "32 位",
         "64": "64 位",
         "unknown": "未知"
     },
-
     "osFamilies": {
         "ubuntu": "Ubuntu",
         "centos": "CentOS",
@@ -262,7 +223,6 @@
         "windows": "Windows",
         "unknown": "未知"
     },
-
     "volumeStatus": {
         "pending": "准备中",
         "active": "可挂载",
@@ -274,24 +234,20 @@
         "deleted": "已删除",
         "ceased": "已删除"
     },
-
     "jobStatus": {
         "pending": "创建中",
         "running": "运行中",
         "finished": "已完成",
         "error": "状态异常"
-    }, 
-
+    },
     "operationStatus": {
         "finished": "成功",
         "error": "失败"
-    },       
-
+    },
     "accessKeyStatus": {
         "active": "可用",
         "deleted": "已删除"
     },
-
     "ticketStatus": {
         "pending": "等待处理",
         "in-progress": "处理中",
@@ -324,11 +280,9 @@
         "cidr": "初始网段地址",
         "cidrHint": "创建私有网络时，同时创建一个默认网关，用于创建云主机"
     },
-
     "pageVNC": {
         "sendCtrlAltDel": "发送 Ctrl+Alt+Del"
     },
-
     "pageInstance": {
         "basic": "基本信息",
         "configuration": "配置",
@@ -349,7 +303,6 @@
         "attachVolume": "挂载云硬盘",
         "noVolumeToBeAttahed": "无可挂载的云硬盘"
     },
-
     "pageInstanceCreate": {
         "createInstance": "添加云主机",
         "basic": "基本信息",
@@ -362,29 +315,26 @@
         "hostnameNotValid": "主机名不符合规范, 不能包含数字、英文字母、-_ 之外其他字符。",
         "passwordNotValid": "密码不符合规范，密码需至少8位，并包括字母及数字。",
         "passwordHint": "密码至少8位，并包括字母及数字。",
+        "hostnameNotValid": "主机名不符合规范。",
         "instanceType": "选择配置",
         "image": "选择映像",
         "imageType": "映像类型",
         "imageOrInstanceTypeNotFound": "本区域尚未初始化或者出现异常，请与管理员取得联系。",
         "networkNotFound": "云主机需要运行在一个二层隔离的私有网络（VPC）中，用户首先需要定义一个私有网络，并配置相关网段信息。"
     },
-
     "pageUser": {
         "basic": "基本信息",
         "activeUser": "激活用户",
         "deactiveUser": "禁止用户"
     },
-
     "pageRegion": {
         "basic": "基本信息",
         "consoleEndpoint": "控制台 URL"
     },
-
     "pageProject": {
         "basic": "基本信息",
         "authorizedUsers": "授权用户"
     },
-
     "pageService": {
         "basic": "基本信息",
         "assignedProjects": "分配项目",
@@ -396,7 +346,6 @@
         "createInstanceType": "创建主机配额",
         "generateInstanceTypes": "自动生成通用配置"
     },
-
     "pageNetwork": {
         "basic": "基本信息",
         "monitor": "公网网关流量",
@@ -409,19 +358,19 @@
         "updateNetwork": "更新",
         "setExternalGateway": "开通公网网关",
         "unsetExternalGateway": "关闭公网网关",
+        "updateExternalGatewayBandwidth": "更新外网网关带宽",
+        "externalGatewayBandwidth":"外网网关带宽",
         "portForwarding": "端口转发",
         "deleteNetwork": "删除",
         "externalGatewayIp": "公网网关 IP",
         "createPortForwarding": "添加端口转发规则",
         "createSubnet": "添加子网"
     },
-
     "pageKeyPair": {
         "basic": "基本信息",
         "updateKeyPair": "更新",
         "deleteKeyPair": "删除"
     },
-
     "pageEip": {
         "basic": "基本信息",
         "updateEip": "更新",
@@ -432,7 +381,6 @@
         "noAvailableInstance": "没有可用的云主机",
         "confirmDissociateEip": "确认要解绑公网IP吗?"
     },
-
     "pageVolume": {
         "basic": "基本信息",
         "updateVolume": "更新",
@@ -449,7 +397,6 @@
         "noSelectableSnapshot": "无可选备份",
         "selectSnapshotPlease": "请选择备份"
     },
-
     "pageUsage": {
         "usage": "资源使用概览",
         "eips": "公网IP",
@@ -463,17 +410,14 @@
         "networks": "私有网络个数",
         "volumeSize": "云硬盘容量(GB)"
     },
-
     "pageAccessKeyCreate": {
         "createAccessKey": "添加API密钥"
     },
-
     "pageTicketCreate": {
         "createTicket": "添加工单",
         "title": "标题",
         "content": "内容"
     },
-
     "pageTicket": {
         "unclosed": "未解决工单",
         "closeTicket": "关闭工单",
@@ -482,43 +426,34 @@
         "created": "创建时间",
         "confirmClose": "确认要关闭该工单吗？"
     },
-
     "pageVolumeCreate": {
         "createVolume": "添加云硬盘"
     },
-
     "pageEipCreate": {
         "createEip": "添加公网IP",
         "bandwidthHint": "单位Mb"
     },
-
     "pageKeyPairCreate": {
         "createKeyPair": "添加SSH 密钥"
     },
-
     "volumeMountMode": {
         "rw": "读写"
     },
-
     "formPortForwardingForm": {
         "protocol": "端口协议",
         "outsidePort": "源端口",
         "insideAddress": "内网 IP",
         "insidePort": "内网端口"
     },
-
     "formInstanceCreateForm": {
         "count": "主机数量"
     },
-
     "formUserSelectForm": {
         "typeEmail": "输入用户邮箱"
     },
-
     "formKeyPairForm": {
         "publicKey": "公钥"
     },
-
     "formServiceForm": {
         "serviceKey": "服务类型",
         "regionId": "区域 ID",
@@ -527,11 +462,9 @@
         "manageKey": "管理账号",
         "manageSecret": "管理密码"
     },
-
     "formRegionForm": {
         "devopsEndpoint": "DevOps 接口 URL"
     },
-
     "formQuotaForm": {
         "projectId": "项目ID",
         "instances": "云主机",
@@ -545,9 +478,7 @@
         "networks": "私有网络个数",
         "snapshots": "备份个数"
     },
-
     "monitor": {
-
         "periods": {
             "120mins": "最近120分钟",
             "720mins": "最近720分钟",
@@ -555,7 +486,6 @@
             "14days": "最近7天",
             "30days": "最近30天"
         },
-
         "intervals": {
             "120mins": "间隔: 1分钟",
             "720mins": "间隔: 5分钟",
@@ -563,7 +493,6 @@
             "14days": "间隔: 2小时",
             "30days": "间隔: 12小时"
         },
-
         "cpu": "CPU",
         "memory": "内存",
         "usage": "使用率",
@@ -579,19 +508,16 @@
         "networkTraffic": "网络流量",
         "networkPackets": "网络数据包"
     },
-
     "promptOperationCheck": {
         "promptPrefix1": "当前状态不可",
         "promptPrefix2": "状态校验失败，不可执行该操作",
         "detachVolumeFirst": "，请先解挂云硬盘"
     },
-
     "errorMsg": {
         "4701": "请给主机的网络增加外网网关，再重试。",
         "4702": "尝试给主机解绑 Eip，再重试。",
         "4113": "申请的{resource}超过配额，请提交工单来申请提高配额。"
     },
-
     "actionTranslation": {
         "CreateInstances": "创建云主机",
         "StartInstances": "启动云主机",
@@ -634,7 +560,6 @@
         "DeleteSnapshots": "删除备份",
         "ModifySnapshotAttributes": "更新备份属性"
     },
-    
     "sidebarInstance": "主机列表",
     "sidebarInstanceType": "主机配置",
     "sidebarVolume": "云硬盘",
@@ -651,7 +576,6 @@
     "sidebarProject": "项目",
     "sidebarUser": "用户",
     "sidebarAdmin": "管理员",
-
     "boss": {
         "title": "BOSS业务运营支撑系统",
         "iam": {
@@ -710,6 +634,56 @@
             "openstackAPIs": "OpenStack 服务"
         }
     },
+    "smallScreen": "低宽度的屏幕中可能会影响组件的正常布局。",
+    "bucketList": "空间管理",
+    "bucketListDescription": "存储空间管理",
+    "filterByBucketName": "按存储空间名称过滤",
+    "resourceMonitor": "资源监控",
+    "resourceMonitorDescription": "资源监控描述",
+    "bucketsDeletedSuccess": "空间删除成功",
+    "bucketsCreatedSuccess": "空间添加成功",
+    "bucketPutCorsSuccess": "PutCORS成功",
+    "bucketPutAclSuccess": "PutACL成功",
+    "pageBucketCreate": {
+        "createBucket": "添加空间",
+        "bucketName": "空间名称",
+        "bucketNameHint": "Bucket命名规范: \n 1. 只能包含小写字母，数字和短横线 \n 2. 必须以小写字母和数字开头和结尾 \n 3. bucketName的长度限制在3-63之间",
+        "acl": "权限控制",
+        "aclPrivate": "私有",
+        "aclPublicR": "公共可读",
+        "aclPublicRW": "公共读写",
+        "bucketNameNotValid": "空间名称不符合要求"
+    },
+    "bucketManage": "空间管理",
+    "bucket": "空间",
+    "pageBucket": {
+        "basicInfo": "基本信息",
+        "usage": "容量",
+        "monthlyFlow": "当月流量",
+        "monthlyAPI": "当月API请求次数",
+        "createDate": "创建时间",
 
-    "smallScreen": "低宽度的屏幕中可能会影响组件的正常布局。"
+        "configuration": "基本配置",
+        "bucketAcl": "空间权限",
+        "loggingService": "日志服务",
+        "publicDomain": "外网域名",
+        "privateDomain": "内网域名",
+
+        "monitor": "监控",
+
+        "usageMonitor": "存储空间",
+        "usageLegend": "存储占用量",
+
+        "flowMonitor": "使用流量",
+        "flowOutPublic": "公网流出",
+        "flowInPublic": "公网流入",
+        "flowOutPrivate": "内网流出",
+        "flowInPrivate": "内网流入",
+
+        "apiMonitor": "请求次数",
+        "apiGet": "API访问次数（GET）",
+        "apiPut": "API访问次数（PUT）",
+
+        "monitorIntervalOneHour": "间隔: 1小时"
+    }
 }

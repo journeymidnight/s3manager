@@ -60,8 +60,12 @@ class C extends React.Component {
         icon: 'fa-sticky-note',
       }],
       los: [{
-        path: 'demo',
-        title: t('demo'),
+        path: 'buckets',
+        title: t('bucketList'),
+        icon: 'fa-sticky-note',
+      }, {
+        path: 'monitor',
+        title: t('resourceMonitor'),
         icon: 'fa-sticky-note',
       }],
     };

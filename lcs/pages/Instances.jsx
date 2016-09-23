@@ -50,38 +50,40 @@ class C extends TablePage {
     return !!unavailabeInstances.length;
   }
 
-  batchActions(action) {
-    const { dispatch, region, routerKey } = this.props;
+  batchActions(action, operation) {
+    const { dispatch, region, routerKey, t } = this.props;
     const instanceIds = _.keys(this.props.context.selected);
 
     return new Promise((resolve, reject) => {
       dispatch(action(routerKey, region.regionId, instanceIds))
-      .then(() => {
-        resolve();
-        this.onRefresh({}, false)();
-      }).catch(() => {
-        reject();
-      });
+        .then(() => {
+          resolve();
+          dispatch(Actions.notify(t(`pageInstance.${operation}`) + t('success')));
+          this.onRefresh({}, false)();
+        }).catch(() => {
+          dispatch(Actions.notify(t(`pageInstance.${operation}`) + t('fail')));
+          reject();
+        });
     });
   }
 
   onDelete() {
     const { t } = this.props;
     confirmModal(t('confirmDelete'), () => {
-      return this.batchActions(InstanceActions.requestDeleteInstances);
+      return this.batchActions(InstanceActions.requestDeleteInstances, 'deleteInstance');
     });
   }
 
   onStart() {
-    return this.batchActions(InstanceActions.requestStartInstances);
+    return this.batchActions(InstanceActions.requestStartInstances, 'startInstance');
   }
 
   onStop() {
-    return this.batchActions(InstanceActions.requestStopInstances);
+    return this.batchActions(InstanceActions.requestStopInstances, 'stopInstance');
   }
 
   onRestart() {
-    return this.batchActions(InstanceActions.requestRestartInstances);
+    return this.batchActions(InstanceActions.requestRestartInstances, 'restartInstance');
   }
 
   connectVNC(instance) {
@@ -100,7 +102,12 @@ class C extends TablePage {
         <thead>
           <tr>
             <th width="40">
-              <input type="checkbox" className="selected" onChange={this.onSelectAll(this.props.context.instanceSet.map((u) => { return u.instanceId; }))} />
+              <input
+                type="checkbox"
+                className="selected"
+                onChange={this.onSelectAll(this.props.context.instanceSet.map((u) => { return u.instanceId; }))}
+                checked={this.isAllSelected(this.props.context.instanceSet.map((u) => { return u.instanceId; }))}
+              />
             </th>
             <th width="150">{t('id')}</th>
             <th>{t('name')}</th>
@@ -187,7 +194,7 @@ class C extends TablePage {
       <div className="gray-content-block second-block">
         <div className={Object.keys(this.props.context.selected).length > 0 ? 'hidden' : ''}>
           <div className="filter-item inline">
-            <a className="loading-display">
+            <a className="btn btn-default" onClick={this.doSearch}>
               <i className={`fa fa-refresh ${this.props.context.loading ? 'fa-spin' : ''}`}></i>
             </a>
           </div>

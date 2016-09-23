@@ -11,29 +11,28 @@ const F = (props) => {
     submitFailed,
     resetForm,
     t,
-    invalid,
   } = props;
   return (
     <form className="form-horizontal" onSubmit={handleSubmit}>
 
-      <div className={submitFailed && title.error ? 'form-group has-error' : 'form-group'}>
+      <div className={(submitFailed || title.touched) && title.error ? 'form-group has-error' : 'form-group'}>
         <label className="control-label" >{t('pageTicketCreate.title')}</label>
         <div className="col-sm-10">
           <input type="text" className="form-control" {...title} />
-          {submitFailed && title.error && <div className="text-danger"><small>{title.error}</small></div>}
+          {(submitFailed || title.touched) && title.error && <div className="text-danger"><small>{title.error}</small></div>}
         </div>
       </div>
 
-      <div className={submitFailed && content.error ? 'form-group has-error' : 'form-group'}>
+      <div className={(submitFailed || content.touched) && content.error ? 'form-group has-error' : 'form-group'}>
         <label className="control-label" >{t('pageTicketCreate.content')}</label>
         <div className="col-sm-10">
           <textarea rows="10" className="form-control" {...content} />
-          {submitFailed && content.error && <div className="text-danger"><small>{content.error}</small></div>}
+          {(submitFailed || content.touched) && content.error && <div className="text-danger"><small>{content.error}</small></div>}
         </div>
       </div>
 
       <div className="form-actions">
-        <button type="submit" className="btn btn-save" disabled={submitting || invalid}>
+        <button type="submit" className="btn btn-save" disabled={submitting}>
           {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('create')}
         </button>
         &nbsp;
@@ -48,7 +47,6 @@ const F = (props) => {
 F.propTypes = {
   fields: React.PropTypes.object.isRequired,
   error: React.PropTypes.string,
-  invalid: React.PropTypes.bool,
   handleSubmit: React.PropTypes.func.isRequired,
   submitting: React.PropTypes.bool.isRequired,
   submitFailed: React.PropTypes.bool.isRequired,

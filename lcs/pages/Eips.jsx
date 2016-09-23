@@ -67,7 +67,12 @@ class C extends TablePage {
         <thead>
           <tr>
             <th width="40">
-              <input type="checkbox" className="selected" onChange={this.onSelectAll(this.props.context.eipSet.map((u) => { return u.eipId; }))} />
+              <input
+                type="checkbox"
+                className="selected"
+                onChange={this.onSelectAll(this.props.context.eipSet.map((u) => { return u.eipId; }))}
+                checked={this.isAllSelected(this.props.context.eipSet.map((u) => { return u.eipId; }))}
+              />
             </th>
             <th width="150">{t('id')}</th>
             <th>{t('name')}</th>
@@ -94,7 +99,7 @@ class C extends TablePage {
                   {eip.name && <strong>{eip.name}</strong>}
                   {!eip.name && <i className="text-muted">{t('noName')}</i>}
                 </td>
-                <td>{eip.bandwidth}Mb</td>
+                <td>{eip.bandwidth}Mbps</td>
                 <td>
                   {eip.resourceId || <i className="text-muted">{t('noName')}</i>}
                 </td>
@@ -150,7 +155,7 @@ class C extends TablePage {
       <div className="gray-content-block second-block">
         <div className={Object.keys(this.props.context.selected).length > 0 ? 'hidden' : ''}>
           <div className="filter-item inline">
-            <a className="loading-display">
+            <a className="btn btn-default" onClick={this.doSearch}>
               <i className={`fa fa-refresh ${this.props.context.loading ? 'fa-spin' : ''}`}></i>
             </a>
           </div>
