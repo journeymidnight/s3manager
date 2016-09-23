@@ -40,7 +40,9 @@ export function generateChartConfig(data, cols, yFormat) {
       show: false,
     },
     legend: {
-      show: true,
+      item: {
+        onclick: () => { },
+      },
     },
     axis: {
       y: {

@@ -5,7 +5,7 @@ import i18n from '../../shared/i18n';
 export function requestDescribeKeyPair(routerKey, regionId, keyPairId) {
   return dispatch => {
     return IaaS
-      .doAction(regionId, ACTION_NAMES.describeKeyPairs, { keyPairIds: [keyPairId] })
+      .doAction(regionId, ACTION_NAMES.describeKeyPairs, { keyPairIds: [keyPairId], verbose: true })
       .promise
       .then((payload) => {
         dispatch(extendContext({ keyPair: payload.keyPairSet[0] }, routerKey));
