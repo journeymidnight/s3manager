@@ -114,7 +114,6 @@ class C extends Page {
             {this.props.context[`period-${this.state.period}-instance.memory`] && <Chart
               className="chart"
               config={generateAreaChartConfig(this.props.context[`period-${this.state.period}-instance.memory`].timeSeries, {
-                total: { name: t('monitor.total') },
                 used: { name: t('monitor.used') },
               }, 'megabytes')}
             />}
@@ -156,7 +155,6 @@ class C extends Page {
             {this.props.context[`period-${this.state.period}-instance.disk.usage`] && <Chart
               className="chart"
               config={generateAreaChartConfig(this.props.context[`period-${this.state.period}-instance.disk.usage`].timeSeries, {
-                total: { name: t('monitor.total') },
                 used: { name: t('monitor.used') },
               }, 'bytes')}
             />}

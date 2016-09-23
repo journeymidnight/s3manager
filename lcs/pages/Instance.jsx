@@ -592,13 +592,14 @@ class C extends Page {
                         <td>{t('volume')}</td>
                         <td>
                           <span>
-                          {instance.volumes.map((volume) => {
+                          {!!instance.volumes.length && instance.volumes.map((volume) => {
                             return (<div>
                               <Link to={`${servicePath}/volumes/${volume.volumeId}`}>
                                 {volume.volumeId} ({volume.size}GB)
                               </Link>
                             </div>);
                           })}
+                          {!instance.volumes.length && <i className="text-muted">{t('noName')}</i>}
                           </span>
                         </td>
                       </tr>

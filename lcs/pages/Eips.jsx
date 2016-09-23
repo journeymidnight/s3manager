@@ -148,7 +148,7 @@ class C extends TablePage {
         status: ['associated'],
         name: t('eipStatus.associated'),
       }, {
-        status: ['ceased', 'deleted'],
+        status: ['deleted'],
         name: t('eipStatus.deleted'),
       }];
     return (

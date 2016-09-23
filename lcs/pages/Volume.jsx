@@ -15,7 +15,7 @@ import * as Validations from '../../shared/utils/validations';
 
 let VolumeUpdateForm = (props) => {
   const { fields:
-    { name },
+    { name, description },
     handleSubmit,
     submitting,
     submitFailed,
@@ -30,6 +30,13 @@ let VolumeUpdateForm = (props) => {
           <div className="col-sm-10">
             <input type="text" className="form-control" {...name} />
             {(submitFailed || name.touched) && name.error && <div className="text-danger"><small>{name.error}</small></div>}
+          </div>
+        </div>
+        <div className={(submitFailed || description.touched) && description.error ? 'form-group has-error' : 'form-group'}>
+          <label className="control-label" >{t('description')}</label>
+          <div className="col-sm-10">
+            <input type="text" className="form-control" {...description} />
+            {(submitFailed || description.touched) && description.error && <div className="text-danger"><small>{description.error}</small></div>}
           </div>
         </div>
       </div>
@@ -59,7 +66,7 @@ VolumeUpdateForm.validate = () => {
 
 VolumeUpdateForm = reduxForm({
   form: 'VolumeUpdateForm',
-  fields: ['name'],
+  fields: ['name', 'description'],
   validate: VolumeUpdateForm.validate,
 })(translate()(VolumeUpdateForm));
 
@@ -289,8 +296,9 @@ class C extends Page {
 
     return new Promise((resolve, reject) => {
       const name = values.name;
+      const description = values.description;
 
-      dispatch(VolumeActions.requestModifyVolumeAttributes(routerKey, region.regionId, volume.volumeId, name))
+      dispatch(VolumeActions.requestModifyVolumeAttributes(routerKey, region.regionId, volume.volumeId, name, description))
       .then(() => {
         resolve();
         this.refs.updateModal.hide();
@@ -363,7 +371,8 @@ class C extends Page {
           resolve();
           this.refs.resizeModal.hide();
           dispatch(VolumeActions.requestDescribeVolume(routerKey, region.regionId, volume.volumeId));
-        }).catch(() => {
+        }).catch((error) => {
+          dispatch(Actions.notifyAlert(error.displayMsg || error.message));
           reject();
         });
     });
@@ -390,7 +399,8 @@ class C extends Page {
           resolve();
           this.refs.snapshotCreateModal.hide();
           dispatch(push(`${servicePath}/images_snapshots/volume_snapshots`));
-        }).catch(() => {
+        }).catch((error) => {
+          dispatch(Actions.notifyAlert(error.displayMsg || error.message));
           reject();
         });
     });

@@ -32,7 +32,7 @@ class C extends Page {
         resolve();
         dispatch(push('/access_keys'));
       }).catch((error) => {
-        dispatch(Actions.notifyAlert(error.message));
+        dispatch(Actions.notifyAlert(error.displayMsg || error.message));
         reject();
       });
     });

@@ -73,6 +73,9 @@
     "firstCreated": "最早创建",
     "selectRegion": "选择区域",
     "filterByIdorName": "用ID或名称过滤...",
+    "filterByIdorTitle": "用ID或标题过滤...",
+    "filterByIdorCidr": "用ID或网段地址过滤...",
+    "filterByIdorAddress": "用ID或内网ip过滤...",
     "filterByName": "用名称过滤...",
     "createSuccessed": "添加成功。",
     "updateSuccessed": "保存成功。",
@@ -153,7 +156,7 @@
         "active": "运行中",
         "building": "构建中",
         "disabled": "已禁用",
-        "error": "错误",
+        "error": "状态异常",
         "deleted": "已删除"
     },
     "instanceStatus": {
@@ -175,8 +178,7 @@
     "eipStatus": {
         "active": "运行中",
         "associated": "已关联",
-        "deleted": "已删除",
-        "ceased": "已删除"
+        "deleted": "已删除"
     },
     "instanceTypeStatus": {
         "active": "可用",

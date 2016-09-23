@@ -210,9 +210,6 @@ export function requestDeletePortForwardings(routerKey, regionId, portForwarding
     .promise
     .then(() => {
       dispatch(notify(i18n.t('deleteSuccessed')));
-    })
-    .catch((error) => {
-      dispatch(notifyAlert(error.message));
     });
   };
 }

@@ -67,7 +67,7 @@ export function requestCreateTicketReply(routerKey, ticketId, content) {
     .createTicketReply(ticketId, content)
     .promise
     .then(() => {
-      dispatch(notify(i18n.t('createSuccessed')));
+      dispatch(notify(i18n.t('pageTicket.reply') + i18n.t('success')));
     });
   };
 }

@@ -44,7 +44,7 @@ F.validate = (values) => {
 };
 
 export default reduxForm({
-  form: 'TicketForm',
+  form: 'TicketReplyForm',
   fields: ['content'],
   validate: F.validate,
 })(translate()(F));
