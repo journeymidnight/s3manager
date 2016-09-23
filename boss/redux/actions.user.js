@@ -16,3 +16,31 @@ export function requestDeleteUsers(routerKey, userIds) {
     });
   };
 }
+
+export function requestActiveUsers(routerKey, userIds) {
+  return dispatch => {
+    return IAM
+    .activeUsers(userIds)
+    .promise
+    .then(() => {
+      dispatch(notify(i18n.t('updateSuccessed')));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+
+export function requestDeactiveUsers(routerKey, userIds) {
+  return dispatch => {
+    return IAM
+    .deactiveUsers(userIds)
+    .promise
+    .then(() => {
+      dispatch(notify(i18n.t('updateSuccessed')));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}

@@ -266,6 +266,7 @@
 
     "userStatus": {
         "active": "激活",
+        "inactive": "未激活",
         "deleted": "已删除"
     },
 
@@ -321,8 +322,14 @@
         "imageOrInstanceTypeNotFound": "本区域尚未初始化或者出现异常，请与管理员取得联系。",
         "networkNotFound": "云主机需要运行在一个二层隔离的私有网络（VPC）中，用户首先需要定义一个私有网络，并配置相关网段信息。"
     },
+    "pageUser": {
+        "basic": "基本信息",
+        "activeUser": "激活用户",
+        "deactiveUser": "禁止用户"
+    },
     "pageRegion": {
-        "basic": "基本信息"
+        "basic": "基本信息",
+        "consoleEndpoint": "控制台 URL"
     },
     "pageProject": {
         "basic": "基本信息",

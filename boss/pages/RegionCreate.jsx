@@ -22,11 +22,13 @@ class C extends Page {
       const regionId = values.regionId;
       const name = values.name;
       const devopsEndpoint = values.devopsEndpoint;
+      const consoleEndpoint = values.consoleEndpoint;
 
       dispatch(RegionActions.requestCreateRegion({
         regionId,
         name,
         devopsEndpoint,
+        consoleEndpoint,
       }))
       .then(() => {
         resolve();

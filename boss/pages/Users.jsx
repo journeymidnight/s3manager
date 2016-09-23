@@ -58,6 +58,7 @@ class C extends TablePage {
             <th width="150">{t('id')}</th>
             <th>{t('username')}</th>
             <th>{t('email')}</th>
+            <th>{t('status')}</th>
             <th width="200">{t('created')}</th>
           </tr>
         </thead>
@@ -75,6 +76,7 @@ class C extends TablePage {
               </td>
               <td><strong>{user.username}</strong></td>
               <td><strong>{user.email}</strong></td>
+              <td><strong>{t(`userStatus.${user.status}`)}</strong></td>
               <td>{moment.utc(user.created).local().format('YYYY-MM-DD HH:mm:ss')}</td>
             </tr>
           );
@@ -107,6 +109,9 @@ class C extends TablePage {
     const statusOption = [{
       status: ['active'],
       name: t('userStatus.active'),
+    }, {
+      status: ['inactive'],
+      name: t('userStatus.inactive'),
     }, {
       status: ['deleted'],
       name: t('userStatus.deleted'),

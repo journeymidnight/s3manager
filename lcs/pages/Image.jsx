@@ -90,8 +90,8 @@ class C extends Page {
     dispatch(ImageActions.requestDescribeImage(routerKey, region.regionId, imageId));
   }
 
-  isEnabled(iamge) {
-    return iamge.status === 'active';
+  isEnabled(image) {
+    return image.status === 'active';
   }
 
   deleteImage(e) {
@@ -208,7 +208,6 @@ class C extends Page {
       </div>
     );
   }
-
 }
 
 export default attach(C);
