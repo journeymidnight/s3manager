@@ -144,7 +144,7 @@ class C extends Page {
     $('#xvpResetButton')[0].onclick = xvpReset;
 
     WebUtil.init_logging(WebUtil.getConfigVar('logging', 'warn'));
-    document.title = unescape(WebUtil.getConfigVar('title', 'noVNC'));
+    document.title = `${this.props.t('instance')} (${unescape(WebUtil.getConfigVar('instanceId', this.props.t('noName')))})`;
 
     const password = WebUtil.getConfigVar('password', '');
     path = WebUtil.getConfigVar('path', 'websockify');
