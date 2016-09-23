@@ -27,10 +27,10 @@ class C extends TablePageStatic {
         failed: t('uploadModal.failed'),
       },
       action: {
-        pause: t('uploadModal.pause'),
-        continue: t('uploadModal.continue'),
-        cancel: t('uploadModal.cancel'),
-        retry: t('uploadModal.retry'),
+        pause: 'fa-pause',
+        continue: 'fa-play',
+        cancel: 'fa-stop',
+        retry: 'fa-upload',
       },
     };
 
@@ -41,6 +41,11 @@ class C extends TablePageStatic {
     this.formatBytes = this.formatBytes.bind(this);
     this.onFileUpload = this.onFileUpload.bind(this);
     this.uploadOneObject = this.uploadOneObject.bind(this);
+    this.handleUploadAction = this.handleUploadAction.bind(this);
+    this.pauseOneObject = this.pauseOneObject.bind(this);
+    this.continueOneObject = this.continueOneObject.bind(this);
+    this.retryOneObject = this.retryOneObject.bind(this);
+    this.cancelOneObject = this.cancelOneObject.bind(this);
   }
 
   initialize(routerKey) {
@@ -61,7 +66,7 @@ class C extends TablePageStatic {
   }
 
   refreshAction(routerKey, filters) {
-    return ObjectActions.setVisibleObjects(this.state.s3, this.props.global.bucketName, routerKey, filters);
+    return ObjectActions.setVisibleObjects(this.state.s3, this.props.params.bucketName, routerKey, filters);
   }
 
   isBatchActionDisabled(availabeStatuss) {
@@ -109,6 +114,7 @@ class C extends TablePageStatic {
     const uploadingFileList = {};
     for (let i = 0, len = files.length; i < len; i++) {
       uploadingFileList[i] = {
+        s3Uploader: null,
         name: files[i].name,
         size: files[i].size,
         percent: 0,
@@ -134,7 +140,7 @@ class C extends TablePageStatic {
     const fileName = file.name;
     const s3Uploader = this.state.s3.upload(
       {
-        Bucket: this.props.global.bucketName,
+        Bucket: this.props.params.bucketName,
         Key: fileName,
         Body: file,
       },
@@ -142,50 +148,182 @@ class C extends TablePageStatic {
         partSize: 5 * 1024 * 1024,
         queueSize: 10,
         leavePartsOnError: true,
-      },
-      (error, data) => {
-        if (error) {
-          if (error.code !== 'RequestAbortedError') {
-            const newUploadingFileList = update(this.state.uploadingFileList, {
-              [index]: { status: { $set: 'failed' } },
-            });
-            this.setState({
-              uploadingFileList: newUploadingFileList,
-            });
-          }
-        } else {
+      }
+    );
+    this.setState({
+      uploadingFileList: update(this.state.uploadingFileList, {
+        [index]: { s3Uploader: { $set: s3Uploader } },
+      }),
+    });
+
+    s3Uploader.send(this.uploadOneObjectCb(index));
+    s3Uploader.on('httpUploadProgress', (progress) => {
+      const percent = 100 * progress.loaded / progress.total;
+      console.log(percent);
+      this.setState({
+        uploadingFileList: update(this.state.uploadingFileList, {
+          [index]: { percent: { $set: percent } },
+        }),
+      });
+    });
+  }
+
+  uploadOneObjectCb(index) {
+    return (error, data) => {
+      if (error) {
+        if (error.code !== 'RequestAbortedError') {
           let newUploadingFileList = update(this.state.uploadingFileList, {
-            [index]: { status: { $set: 'uploaded' } },
+            [index]: { status: { $set: 'failed' } },
           });
           newUploadingFileList = update(newUploadingFileList, {
             [index]: { percent: { $set: 0 } },
           });
+          newUploadingFileList = update(newUploadingFileList, {
+            [index]: { actions: { $set: ['retry'] } },
+          });
+          newUploadingFileList = update(newUploadingFileList, {
+            [index]: { s3Uploader: { $set: null } },
+          });
           this.setState({
             uploadingFileList: newUploadingFileList,
-          }, () => this.onRefresh({}, false)());
+          });
         }
+      } else {
+        let newUploadingFileList = update(this.state.uploadingFileList, {
+          [index]: { status: { $set: 'uploaded' } },
+        });
+        newUploadingFileList = update(newUploadingFileList, {
+          [index]: { percent: { $set: 0 } },
+        });
+        newUploadingFileList = update(newUploadingFileList, {
+          [index]: { actions: { $set: [] } },
+        });
+        newUploadingFileList = update(newUploadingFileList, {
+          [index]: { s3Uploader: { $set: null } },
+        });
+        this.setState({
+          uploadingFileList: newUploadingFileList,
+        }, () => this.onRefresh({}, false)());
+      }
+    };
+  }
+
+  handleUploadAction(action, index) {
+    switch (action) {
+      case 'pause':
+        return this.pauseOneObject(index);
+      case 'continue':
+        return this.continueOneObject(index);
+      case 'retry':
+        return this.retryOneObject(index);
+      case 'cancel':
+        return this.cancelOneObject(index);
+      default:
+        return null;
+    }
+  }
+
+  pauseOneObject(index) {
+    this.state.uploadingFileList[index].s3Uploader.abort();
+
+    let newUploadingFileList = update(this.state.uploadingFileList, {
+      [index]: { status: { $set: 'paused' } },
+    });
+    newUploadingFileList = update(newUploadingFileList, {
+      [index]: { actions: { $set: ['continue', 'cancel'] } },
+    });
+    console.log(this.state.uploadingFileList[index].s3Uploader === newUploadingFileList[index].s3Uploader)
+    this.setState({
+      uploadingFileList: newUploadingFileList,
+    });
+  }
+
+  continueOneObject(index) {
+    this.state.uploadingFileList[index].s3Uploader.send(this.uploadOneObjectCb(index));
+
+    let newUploadingFileList = update(this.state.uploadingFileList, {
+      [index]: { status: { $set: 'uploading' } },
+    });
+    newUploadingFileList = update(newUploadingFileList, {
+      [index]: { actions: { $set: ['pause', 'cancel'] } },
+    });
+    console.log(this.state.uploadingFileList[index].s3Uploader === newUploadingFileList[index].s3Uploader)
+    this.setState({
+      uploadingFileList: newUploadingFileList,
+    });
+  }
+
+  cancelOneObject(index) {
+    const s3Uploader = this.state.uploadingFileList[index].s3Uploader;
+    if (s3Uploader && s3Uploader.service.config.params.UploadId) {
+      s3Uploader.service.abortMultipartUpload().send();
+    }
+
+    let newUploadingFileList = update(this.state.uploadingFileList, {
+      [index]: { status: { $set: 'canceled' } },
+    });
+    newUploadingFileList = update(newUploadingFileList, {
+      [index]: { percent: { $set: 0 } },
+    });
+    newUploadingFileList = update(newUploadingFileList, {
+      [index]: { actions: { $set: ['retry'] } },
+    });
+    newUploadingFileList = update(newUploadingFileList, {
+      [index]: { uploader: { $set: null } },
+    });
+    this.setState({
+      uploadingFileList: newUploadingFileList,
+    });
+  }
+
+  retryOneObject(index) {
+    const file = this.refs.fileUploader.files[index];
+    const fileName = file.name;
+    const s3Uploader = this.state.s3.upload(
+      {
+        Bucket: this.props.params.bucketName,
+        Key: fileName,
+        Body: file,
+      },
+      {
+        partSize: 5 * 1024 * 1024,
+        queueSize: 10,
+        leavePartsOnError: true,
       }
     );
 
+    let newUploadingFileList = update(this.state.uploadingFileList, {
+      [index]: { status: { $set: 'uploading' } },
+    });
+    newUploadingFileList = update(newUploadingFileList, {
+      [index]: { actions: { $set: ['pause', 'cancel'] } },
+    });
+    newUploadingFileList = update(newUploadingFileList, {
+      [index]: { s3Uploader: { $set: s3Uploader } },
+    });
+    this.setState({
+      uploadingFileList: newUploadingFileList,
+    });
+
+    s3Uploader.send(this.uploadOneObjectCb(index));
     s3Uploader.on('httpUploadProgress', (progress) => {
       const percent = 100 * progress.loaded / progress.total;
-      const newUploadingFileList = update(this.state.uploadingFileList, {
-        [index]: { percent: { $set: percent } },
-      });
       this.setState({
-        uploadingFileList: newUploadingFileList,
+        uploadingFileList: update(this.state.uploadingFileList, {
+          [index]: { percent: { $set: percent } },
+        }),
       });
     });
   }
 
   renderTable() {
-    const { t } = this.props;
+    const { t, params, servicePath } = this.props;
     return this.props.context.total > 0 && (
       <table className="table">
         <thead>
           <tr>
             <th width="40">
-              <input type="checkbox" className="selected" onChange={this.onSelectAll(this.props.context.visibleObjects.map((u) => { return u.name; }))} />
+              <input type="checkbox" className="selected" onChange={this.onSelectAll(this.props.context.visibleObjects.map((object) => object.Key))} />
             </th>
             <th width="500">{t('fileName')}</th>
             <th width="200">{t('size')}</th>
@@ -198,10 +336,10 @@ class C extends TablePageStatic {
             return (
               <tr key={object.Key}>
                 <td>
-                  <input type="checkbox" className="selected" onChange={this.onSelect(object.name)} checked={this.props.context.selected[object.name] === true} />
+                  <input type="checkbox" className="selected" onChange={this.onSelect(object.Key)} checked={this.props.context.selected[object.Key] === true} />
                 </td>
                 <td>
-                  <Link to="#">
+                  <Link to={`${servicePath}/buckets/${params.bucketName}/objects`}>
                     {object.Key}
                   </Link>
                 </td>
@@ -224,22 +362,29 @@ class C extends TablePageStatic {
           <span>{t('bucket')}&nbsp;<i>{params.bucketName}</i></span>
         </div>
         <div className="nav-controls">
-          <input
-            className="btn btn-new"
-            type="file"
-            id="fileUploader"
-            ref="fileUploader"
-            multiple="true"
-            style={{ display: 'none' }}
-            onChange={this.onFileUpload}
-          />
-          <label htmlFor="fileUploader" style={{ marginRight: 10 }}>
-            <div className="btn btn-new">
-              <i className="fa fa-upload" />&nbsp;{t('uploadFile')}
-            </div>
-          </label>
+          <form ref="uploaderForm">
+            <input
+              className="btn btn-new"
+              type="file"
+              id="fileUploader"
+              ref="fileUploader"
+              multiple="true"
+              style={{ display: 'none' }}
+              onChange={this.onFileUpload}
+            />
+            <label htmlFor="fileUploader" style={{ marginRight: 10 }}>
+              <div
+                className="btn btn-new"
+                onClick={() => {
+                  this.refs.uploaderForm.reset();
+                }}
+              >
+                <i className="fa fa-upload" />&nbsp;{t('uploadFile')}
+              </div>
+            </label>
+          </form>
 
-          <Link className="btn btn-new" to={`${servicePath}/objects/create`}>
+          <Link className="btn btn-new" to={`${servicePath}/buckets/${params.bucketName}/objects`}>
             <i className="fa fa-plus" />&nbsp;{t('createFolder')}
           </Link>
         </div>
@@ -285,7 +430,20 @@ class C extends TablePageStatic {
                               </td>
                               <td>{this.formatBytes(file.size)}</td>
                               <td>{this.state.status[file.status]}</td>
-                              <td>{file.actions.map((action) => this.state.action[action])}</td>
+                              <td>
+                                {
+                                  file.actions.map((action, index) =>
+                                    <i
+                                      key={index}
+                                      className={'fa ' + this.state.action[action]}
+                                      style={{ marginRight: 10 }}
+                                      onClick={
+                                        () => this.handleUploadAction(action, key)
+                                      }
+                                    />
+                                  )
+                                }
+                              </td>
                             </tr>
                           );
                         })}
