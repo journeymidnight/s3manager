@@ -48,6 +48,7 @@ class InstanceResetForm extends React.Component {
       submitting,
       submitFailed,
       t,
+      onNoKeypairHandler,
     } = this.props;
     return (
       <form className="form-horizontal" onSubmit={handleSubmit}>
@@ -72,15 +73,16 @@ class InstanceResetForm extends React.Component {
           {loginMode.value === 'keyPair' && <div className="form-group">
             <label className="control-label" >{t('pageInstanceCreate.keyPair')}</label>
             <div className="col-sm-10">
-              <select className="form-control" {...keyPairId}>
-                {this.keyPairSet && this.keyPairSet.map((keyPair) => {
+              {!!this.keyPairSet.length && <select className="form-control" {...keyPairId}>
+                {this.keyPairSet.map((keyPair) => {
                   return (
                     <option key={keyPair.keyPairId} value={keyPair.keyPairId}>
                       {keyPair.name} ({keyPair.keyPairId})
                     </option>
                   );
                 })}
-              </select>
+              </select>}
+              {!this.keyPairSet.length && <button className="btn btn-new" onClick={onNoKeypairHandler}>{t('pageKeyPairCreate.createKeyPair')}</button>}
             </div>
           </div>}
 
@@ -115,6 +117,7 @@ InstanceResetForm.propTypes = {
   instance: React.PropTypes.object.isRequired,
   region: React.PropTypes.object.isRequired,
   t: React.PropTypes.any,
+  onNoKeypairHandler: React.PropTypes.func.isRequired,
 };
 
 InstanceResetForm.validate = values => {

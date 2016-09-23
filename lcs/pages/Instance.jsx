@@ -101,6 +101,7 @@ class C extends Page {
     this.dissociateEip = this.dissociateEip.bind(this);
     this.captureInstance = this.captureInstance.bind(this);
     this.attachVolume = this.attachVolume.bind(this);
+    this.noKeypairHandler = this.noKeypairHandler.bind(this);
   }
 
   initialize() {
@@ -363,6 +364,13 @@ class C extends Page {
         <InstanceEipForm onSubmit={this.onAssociateEip} availableEips={availableEips} initialValues={initialValues} />
       </Modal>
     );
+  }
+
+  noKeypairHandler(e) {
+    e.preventDefault();
+    const { dispatch, servicePath } = this.props;
+    this.refs.resetModal.hide();
+    dispatch(push(`${servicePath}/key_pairs/create`));
   }
 
   connectVNC(e) {
@@ -680,7 +688,7 @@ class C extends Page {
           <InstanceUpdateForm onSubmit={this.onUpdate} initialValues={instance} />
         </Modal>
         <Modal title={t('pageInstance.resetInstance')} ref="resetModal" >
-          <InstanceResetForm onSubmit={this.onReset} instance={instance} region={region} />
+          <InstanceResetForm onSubmit={this.onReset} instance={instance} region={region} onNoKeypairHandler={this.noKeypairHandler} />
         </Modal>
         <Modal title={t('pageInstance.resizeInstance')} ref="resizeModal" >
           <InstanceResizeForm onSubmit={this.onResize} instance={instance} region={region} />
