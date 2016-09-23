@@ -303,6 +303,7 @@
         "captureInstance": "生成自有映像",
         "associateEip": "绑定公网IP",
         "dissociateEip": "解绑公网IP",
+        "noEipToBeAssociated": "无可绑定的公网IP",
         "attachVolume": "挂载云硬盘",
         "noVolumeToBeAttahed": "无可挂载的云硬盘"
     },

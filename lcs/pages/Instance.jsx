@@ -237,7 +237,16 @@ class C extends Page {
   associateEip(e) {
     e.preventDefault();
 
-    this.refs.eipModal.show();
+    const { t, dispatch, region, routerKey } = this.props;
+
+    dispatch(EipActions.requestDescribeEips(routerKey, region.regionId, { status: ['active'], limit: 100 }))
+      .then(() => {
+        if (this.props.context.eipSet && this.props.context.eipSet.length) {
+          this.refs.eipModal.show();
+        } else {
+          alertModal(t('pageInstance.noEipToBeAssociated'));
+        }
+      });
   }
 
   dissociateEip(e) {
@@ -339,6 +348,19 @@ class C extends Page {
     return (
       <Modal title={t('pageInstance.attachVolume')} ref="attachVolumeModal" >
         <InstanceVolumeForm onSubmit={this.onAttachVolume} availableVolumes={availableVolumes} initialValues={initialValues} />
+      </Modal>
+    );
+  }
+
+  renderAssociateEipModal() {
+    const { t } = this.props;
+    const availableEips = this.props.context.eipSet;
+    const initialValues = {
+      eipId: availableEips[0].eipId,
+    };
+    return (
+      <Modal title={t('pageInstance.associateEip')} ref="eipModal" >
+        <InstanceEipForm onSubmit={this.onAssociateEip} availableEips={availableEips} initialValues={initialValues} />
       </Modal>
     );
   }
@@ -663,9 +685,7 @@ class C extends Page {
         <Modal title={t('pageInstance.resizeInstance')} ref="resizeModal" >
           <InstanceResizeForm onSubmit={this.onResize} instance={instance} region={region} />
         </Modal>
-        <Modal title={t('pageInstance.associateEip')} ref="eipModal" >
-          <InstanceEipForm onSubmit={this.onAssociateEip} instance={instance} region={region} />
-        </Modal>
+        {this.props.context.eipSet && this.props.context.eipSet.length && this.renderAssociateEipModal()}
         <Modal title={t('pageInstance.captureInstance')} ref="captureModal" >
           <InstanceCaptureForm onSubmit={this.onCaptureInstance} instance={instance} region={region} />
         </Modal>
