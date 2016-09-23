@@ -92,8 +92,8 @@ class C extends Page {
     dispatch(ImageActions.requestDescribeImage(routerKey, region.regionId, imageId));
   }
 
-  isEnabled(iamge) {
-    return iamge.status === 'active';
+  isEnabled(image) {
+    return image.status === 'active';
   }
 
   deleteImage(e) {
@@ -141,7 +141,7 @@ class C extends Page {
           <div className="clearfix">
             <div className="top-area">
               <div className="nav-text">
-                <span>{t('images')}&nbsp;<i>{image.imageId}</i></span>
+                <span>{t('image')}&nbsp;<i>{image.imageId}</i></span>
               </div>
             </div>
             <div className="row">
@@ -175,6 +175,15 @@ class C extends Page {
                         </td>
                       </tr>
                       <tr>
+                        <td>{t('description')}</td>
+                        <td>
+                          <span>
+                          {image.description && <span>{image.description}</span>}
+                          {!image.description && <i className="text-muted">{t('noName')}</i>}
+                          </span>
+                        </td>
+                      </tr>
+                      <tr>
                         <td>{t('status')}</td>
                         <td className={`i-status i-status-${image.status}`}>
                           <span>
@@ -201,7 +210,6 @@ class C extends Page {
       </div>
     );
   }
-
 }
 
 export default attach(C);

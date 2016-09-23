@@ -226,9 +226,6 @@ export function requestResizeInstances(routerKey, regionId, instanceIds, instanc
     .promise
     .then(() => {
       dispatch(notify(i18n.t('resizePending')));
-    })
-    .catch((error) => {
-      dispatch(notifyAlert(error.message));
     });
   };
 }
@@ -247,7 +244,7 @@ export function requestConnectVNC(routerKey, regionId, instanceId) {
       const height = 430;
 
       const { host, port, token } = payload;
-      const url = `lcs/#/vnc/${host}/${port}/${token}`;
+      const url = `/lcs/#/vnc/${host}/${port}/${token}`;
       const id = Math.random().toString(36).slice(2);
 
       const newWindow = window.open(url, id, `height=${height},width=${width},modal=yes,alwaysRaised=yes,top=${top},left=${left}`);
@@ -289,9 +286,6 @@ export function requestCaptureInstance(routerKey, regionId, instanceId, name) {
     .promise
     .then(() => {
       dispatch(notify(i18n.t('capturePending')));
-    })
-    .catch((error) => {
-      dispatch(notifyAlert(error.message));
     });
   };
 }

@@ -5,8 +5,10 @@ import Time from 'react-time';
 import { attach } from '../../shared/pages/Page';
 import TablePage from '../../shared/pages/TablePage';
 import ButtonForm from '../../shared/forms/ButtonForm';
+import { confirmModal } from '../../shared/components/Modal';
 import StatusFilter from '../../shared/components/StatusFilter';
 import TimeSorter from '../../shared/components/TimeSorter';
+import SearchBox from '../../shared/components/SearchBox';
 import * as Actions from '../../console-common/redux/actions';
 import * as VolumeActions from '../redux/actions.volume';
 
@@ -42,17 +44,19 @@ class C extends TablePage {
   }
 
   onDelete() {
-    const { dispatch, routerKey, region } = this.props;
+    const { t, dispatch, routerKey, region } = this.props;
     const volumeIds = _.keys(this.props.context.selected);
 
-    return new Promise((resolve, reject) => {
-      dispatch(VolumeActions.requestDeleteVolumes(routerKey, region.regionId, volumeIds))
-        .then(() => {
-          resolve();
-          this.onRefresh({}, false)();
-        }).catch(() => {
-          reject();
-        });
+    confirmModal(t('confirmDelete'), () => {
+      return new Promise((resolve, reject) => {
+        dispatch(VolumeActions.requestDeleteVolumes(routerKey, region.regionId, volumeIds))
+          .then(() => {
+            resolve();
+            this.onRefresh({}, false)();
+          }).catch(() => {
+            reject();
+          });
+      });
     });
   }
 
@@ -148,7 +152,7 @@ class C extends TablePage {
       <div className="gray-content-block second-block">
         <div className={Object.keys(this.props.context.selected).length > 0 ? 'hidden' : ''}>
           <div className="filter-item inline">
-            <a className="btn btn-default" onClick={this.onRefresh({}, false)}>
+            <a className="loading-display">
               <i className={`fa fa-refresh ${this.props.context.loading ? 'fa-spin' : ''}`}></i>
             </a>
           </div>
@@ -156,7 +160,7 @@ class C extends TablePage {
             <StatusFilter statusOption={statusOption} filterStatus={this.props.context.status} onRefresh={this.onRefresh} />
           </div>
           <div className="filter-item inline">
-            <input type="search" ref="search" placeholder={t('filterByIdorName')} className="form-control" onKeyPress={this.onSearchKeyPress} />
+            <SearchBox ref="searchBox" placeholder={t('filterByIdorName')} onEnterPress={this.onSearchKeyPress} onButtonClick={this.onSearchButtonClick} />
           </div>
           <div className="pull-right">
             <TimeSorter isReverse={this.props.context.reverse} onRefresh={this.onRefresh} />

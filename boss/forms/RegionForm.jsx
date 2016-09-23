@@ -1,11 +1,12 @@
 import React from 'react';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
+import * as REGION from '../services/iam';
 import * as Validations from '../../shared/utils/validations';
 
 const F = (props) => {
   const { fields:
-    { regionId, name, devopsEndpoint },
+    { regionId, name, devopsEndpoint, consoleEndpoint },
     handleSubmit,
     resetForm,
     submitting,
@@ -18,7 +19,19 @@ const F = (props) => {
       <div className={submitFailed && regionId.error ? 'form-group has-error' : 'form-group'}>
         <label className="control-label" >{t('id')}</label>
         <div className="col-sm-10">
-          <input type="text" disabled={isUpdate} className="form-control" {...regionId} />
+          <select className="form-control" {...regionId} disabled={isUpdate}>
+            <option value={REGION.cnNorth1}>{REGION.cnNorth1}</option>
+            <option value={REGION.cnNorth2}>{REGION.cnNorth2}</option>
+            <option value={REGION.cnEast1}>{REGION.cnEast1}</option>
+            <option value={REGION.cnEast2}>{REGION.cnEast2}</option>
+            <option value={REGION.cnSouth1}>{REGION.cnSouth1}</option>
+            <option value={REGION.cnSouth2}>{REGION.cnSouth2}</option>
+            <option value={REGION.apHongkong1}>{REGION.apHongkong1}</option>
+            <option value={REGION.usWest1}>{REGION.usWest1}</option>
+            <option value={REGION.usEast1}>{REGION.usEast1}</option>
+            <option value={REGION.cnTest1}>{REGION.cnTest1}</option>
+            <option value={REGION.cnTest2}>{REGION.cnTest2}</option>
+          </select>
           {submitFailed && regionId.error && <div className="text-danger"><small>{regionId.error}</small></div>}
         </div>
       </div>
@@ -36,6 +49,14 @@ const F = (props) => {
         <div className="col-sm-10">
           <input type="text" className="form-control" {...devopsEndpoint} />
           {submitFailed && devopsEndpoint.error && <div className="text-danger"><small>{devopsEndpoint.error}</small></div>}
+        </div>
+      </div>
+
+      <div className={submitFailed && consoleEndpoint.error ? 'form-group has-error' : 'form-group'}>
+        <label className="control-label" >{t('pageRegion.consoleEndpoint')}</label>
+        <div className="col-sm-10">
+          <input type="text" className="form-control" {...consoleEndpoint} />
+          {submitFailed && consoleEndpoint.error && <div className="text-danger"><small>{consoleEndpoint.error}</small></div>}
         </div>
       </div>
 
@@ -72,6 +93,6 @@ F.validate = values => {
 
 export default reduxForm({
   form: 'RegionForm',
-  fields: ['regionId', 'name', 'devopsEndpoint'],
+  fields: ['regionId', 'name', 'devopsEndpoint', 'consoleEndpoint'],
   validate: F.validate,
 })(translate()(F));

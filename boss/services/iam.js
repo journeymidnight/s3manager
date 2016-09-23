@@ -3,6 +3,21 @@ import { call as rawCall } from '../../shared/services/api';
 export const projectRoleAdmin = 1;
 export const projectRoleUser = 2;
 
+export const serviceKeyLCS = 'lcs';
+export const serviceKeyLOS = 'los';
+
+export const cnNorth1 = 'cn-north-1';
+export const cnNorth2 = 'cn-north-2';
+export const cnEast1 = 'cn-east-1';
+export const cnEast2 = 'cn-east-2';
+export const cnSouth1 = 'cn-south-1';
+export const cnSouth2 = 'cn-south-2';
+export const apHongkong1 = 'ap-hongkong-1';
+export const usWest1 = 'us-west-1';
+export const usEast1 = 'us-east-1';
+export const cnTest1 = 'cn-Test-1';
+export const cnTest2 = 'cn-Test-2';
+
 class IAM {
   call(action, params) {
     const payload = Object.assign({}, params);
@@ -11,14 +26,16 @@ class IAM {
   describeProjects(filters = {}) {
     return this.call('DescribeProjects', filters);
   }
-  deleteProjects(filters = {}) {
-    return this.call('DeleteProjects', filters);
-  }
   createProject(project) {
     return this.call('CreateProject', project);
   }
   modifyProject(project) {
     return this.call('ModifyProjectAttributes', project);
+  }
+  deleteProjects(projectIds) {
+    return this.call('DeleteProjects', {
+      projectIds,
+    });
   }
   describeProjectRoles(projectId) {
     return this.call('DescribeProjectRoles', {
@@ -38,7 +55,7 @@ class IAM {
     });
   }
   deleteProjectRole(projectId, userIds) {
-    return this.call('DeleteProjectRole', {
+    return this.call('DeleteProjectRoles', {
       projectId,
       userIds,
     });
@@ -54,6 +71,16 @@ class IAM {
   createUser(user) {
     return this.call('CreateUser', user);
   }
+  activeUsers(userIds) {
+    return this.call('ActivateUsers', {
+      userIds,
+    });
+  }
+  deactiveUsers(userIds) {
+    return this.call('DeactivateUsers', {
+      userIds,
+    });
+  }
   modifyUser(user) {
     return this.call('ModifyUserAttributes', user);
   }
@@ -66,6 +93,11 @@ class IAM {
   modifyService(service) {
     return this.call('ModifyServiceAttributes', service);
   }
+  deleteServices(serviceIds) {
+    return this.call('DeleteServices', {
+      serviceIds,
+    });
+  }
   describeRegions(filters = {}) {
     return this.call('DescribeRegions', filters);
   }
@@ -74,6 +106,11 @@ class IAM {
   }
   modifyRegion(region) {
     return this.call('ModifyRegionAttributes', region);
+  }
+  deleteRegions(regionIds) {
+    return this.call('DeleteRegions', {
+      regionIds,
+    });
   }
   describeQuotas(filters = {}) {
     return this.call('DescribeQuotas', filters);
@@ -84,6 +121,15 @@ class IAM {
       regionId,
       projectId,
       quota,
+    });
+  }
+  deleteQuotas(serviceKey, regionId, projectIds) {
+    return this.call('DeleteQuotas', {
+      projectIds,
+      services: [{
+        serviceKey,
+        regionId,
+      }],
     });
   }
   describeAdmins(filters = {}) {

@@ -5,6 +5,8 @@ import { Link } from 'react-router';
 import { attach } from '../../shared/pages/Page';
 import TablePage from '../../shared/pages/TablePage';
 import ButtonForm from '../../shared/forms/ButtonForm';
+import SearchBox from '../../shared/components/SearchBox';
+import StatusFilter from '../../shared/components/StatusFilter';
 import * as RegionActions from '../redux/actions.region';
 import * as Actions from '../redux/actions';
 
@@ -20,7 +22,9 @@ class C extends TablePage {
     const { t, dispatch } = this.props;
     dispatch(Actions.setHeader(t('regionManage'), '/regions'));
 
-    this.initTable(routerKey);
+    this.initTable(routerKey, {
+      status: ['active'],
+    });
   }
 
   refreshAction(routerKey, filters) {
@@ -53,6 +57,7 @@ class C extends TablePage {
             </th>
             <th width="150">{t('id')}</th>
             <th>{t('name')}</th>
+            <th>{t('pageRegion.consoleEndpoint')}</th>
             <th width="200">{t('created')}</th>
           </tr>
         </thead>
@@ -65,6 +70,7 @@ class C extends TablePage {
               </td>
               <td><Link to={`/regions/${region.regionId}`}>{region.regionId}</Link></td>
               <td><strong>{region.name}</strong></td>
+              <td>{region.consoleEndpoint}</td>
               <td>{moment.utc(region.created).local().format('YYYY-MM-DD HH:mm:ss')}</td>
             </tr>
           );
@@ -94,6 +100,13 @@ class C extends TablePage {
 
   renderFilters() {
     const { t } = this.props;
+    const statusOption = [{
+      status: ['active'],
+      name: t('regionStatus.active'),
+    }, {
+      status: ['deleted'],
+      name: t('regionStatus.deleted'),
+    }];
     return (
       <div className="gray-content-block second-block">
         <div className={Object.keys(this.props.context.selected).length > 0 ? 'hidden' : ''}>
@@ -102,8 +115,11 @@ class C extends TablePage {
               <i className={`fa fa-refresh ${this.props.context.loading ? 'fa-spin' : ''}`}></i>
             </a>
           </div>
+          <div className="filter-item inline labels-filter">
+            <StatusFilter statusOption={statusOption} filterStatus={this.props.context.status} onRefresh={this.onRefresh} />
+          </div>
           <div className="filter-item inline">
-            <input type="search" ref="search" placeholder={t('filterByIdorName')} className="form-control" onKeyPress={this.onSearchKeyPress} />
+            <SearchBox ref="searchBox" placeholder={t('filterByIdorName')} onEnterPress={this.onSearchKeyPress} onButtonClick={this.onSearchButtonClick} />
           </div>
           <div className="pull-right">
             <div className="dropdown inline prepend-left-10">

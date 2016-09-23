@@ -266,8 +266,9 @@ class C extends Page {
           dispatch(push(`${servicePath}/images_snapshots/private_images`));
           dispatch(Actions.notify(t('createSuccessed')));
         }, 200);
-      }).catch(() => {
-        reject();
+      }).catch((error) => {
+        dispatch(Actions.notifyAlert(error.displayMsg || error.message));
+        reject({ _error: error.message });
       });
     });
   }
@@ -288,8 +289,9 @@ class C extends Page {
       .then(() => {
         resolve();
         this.refs.resizeModal.hide();
-      }).catch(() => {
-        reject();
+      }).catch((error) => {
+        dispatch(Actions.notifyAlert(error.displayMsg || error.message));
+        reject({ _error: error.message });
       });
     });
   }
@@ -644,11 +646,6 @@ class C extends Page {
                   <li className={`pull-left ${(active === 'monitor') ? 'active' : ''}`}>
                     <Link data-placement="left" to={`${servicePath}/instances/${instance.instanceId}/monitor`}>
                       {t('pageInstance.monitor')}
-                    </Link>
-                  </li>
-                  <li className={`pull-left ${(active === 'output') ? 'active' : ''}`}>
-                    <Link data-placement="left" to={`${servicePath}/instances/${instance.instanceId}/output`}>
-                      {t('pageInstance.output')}
                     </Link>
                   </li>
                 </ul>

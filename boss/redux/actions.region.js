@@ -64,3 +64,18 @@ export function requestModifyRegion(region) {
     });
   };
 }
+
+export function requestDeleteRegions(routerKey, regionIds) {
+  return dispatch => {
+    return IAM
+    .deleteRegions(regionIds)
+    .promise
+    .then((payload) => {
+      dispatch(notify(i18n.t('deleteSuccess')));
+      dispatch(extendContext(payload, routerKey));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}

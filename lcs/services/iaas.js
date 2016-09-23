@@ -1,12 +1,20 @@
 import { call as rawCall } from '../../shared/services/api';
+import { serverErrorHandler } from './ErrorService';
 
 class IaaS {
   call(regionId, action, params) {
     const payload = Object.assign({}, params);
     return rawCall('post', `/api/r/${regionId}/${action}`, payload);
   }
+
   doAction(regionId, actionName, data) {
-    return this.call(regionId, actionName, data);
+    const promise = this.call(regionId, actionName, data)
+      .promise
+      .catch((error) => {
+        serverErrorHandler(error);
+        throw error;
+      });
+    return { promise };
   }
 }
 

@@ -5,8 +5,10 @@ import Time from 'react-time';
 import { attach } from '../../shared/pages/Page';
 import TablePage from '../../shared/pages/TablePage';
 import ButtonForm from '../../shared/forms/ButtonForm';
+import { confirmModal } from '../../shared/components/Modal';
 import StatusFilter from '../../shared/components/StatusFilter';
 import TimeSorter from '../../shared/components/TimeSorter';
+import SearchBox from '../../shared/components/SearchBox';
 import * as Actions from '../../console-common/redux/actions';
 import * as KeyPairActions from '../redux/actions.key_pair';
 
@@ -32,16 +34,19 @@ class C extends TablePage {
   }
 
   onDelete() {
-    const { dispatch, routerKey, region } = this.props;
-    const keyPairIds = _.keys(this.props.context.selected);
-    return new Promise((resolve, reject) => {
-      dispatch(KeyPairActions.requestDeleteKeyPairs(routerKey, region.regionId, keyPairIds))
-        .then(() => {
-          this.onRefresh({}, false)();
-          resolve();
-        }).catch(() => {
-          reject();
-        });
+    const { t, dispatch, routerKey, region } = this.props;
+
+    confirmModal(t('confirmDelete'), () => {
+      const keyPairIds = _.keys(this.props.context.selected);
+      return new Promise((resolve, reject) => {
+        dispatch(KeyPairActions.requestDeleteKeyPairs(routerKey, region.regionId, keyPairIds))
+          .then(() => {
+            this.onRefresh({}, false)();
+            resolve();
+          }).catch(() => {
+            reject();
+          });
+      });
     });
   }
 
@@ -129,7 +134,7 @@ class C extends TablePage {
             <StatusFilter statusOption={statusOption} filterStatus={this.props.context.status} onRefresh={this.onRefresh} />
           </div>
           <div className="filter-item inline">
-            <input type="search" ref="search" placeholder={t('filterByIdorName')} className="form-control" onKeyPress={this.onSearchKeyPress} />
+            <SearchBox ref="searchBox" placeholder={t('filterByIdorName')} onEnterPress={this.onSearchKeyPress} onButtonClick={this.onSearchButtonClick} />
           </div>
           <div className="pull-right">
             <TimeSorter isReverse={this.props.context.reverse} onRefresh={this.onRefresh} />

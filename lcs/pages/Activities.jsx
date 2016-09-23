@@ -21,7 +21,7 @@ class C extends TablePage {
   }
 
   buildResourceLinks(operation) {
-    const { servicePath } = this.props;
+    const { servicePath, t } = this.props;
     const map = {
       instance: 'instances',
       network: 'networks',
@@ -33,13 +33,13 @@ class C extends TablePage {
       eip: 'eips',
       keyPair: 'key_pairs',
     };
-    return operation.resourceIds.map((item, index) => {
+    return operation.resourceIds.length > 0 ? operation.resourceIds.map((item, index) => {
       return (<span key={index}>
         {(operation.resourceType === 'subnet' || operation.resourceType === 'portForwarding') ?
           <span>{item}</span> : <Link to={`${servicePath}/${map[operation.resourceType]}/${item}`}>{item}</Link>}
         {operation.resourceIds.length - 1 !== index && <span>, </span>}
       </span>);
-    });
+    }) : <span>{t('noName')}</span>;
   }
 
   renderTable() {
