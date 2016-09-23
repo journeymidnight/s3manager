@@ -176,6 +176,7 @@ export function requestDeleteInstances(routerKey, regionId, instanceIds) {
     })
     .catch((error) => {
       dispatch(notifyAlert(error.message));
+      throw error;
     });
   };
 }
