@@ -60,8 +60,8 @@ class C extends TablePage {
           resolve();
           dispatch(Actions.notify(t(`pageInstance.${operation}`) + t('success')));
           this.onRefresh({}, false)();
-        }).catch(() => {
-          dispatch(Actions.notify(t(`pageInstance.${operation}`) + t('fail')));
+        }).catch((error) => {
+          dispatch(Actions.notifyAlert(`${t(`pageInstance.${operation}`)}${t('fail')}:${error.message}`));
           reject();
         });
     });

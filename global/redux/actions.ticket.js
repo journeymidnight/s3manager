@@ -78,10 +78,7 @@ export function requestCloseTickets(routerKey, ticketIds) {
     .closeTickets(ticketIds)
     .promise
     .then(() => {
-      dispatch(notify(i18n.t('deleteSuccessed')));
-    })
-    .catch((error) => {
-      dispatch(notifyAlert(error.message));
+      dispatch(notify(i18n.t('closeSuccessed')));
     });
   };
 }
