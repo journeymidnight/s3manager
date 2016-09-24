@@ -295,3 +295,27 @@ export function requestCaptureInstance(routerKey, regionId, instanceId, name) {
       });
   };
 }
+
+export function requestChangeLoginInstances(routerKey, regionId, instanceId, loginMode, loginPassword, keyPairId) {
+  return dispatch => {
+    const action = loginMode === 'password' ? ACTION_NAMES.changePassword : ACTION_NAMES.changeKeyPair;
+    const payload = loginMode === 'password' ? {
+      instanceId,
+      loginPassword,
+    } : {
+      instanceId,
+      keyPairId,
+    };
+    return IaaS
+    .doAction(regionId, action, payload)
+    .promise
+    .then(() => {
+      setTimeout(() => {
+        dispatch(notify(i18n.t('resetPending')));
+      }, 1000);
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
