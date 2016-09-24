@@ -534,6 +534,8 @@
         "ModifyInstanceAttributes": "更新云主机属性",
         "CreateVolumes": "创建云硬盘",
         "DeleteVolumes": "删除云硬盘",
+        "ChangePassword": "更新云主机密码",
+        "ChangeKeyPair": "更新云主机SSH密码",
         "AttachVolume": "挂载云硬盘",
         "DetachVolumes": "卸载云硬盘",
         "ExtendVolumes": "扩容云硬盘",
