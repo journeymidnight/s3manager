@@ -717,7 +717,7 @@ class C extends Page {
         </Modal>
         {this.props.context.volumeSet && this.props.context.volumeSet.length && this.renderAttachVolumeModal()}
         <Modal title={t('confirmRestart')} ref="restartModal" >
-          <InstanceRestartForm onSubmit={this.onRestart} instance={instance} region={region} />
+          <InstanceRestartForm onSubmit={this.onRestart} />
         </Modal>
       </div>
     );
