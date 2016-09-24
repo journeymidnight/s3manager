@@ -143,6 +143,8 @@
     "closeModal": "关闭",
     "confirmModal": "确认",
     "confirmDelete": "确认删除吗?",
+    "confirmStop": "确认关机吗?",
+    "confirmRestart": "确认重启吗?",
     "languages": {
         "chinese": "中文",
         "english": "English"

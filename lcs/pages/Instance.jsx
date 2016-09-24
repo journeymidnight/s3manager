@@ -142,9 +142,11 @@ class C extends Page {
   stopInstance(e) {
     e.preventDefault();
 
-    const { dispatch, region, routerKey, params } = this.props;
+    const { t, dispatch, region, routerKey, params } = this.props;
 
-    dispatch(InstanceActions.requestStopInstances(routerKey, region.regionId, [params.instanceId]));
+    confirmModal(t('confirmStop'), () => {
+      dispatch(InstanceActions.requestStopInstances(routerKey, region.regionId, [params.instanceId]));
+    });
   }
 
   onUpdate(values) {
@@ -174,9 +176,11 @@ class C extends Page {
   restartInstance(e) {
     e.preventDefault();
 
-    const { dispatch, region, routerKey, params } = this.props;
+    const { t, dispatch, region, routerKey, params } = this.props;
 
-    dispatch(InstanceActions.requestRestartInstances(routerKey, region.regionId, [params.instanceId]));
+    confirmModal(t('confirmRestart'), () => {
+      dispatch(InstanceActions.requestRestartInstances(routerKey, region.regionId, [params.instanceId]));
+    });
   }
 
   deleteInstance(e) {

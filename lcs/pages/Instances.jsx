@@ -79,11 +79,17 @@ class C extends TablePage {
   }
 
   onStop() {
-    return this.batchActions(InstanceActions.requestStopInstances, 'stopInstance');
+    const { t } = this.props;
+    confirmModal(t('confirmStop'), () => {
+      return this.batchActions(InstanceActions.requestStopInstances, 'stopInstance');
+    });
   }
 
   onRestart() {
-    return this.batchActions(InstanceActions.requestRestartInstances, 'restartInstance');
+    const { t } = this.props;
+    confirmModal(t('confirmRestart'), () => {
+      return this.batchActions(InstanceActions.requestRestartInstances, 'restartInstance');
+    });
   }
 
   connectVNC(instance) {
