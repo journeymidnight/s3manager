@@ -553,6 +553,7 @@
         "DeleteNetworks": "删除私有网络",
         "SetExternalGateway": "设置外网网关",
         "UnsetExternalGateway": "删除外网网关",
+        "UpdateExternalGatewayBandwidth": "更新网关IP带宽",
         "ModifyNetworkAttributes": "更新私有网络属性",
         "CreateSubnet": "创建子网",
         "DeleteSubnets": "删除子网",
