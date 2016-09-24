@@ -88,6 +88,7 @@ class C extends Page {
     this.onResize = this.onResize.bind(this);
     this.onReset = this.onReset.bind(this);
     this.onRestart = this.onRestart.bind(this);
+    this.onChangeLogin = this.onChangeLogin.bind(this);
     this.onUpdate = this.onUpdate.bind(this);
     this.onAttachVolume = this.onAttachVolume.bind(this);
     this.refresh = this.refresh.bind(this);
@@ -98,6 +99,7 @@ class C extends Page {
     this.restartInstance = this.restartInstance.bind(this);
     this.resizeInstance = this.resizeInstance.bind(this);
     this.resetInstance = this.resetInstance.bind(this);
+    this.changeLoginInstance = this.changeLoginInstance.bind(this);
     this.connectVNC = this.connectVNC.bind(this);
     this.associateEip = this.associateEip.bind(this);
     this.dissociateEip = this.dissociateEip.bind(this);
@@ -229,6 +231,30 @@ class C extends Page {
     e.preventDefault();
 
     this.refs.resetModal.show();
+  }
+
+  onChangeLogin(values) {
+    const { dispatch, region, routerKey, params } = this.props;
+
+    return new Promise((resolve, reject) => {
+      const loginMode = values.loginMode;
+      const loginPassword = values.loginPassword;
+      const keyPairId = values.keyPairId;
+
+      dispatch(InstanceActions.requestChangeLoginInstances(routerKey, region.regionId, params.instanceId, loginMode, loginPassword, keyPairId))
+      .then(() => {
+        resolve();
+        this.refs.changeLoginModal.hide();
+      }).catch(() => {
+        reject();
+      });
+    });
+  }
+
+  changeLoginInstance(e) {
+    e.preventDefault();
+
+    this.refs.changeLoginModal.show();
   }
 
   onAssociateEip(values) {
@@ -574,6 +600,14 @@ class C extends Page {
                         <li>
                           <button
                             className="btn-page-action"
+                            onClick={this.changeLoginInstance}
+                          >
+                            {t('pageInstance.changeLoginInstance')}
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            className="btn-page-action"
                             disabled={instance.status !== 'stopped'}
                             onClick={this.resetInstance}
                           >
@@ -707,6 +741,9 @@ class C extends Page {
         </Modal>
         <Modal title={t('pageInstance.resetInstance')} ref="resetModal" >
           <InstanceResetForm onSubmit={this.onReset} instance={instance} region={region} onNoKeypairHandler={this.noKeypairHandler} />
+        </Modal>
+        <Modal title={t('pageInstance.changeLoginInstance')} ref="changeLoginModal" >
+          <InstanceResetForm onSubmit={this.onChangeLogin} instance={instance} region={region} onNoKeypairHandler={this.noKeypairHandler} />
         </Modal>
         <Modal title={t('pageInstance.resizeInstance')} ref="resizeModal" >
           <InstanceResizeForm onSubmit={this.onResize} instance={instance} region={region} />
