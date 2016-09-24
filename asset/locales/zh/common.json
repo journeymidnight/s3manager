@@ -143,6 +143,9 @@
     "closeModal": "关闭",
     "confirmModal": "确认",
     "confirmDelete": "确认删除吗?",
+    "confirmStop": "确认关机吗?",
+    "confirmRestart": "确认重启吗?",
+    "restartType": "重启类型",
     "languages": {
         "chinese": "中文",
         "english": "English"
@@ -151,6 +154,10 @@
         "g": "帐号信息",
         "lcs": "云主机",
         "los": "对象存储"
+    },
+    "restartTypes": {
+        "SOFT": "软重启",
+        "HARD": "硬重启"
     },
     "networkStatus": {
         "pending": "创建中",
@@ -534,6 +541,8 @@
         "ModifyInstanceAttributes": "更新云主机属性",
         "CreateVolumes": "创建云硬盘",
         "DeleteVolumes": "删除云硬盘",
+        "ChangePassword": "更新云主机密码",
+        "ChangeKeyPair": "更新云主机SSH密码",
         "AttachVolume": "挂载云硬盘",
         "DetachVolumes": "卸载云硬盘",
         "ExtendVolumes": "扩容云硬盘",
@@ -553,6 +562,7 @@
         "DeleteNetworks": "删除私有网络",
         "SetExternalGateway": "设置外网网关",
         "UnsetExternalGateway": "删除外网网关",
+        "UpdateExternalGatewayBandwidth": "更新网关IP带宽",
         "ModifyNetworkAttributes": "更新私有网络属性",
         "CreateSubnet": "创建子网",
         "DeleteSubnets": "删除子网",

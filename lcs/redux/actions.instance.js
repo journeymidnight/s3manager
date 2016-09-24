@@ -150,11 +150,12 @@ export function requestStopInstances(routerKey, regionId, instanceIds) {
   };
 }
 
-export function requestRestartInstances(routerKey, regionId, instanceIds) {
+export function requestRestartInstances(routerKey, regionId, instanceIds, restartType) {
   return dispatch => {
     return IaaS
     .doAction(regionId, ACTION_NAMES.restartInstances, {
       instanceIds,
+      restartType,
     })
     .promise
     .then(() => {
