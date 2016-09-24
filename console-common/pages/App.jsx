@@ -58,7 +58,7 @@ class App extends React.Component {
           const region = _.find(global.regionSet, (r) => {
             return r.regionId === currentRegion;
           });
-          window.location = `${region.consoleEndpoint}/${currentService}/`;
+          window.location = `${region.consoleEndpoint || ''}/${currentService}/`;
           return;
         }
       } else if (!currentRegion) {
