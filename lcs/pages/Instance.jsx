@@ -8,6 +8,7 @@ import { push } from 'react-router-redux';
 import Page, { attach } from '../../shared/pages/Page';
 import Modal, { alertModal, confirmModal } from '../../shared/components/Modal';
 import InstanceResetForm from '../forms/InstanceResetForm';
+import InstanceRestartForm from '../forms/InstanceRestartForm';
 import InstanceResizeForm from '../forms/InstanceResizeForm';
 import InstanceEipForm from '../forms/InstanceEipForm';
 import InstanceCaptureForm from '../forms/InstanceCaptureForm';
@@ -86,6 +87,7 @@ class C extends Page {
     this.onAssociateEip = this.onAssociateEip.bind(this);
     this.onResize = this.onResize.bind(this);
     this.onReset = this.onReset.bind(this);
+    this.onRestart = this.onRestart.bind(this);
     this.onUpdate = this.onUpdate.bind(this);
     this.onAttachVolume = this.onAttachVolume.bind(this);
     this.refresh = this.refresh.bind(this);
@@ -176,10 +178,22 @@ class C extends Page {
   restartInstance(e) {
     e.preventDefault();
 
-    const { t, dispatch, region, routerKey, params } = this.props;
+    this.refs.restartModal.show();
+  }
 
-    confirmModal(t('confirmRestart'), () => {
-      dispatch(InstanceActions.requestRestartInstances(routerKey, region.regionId, [params.instanceId]));
+  onRestart(values) {
+    const { dispatch, region, routerKey, params } = this.props;
+
+    return new Promise((resolve, reject) => {
+      const restartType = values.restartType;
+
+      dispatch(InstanceActions.requestRestartInstances(routerKey, region.regionId, [params.instanceId], restartType))
+      .then(() => {
+        resolve();
+        this.refs.restartModal.hide();
+      }).catch(() => {
+        reject();
+      });
     });
   }
 
@@ -702,6 +716,9 @@ class C extends Page {
           <InstanceCaptureForm onSubmit={this.onCaptureInstance} instance={instance} region={region} />
         </Modal>
         {this.props.context.volumeSet && this.props.context.volumeSet.length && this.renderAttachVolumeModal()}
+        <Modal title={t('confirmRestart')} ref="restartModal" >
+          <InstanceRestartForm onSubmit={this.onRestart} instance={instance} region={region} />
+        </Modal>
       </div>
     );
   }
