@@ -25,7 +25,7 @@ function createApp(module) {
   app.use('/asset', Express.static(path.resolve(__dirname, '../asset')));
   app.use('/p', proxy(endpoint, {
     forwardPath: (req) => {
-      return url.parse(req.url).path;
+      return `/p${url.parse(req.url).path}`;
     },
   }));
 
@@ -54,7 +54,7 @@ function createConsole() {
   app.use('/asset', Express.static(path.resolve(__dirname, '../asset')));
   app.use('/p', proxy(endpoint, {
     forwardPath: (req) => {
-      return url.parse(req.url).path;
+      return `/p${url.parse(req.url).path}`;
     },
   }));
 
