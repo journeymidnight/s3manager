@@ -16,7 +16,6 @@ function generateConfig(module) {
       'd3',
       'history',
       'i18next',
-      'i18next-xhr-backend',
       'jquery',
       'lodash',
       'mixpanel-browser',
