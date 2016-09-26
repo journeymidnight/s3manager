@@ -17,7 +17,7 @@ class C extends Component {
     const todayBeginTimestamp = new Date(todayDate).getTime();
 
     const idealTimeArray = [];
-    let hour = 1;
+    let hour = 0;
     while (hour <= nowHour) {
       idealTimeArray.push(hour);
       hour++;
