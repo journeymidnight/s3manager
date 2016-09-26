@@ -34,7 +34,7 @@ class C extends TablePage {
     dispatch(Actions.setHeader(t('instanceManage'), `${servicePath}/instances`));
 
     this.initTable(routerKey, {
-      status: ['pending', 'active', 'starting', 'stopped', 'stopping', 'restarting', 'scheduling', 'error'],
+      status: ['pending', 'active', 'starting', 'stopped', 'stopping', 'restarting', 'scheduling'],
     });
   }
 
@@ -197,7 +197,7 @@ class C extends TablePage {
     const { t } = this.props;
     const statusOption = [
       {
-        status: ['pending', 'active', 'starting', 'stopped', 'stopping', 'restarting', 'scheduling', 'error'],
+        status: ['pending', 'active', 'starting', 'stopped', 'stopping', 'restarting', 'scheduling'],
         name: t('allAvaliableStatus'),
       }, {
         status: ['active'],
