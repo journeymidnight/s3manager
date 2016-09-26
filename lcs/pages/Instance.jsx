@@ -8,6 +8,7 @@ import { push } from 'react-router-redux';
 import Page, { attach } from '../../shared/pages/Page';
 import Modal, { alertModal, confirmModal } from '../../shared/components/Modal';
 import InstanceResetForm from '../forms/InstanceResetForm';
+import InstanceRestartForm from '../forms/InstanceRestartForm';
 import InstanceResizeForm from '../forms/InstanceResizeForm';
 import InstanceEipForm from '../forms/InstanceEipForm';
 import InstanceCaptureForm from '../forms/InstanceCaptureForm';
@@ -16,6 +17,7 @@ import * as EipActions from '../redux/actions.eip';
 import * as Actions from '../../console-common/redux/actions';
 import * as InstanceActions from '../redux/actions.instance';
 import * as VolumeActions from '../redux/actions.volume';
+import * as Validations from '../../shared/utils/validations';
 
 let InstanceUpdateForm = (props) => {
   const { fields:
@@ -24,31 +26,30 @@ let InstanceUpdateForm = (props) => {
     submitting,
     submitFailed,
     t,
-    invalid,
   } = props;
   return (
     <form className="form-horizontal" onSubmit={handleSubmit}>
       <div className="modal-body">
 
-        <div className={submitFailed && name.error ? 'form-group has-error' : 'form-group'}>
+        <div className={(submitFailed || name.touched) && name.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('name')}</label>
           <div className="col-sm-10">
             <input type="text" className="form-control" {...name} />
-            {submitFailed && name.error && <div className="text-danger"><small>{name.error}</small></div>}
+            {(submitFailed || name.touched) && name.error && <div className="text-danger"><small>{name.error}</small></div>}
           </div>
         </div>
 
-        <div className={submitFailed && description.error ? 'form-group has-error' : 'form-group'}>
+        <div className={(submitFailed || description.touched) && description.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('description')}</label>
           <div className="col-sm-10">
             <input type="text" className="form-control" {...description} />
-            {submitFailed && description.error && <div className="text-danger"><small>{description.error}</small></div>}
+            {(submitFailed || description.touched) && description.error && <div className="text-danger"><small>{description.error}</small></div>}
           </div>
         </div>
       </div>
       <div className="modal-footer">
         <button type="button" className="btn btn-default" data-dismiss="modal">{t('closeModal')}</button>
-        <button type="submit" className="btn btn-save" disabled={submitting || invalid}>
+        <button type="submit" className="btn btn-save" disabled={submitting}>
           {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('update')}
         </button>
       </div>
@@ -59,15 +60,15 @@ let InstanceUpdateForm = (props) => {
 InstanceUpdateForm.propTypes = {
   fields: React.PropTypes.object.isRequired,
   error: React.PropTypes.string,
-  invalid: React.PropTypes.bool,
   handleSubmit: React.PropTypes.func.isRequired,
   submitting: React.PropTypes.bool.isRequired,
   submitFailed: React.PropTypes.bool.isRequired,
   t: React.PropTypes.any,
 };
 
-InstanceUpdateForm.validate = () => {
+InstanceUpdateForm.validate = (values) => {
   const errors = {};
+  errors.name = Validations.hostname(values.name);
   return errors;
 };
 
@@ -86,6 +87,8 @@ class C extends Page {
     this.onAssociateEip = this.onAssociateEip.bind(this);
     this.onResize = this.onResize.bind(this);
     this.onReset = this.onReset.bind(this);
+    this.onRestart = this.onRestart.bind(this);
+    this.onChangeLogin = this.onChangeLogin.bind(this);
     this.onUpdate = this.onUpdate.bind(this);
     this.onAttachVolume = this.onAttachVolume.bind(this);
     this.refresh = this.refresh.bind(this);
@@ -96,11 +99,13 @@ class C extends Page {
     this.restartInstance = this.restartInstance.bind(this);
     this.resizeInstance = this.resizeInstance.bind(this);
     this.resetInstance = this.resetInstance.bind(this);
+    this.changeLoginInstance = this.changeLoginInstance.bind(this);
     this.connectVNC = this.connectVNC.bind(this);
     this.associateEip = this.associateEip.bind(this);
     this.dissociateEip = this.dissociateEip.bind(this);
     this.captureInstance = this.captureInstance.bind(this);
     this.attachVolume = this.attachVolume.bind(this);
+    this.noKeypairHandler = this.noKeypairHandler.bind(this);
   }
 
   initialize() {
@@ -141,9 +146,11 @@ class C extends Page {
   stopInstance(e) {
     e.preventDefault();
 
-    const { dispatch, region, routerKey, params } = this.props;
+    const { t, dispatch, region, routerKey, params } = this.props;
 
-    dispatch(InstanceActions.requestStopInstances(routerKey, region.regionId, [params.instanceId]));
+    confirmModal(t('confirmStop'), () => {
+      dispatch(InstanceActions.requestStopInstances(routerKey, region.regionId, [params.instanceId]));
+    });
   }
 
   onUpdate(values) {
@@ -173,9 +180,23 @@ class C extends Page {
   restartInstance(e) {
     e.preventDefault();
 
+    this.refs.restartModal.show();
+  }
+
+  onRestart(values) {
     const { dispatch, region, routerKey, params } = this.props;
 
-    dispatch(InstanceActions.requestRestartInstances(routerKey, region.regionId, [params.instanceId]));
+    return new Promise((resolve, reject) => {
+      const restartType = values.restartType;
+
+      dispatch(InstanceActions.requestRestartInstances(routerKey, region.regionId, [params.instanceId], restartType))
+      .then(() => {
+        resolve();
+        this.refs.restartModal.hide();
+      }).catch(() => {
+        reject();
+      });
+    });
   }
 
   deleteInstance(e) {
@@ -212,6 +233,30 @@ class C extends Page {
     this.refs.resetModal.show();
   }
 
+  onChangeLogin(values) {
+    const { dispatch, region, routerKey, params } = this.props;
+
+    return new Promise((resolve, reject) => {
+      const loginMode = values.loginMode;
+      const loginPassword = values.loginPassword;
+      const keyPairId = values.keyPairId;
+
+      dispatch(InstanceActions.requestChangeLoginInstances(routerKey, region.regionId, params.instanceId, loginMode, loginPassword, keyPairId))
+      .then(() => {
+        resolve();
+        this.refs.changeLoginModal.hide();
+      }).catch(() => {
+        reject();
+      });
+    });
+  }
+
+  changeLoginInstance(e) {
+    e.preventDefault();
+
+    this.refs.changeLoginModal.show();
+  }
+
   onAssociateEip(values) {
     const { t, dispatch, region, routerKey, params } = this.props;
 
@@ -237,7 +282,16 @@ class C extends Page {
   associateEip(e) {
     e.preventDefault();
 
-    this.refs.eipModal.show();
+    const { t, dispatch, region, routerKey } = this.props;
+
+    dispatch(EipActions.requestDescribeEips(routerKey, region.regionId, { status: ['active'], limit: 100 }))
+      .then(() => {
+        if (this.props.context.eipSet && this.props.context.eipSet.length) {
+          this.refs.eipModal.show();
+        } else {
+          alertModal(t('pageInstance.noEipToBeAssociated'));
+        }
+      });
   }
 
   dissociateEip(e) {
@@ -253,7 +307,7 @@ class C extends Page {
   }
 
   onCaptureInstance(values) {
-    const { t, dispatch, region, routerKey, params, servicePath } = this.props;
+    const { dispatch, region, routerKey, params, servicePath } = this.props;
 
     return new Promise((resolve, reject) => {
       const name = values.name;
@@ -262,13 +316,10 @@ class C extends Page {
       .then(() => {
         resolve();
         this.refs.captureModal.hide();
-        setTimeout(() => {
-          dispatch(push(`${servicePath}/images_snapshots/private_images`));
-          dispatch(Actions.notify(t('createSuccessed')));
-        }, 200);
+        dispatch(push(`${servicePath}/images_snapshots/private_images`));
       }).catch((error) => {
         dispatch(Actions.notifyAlert(error.displayMsg || error.message));
-        reject({ _error: error.message });
+        reject();
       });
     });
   }
@@ -291,7 +342,7 @@ class C extends Page {
         this.refs.resizeModal.hide();
       }).catch((error) => {
         dispatch(Actions.notifyAlert(error.displayMsg || error.message));
-        reject({ _error: error.message });
+        reject();
       });
     });
   }
@@ -307,7 +358,7 @@ class C extends Page {
 
     const { t, dispatch, routerKey, region } = this.props;
 
-    dispatch(VolumeActions.requestDescribeVolumes(routerKey, region.regionId, { status: ['active'] }))
+    dispatch(VolumeActions.requestDescribeVolumes(routerKey, region.regionId, { status: ['active'], limit: 100 }))
       .then(() => {
         if (this.props.context.volumeSet && this.props.context.volumeSet.length) {
           this.refs.attachVolumeModal.show();
@@ -344,6 +395,26 @@ class C extends Page {
         <InstanceVolumeForm onSubmit={this.onAttachVolume} availableVolumes={availableVolumes} initialValues={initialValues} />
       </Modal>
     );
+  }
+
+  renderAssociateEipModal() {
+    const { t } = this.props;
+    const availableEips = this.props.context.eipSet;
+    const initialValues = {
+      eipId: availableEips[0].eipId,
+    };
+    return (
+      <Modal title={t('pageInstance.associateEip')} ref="eipModal" >
+        <InstanceEipForm onSubmit={this.onAssociateEip} availableEips={availableEips} initialValues={initialValues} />
+      </Modal>
+    );
+  }
+
+  noKeypairHandler(e) {
+    e.preventDefault();
+    const { dispatch, servicePath } = this.props;
+    this.refs.resetModal.hide();
+    dispatch(push(`${servicePath}/key_pairs/create`));
   }
 
   connectVNC(e) {
@@ -529,6 +600,14 @@ class C extends Page {
                         <li>
                           <button
                             className="btn-page-action"
+                            onClick={this.changeLoginInstance}
+                          >
+                            {t('pageInstance.changeLoginInstance')}
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            className="btn-page-action"
                             disabled={instance.status !== 'stopped'}
                             onClick={this.resetInstance}
                           >
@@ -595,13 +674,14 @@ class C extends Page {
                         <td>{t('volume')}</td>
                         <td>
                           <span>
-                          {instance.volumes.map((volume) => {
+                          {!!instance.volumes.length && instance.volumes.map((volume) => {
                             return (<div>
                               <Link to={`${servicePath}/volumes/${volume.volumeId}`}>
                                 {volume.volumeId} ({volume.size}GB)
                               </Link>
                             </div>);
                           })}
+                          {!instance.volumes.length && <i className="text-muted">{t('noName')}</i>}
                           </span>
                         </td>
                       </tr>
@@ -660,18 +740,22 @@ class C extends Page {
           <InstanceUpdateForm onSubmit={this.onUpdate} initialValues={instance} />
         </Modal>
         <Modal title={t('pageInstance.resetInstance')} ref="resetModal" >
-          <InstanceResetForm onSubmit={this.onReset} instance={instance} region={region} />
+          <InstanceResetForm onSubmit={this.onReset} instance={instance} region={region} onNoKeypairHandler={this.noKeypairHandler} />
+        </Modal>
+        <Modal title={t('pageInstance.changeLoginInstance')} ref="changeLoginModal" >
+          <InstanceResetForm onSubmit={this.onChangeLogin} instance={instance} region={region} onNoKeypairHandler={this.noKeypairHandler} />
         </Modal>
         <Modal title={t('pageInstance.resizeInstance')} ref="resizeModal" >
           <InstanceResizeForm onSubmit={this.onResize} instance={instance} region={region} />
         </Modal>
-        <Modal title={t('pageInstance.associateEip')} ref="eipModal" >
-          <InstanceEipForm onSubmit={this.onAssociateEip} instance={instance} region={region} />
-        </Modal>
+        {this.props.context.eipSet && this.props.context.eipSet.length && this.renderAssociateEipModal()}
         <Modal title={t('pageInstance.captureInstance')} ref="captureModal" >
           <InstanceCaptureForm onSubmit={this.onCaptureInstance} instance={instance} region={region} />
         </Modal>
         {this.props.context.volumeSet && this.props.context.volumeSet.length && this.renderAttachVolumeModal()}
+        <Modal title={t('confirmRestart')} ref="restartModal" >
+          <InstanceRestartForm onSubmit={this.onRestart} />
+        </Modal>
       </div>
     );
   }

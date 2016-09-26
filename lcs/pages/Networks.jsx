@@ -25,7 +25,7 @@ class C extends TablePage {
     dispatch(Actions.setHeader(t('networkManage'), `${servicePath}/networks`));
 
     this.initTable(routerKey, {
-      status: ['pending', 'active', 'building', 'disabled'],
+      status: ['pending', 'active', 'building'],
     });
   }
 
@@ -60,7 +60,12 @@ class C extends TablePage {
         <thead>
           <tr>
             <th width="40">
-              <input type="checkbox" className="selected" onChange={this.onSelectAll(this.props.context.networkSet.map((u) => { return u.networkId; }))} />
+              <input
+                type="checkbox"
+                className="selected"
+                onChange={this.onSelectAll(this.props.context.networkSet.map((u) => { return u.networkId; }))}
+                checked={this.isAllSelected(this.props.context.networkSet.map((u) => { return u.networkId; }))}
+              />
             </th>
             <th width="150">{t('id')}</th>
             <th>{t('name')}</th>
@@ -123,14 +128,11 @@ class C extends TablePage {
     const { t } = this.props;
     const statusOption = [
       {
-        status: ['pending', 'active', 'building', 'disabled'],
+        status: ['pending', 'active', 'building'],
         name: t('allAvaliableStatus'),
       }, {
         status: ['active'],
         name: t('networkStatus.active'),
-      }, {
-        status: ['disabled'],
-        name: t('networkStatus.disabled'),
       }, {
         status: ['error'],
         name: t('networkStatus.error'),
@@ -142,7 +144,7 @@ class C extends TablePage {
       <div className="gray-content-block second-block">
         <div className={Object.keys(this.props.context.selected).length > 0 ? 'hidden' : ''}>
           <div className="filter-item inline">
-            <a className="loading-display">
+            <a className="btn btn-default" onClick={this.doSearch}>
               <i className={`fa fa-refresh ${this.props.context.loading ? 'fa-spin' : ''}`}></i>
             </a>
           </div>

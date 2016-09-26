@@ -16,7 +16,7 @@ class C extends Page {
   }
 
   onSubmit(values) {
-    const { t, dispatch, region, routerKey, servicePath } = this.props;
+    const { dispatch, region, routerKey, servicePath, t } = this.props;
 
     return new Promise((resolve, reject) => {
       const name = values.name;
@@ -36,7 +36,7 @@ class C extends Page {
           }, 200);
         }).catch((error) => {
           dispatch(notifyAlert(error.displayMsg || error.message));
-          reject({ _error: error.message });
+          reject();
         });
     });
   }

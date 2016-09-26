@@ -14,30 +14,29 @@ let ImageUpdateForm = (props) => {
     submitting,
     submitFailed,
     t,
-    invalid,
   } = props;
   return (
     <form className="form-horizontal" onSubmit={handleSubmit}>
       <div className="modal-body">
-        <div className={submitFailed && name.error ? 'form-group has-error' : 'form-group'}>
+        <div className={(submitFailed || name.touched) && name.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('name')}</label>
           <div className="col-sm-10">
             <input type="text" className="form-control" {...name} />
-            {submitFailed && name.error && <div className="text-danger"><small>{name.error}</small></div>}
+            {(submitFailed || name.touched) && name.error && <div className="text-danger"><small>{name.error}</small></div>}
           </div>
         </div>
 
-        <div className={submitFailed && description.error ? 'form-group has-error' : 'form-group'}>
+        <div className={(submitFailed || description.touched) && description.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('description')}</label>
           <div className="col-sm-10">
             <input type="text" className="form-control" {...description} />
-            {submitFailed && description.error && <div className="text-danger"><small>{description.error}</small></div>}
+            {(submitFailed || description.touched) && description.error && <div className="text-danger"><small>{description.error}</small></div>}
           </div>
         </div>
       </div>
       <div className="modal-footer">
         <button type="button" className="btn btn-default" data-dismiss="modal">{t('closeModal')}</button>
-        <button type="submit" className="btn btn-save" disabled={submitting || invalid}>
+        <button type="submit" className="btn btn-save" disabled={submitting}>
           {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('update')}
         </button>
       </div>
@@ -48,7 +47,6 @@ let ImageUpdateForm = (props) => {
 ImageUpdateForm.propTypes = {
   fields: React.PropTypes.object.isRequired,
   error: React.PropTypes.string,
-  invalid: React.PropTypes.bool,
   handleSubmit: React.PropTypes.func.isRequired,
   submitting: React.PropTypes.bool.isRequired,
   submitFailed: React.PropTypes.bool.isRequired,
@@ -92,8 +90,8 @@ class C extends Page {
     dispatch(ImageActions.requestDescribeImage(routerKey, region.regionId, imageId));
   }
 
-  isEnabled(iamge) {
-    return iamge.status === 'active';
+  isEnabled(image) {
+    return image.status === 'active';
   }
 
   deleteImage(e) {
@@ -210,7 +208,6 @@ class C extends Page {
       </div>
     );
   }
-
 }
 
 export default attach(C);

@@ -4,7 +4,6 @@ import { Link } from 'react-router';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
 import * as Validations from '../../shared/utils/validations';
-import i18n from '../../shared/i18n';
 
 class F extends React.Component {
 
@@ -211,11 +210,11 @@ class F extends React.Component {
           </div>
         </div>
 
-        <div className={submitFailed && count.error ? 'form-group has-error' : 'form-group'}>
+        <div className={(submitFailed || count.touched) && count.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('formInstanceCreateForm.count')}</label>
           <div className="col-sm-10">
             <input type="number" className="form-control" {...count} />
-            {submitFailed && count.error && <div className="text-danger"><small>{count.error}</small></div>}
+            {(submitFailed || count.touched) && count.error && <div className="text-danger"><small>{count.error}</small></div>}
           </div>
         </div>
 
@@ -260,11 +259,11 @@ class F extends React.Component {
         <fieldset className="features">
           <legend>{t('pageInstanceCreate.basic')}</legend>
 
-          <div className={submitFailed && hostname.error ? 'form-group has-error' : 'form-group'}>
+          <div className={(submitFailed || hostname.touched) && hostname.error ? 'form-group has-error' : 'form-group'}>
             <label className="control-label" >{t('pageInstanceCreate.hostname')}</label>
             <div className="col-sm-10">
               <input type="text" className="form-control" {...hostname} />
-              {submitFailed && hostname.error && <div className="text-danger"><small>{hostname.error}</small></div>}
+              {(submitFailed || hostname.touched) && hostname.error && <div className="text-danger"><small>{hostname.error}</small></div>}
             </div>
           </div>
 
@@ -307,11 +306,11 @@ class F extends React.Component {
             </div>
           </div>}
 
-          {loginMode.value === 'password' && <div className={submitFailed && loginPassword.error ? 'form-group has-error' : 'form-group'}>
+          {loginMode.value === 'password' && <div className={(submitFailed || loginPassword.touched) && loginPassword.error ? 'form-group has-error' : 'form-group'}>
             <label className="control-label" >{t('pageInstanceCreate.loginPassword')}</label>
             <div className="col-sm-10">
               <input type="password" className="form-control" {...loginPassword} />
-              {submitFailed && loginPassword.error && <div className="text-danger"><small>{loginPassword.error}</small></div>}
+              {(submitFailed || loginPassword.touched) && loginPassword.error && <div className="text-danger"><small>{loginPassword.error}</small></div>}
               <p className="help-block">{t('pageInstanceCreate.passwordHint')}</p>
             </div>
           </div>}
@@ -355,13 +354,9 @@ F.validate = values => {
   errors.instanceTypeId = Validations.required(values.instanceTypeId);
   errors.subnetId = Validations.required(values.subnetId);
   errors.count = Validations.required(values.count);
-  if (!/^[0-9a-zA-Z_\-]+$/i.test(values.hostname)) {
-    errors.hostname = i18n.t('pageInstanceCreate.hostnameNotValid');
-  }
+  errors.hostname = Validations.hostname(values.hostname);
   if (values.loginMode === 'password') {
-    if (Validations.isEmpty(values.loginPassword) || !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/i.test(values.loginPassword)) {
-      errors.loginPassword = i18n.t('pageInstanceCreate.passwordNotValid');
-    }
+    errors.loginPassword = Validations.loginPassword(values.loginPassword);
   }
   return errors;
 };

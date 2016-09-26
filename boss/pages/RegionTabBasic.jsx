@@ -21,11 +21,13 @@ class C extends Page {
     return new Promise((resolve, reject) => {
       const name = values.name;
       const devopsEndpoint = values.devopsEndpoint;
+      const consoleEndpoint = values.consoleEndpoint;
 
       dispatch(RegionActions.requestModifyRegion({
         regionId: this.props.region2.regionId,
         name,
         devopsEndpoint,
+        consoleEndpoint,
       }))
       .then(() => {
         resolve();

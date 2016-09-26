@@ -67,7 +67,7 @@ export function requestCreateTicketReply(routerKey, ticketId, content) {
     .createTicketReply(ticketId, content)
     .promise
     .then(() => {
-      dispatch(notify(i18n.t('createSuccessed')));
+      dispatch(notify(i18n.t('pageTicket.reply') + i18n.t('success')));
     });
   };
 }
@@ -78,10 +78,7 @@ export function requestCloseTickets(routerKey, ticketIds) {
     .closeTickets(ticketIds)
     .promise
     .then(() => {
-      dispatch(notify(i18n.t('deleteSuccessed')));
-    })
-    .catch((error) => {
-      dispatch(notifyAlert(error.message));
+      dispatch(notify(i18n.t('closeSuccessed')));
     });
   };
 }

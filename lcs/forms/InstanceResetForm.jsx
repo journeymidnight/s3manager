@@ -3,7 +3,6 @@ import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
 import IaaS, { ACTION_NAMES } from '../services/iaas';
 import * as Validations from '../../shared/utils/validations';
-import i18n from '../../shared/i18n';
 
 class InstanceResetForm extends React.Component {
 
@@ -49,7 +48,7 @@ class InstanceResetForm extends React.Component {
       submitting,
       submitFailed,
       t,
-      invalid,
+      onNoKeypairHandler,
     } = this.props;
     return (
       <form className="form-horizontal" onSubmit={handleSubmit}>
@@ -74,23 +73,24 @@ class InstanceResetForm extends React.Component {
           {loginMode.value === 'keyPair' && <div className="form-group">
             <label className="control-label" >{t('pageInstanceCreate.keyPair')}</label>
             <div className="col-sm-10">
-              <select className="form-control" {...keyPairId}>
-                {this.keyPairSet && this.keyPairSet.map((keyPair) => {
+              {!!this.keyPairSet.length && <select className="form-control" {...keyPairId}>
+                {this.keyPairSet.map((keyPair) => {
                   return (
                     <option key={keyPair.keyPairId} value={keyPair.keyPairId}>
                       {keyPair.name} ({keyPair.keyPairId})
                     </option>
                   );
                 })}
-              </select>
+              </select>}
+              {!this.keyPairSet.length && <button className="btn btn-new" onClick={onNoKeypairHandler}>{t('pageKeyPairCreate.createKeyPair')}</button>}
             </div>
           </div>}
 
-          {loginMode.value === 'password' && <div className={submitFailed && loginPassword.error ? 'form-group has-error' : 'form-group'}>
+          {loginMode.value === 'password' && <div className={(submitFailed || loginPassword.touched) && loginPassword.error ? 'form-group has-error' : 'form-group'}>
             <label className="control-label" >{t('pageInstanceCreate.loginPassword')}</label>
             <div className="col-sm-10">
               <input type="password" className="form-control" {...loginPassword} />
-              {submitFailed && loginPassword.error && <div className="text-danger"><small>{loginPassword.error}</small></div>}
+              {(submitFailed || loginPassword.touched) && loginPassword.error && <div className="text-danger"><small>{loginPassword.error}</small></div>}
               <p className="help-block">{t('pageInstanceCreate.passwordHint')}</p>
             </div>
           </div>}
@@ -98,7 +98,7 @@ class InstanceResetForm extends React.Component {
         </div>
         <div className="modal-footer">
           <button type="button" className="btn btn-default" data-dismiss="modal">{t('closeModal')}</button>
-          <button type="submit" className="btn btn-save" disabled={submitting || invalid}>
+          <button type="submit" className="btn btn-save" disabled={submitting}>
             {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('update')}
           </button>
         </div>
@@ -110,7 +110,6 @@ class InstanceResetForm extends React.Component {
 InstanceResetForm.propTypes = {
   fields: React.PropTypes.object.isRequired,
   error: React.PropTypes.string,
-  invalid: React.PropTypes.bool,
   handleSubmit: React.PropTypes.func.isRequired,
   initializeForm: React.PropTypes.func.isRequired,
   submitting: React.PropTypes.bool.isRequired,
@@ -118,14 +117,13 @@ InstanceResetForm.propTypes = {
   instance: React.PropTypes.object.isRequired,
   region: React.PropTypes.object.isRequired,
   t: React.PropTypes.any,
+  onNoKeypairHandler: React.PropTypes.func.isRequired,
 };
 
 InstanceResetForm.validate = values => {
   const errors = {};
   if (values.loginMode === 'password') {
-    if (Validations.isEmpty(values.loginPassword) || !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/i.test(values.loginPassword)) {
-      errors.loginPassword = i18n.t('pageInstanceCreate.passwordNotValid');
-    }
+    errors.loginPassword = Validations.loginPassword(values.loginPassword);
   }
   return errors;
 };

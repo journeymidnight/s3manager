@@ -57,6 +57,7 @@ class C extends TablePage {
             </th>
             <th width="150">{t('id')}</th>
             <th>{t('name')}</th>
+            <th>{t('pageRegion.consoleEndpoint')}</th>
             <th width="200">{t('created')}</th>
           </tr>
         </thead>
@@ -69,6 +70,7 @@ class C extends TablePage {
               </td>
               <td><Link to={`/regions/${region.regionId}`}>{region.regionId}</Link></td>
               <td><strong>{region.name}</strong></td>
+              <td>{region.consoleEndpoint}</td>
               <td>{moment.utc(region.created).local().format('YYYY-MM-DD HH:mm:ss')}</td>
             </tr>
           );

@@ -45,7 +45,9 @@ export function requestCreateEip(routerKey, regionId, eip) {
       .doAction(regionId, ACTION_NAMES.allocateEips, eip)
       .promise
       .then(() => {
-        dispatch(notify(i18n.t('createSuccessed')));
+        setTimeout(() => {
+          dispatch(notify(i18n.t('createSuccessed')));
+        }, 1000);
       });
   };
 }
@@ -131,9 +133,6 @@ export function requestUpdateBandwidth(routerKey, regionId, eipIds, bandwidth) {
       .promise
       .then(() => {
         dispatch(notify(i18n.t('updateBandwidthSuccessed')));
-      })
-      .catch((error) => {
-        dispatch(notifyAlert(error.message));
       });
   };
 }

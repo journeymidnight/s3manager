@@ -32,8 +32,8 @@ class C extends Page {
         resolve();
         dispatch(push('/access_keys'));
       }).catch((error) => {
-        dispatch(Actions.notifyAlert(error.message));
-        reject({ _error: error.message });
+        dispatch(Actions.notifyAlert(error.displayMsg || error.message));
+        reject();
       });
     });
   }

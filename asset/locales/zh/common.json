@@ -11,6 +11,9 @@
     "delete": "删除",
     "submit": "提交",
     "action": "操作",
+    "success": "成功",
+    "fail": "失败",
+
     "id": "ID",
     "name": "名称",
     "fileName": "文件名",
@@ -72,10 +75,14 @@
     "firstCreated": "最早创建",
     "selectRegion": "选择区域",
     "filterByIdorName": "用ID或名称过滤...",
+    "filterByIdorTitle": "用ID或标题过滤...",
+    "filterByIdorCidr": "用ID或网段地址过滤...",
+    "filterByIdorAddress": "用ID或内网ip过滤...",
     "filterByName": "用名称过滤...",
     "createSuccessed": "添加成功。",
     "updateSuccessed": "保存成功。",
     "deleteSuccessed": "删除成功。",
+    "closeSuccessed": "关闭成功。",
     "syncSuccessed": "同步成功。",
     "authorizeFailed": "验证失败。",
     "createFailed": "添加失败。",
@@ -88,7 +95,7 @@
     "attachSuccessed": "挂载成功。",
     "detachSuccessed": "卸载成功。",
     "resizeSuccessed": "扩容成功。",
-    "resetPending": "正在更新系统配置...",
+    "resetPending": "正在更新配置...",
     "resizePending": "正在重置系统...",
     "capturePending": "正在生成映像...",
     "dissociateSuccessed": "解绑成功。",
@@ -138,6 +145,9 @@
     "closeModal": "关闭",
     "confirmModal": "确认",
     "confirmDelete": "确认删除吗?",
+    "confirmStop": "确认关机吗?",
+    "confirmRestart": "确认重启吗?",
+    "restartType": "重启类型",
     "languages": {
         "chinese": "中文",
         "english": "English"
@@ -147,12 +157,16 @@
         "lcs": "云主机",
         "los": "对象存储"
     },
+    "restartTypes": {
+        "SOFT": "软重启",
+        "HARD": "硬重启"
+    },
     "networkStatus": {
         "pending": "创建中",
         "active": "运行中",
         "building": "构建中",
         "disabled": "已禁用",
-        "error": "错误",
+        "error": "状态异常",
         "deleted": "已删除"
     },
     "instanceStatus": {
@@ -174,8 +188,7 @@
     "eipStatus": {
         "active": "运行中",
         "associated": "已关联",
-        "deleted": "已删除",
-        "ceased": "已删除"
+        "deleted": "已删除"
     },
     "instanceTypeStatus": {
         "active": "可用",
@@ -265,6 +278,7 @@
 
     "userStatus": {
         "active": "激活",
+        "inactive": "未激活",
         "deleted": "已删除"
     },
 
@@ -295,9 +309,11 @@
         "updateInstance": "更新",
         "resizeInstance": "更新配置",
         "resetInstance": "系统重置",
+        "changeLoginInstance": "重置密码",
         "captureInstance": "生成自有映像",
         "associateEip": "绑定公网IP",
         "dissociateEip": "解绑公网IP",
+        "noEipToBeAssociated": "无可绑定的公网IP",
         "attachVolume": "挂载云硬盘",
         "noVolumeToBeAttahed": "无可挂载的云硬盘"
     },
@@ -313,14 +329,21 @@
         "hostnameNotValid": "主机名不符合规范, 不能包含数字、英文字母、-_ 之外其他字符。",
         "passwordNotValid": "密码不符合规范，密码需至少8位，并包括字母及数字。",
         "passwordHint": "密码至少8位，并包括字母及数字。",
+        "hostnameNotValid": "主机名不符合规范。",
         "instanceType": "选择配置",
         "image": "选择映像",
         "imageType": "映像类型",
         "imageOrInstanceTypeNotFound": "本区域尚未初始化或者出现异常，请与管理员取得联系。",
         "networkNotFound": "云主机需要运行在一个二层隔离的私有网络（VPC）中，用户首先需要定义一个私有网络，并配置相关网段信息。"
     },
+    "pageUser": {
+        "basic": "基本信息",
+        "activeUser": "激活用户",
+        "deactiveUser": "禁止用户"
+    },
     "pageRegion": {
-        "basic": "基本信息"
+        "basic": "基本信息",
+        "consoleEndpoint": "控制台 URL"
     },
     "pageProject": {
         "basic": "基本信息",
@@ -349,6 +372,8 @@
         "updateNetwork": "更新",
         "setExternalGateway": "开通公网网关",
         "unsetExternalGateway": "关闭公网网关",
+        "updateExternalGatewayBandwidth": "更新外网网关带宽",
+        "externalGatewayBandwidth":"外网网关带宽",
         "portForwarding": "端口转发",
         "deleteNetwork": "删除",
         "externalGatewayIp": "公网网关 IP",
@@ -519,6 +544,8 @@
         "ModifyInstanceAttributes": "更新云主机属性",
         "CreateVolumes": "创建云硬盘",
         "DeleteVolumes": "删除云硬盘",
+        "ChangePassword": "更新云主机密码",
+        "ChangeKeyPair": "更新云主机SSH密码",
         "AttachVolume": "挂载云硬盘",
         "DetachVolumes": "卸载云硬盘",
         "ExtendVolumes": "扩容云硬盘",
@@ -538,6 +565,7 @@
         "DeleteNetworks": "删除私有网络",
         "SetExternalGateway": "设置外网网关",
         "UnsetExternalGateway": "删除外网网关",
+        "UpdateExternalGatewayBandwidth": "更新网关IP带宽",
         "ModifyNetworkAttributes": "更新私有网络属性",
         "CreateSubnet": "创建子网",
         "DeleteSubnets": "删除子网",

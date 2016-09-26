@@ -6,6 +6,7 @@ import { Link } from 'react-router';
 import _ from 'lodash';
 import Page, { attach } from '../../shared/pages/Page';
 import Modal, { confirmModal } from '../../shared/components/Modal';
+import BandwidthUpdateForm from '../forms/BandwidthUpdateForm';
 import * as Actions from '../../console-common/redux/actions';
 import * as NetworkActions from '../redux/actions.network';
 
@@ -16,31 +17,30 @@ let NetworkUpdateForm = (props) => {
     submitting,
     submitFailed,
     t,
-    invalid,
   } = props;
   return (
     <form className="form-horizontal" onSubmit={handleSubmit}>
       <div className="modal-body">
 
-        <div className={submitFailed && name.error ? 'form-group has-error' : 'form-group'}>
+        <div className={(submitFailed || name.touched) && name.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('name')}</label>
           <div className="col-sm-10">
             <input type="text" className="form-control" {...name} />
-            {submitFailed && name.error && <div className="text-danger"><small>{name.error}</small></div>}
+            {(submitFailed || name.touched) && name.error && <div className="text-danger"><small>{name.error}</small></div>}
           </div>
         </div>
 
-        <div className={submitFailed && description.error ? 'form-group has-error' : 'form-group'}>
+        <div className={(submitFailed || description.touched) && description.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('description')}</label>
           <div className="col-sm-10">
             <input type="text" className="form-control" {...description} />
-            {submitFailed && description.error && <div className="text-danger"><small>{description.error}</small></div>}
+            {(submitFailed || description.touched) && description.error && <div className="text-danger"><small>{description.error}</small></div>}
           </div>
         </div>
       </div>
       <div className="modal-footer">
         <button type="button" className="btn btn-default" data-dismiss="modal">{t('closeModal')}</button>
-        <button type="submit" className="btn btn-save" disabled={submitting || invalid}>
+        <button type="submit" className="btn btn-save" disabled={submitting}>
           {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('update')}
         </button>
       </div>
@@ -51,7 +51,6 @@ let NetworkUpdateForm = (props) => {
 NetworkUpdateForm.propTypes = {
   fields: React.PropTypes.object.isRequired,
   error: React.PropTypes.string,
-  invalid: React.PropTypes.bool,
   handleSubmit: React.PropTypes.func.isRequired,
   submitting: React.PropTypes.bool.isRequired,
   submitFailed: React.PropTypes.bool.isRequired,
@@ -80,6 +79,8 @@ class C extends Page {
     this.updateNetwork = this.updateNetwork.bind(this);
     this.setExternalGateway = this.setExternalGateway.bind(this);
     this.unsetExternalGateway = this.unsetExternalGateway.bind(this);
+    this.updateExternalGatewayBandwidth = this.updateExternalGatewayBandwidth.bind(this);
+    this.onUpdateExternalGatewayBandwidth = this.onUpdateExternalGatewayBandwidth.bind(this);
   }
 
   initialize() {
@@ -132,6 +133,28 @@ class C extends Page {
 
     const { dispatch, region, routerKey, params } = this.props;
     dispatch(NetworkActions.requestSetExternalGateway(routerKey, region.regionId, [params.networkId]));
+  }
+
+  updateExternalGatewayBandwidth(e) {
+    e.preventDefault();
+    this.refs.updateExternalGatewayBandwidthModal.show();
+  }
+
+  onUpdateExternalGatewayBandwidth(values) {
+    const { dispatch, region, routerKey } = this.props;
+    const network = this.props.context.network;
+
+    return new Promise((resolve, reject) => {
+      const bandwidth = Number(values.bandwidth);
+
+      dispatch(NetworkActions.requestUpdateExternalGatewayBandwidth(routerKey, region.regionId, network.networkId, bandwidth))
+        .then(() => {
+          resolve();
+          this.refs.updateExternalGatewayBandwidthModal.hide();
+        }).catch(() => {
+          reject();
+        });
+    });
   }
 
   unsetExternalGateway(e) {
@@ -196,10 +219,50 @@ class C extends Page {
                         <i className="fa fa-bars"></i>
                       </button>
                       <ul className="dropdown-menu">
-                        <li><a href onClick={this.updateNetwork}>{t('pageNetwork.updateNetwork')}</a></li>
-                        <li><a href onClick={this.setExternalGateway}>{t('pageNetwork.setExternalGateway')}</a></li>
-                        <li><a href onClick={this.unsetExternalGateway}>{t('pageNetwork.unsetExternalGateway')}</a></li>
-                        <li><a href onClick={this.deleteNetwork}>{t('pageNetwork.deleteNetwork')}</a></li>
+                        <li>
+                          <button
+                            className="btn-page-action"
+                            onClick={this.updateNetwork}
+                          >
+                            {t('pageNetwork.updateNetwork')}
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            className="btn-page-action"
+                            disabled={!!network.externalGatewayIp}
+                            onClick={this.setExternalGateway}
+                          >
+                            {t('pageNetwork.setExternalGateway')}
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            className="btn-page-action"
+                            disabled={!network.externalGatewayIp}
+                            onClick={this.updateExternalGatewayBandwidth}
+                          >
+                            {t('pageNetwork.updateExternalGatewayBandwidth')}
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            className="btn-page-action"
+                            disabled={!network.externalGatewayIp}
+                            onClick={this.unsetExternalGateway}
+                          >
+                            {t('pageNetwork.unsetExternalGateway')}
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            className="btn-page-action"
+                            disabled={network.status !== 'active'}
+                            onClick={this.deleteNetwork}
+                          >
+                            {t('pageNetwork.deleteNetwork')}
+                          </button>
+                        </li>
                       </ul>
                     </div>}
                     {!this.isEnabled(network) && this.isDeletable(network) && <div className="btn-group pull-right">
@@ -238,6 +301,14 @@ class C extends Page {
                           </span>
                         </td>
                       </tr>
+                      {network.externalGatewayIp && <tr>
+                        <td>{t('pageNetwork.externalGatewayBandwidth')}</td>
+                        <td>
+                          <span>
+                            {network.externalGatewayBandwidth}Mbps
+                          </span>
+                        </td>
+                      </tr>}
                       <tr>
                         <td>{t('status')}</td>
                         <td className={`i-status i-status-${network.status}`}>
@@ -284,6 +355,9 @@ class C extends Page {
         </div>
         <Modal title={t('pageNetwork.updateNetwork')} ref="updateModal" >
           <NetworkUpdateForm onSubmit={this.onUpdate} initialValues={network} />
+        </Modal>
+        <Modal title={t('pageNetwork.updateExternalGatewayBandwidth')} ref="updateExternalGatewayBandwidthModal">
+          <BandwidthUpdateForm onSubmit={this.onUpdateExternalGatewayBandwidth} resourceName={network.name} originalBandwidth={network.externalGatewayBandwidth} />
         </Modal>
       </div>
     );

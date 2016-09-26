@@ -49,9 +49,13 @@ class C extends Page {
                   <img src="/asset/logo.svg" alt="logo" style={{ position: 'absolute', width: '60px', left: '-80px', top: '10px' }} />
                   <h5>用户尚未授权此服务</h5>
                   <p>
-                    联系你的管理员开通权限。<br />
+                    请发送邮件给管理员开通权限。<br />
                     或拨打客服电话 400-055-6060 。
                   </p>
+                  <a href="mailto:zhangzhenyao@le.com?subject=开通云主机账号权限" className="btn btn-success">
+                    开通权限
+                  </a>
+                  &nbsp;
                   <a href="http://lecloud.com" className="btn btn-info">
                     回到官网
                   </a>

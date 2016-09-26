@@ -5,34 +5,40 @@ import { reduxForm } from 'redux-form';
 import Time from 'react-time';
 import Modal, { confirmModal } from '../../shared/components/Modal';
 import EipMonitor from './EipMonitor';
+import BandwidthUpdateForm from '../forms/BandwidthUpdateForm';
 import * as Actions from '../../console-common/redux/actions';
 import * as EipActions from '../redux/actions.eip';
 import * as InstanceActions from '../redux/actions.instance';
-import * as Validations from '../../shared/utils/validations';
 
 let EipUpdateForm = (props) => {
   const { fields:
-    { name },
+    { name, description },
     handleSubmit,
     submitting,
     submitFailed,
     t,
-    invalid,
   } = props;
   return (
     <form className="form-horizontal" onSubmit={handleSubmit}>
       <div className="modal-body">
-        <div className={submitFailed && name.error ? 'form-group has-error' : 'form-group'}>
+        <div className={(submitFailed || name.touched) && name.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('name')}</label>
           <div className="col-sm-10">
             <input type="text" className="form-control" {...name} />
-            {submitFailed && name.error && <div className="text-danger"><small>{name.error}</small></div>}
+            {(submitFailed || name.touched) && name.error && <div className="text-danger"><small>{name.error}</small></div>}
+          </div>
+        </div>
+        <div className={(submitFailed || description.touched) && description.error ? 'form-group has-error' : 'form-group'}>
+          <label className="control-label" >{t('description')}</label>
+          <div className="col-sm-10">
+            <input type="text" className="form-control" {...description} />
+            {(submitFailed || description.touched) && description.error && <div className="text-danger"><small>{description.error}</small></div>}
           </div>
         </div>
       </div>
       <div className="modal-footer">
         <button type="button" className="btn btn-default" data-dismiss="modal">{t('closeModal')}</button>
-        <button type="submit" className="btn btn-save" disabled={submitting || invalid}>
+        <button type="submit" className="btn btn-save" disabled={submitting}>
           {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('update')}
         </button>
       </div>
@@ -43,7 +49,6 @@ let EipUpdateForm = (props) => {
 EipUpdateForm.propTypes = {
   fields: React.PropTypes.object.isRequired,
   error: React.PropTypes.string,
-  invalid: React.PropTypes.bool,
   handleSubmit: React.PropTypes.func.isRequired,
   submitting: React.PropTypes.bool.isRequired,
   submitFailed: React.PropTypes.bool.isRequired,
@@ -57,7 +62,7 @@ EipUpdateForm.validate = () => {
 
 EipUpdateForm = reduxForm({
   form: 'EipUpdateForm',
-  fields: ['name'],
+  fields: ['name', 'description'],
   validate: EipUpdateForm.validate,
 })(translate()(EipUpdateForm));
 
@@ -68,33 +73,32 @@ let EipAssociateForm = (props) => {
     submitting,
     submitFailed,
     t,
-    invalid,
   } = props;
   return (
     <form className="form-horizontal" onSubmit={handleSubmit}>
       <div className="modal-body">
-        <div className={submitFailed && name.error ? 'form-group has-error' : 'form-group'}>
+        <div className={(submitFailed || name.touched) && name.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('name')}</label>
           <div className="col-sm-10">
             <input type="text" className="form-control" disabled {...name} />
-            {submitFailed && name.error && <div className="text-danger"><small>{name.error}</small></div>}
+            {(submitFailed || name.touched) && name.error && <div className="text-danger"><small>{name.error}</small></div>}
           </div>
         </div>
-        <div className={submitFailed && instanceId.error ? 'form-group has-error' : 'form-group'}>
+        <div className={(submitFailed || instanceId.touched) && instanceId.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('instance')}</label>
           <div className="col-sm-10">
             <select className="form-control" {...instanceId}>
               {props.availableInstances.map((instance) => {
-                return <option key={instance.instanceId} value={instance.instanceId}>{instance.name}</option>;
+                return <option key={instance.instanceId} value={instance.instanceId}>{instance.name} ({instance.instanceId})</option>;
               })}
             </select>
-            {submitFailed && instanceId.error && <div className="text-danger"><small>{instanceId.error}</small></div>}
+            {(submitFailed || instanceId.touched) && instanceId.error && <div className="text-danger"><small>{instanceId.error}</small></div>}
           </div>
         </div>
       </div>
       <div className="modal-footer">
         <button type="button" className="btn btn-default" data-dismiss="modal">{t('closeModal')}</button>
-        <button type="submit" className="btn btn-save" disabled={submitting || invalid}>
+        <button type="submit" className="btn btn-save" disabled={submitting}>
           {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('submit')}
         </button>
       </div>
@@ -105,7 +109,6 @@ let EipAssociateForm = (props) => {
 EipAssociateForm.propTypes = {
   fields: React.PropTypes.object.isRequired,
   error: React.PropTypes.string,
-  invalid: React.PropTypes.bool,
   handleSubmit: React.PropTypes.func.isRequired,
   submitting: React.PropTypes.bool.isRequired,
   submitFailed: React.PropTypes.bool.isRequired,
@@ -123,75 +126,6 @@ EipAssociateForm = reduxForm({
   fields: ['name', 'instanceId'],
   validate: EipAssociateForm.validate,
 })(translate()(EipAssociateForm));
-
-class BandwidthUpdateForm extends React.Component {
-
-  componentDidMount() {
-    this.props.initializeForm({ name: this.props.eip.name });
-  }
-
-  render() {
-    const { fields:
-      { name, bandwidth },
-      handleSubmit,
-      submitting,
-      submitFailed,
-      t,
-      invalid,
-    } = this.props;
-    return (
-      <form className="form-horizontal" onSubmit={handleSubmit}>
-        <div className="modal-body">
-          <div className={submitFailed && name.error ? 'form-group has-error' : 'form-group'}>
-            <label className="control-label" >{t('name')}</label>
-            <div className="col-sm-10">
-              <input type="text" className="form-control" disabled {...name} />
-              {submitFailed && name.error && <div className="text-danger"><small>{name.error}</small></div>}
-            </div>
-          </div>
-          <div className={submitFailed && bandwidth.error ? 'form-group has-error' : 'form-group'}>
-            <label className="control-label" >{t('bandwidth')}</label>
-            <div className="col-sm-10">
-              <input type="text" className="form-control" {...bandwidth} />
-              {submitFailed && bandwidth.error && <div className="text-danger"><small>{bandwidth.error}</small></div>}
-            </div>
-          </div>
-        </div>
-        <div className="modal-footer">
-          <button type="button" className="btn btn-default" data-dismiss="modal">{t('closeModal')}</button>
-          <button type="submit" className="btn btn-save" disabled={submitting || invalid}>
-            {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('submit')}
-          </button>
-        </div>
-      </form>
-    );
-  }
-}
-
-
-BandwidthUpdateForm.propTypes = {
-  fields: React.PropTypes.object.isRequired,
-  error: React.PropTypes.string,
-  invalid: React.PropTypes.bool,
-  handleSubmit: React.PropTypes.func.isRequired,
-  submitting: React.PropTypes.bool.isRequired,
-  submitFailed: React.PropTypes.bool.isRequired,
-  initializeForm: React.PropTypes.func.isRequired,
-  eip: React.PropTypes.object.isRequired,
-  t: React.PropTypes.any,
-};
-
-BandwidthUpdateForm.validate = (values) => {
-  const errors = {};
-  errors.bandwidth = Validations.integer(values.bandwidth);
-  return errors;
-};
-
-BandwidthUpdateForm = reduxForm({
-  form: 'BandwidthUpdateForm',
-  fields: ['name', 'bandwidth'],
-  validate: BandwidthUpdateForm.validate,
-})(translate()(BandwidthUpdateForm));
 
 class C extends Page {
 
@@ -228,11 +162,11 @@ class C extends Page {
   }
 
   isEnabled(eip) {
-    return eip.status !== 'deleted' && eip.status !== 'ceased';
+    return eip.status !== 'deleted';
   }
 
   isDeletable(eip) {
-    return eip.status !== 'deleted' && eip.status !== 'ceased' && eip.status !== 'associated';
+    return eip.status !== 'deleted' && eip.status !== 'associated';
   }
 
   onUpdate(values) {
@@ -241,8 +175,9 @@ class C extends Page {
 
     return new Promise((resolve, reject) => {
       const name = values.name;
+      const description = values.description;
 
-      dispatch(EipActions.requestModifyEipAttributes(routerKey, region.regionId, eip.eipId, name))
+      dispatch(EipActions.requestModifyEipAttributes(routerKey, region.regionId, eip.eipId, name, description))
       .then(() => {
         resolve();
         this.refs.updateModal.hide();
@@ -338,7 +273,8 @@ class C extends Page {
         .then(() => {
           resolve();
           this.refs.bandwidthUpdateModal.hide();
-        }).catch(() => {
+        }).catch((error) => {
+          dispatch(Actions.notifyAlert(error.displayMsg || error.message));
           reject();
         });
     });
@@ -469,7 +405,7 @@ class C extends Page {
                       </tr>
                       <tr>
                         <td>{t('bandwidth')}</td>
-                        <td><span>{eip.bandwidth}Mb</span></td>
+                        <td><span>{eip.bandwidth}Mbps</span></td>
                       </tr>
                       <tr>
                         <td>{t('associateResource')}</td>
@@ -509,7 +445,7 @@ class C extends Page {
           <EipUpdateForm onSubmit={this.onUpdate} initialValues={eip} />
         </Modal>
         <Modal title={t('pageEip.updateBandwidth')} ref="bandwidthUpdateModal" >
-          <BandwidthUpdateForm onSubmit={this.onUpdateBandwidth} eip={eip} />
+          <BandwidthUpdateForm onSubmit={this.onUpdateBandwidth} resourceName={eip.name} originalBandwidth={eip.bandwidth} />
         </Modal>
         {this.props.context.availableInstances && this.props.context.availableInstances.length && this.renderAssociateModal()}
       </div>

@@ -5,6 +5,8 @@ import { attach } from '../../shared/pages/Page';
 import { confirmModal } from '../../shared/components/Modal';
 import { buttonForm } from '../../shared/forms/ButtonForm';
 import TablePage from '../../shared/pages/TablePage';
+import TimeSorter from '../../shared/components/TimeSorter';
+import SearchBox from '../../shared/components/SearchBox';
 import PortForwardingCreateForm from '../forms/PortForwardingCreateForm';
 import * as Actions from '../../console-common/redux/actions';
 import * as NetworkActions from '../redux/actions.network';
@@ -52,7 +54,8 @@ class C extends TablePage {
         .then(() => {
           resolve();
           this.onRefresh({}, false)();
-        }).catch(() => {
+        }).catch((error) => {
+          dispatch(Actions.notifyAlert(error.displayMsg || error.message));
           reject();
         });
       });
@@ -97,7 +100,12 @@ class C extends TablePage {
         <thead>
           <tr>
             <th width="40">
-              <input type="checkbox" className="selected" onChange={this.onSelectAll(this.props.context.portForwardingSet.map((u) => { return u.portForwardingId; }))} />
+              <input
+                type="checkbox"
+                className="selected"
+                onChange={this.onSelectAll(this.props.context.portForwardingSet.map((u) => { return u.portForwardingId; }))}
+                checked={this.isAllSelected(this.props.context.portForwardingSet.map((u) => { return u.portForwardingId; }))}
+              />
             </th>
             <th width="150">{t('id')}</th>
             <th>{t('pageNetwork.protocol')}</th>
@@ -165,20 +173,15 @@ class C extends TablePage {
       <div className="gray-content-block second-block">
         <div className={Object.keys(this.props.context.selected).length > 0 ? 'hidden' : ''}>
           <div className="filter-item inline">
-            <a className="loading-display">
+            <a className="btn btn-default" onClick={this.doSearch}>
               <i className={`fa fa-refresh ${this.props.context.loading ? 'fa-spin' : ''}`}></i>
             </a>
           </div>
+          <div className="filter-item inline">
+            <SearchBox ref="searchBox" placeholder={t('filterByIdorAddress')} onEnterPress={this.onSearchKeyPress} onButtonClick={this.onSearchButtonClick} />
+          </div>
           <div className="pull-right">
-            <div className="dropdown inline prepend-left-10">
-              <button className="dropdown-toggle btn" data-toggle="dropdown" type="button">
-                <span className="light"></span> {this.props.context.reverse ? t('lastCreated') : t('firstCreated')}
-                <b className="caret"></b></button>
-              <ul className="dropdown-menu dropdown-menu-align-right dropdown-select dropdown-menu-selectable">
-                <li><a className={this.props.context.reverse ? 'is-active' : ''} href onClick={this.onRefresh({ reverse: true })}>{t('lastCreated')}</a></li>
-                <li><a className={this.props.context.reverse ? '' : 'is-active'} href onClick={this.onRefresh({ reverse: false })}>{t('firstCreated')}</a></li>
-              </ul>
-            </div>
+            <TimeSorter isReverse={this.props.context.reverse} onRefresh={this.onRefresh} />
           </div>
         </div>
         {Object.keys(this.props.context.selected).length > 0 && <div>

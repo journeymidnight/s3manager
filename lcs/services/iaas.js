@@ -49,6 +49,7 @@ export const ACTION_NAMES = {
   unsetExternalGateway: 'UnsetExternalGateway',
   deleteNetworks: 'DeleteNetworks',
   modifyNetworkAttributes: 'ModifyNetworkAttributes',
+  updateExternalGatewayBandwidth: 'UpdateExternalGatewayBandwidth',
   describeInstanceTypes: 'DescribeInstanceTypes',
   describeInstances: 'DescribeInstances',
   createInstances: 'CreateInstances',
@@ -73,5 +74,7 @@ export const ACTION_NAMES = {
   describePortForwardings: 'DescribePortForwardings',
   createPortForwarding: 'CreatePortForwarding',
   deletePortForwardings: 'DeletePortForwardings',
+  changePassword: 'ChangePassword',
+  changeKeyPair: 'ChangeKeyPair',
 };
 export default new IaaS();

@@ -1,5 +1,6 @@
 import React from 'react';
 import Time from 'react-time';
+import { reset } from 'redux-form';
 import Page, { attach } from '../../shared/pages/Page';
 import { confirmModal } from '../../shared/components/Modal';
 import TicketReplyForm from '../forms/TicketReplyForm';
@@ -49,7 +50,13 @@ class C extends Page {
     const { t, dispatch, routerKey, params } = this.props;
 
     confirmModal(t('pageTicket.confirmClose'), () => {
-      dispatch(TicketActions.requestCloseTickets(routerKey, [params.ticketId]));
+      dispatch(TicketActions.requestCloseTickets(routerKey, [params.ticketId])).
+        then(() => {
+          this.refresh();
+        })
+        .catch((error) => {
+          dispatch(Actions.notifyAlert(error.message));
+        });
     });
   }
 
@@ -62,6 +69,7 @@ class C extends Page {
       dispatch(TicketActions.requestCreateTicketReply(routerKey, params.ticketId, content))
       .then(() => {
         resolve();
+        dispatch(reset('TicketReplyForm'));
       }).catch(() => {
         reject();
       });

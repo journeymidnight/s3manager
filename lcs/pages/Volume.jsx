@@ -7,6 +7,7 @@ import Page, { attach } from '../../shared/pages/Page';
 import i18n from '../../shared/i18n';
 import Modal, { confirmModal } from '../../shared/components/Modal';
 import VolumeMonitor from './VolumeMonitor';
+import Slider from '../../shared/components/Slider';
 import * as Actions from '../../console-common/redux/actions';
 import * as VolumeActions from '../redux/actions.volume';
 import * as InstanceActions from '../redux/actions.instance';
@@ -14,28 +15,34 @@ import * as Validations from '../../shared/utils/validations';
 
 let VolumeUpdateForm = (props) => {
   const { fields:
-    { name },
+    { name, description },
     handleSubmit,
     submitting,
     submitFailed,
     t,
-    invalid,
   } = props;
   return (
     <form className="form-horizontal" onSubmit={handleSubmit}>
       <div className="modal-body">
 
-        <div className={submitFailed && name.error ? 'form-group has-error' : 'form-group'}>
+        <div className={(submitFailed || name.touched) && name.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('name')}</label>
           <div className="col-sm-10">
             <input type="text" className="form-control" {...name} />
-            {submitFailed && name.error && <div className="text-danger"><small>{name.error}</small></div>}
+            {(submitFailed || name.touched) && name.error && <div className="text-danger"><small>{name.error}</small></div>}
+          </div>
+        </div>
+        <div className={(submitFailed || description.touched) && description.error ? 'form-group has-error' : 'form-group'}>
+          <label className="control-label" >{t('description')}</label>
+          <div className="col-sm-10">
+            <input type="text" className="form-control" {...description} />
+            {(submitFailed || description.touched) && description.error && <div className="text-danger"><small>{description.error}</small></div>}
           </div>
         </div>
       </div>
       <div className="modal-footer">
         <button type="button" className="btn btn-default" data-dismiss="modal">{t('closeModal')}</button>
-        <button type="submit" className="btn btn-save" disabled={submitting || invalid}>
+        <button type="submit" className="btn btn-save" disabled={submitting}>
           {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('update')}
         </button>
       </div>
@@ -46,7 +53,6 @@ let VolumeUpdateForm = (props) => {
 VolumeUpdateForm.propTypes = {
   fields: React.PropTypes.object.isRequired,
   error: React.PropTypes.string,
-  invalid: React.PropTypes.bool,
   handleSubmit: React.PropTypes.func.isRequired,
   submitting: React.PropTypes.bool.isRequired,
   submitFailed: React.PropTypes.bool.isRequired,
@@ -60,7 +66,7 @@ VolumeUpdateForm.validate = () => {
 
 VolumeUpdateForm = reduxForm({
   form: 'VolumeUpdateForm',
-  fields: ['name'],
+  fields: ['name', 'description'],
   validate: VolumeUpdateForm.validate,
 })(translate()(VolumeUpdateForm));
 
@@ -71,33 +77,32 @@ let VolumeAttachForm = (props) => {
     submitting,
     submitFailed,
     t,
-    invalid,
   } = props;
   return (
     <form className="form-horizontal" onSubmit={handleSubmit}>
       <div className="modal-body">
-        <div className={submitFailed && name.error ? 'form-group has-error' : 'form-group'}>
+        <div className={(submitFailed || name.touched) && name.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('name')}</label>
           <div className="col-sm-10">
             <input type="text" className="form-control" disabled {...name} />
-            {submitFailed && name.error && <div className="text-danger"><small>{name.error}</small></div>}
+            {(submitFailed || name.touched) && name.error && <div className="text-danger"><small>{name.error}</small></div>}
           </div>
         </div>
-        <div className={submitFailed && instanceId.error ? 'form-group has-error' : 'form-group'}>
+        <div className={(submitFailed || instanceId.touched) && instanceId.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('instance')}</label>
           <div className="col-sm-10">
             <select className="form-control" {...instanceId}>
               {props.availableInstances.map((instance) => {
-                return <option key={instance.instanceId} value={instance.instanceId}>{instance.name}</option>;
+                return <option key={instance.instanceId} value={instance.instanceId}>{instance.name} ({instance.instanceId})</option>;
               })}
             </select>
-            {submitFailed && instanceId.error && <div className="text-danger"><small>{instanceId.error}</small></div>}
+            {(submitFailed || instanceId.touched) && instanceId.error && <div className="text-danger"><small>{instanceId.error}</small></div>}
           </div>
         </div>
       </div>
       <div className="modal-footer">
         <button type="button" className="btn btn-default" data-dismiss="modal">{t('closeModal')}</button>
-        <button type="submit" className="btn btn-save" disabled={submitting || invalid}>
+        <button type="submit" className="btn btn-save" disabled={submitting}>
           {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('submit')}
         </button>
       </div>
@@ -108,7 +113,6 @@ let VolumeAttachForm = (props) => {
 VolumeAttachForm.propTypes = {
   fields: React.PropTypes.object.isRequired,
   error: React.PropTypes.string,
-  invalid: React.PropTypes.bool,
   handleSubmit: React.PropTypes.func.isRequired,
   submitting: React.PropTypes.bool.isRequired,
   submitFailed: React.PropTypes.bool.isRequired,
@@ -132,8 +136,8 @@ let VolumeResizeForm = (props) => {
     { name, size },
     handleSubmit,
     submitting,
+    submitFailed,
     t,
-    invalid,
   } = props;
   return (
     <form className="form-horizontal" onSubmit={handleSubmit}>
@@ -144,17 +148,18 @@ let VolumeResizeForm = (props) => {
             <input type="text" className="form-control" disabled {...name} />
           </div>
         </div>
-        <div className={size.touched && size.error ? 'form-group has-error' : 'form-group'}>
+        <div className={(submitFailed || size.touched) && size.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('size')}</label>
           <div className="col-sm-10">
-            <input type="text" className="form-control" {...size} />
-            {size.touched && size.error && <div className="text-danger"><small>{size.error}</small></div>}
+            <input type="hidden" className="form-control" {...size} />
+            <Slider min={size.value} max={1024} step={10} value={size.value} unit={'GB'} onChange={param => size.onChange(param)} />
+            {(submitFailed || size.touched) && size.error && <div className="text-danger"><small>{size.error}</small></div>}
           </div>
         </div>
       </div>
       <div className="modal-footer">
         <button type="button" className="btn btn-default" data-dismiss="modal">{t('closeModal')}</button>
-        <button type="submit" className="btn btn-save" disabled={submitting || invalid}>
+        <button type="submit" className="btn btn-save" disabled={submitting}>
           {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('submit')}
         </button>
       </div>
@@ -165,7 +170,6 @@ let VolumeResizeForm = (props) => {
 VolumeResizeForm.propTypes = {
   fields: React.PropTypes.object.isRequired,
   error: React.PropTypes.string,
-  invalid: React.PropTypes.bool,
   handleSubmit: React.PropTypes.func.isRequired,
   submitting: React.PropTypes.bool.isRequired,
   submitFailed: React.PropTypes.bool.isRequired,
@@ -198,23 +202,22 @@ let SnapshotCreateForm = (props) => {
     submitting,
     submitFailed,
     t,
-    invalid,
   } = props;
   return (
     <form className="form-horizontal" onSubmit={handleSubmit}>
       <div className="modal-body">
 
-        <div className={submitFailed && name.error ? 'form-group has-error' : 'form-group'}>
+        <div className={(submitFailed || name.touched) && name.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('name')}</label>
           <div className="col-sm-10">
             <input type="text" className="form-control" {...name} />
-            {submitFailed && name.error && <div className="text-danger"><small>{name.error}</small></div>}
+            {(submitFailed || name.touched) && name.error && <div className="text-danger"><small>{name.error}</small></div>}
           </div>
         </div>
       </div>
       <div className="modal-footer">
         <button type="button" className="btn btn-default" data-dismiss="modal">{t('closeModal')}</button>
-        <button type="submit" className="btn btn-save" disabled={submitting || invalid}>
+        <button type="submit" className="btn btn-save" disabled={submitting}>
           {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('create')}
         </button>
       </div>
@@ -225,7 +228,6 @@ let SnapshotCreateForm = (props) => {
 SnapshotCreateForm.propTypes = {
   fields: React.PropTypes.object.isRequired,
   error: React.PropTypes.string,
-  invalid: React.PropTypes.bool,
   handleSubmit: React.PropTypes.func.isRequired,
   submitting: React.PropTypes.bool.isRequired,
   submitFailed: React.PropTypes.bool.isRequired,
@@ -294,8 +296,9 @@ class C extends Page {
 
     return new Promise((resolve, reject) => {
       const name = values.name;
+      const description = values.description;
 
-      dispatch(VolumeActions.requestModifyVolumeAttributes(routerKey, region.regionId, volume.volumeId, name))
+      dispatch(VolumeActions.requestModifyVolumeAttributes(routerKey, region.regionId, volume.volumeId, name, description))
       .then(() => {
         resolve();
         this.refs.updateModal.hide();
@@ -333,7 +336,7 @@ class C extends Page {
 
     const { t, dispatch, region, routerKey } = this.props;
 
-    dispatch(InstanceActions.requestDescribeInstances(routerKey, region.regionId, { status: ['active', 'stopped'] }))
+    dispatch(InstanceActions.requestDescribeInstances(routerKey, region.regionId, { status: ['active', 'stopped'], limit: 100 }))
       .then(() => {
         if (this.props.context.instanceSet && this.props.context.instanceSet.length) {
           this.refs.attachModal.show();
@@ -368,7 +371,8 @@ class C extends Page {
           resolve();
           this.refs.resizeModal.hide();
           dispatch(VolumeActions.requestDescribeVolume(routerKey, region.regionId, volume.volumeId));
-        }).catch(() => {
+        }).catch((error) => {
+          dispatch(Actions.notifyAlert(error.displayMsg || error.message));
           reject();
         });
     });
@@ -381,7 +385,7 @@ class C extends Page {
   }
 
   onCreateSnapshot(values) {
-    const { t, dispatch, region, routerKey, servicePath } = this.props;
+    const { dispatch, region, routerKey, servicePath } = this.props;
     const volume = this.props.context.volume || this.volume;
 
     return new Promise((resolve, reject) => {
@@ -394,11 +398,9 @@ class C extends Page {
         .then(() => {
           resolve();
           this.refs.snapshotCreateModal.hide();
-          setTimeout(() => {
-            dispatch(push(`${servicePath}/images_snapshots/volume_snapshots`));
-            dispatch(Actions.notify(t('createSuccessed')));
-          }, 200);
-        }).catch(() => {
+          dispatch(push(`${servicePath}/images_snapshots/volume_snapshots`));
+        }).catch((error) => {
+          dispatch(Actions.notifyAlert(error.displayMsg || error.message));
           reject();
         });
     });

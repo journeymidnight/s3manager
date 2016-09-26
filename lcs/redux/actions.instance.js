@@ -110,11 +110,13 @@ export function requestDescribeInstance(routerKey, regionId, instanceId) {
 export function requestCreateInstances(routerKey, regionId, params) {
   return dispatch => {
     return IaaS
-    .doAction(regionId, ACTION_NAMES.createInstances, params)
-    .promise
-    .then(() => {
-      dispatch(notify(i18n.t('createSuccessed')));
-    });
+      .doAction(regionId, ACTION_NAMES.createInstances, params)
+      .promise
+      .then(() => {
+        setTimeout(() => {
+          dispatch(notify(i18n.t('createSuccessed')));
+        }, 1000);
+      });
   };
 }
 
@@ -148,11 +150,12 @@ export function requestStopInstances(routerKey, regionId, instanceIds) {
   };
 }
 
-export function requestRestartInstances(routerKey, regionId, instanceIds) {
+export function requestRestartInstances(routerKey, regionId, instanceIds, restartType) {
   return dispatch => {
     return IaaS
     .doAction(regionId, ACTION_NAMES.restartInstances, {
       instanceIds,
+      restartType,
     })
     .promise
     .then(() => {
@@ -174,6 +177,7 @@ export function requestDeleteInstances(routerKey, regionId, instanceIds) {
     })
     .catch((error) => {
       dispatch(notifyAlert(error.message));
+      throw error;
     });
   };
 }
@@ -244,7 +248,7 @@ export function requestConnectVNC(routerKey, regionId, instanceId) {
       const height = 430;
 
       const { host, port, token } = payload;
-      const url = `/lcs/#/vnc/${host}/${port}/${token}`;
+      const url = `/lcs/#/vnc/${host}/${port}/${token}?instanceId=${instanceId}`;
       const id = Math.random().toString(36).slice(2);
 
       const newWindow = window.open(url, id, `height=${height},width=${width},modal=yes,alwaysRaised=yes,top=${top},left=${left}`);
@@ -279,13 +283,39 @@ export function requestInstanceOutput(routerKey, regionId, instanceId) {
 export function requestCaptureInstance(routerKey, regionId, instanceId, name) {
   return dispatch => {
     return IaaS
-    .doAction(regionId, ACTION_NAMES.captureInstance, {
+      .doAction(regionId, ACTION_NAMES.captureInstance, {
+        instanceId,
+        name,
+      })
+      .promise
+      .then(() => {
+        setTimeout(() => {
+          dispatch(notify(i18n.t('capturePending')));
+        }, 1000);
+      });
+  };
+}
+
+export function requestChangeLoginInstances(routerKey, regionId, instanceId, loginMode, loginPassword, keyPairId) {
+  return dispatch => {
+    const action = loginMode === 'password' ? ACTION_NAMES.changePassword : ACTION_NAMES.changeKeyPair;
+    const payload = loginMode === 'password' ? {
       instanceId,
-      name,
-    })
+      loginPassword,
+    } : {
+      instanceId,
+      keyPairId,
+    };
+    return IaaS
+    .doAction(regionId, action, payload)
     .promise
     .then(() => {
-      dispatch(notify(i18n.t('capturePending')));
+      setTimeout(() => {
+        dispatch(notify(i18n.t('resetPending')));
+      }, 1000);
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
     });
   };
 }

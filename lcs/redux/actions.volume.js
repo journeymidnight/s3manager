@@ -116,9 +116,6 @@ export function requestResizeVolumes(routerKey, regionId, volumeIds, size) {
     .promise
     .then(() => {
       dispatch(notify(i18n.t('resizeSuccessed')));
-    })
-    .catch((error) => {
-      dispatch(notifyAlert(error.message));
     });
   };
 }
@@ -133,9 +130,6 @@ export function requestCreateSnapshots(routerKey, regionId, snapshot) {
         setTimeout(() => {
           dispatch(notify(i18n.t('createSuccessed')));
         }, 1000);
-      })
-      .catch((error) => {
-        dispatch(notifyAlert(error.message));
       });
   };
 }
