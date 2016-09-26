@@ -43,15 +43,6 @@ class C extends TablePage {
     return InstanceActions.requestDescribeInstances(routerKey, region.regionId, filters);
   }
 
-  isBatchActionDisabled(availabeStatuss) {
-    const instanceIds = _.keys(this.props.context.selected);
-    const unavailabeInstances = this.props.context.instanceSet.filter((instance) => {
-      return instanceIds.indexOf(instance.instanceId) > -1 && availabeStatuss.indexOf(instance.status) === -1;
-    });
-
-    return !!unavailabeInstances.length;
-  }
-
   batchActions(action, operation) {
     const { dispatch, region, routerKey, t } = this.props;
     const instanceIds = _.keys(this.props.context.selected);
@@ -232,20 +223,32 @@ class C extends TablePage {
         </div>
         {Object.keys(this.props.context.selected).length > 0 && <div>
           <div className="filter-item inline">
-            {buttonForm({ onSubmit: this.onStart, text: t('pageInstance.startInstance'), disabled: this.isBatchActionDisabled(['stopped']) })}
+            {buttonForm({
+              onSubmit: this.onStart,
+              text: t('pageInstance.startInstance'),
+              disabled: this.isBatchActionDisabled(['stopped'], this.props.context.instanceSet, 'instanceId'),
+            })}
           </div>
           <div className="filter-item inline">
-            {buttonForm({ onSubmit: this.restart, text: t('pageInstance.restartInstance'), disabled: this.isBatchActionDisabled(['active']) })}
+            {buttonForm({
+              onSubmit: this.restart,
+              text: t('pageInstance.restartInstance'),
+              disabled: this.isBatchActionDisabled(['active'], this.props.context.instanceSet, 'instanceId'),
+            })}
           </div>
           <div className="filter-item inline">
-            {buttonForm({ onSubmit: this.onStop, text: t('pageInstance.stopInstance'), disabled: this.isBatchActionDisabled(['active']) })}
+            {buttonForm({
+              onSubmit: this.onStop,
+              text: t('pageInstance.stopInstance'),
+              disabled: this.isBatchActionDisabled(['active'], this.props.context.instanceSet, 'instanceId'),
+            })}
           </div>
           <div className="filter-item inline pull-right">
             {React.cloneElement(buttonForm(), {
               onSubmit: this.onDelete,
               text: t('delete'),
               type: 'btn-danger',
-              disabled: this.isBatchActionDisabled(['active', 'stopped', 'error']),
+              disabled: this.isBatchActionDisabled(['active', 'stopped', 'error'], this.props.context.instanceSet, 'instanceId'),
             })}
           </div>
         </div>}
