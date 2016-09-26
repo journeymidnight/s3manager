@@ -200,6 +200,7 @@ class C extends TablePageStatic {
           });
         }
       } else {
+        this.onRefresh({}, false)();
         this.s3Uploaders[index] = null;
         const newUploadingFile = Object.assign({}, this.state.uploadingFileList[index], {
           status: 'uploaded',
