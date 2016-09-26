@@ -86,7 +86,7 @@ class C extends Page {
                         <td width="100">{t('pageBucket.usage')}</td>
                         <td>
                           <span>
-                            {(context.usagebyhour && context.usagebyhour.length > 0) ? (context.usagebyhour[context.usagebyhour.length - 1].usage / 1024).toFixed(1) : 0}MB
+                            {(context.usagebyhour && context.usagebyhour.length > 0) ? this.formatBytes(context.usagebyhour[context.usagebyhour.length - 1].usage * 1024) : 0}
                           </span>
                         </td>
                       </tr>
@@ -94,12 +94,16 @@ class C extends Page {
                         <td>{t('pageBucket.monthlyFlow')}</td>
                         <td>
                           <span>
-                          {context.staticsbyday ? this.formatBytes(context.staticsbyday.reduce((previousValue, currentItem) =>
+                          {(context.staticsbyday && context.flowbyhour) ? this.formatBytes(context.staticsbyday.reduce((previousValue, currentItem) =>
                               (previousValue + Number(currentItem.flowInPrivate)
                               + Number(currentItem.flowOutPrivate)
                               + Number(currentItem.flowInPublic)
                               + Number(currentItem.flowOutPublic)
-                              ), 0)) : '0'}
+                              ), 0)
+                            + context.flowbyhour.reduce((previousValue, currentItem) =>
+                              (previousValue + Number(currentItem.flowout)
+                                + Number(currentItem.flowin)
+                              ), 0)) : 0}
                           </span>
                         </td>
                       </tr>
@@ -107,9 +111,12 @@ class C extends Page {
                         <td>{t('pageBucket.monthlyAPI')}</td>
                         <td>
                           <span>
-                            {context.staticsbyday ? context.staticsbyday.reduce((previousValue, currentItem) =>
+                            {(context.staticsbyday && context.opbyhour) ? context.staticsbyday.reduce((previousValue, currentItem) =>
                                 (previousValue + Number(currentItem.ops)
-                                ), 0) : 0}
+                                ), 0)
+                            + context.opbyhour.reduce((previousValue, currentItem) =>
+                              (previousValue + Number(currentItem.count)
+                              ), 0) : 0}
                           </span>
                         </td>
                       </tr>
