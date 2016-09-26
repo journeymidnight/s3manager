@@ -17,21 +17,18 @@ class C extends TablePageStatic {
   constructor(props) {
     super(props);
     const { t } = this.props;
-    this.state = {
-      s3: null,
-      status: {
-        uploading: t('uploadModal.uploading'),
-        uploaded: t('uploadModal.uploaded'),
-        paused: t('uploadModal.paused'),
-        canceled: t('uploadModal.canceled'),
-        failed: t('uploadModal.failed'),
-      },
-      action: {
-        pause: 'fa-pause',
-        continue: 'fa-play',
-        cancel: 'fa-stop',
-        retry: 'fa-upload',
-      },
+    this.status = {
+      uploading: t('uploadModal.uploading'),
+      uploaded: t('uploadModal.uploaded'),
+      paused: t('uploadModal.paused'),
+      canceled: t('uploadModal.canceled'),
+      failed: t('uploadModal.failed'),
+    };
+    this.actions = {
+      pause: 'fa-pause',
+      continue: 'fa-play',
+      cancel: 'fa-stop',
+      retry: 'fa-upload',
     };
 
     this.refresh = this.refresh.bind(this);
@@ -46,6 +43,7 @@ class C extends TablePageStatic {
     this.continueOneObject = this.continueOneObject.bind(this);
     this.retryOneObject = this.retryOneObject.bind(this);
     this.cancelOneObject = this.cancelOneObject.bind(this);
+    this.calProgressWidth = this.calProgressWidth.bind(this);
   }
 
   initialize(routerKey) {
@@ -58,15 +56,13 @@ class C extends TablePageStatic {
         AWS.config.region = region.regionId;
         AWS.config.accessKeyId = region.accessKey;
         AWS.config.secretAccessKey = region.accessSecret;
-        const s3 = new AWS.S3();
-        this.setState({
-          s3,
-        }, () => this.initTable(routerKey, {}));
+        this.s3 = new AWS.S3();
+        this.initTable(routerKey, {});
       });
   }
 
   refreshAction(routerKey, filters) {
-    return ObjectActions.setVisibleObjects(this.state.s3, this.props.params.bucketName, routerKey, filters);
+    return ObjectActions.setVisibleObjects(this.s3, this.props.params.bucketName, routerKey, filters);
   }
 
   isBatchActionDisabled(availabeStatuss) {
@@ -110,11 +106,10 @@ class C extends TablePageStatic {
 
   onFileUpload() {
     const files = this.refs.fileUploader.files;
-
     const uploadingFileList = {};
+    this.s3Uploaders = [];
     for (let i = 0, len = files.length; i < len; i++) {
       uploadingFileList[i] = {
-        s3Uploader: null,
         name: files[i].name,
         size: files[i].size,
         percent: 0,
@@ -125,7 +120,6 @@ class C extends TablePageStatic {
         ],
       };
     }
-
     this.setState({
       uploadingFileList,
     }, () => {
@@ -138,7 +132,7 @@ class C extends TablePageStatic {
 
   uploadOneObject(file, index) {
     const fileName = file.name;
-    const s3Uploader = this.state.s3.upload(
+    const s3Uploader = this.s3.upload(
       {
         Bucket: this.props.params.bucketName,
         Key: fileName,
@@ -150,15 +144,13 @@ class C extends TablePageStatic {
         leavePartsOnError: true,
       }
     );
-    this.setState({
-      uploadingFileList: update(this.state.uploadingFileList, {
-        [index]: { s3Uploader: { $set: s3Uploader } },
-      }),
-    });
+    this.s3Uploaders[index] = s3Uploader;
 
     s3Uploader.send(this.uploadOneObjectCb(index));
     s3Uploader.on('httpUploadProgress', (progress) => {
       const percent = 100 * progress.loaded / progress.total;
+      console.log(progress.loaded);
+      console.log(progress.total);
       console.log(percent);
       this.setState({
         uploadingFileList: update(this.state.uploadingFileList, {
@@ -172,38 +164,30 @@ class C extends TablePageStatic {
     return (error, data) => {
       if (error) {
         if (error.code !== 'RequestAbortedError') {
-          let newUploadingFileList = update(this.state.uploadingFileList, {
-            [index]: { status: { $set: 'failed' } },
-          });
-          newUploadingFileList = update(newUploadingFileList, {
-            [index]: { percent: { $set: 0 } },
-          });
-          newUploadingFileList = update(newUploadingFileList, {
-            [index]: { actions: { $set: ['retry'] } },
-          });
-          newUploadingFileList = update(newUploadingFileList, {
-            [index]: { s3Uploader: { $set: null } },
+          this.s3Uploaders[index] = null;
+          const newUploadingFile = Object.assign(this.state.uploadingFileList[index], {
+            status: 'failed',
+            percent: 0,
+            actions: ['retry'],
           });
           this.setState({
-            uploadingFileList: newUploadingFileList,
+            uploadingFileList: update(this.state.uploadingFileList, {
+              [index]: { $set: newUploadingFile },
+            }),
           });
         }
       } else {
-        let newUploadingFileList = update(this.state.uploadingFileList, {
-          [index]: { status: { $set: 'uploaded' } },
-        });
-        newUploadingFileList = update(newUploadingFileList, {
-          [index]: { percent: { $set: 0 } },
-        });
-        newUploadingFileList = update(newUploadingFileList, {
-          [index]: { actions: { $set: [] } },
-        });
-        newUploadingFileList = update(newUploadingFileList, {
-          [index]: { s3Uploader: { $set: null } },
+        this.s3Uploaders[index] = null;
+        const newUploadingFile = Object.assign(this.state.uploadingFileList[index], {
+          status: 'uploaded',
+          percent: 0,
+          actions: [],
         });
         this.setState({
-          uploadingFileList: newUploadingFileList,
-        }, () => this.onRefresh({}, false)());
+          uploadingFileList: update(this.state.uploadingFileList, {
+            [index]: { $set: newUploadingFile },
+          }),
+        });
       }
     };
   }
@@ -224,96 +208,73 @@ class C extends TablePageStatic {
   }
 
   pauseOneObject(index) {
-    this.state.uploadingFileList[index].s3Uploader.abort();
+    this.s3Uploaders[index].abort();
 
-    let newUploadingFileList = update(this.state.uploadingFileList, {
-      [index]: { status: { $set: 'paused' } },
+    const newUploadingFile = Object.assign(this.state.uploadingFileList[index], {
+      status: 'paused',
+      actions: ['continue', 'cancel'],
     });
-    newUploadingFileList = update(newUploadingFileList, {
-      [index]: { actions: { $set: ['continue', 'cancel'] } },
-    });
-    console.log(this.state.uploadingFileList[index].s3Uploader === newUploadingFileList[index].s3Uploader)
+
     this.setState({
-      uploadingFileList: newUploadingFileList,
+      uploadingFileList: update(this.state.uploadingFileList, {
+        [index]: { $set: newUploadingFile },
+      }),
     });
   }
 
   continueOneObject(index) {
-    this.state.uploadingFileList[index].s3Uploader.send(this.uploadOneObjectCb(index));
+    this.s3Uploaders[index].send(this.uploadOneObjectCb(index));
 
-    let newUploadingFileList = update(this.state.uploadingFileList, {
-      [index]: { status: { $set: 'uploading' } },
+    const newUploadingFile = Object.assign(this.state.uploadingFileList[index], {
+      status: 'uploading',
+      actions: ['pause', 'cancel'],
     });
-    newUploadingFileList = update(newUploadingFileList, {
-      [index]: { actions: { $set: ['pause', 'cancel'] } },
-    });
-    console.log(this.state.uploadingFileList[index].s3Uploader === newUploadingFileList[index].s3Uploader)
+
     this.setState({
-      uploadingFileList: newUploadingFileList,
+      uploadingFileList: update(this.state.uploadingFileList, {
+        [index]: { $set: newUploadingFile },
+      }),
     });
   }
 
   cancelOneObject(index) {
-    const s3Uploader = this.state.uploadingFileList[index].s3Uploader;
+    const s3Uploader = this.s3Uploaders[index];
     if (s3Uploader && s3Uploader.service.config.params.UploadId) {
       s3Uploader.service.abortMultipartUpload().send();
     }
+    this.s3Uploaders[index] = null;
 
-    let newUploadingFileList = update(this.state.uploadingFileList, {
-      [index]: { status: { $set: 'canceled' } },
+    const newUploadingFile = Object.assign(this.state.uploadingFileList[index], {
+      status: 'canceled',
+      percent: 0,
+      actions: ['retry'],
     });
-    newUploadingFileList = update(newUploadingFileList, {
-      [index]: { percent: { $set: 0 } },
-    });
-    newUploadingFileList = update(newUploadingFileList, {
-      [index]: { actions: { $set: ['retry'] } },
-    });
-    newUploadingFileList = update(newUploadingFileList, {
-      [index]: { uploader: { $set: null } },
-    });
+
     this.setState({
-      uploadingFileList: newUploadingFileList,
+      uploadingFileList: update(this.state.uploadingFileList, {
+        [index]: { $set: newUploadingFile },
+      }),
     });
   }
 
   retryOneObject(index) {
     const file = this.refs.fileUploader.files[index];
-    const fileName = file.name;
-    const s3Uploader = this.state.s3.upload(
-      {
-        Bucket: this.props.params.bucketName,
-        Key: fileName,
-        Body: file,
-      },
-      {
-        partSize: 5 * 1024 * 1024,
-        queueSize: 10,
-        leavePartsOnError: true,
-      }
-    );
-
-    let newUploadingFileList = update(this.state.uploadingFileList, {
-      [index]: { status: { $set: 'uploading' } },
-    });
-    newUploadingFileList = update(newUploadingFileList, {
-      [index]: { actions: { $set: ['pause', 'cancel'] } },
-    });
-    newUploadingFileList = update(newUploadingFileList, {
-      [index]: { s3Uploader: { $set: s3Uploader } },
+    this.uploadOneObject(file, index);
+    const newUploadingFile = Object.assign(this.state.uploadingFileList[index], {
+      status: 'uploading',
+      percent: 0,
+      actions: ['pause', 'cancel'],
     });
     this.setState({
-      uploadingFileList: newUploadingFileList,
+      uploadingFileList: update(this.state.uploadingFileList, {
+        [index]: { $set: newUploadingFile },
+      }),
     });
+  }
 
-    s3Uploader.send(this.uploadOneObjectCb(index));
-    s3Uploader.on('httpUploadProgress', (progress) => {
-      const percent = 100 * progress.loaded / progress.total;
-      this.setState({
-        uploadingFileList: update(this.state.uploadingFileList, {
-          [index]: { percent: { $set: percent } },
-        }),
-      });
-    });
+  calProgressWidth(percent) {
+    if (percent <= 100) return (percent * 2.5 + '%');
+    return '250%';
   }
 
   renderTable() {
@@ -418,7 +379,7 @@ class C extends TablePageStatic {
                                 <div>{file.name}</div>
                                 <div
                                   style={{
-                                    width: file.percent + '%',
+                                    width: this.calProgressWidth(file.percent),
                                     position: 'absolute',
                                     height: '100%',
                                     backgroundColor: '#0e90d2',
@@ -429,13 +390,13 @@ class C extends TablePageStatic {
                                 ></div>
                               </td>
                               <td>{this.formatBytes(file.size)}</td>
-                              <td>{this.state.status[file.status]}</td>
+                              <td>{this.status[file.status]}</td>
                               <td>
                                 {
                                   file.actions.map((action, index) =>
                                     <i
                                       key={index}
-                                      className={'fa ' + this.state.action[action]}
+                                      className={'fa ' + this.action[action]}
                                       style={{ marginRight: 10 }}
                                       onClick={
                                         () => this.handleUploadAction(action, key)
