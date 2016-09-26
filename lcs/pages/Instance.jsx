@@ -604,6 +604,7 @@ class C extends Page {
                         <li>
                           <button
                             className="btn-page-action"
+                            disabled={instance.status !== 'active'}
                             onClick={this.changeLoginInstance}
                           >
                             {t('pageInstance.changeLoginInstance')}
