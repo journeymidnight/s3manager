@@ -160,8 +160,10 @@ class C extends Page {
   unsetExternalGateway(e) {
     e.preventDefault();
 
-    const { dispatch, region, routerKey, params } = this.props;
-    dispatch(NetworkActions.requestUnsetExternalGateway(routerKey, region.regionId, [params.networkId]));
+    const { dispatch, region, routerKey, params, t } = this.props;
+    confirmModal(`${t('confirmPrefix')}${t('pageNetwork.unsetExternalGateway')}?`, () => {
+      dispatch(NetworkActions.requestUnsetExternalGateway(routerKey, region.regionId, [params.networkId]));
+    });
   }
 
   updateNetwork(e) {

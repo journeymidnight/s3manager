@@ -34,15 +34,6 @@ class C extends TablePage {
     return EipActions.requestDescribeEips(routerKey, region.regionId, filters);
   }
 
-  isBatchDeleteDisabled() {
-    const eipIds = _.keys(this.props.context.selected);
-    const unavailabeEips = this.props.context.eipSet.filter((eip) => {
-      return eipIds.indexOf(eip.eipId) > -1 && ['active', 'error'].indexOf(eip.status) === -1;
-    });
-
-    return !!unavailabeEips.length;
-  }
-
   onDelete() {
     const { t, dispatch, routerKey, region } = this.props;
     confirmModal(t('confirmDelete'), () => {
@@ -171,7 +162,12 @@ class C extends TablePage {
         </div>
         <div className={Object.keys(this.props.context.selected).length > 0 ? '' : 'hidden'}>
           <div className="filter-item inline">
-            <ButtonForm onSubmit={this.onDelete} text={t('delete')} type="btn-danger" disabled={this.isBatchDeleteDisabled()} />
+            <ButtonForm
+              onSubmit={this.onDelete}
+              text={t('delete')}
+              type="btn-danger"
+              disabled={this.isBatchActionDisabled(['active'], this.props.context.eipSet, 'eipId')}
+            />
           </div>
         </div>
       </div>

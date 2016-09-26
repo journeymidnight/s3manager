@@ -186,7 +186,12 @@ class C extends TablePage {
         </div>
         {Object.keys(this.props.context.selected).length > 0 && <div>
           <div className="filter-item inline">
-            {buttonForm({ onSubmit: this.onDelete, text: t('delete'), type: 'btn-danger' })}
+            {buttonForm({
+              onSubmit: this.onDelete,
+              text: t('delete'),
+              type: 'btn-danger',
+              disabled: this.isBatchActionDisabled(['active'], this.props.context.portForwardingSet, 'portForwardingId'),
+            })}
           </div>
         </div>}
       </div>

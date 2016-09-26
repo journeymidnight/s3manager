@@ -128,6 +128,9 @@ class C extends TablePage {
         status: ['active'],
         name: t('imageStatus.active'),
       }, {
+        status: ['pending'],
+        name: t('imageStatus.pending'),
+      }, {
         status: ['deleted', 'ceased'],
         name: t('imageStatus.deleted'),
       }];
@@ -151,7 +154,12 @@ class C extends TablePage {
         </div>
         {!this.isPublicImage() && <div className={Object.keys(this.props.context.selected).length > 0 ? '' : 'hidden'}>
           <div className="filter-item inline">
-            <ButtonForm onSubmit={this.onDelete} text={t('delete')} type="btn-danger" />
+            <ButtonForm
+              onSubmit={this.onDelete}
+              text={t('delete')}
+              type="btn-danger"
+              disabled={this.isBatchActionDisabled(['active'], this.props.context.imageSet, 'imageId')}
+            />
           </div>
         </div>}
       </div>
