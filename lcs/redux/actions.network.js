@@ -141,19 +141,20 @@ export function requestCreateSubnet(routerKey, regionId, subnet) {
   };
 }
 
-export function requestSetExternalGateway(routerKey, regionId, networkIds) {
+export function requestSetExternalGateway(routerKey, regionId, networkId, bandwidth) {
   return dispatch => {
     return IaaS
-    .doAction(regionId, ACTION_NAMES.setExternalGateway, {
-      networkIds,
-    })
-    .promise
-    .then(() => {
-      dispatch(notify(i18n.t('updateSuccessed')));
-    })
-    .catch((error) => {
-      dispatch(notifyAlert(error.message));
-    });
+      .doAction(regionId, ACTION_NAMES.setExternalGateway, {
+        networkIds: [networkId],
+        bandwidth,
+      })
+      .promise
+      .then(() => {
+        dispatch(notify(i18n.t('updateSuccessed')));
+      })
+      .catch((error) => {
+        dispatch(notifyAlert(error.message));
+      });
   };
 }
 
