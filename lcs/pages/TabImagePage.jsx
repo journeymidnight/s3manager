@@ -128,6 +128,9 @@ class C extends TablePage {
         status: ['active'],
         name: t('imageStatus.active'),
       }, {
+        status: ['pending'],
+        name: t('imageStatus.pending'),
+      }, {
         status: ['deleted', 'ceased'],
         name: t('imageStatus.deleted'),
       }];
