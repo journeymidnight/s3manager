@@ -6,7 +6,7 @@ import { attach } from '../../shared/pages/Page';
 import { confirmModal } from '../../shared/components/Modal';
 import { buttonForm } from '../../shared/forms/ButtonForm';
 import TablePageStatic from '../../shared/pages/TablePageStatic';
-import * as Actions from '../../console-common/redux/actions';
+import { setHeader } from '../../console-common/redux/actions';
 import * as BucketActions from '../redux/actions.bucket';
 
 
@@ -23,7 +23,7 @@ class C extends TablePageStatic {
 
   initialize(routerKey) {
     const { t, dispatch, servicePath } = this.props;
-    dispatch(Actions.setHeader(t('bucketList'), `${servicePath}/buckets`));
+    dispatch(setHeader(t('bucketList'), `${servicePath}/buckets`));
 
     this.initTable(routerKey, {});
   }
@@ -66,12 +66,12 @@ class C extends TablePageStatic {
 
   renderTable() {
     const { t, servicePath, dispatch } = this.props;
-    return this.props.context.buckets.length > 0 && (
+    return this.props.context.total > 0 && (
       <table className="table">
         <thead>
           <tr>
             <th width="40">
-              <input type="checkbox" className="selected" onChange={this.onSelectAll(this.props.context.buckets.map((u) => { return u.name; }))} />
+              <input type="checkbox" className="selected" onChange={this.onSelectAll(this.props.context.visibleBuckets.map((u) => { return u.name; }))} />
             </th>
             <th width="200">{t('name')}</th>
             <th width="400">{t('created')}</th>
@@ -88,7 +88,10 @@ class C extends TablePageStatic {
                 <Link
                   to={`${servicePath}/buckets/${bucket.name}`}
                   onClick={() => {
-                    dispatch(BucketActions.setBucket(bucket.creationDate));
+                    dispatch(BucketActions.setBucket({
+                      bucketName: bucket.name,
+                      bucketCreationDate: bucket.creationDate,
+                    }));
                   }}
                 >
                   {bucket.name}
