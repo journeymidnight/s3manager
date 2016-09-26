@@ -5,6 +5,7 @@ import Time from 'react-time';
 import { attach } from '../../shared/pages/Page';
 import TablePage from '../../shared/pages/TablePage';
 import ButtonForm from '../../shared/forms/ButtonForm';
+import { confirmModal } from '../../shared/components/Modal';
 import StatusFilter from '../../shared/components/StatusFilter';
 import TimeSorter from '../../shared/components/TimeSorter';
 import SearchBox from '../../shared/components/SearchBox';
@@ -33,17 +34,18 @@ class C extends TablePage {
   }
 
   onDelete() {
-    const { dispatch } = this.props;
+    const { dispatch, t } = this.props;
     const accessKeyIds = _.keys(this.props.context.selected);
-
-    return new Promise((resolve, reject) => {
-      dispatch(AccessKeyActions.requestDeleteAccessKeys(accessKeyIds))
-        .then(() => {
-          resolve();
-          this.onRefresh({}, false)();
-        }).catch(() => {
-          reject();
-        });
+    confirmModal(t('confirmDelete'), () => {
+      return new Promise((resolve, reject) => {
+        dispatch(AccessKeyActions.requestDeleteAccessKeys(accessKeyIds))
+          .then(() => {
+            resolve();
+            this.onRefresh({}, false)();
+          }).catch(() => {
+            reject();
+          });
+      });
     });
   }
 
