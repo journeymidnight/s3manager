@@ -6,7 +6,7 @@ import { attach } from '../../shared/pages/Page';
 import { confirmModal } from '../../shared/components/Modal';
 import { buttonForm } from '../../shared/forms/ButtonForm';
 import TablePageStatic from '../../shared/pages/TablePageStatic';
-import * as Actions from '../../console-common/redux/actions';
+import { setHeader } from '../../console-common/redux/actions';
 import * as BucketActions from '../redux/actions.bucket';
 
 
@@ -23,7 +23,7 @@ class C extends TablePageStatic {
 
   initialize(routerKey) {
     const { t, dispatch, servicePath } = this.props;
-    dispatch(Actions.setHeader(t('bucketList'), `${servicePath}/buckets`));
+    dispatch(setHeader(t('bucketList'), `${servicePath}/buckets`));
 
     this.initTable(routerKey, {});
   }

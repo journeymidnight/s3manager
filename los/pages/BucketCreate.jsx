@@ -3,7 +3,7 @@ import { push } from 'react-router-redux';
 import AWS from 'aws-sdk';
 import Page, { attach } from '../../shared/pages/Page';
 import BucketCreateForm from '../forms/BucketCreateForm';
-import * as Actions from '../../console-common/redux/actions';
+import { setHeader, extendContext, notifyAlert } from '../../console-common/redux/actions';
 import * as BucketActions from '../redux/actions.bucket';
 
 class C extends Page {
@@ -16,10 +16,10 @@ class C extends Page {
   initialize(routerKey) {
     const { t, dispatch, servicePath, region } = this.props;
 
-    dispatch(Actions.setHeader(t('bucketList'), `${servicePath}/buckets`));
+    dispatch(setHeader(t('bucketList'), `${servicePath}/buckets`));
     dispatch(BucketActions.requestGetS3Domain(routerKey, region.regionId)).
     then(() => {
-      dispatch(Actions.extendContext({ initialized: true }, routerKey));
+      dispatch(extendContext({ initialized: true }, routerKey));
     });
   }
 
@@ -48,7 +48,7 @@ class C extends Page {
           dispatch(push(`${servicePath}/buckets`));
         })
         .catch((error) => {
-          dispatch(Actions.notifyAlert(error.message));
+          dispatch(notifyAlert(error.message));
           reject({ _error: error.message });
         });
     });

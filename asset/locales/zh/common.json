@@ -719,5 +719,6 @@
         "continue": "继续",
         "cancel": "取消",
         "retry": "重试"
-    }
+    },
+    "objectDeletedSuccess": "对象删除成功"
 }

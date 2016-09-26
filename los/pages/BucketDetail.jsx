@@ -4,7 +4,8 @@ import { Link } from 'react-router';
 import AWS from 'aws-sdk';
 import Page, { attach } from '../../shared/pages/Page';
 import BucketMonitors from './BucketMonitors';
-import * as Actions from '../../console-common/redux/actions';
+import { requestGetS3Domain } from '../redux/actions.s3Domain';
+import { setHeader, extendContext } from '../../console-common/redux/actions';
 import * as BucketActions from '../redux/actions.bucket';
 
 class C extends Page {
@@ -17,10 +18,10 @@ class C extends Page {
 
   initialize() {
     const { t, dispatch, servicePath, region, routerKey, params } = this.props;
-    dispatch(Actions.setHeader(t('bucketDetail'), `${servicePath}/buckets`));
+    dispatch(setHeader(t('bucketDetail'), `${servicePath}/buckets`));
     const bucketName = params.bucketName;
 
-    dispatch(BucketActions.requestGetS3Domain(routerKey, region.regionId))
+    dispatch(requestGetS3Domain(routerKey, region.regionId))
       .then(() => {
         AWS.config.endpoint = this.props.context.s3Domain;
         AWS.config.region = region.regionId;
@@ -31,7 +32,7 @@ class C extends Page {
       });
 
     const now = new Date();
-    dispatch(Actions.extendContext({ monitorTimestamp: now }, routerKey));
+    dispatch(extendContext({ monitorTimestamp: now }, routerKey));
     const nowTime = moment.utc(now).local().format('YYYYMMDDHHmmss');
     const todayBeginTime = moment.utc(now).local().format('YYYYMMDD000000');
 
@@ -45,18 +46,18 @@ class C extends Page {
       dispatch(BucketActions.requestGetFlowByHour(routerKey, region.regionId, bucketName, todayBeginTime, nowTime)),
     ])
       .then(() => {
-        dispatch(Actions.extendContext({ loading: false }, routerKey));
+        dispatch(extendContext({ loading: false }, routerKey));
       });
 
-    dispatch(Actions.extendContext({ loading: true }, routerKey));
+    dispatch(extendContext({ loading: true }, routerKey));
   }
 
   formatBytes(bytes) {
-    if (bytes < 1024) return (bytes + 'B');
-    else if (bytes < 1024 * 1024) return ((bytes / 1024).toFixed(1) + 'KB');
-    else if (bytes < 1024 * 1024 * 1024) return ((bytes / 1024 / 1024).toFixed(1) + 'MB');
-    else if (bytes < 1024 * 1024 * 1024 * 1024) return ((bytes / 1024 / 1024 / 1024).toFixed(1) + 'GB');
-    return ((bytes / 1024 / 1024 / 1024 / 1024).toFixed(1) + 'TB');
+    if (bytes < 1024) return `${bytes}B`;
+    else if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)}KB`;
+    else if (bytes < 1024 * 1024 * 1024) return `${(bytes / 1024 / 1024).toFixed(1)}MB`;
+    else if (bytes < 1024 * 1024 * 1024 * 1024) return `${(bytes / 1024 / 1024 / 1024).toFixed(1)}GB`;
+    return `${(bytes / 1024 / 1024 / 1024 / 1024).toFixed(1)}TB`;
   }
 
   render() {
@@ -127,7 +128,7 @@ class C extends Page {
                   <table className="table table-detail">
                     <tbody>
                       <tr>
-                        <td>{t('pageBucket.bucketAcl')}</td>
+                        <td width="100">{t('pageBucket.bucketAcl')}</td>
                         <td>
                           <span>{context.acl}</span>
                         </td>

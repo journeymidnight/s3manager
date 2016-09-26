@@ -8,14 +8,15 @@ import { attach } from '../../shared/pages/Page';
 import { buttonForm } from '../../shared/forms/ButtonForm';
 import Modal, { confirmModal } from '../../shared/components/Modal';
 import TablePageStatic from '../../shared/pages/TablePageStatic';
-import * as Actions from '../../console-common/redux/actions';
+import { setHeader, notify, notifyAlert } from '../../console-common/redux/actions';
+import { requestGetS3Domain } from '../redux/actions.s3Domain';
 import * as ObjectActions from '../redux/actions.object';
-import * as BucketActions from '../redux/actions.bucket';
 
 class C extends TablePageStatic {
 
   constructor(props) {
     super(props);
+    this.state = {};
     const { t } = this.props;
     this.status = {
       uploading: t('uploadModal.uploading'),
@@ -48,9 +49,9 @@ class C extends TablePageStatic {
 
   initialize(routerKey) {
     const { t, dispatch, servicePath, region } = this.props;
-    dispatch(Actions.setHeader(t('objectManagement'), `${servicePath}/buckets`));
+    dispatch(setHeader(t('objectManagement'), `${servicePath}/buckets`));
 
-    dispatch(BucketActions.requestGetS3Domain(routerKey, region.regionId))
+    dispatch(requestGetS3Domain(routerKey, region.regionId))
       .then(() => {
         AWS.config.endpoint = this.props.context.s3Domain;
         AWS.config.region = region.regionId;
@@ -76,10 +77,10 @@ class C extends TablePageStatic {
 
   batchActions(action) {
     const { dispatch, region, routerKey } = this.props;
-    const objectNames = _.keys(this.props.context.selected);
+    const objectKeys = _.keys(this.props.context.selected);
 
     return new Promise((resolve, reject) => {
-      dispatch(action(routerKey, region.regionId, objectNames))
+      dispatch(action(routerKey, region.regionId, objectKeys))
         .then(() => {
           resolve();
           this.onRefresh({}, false)();
@@ -92,16 +93,42 @@ class C extends TablePageStatic {
   onDelete() {
     const { t } = this.props;
     confirmModal(t('confirmDelete'), () => {
-      return this.batchActions(ObjectActions.requestDeleteObjects);
+      return this.batchActions((routerKey, regionId, objectKeys) => {
+        return dispatch => {
+          return new Promise((resolve, reject) => {
+            const params = {
+              Bucket: this.props.params.bucketName,
+              Delete: {
+                Objects: objectKeys.map((key) => {
+                  return {
+                    Key: key,
+                  };
+                }),
+                Quiet: true,
+              },
+            };
+
+            this.s3.deleteObjects(params, (error, data) => {
+              if (error) {
+                dispatch(notifyAlert(error.message));
+                reject(error);
+              } else {
+                dispatch(notify(t('objectDeletedSuccess')));
+                resolve(data);
+              }
+            });
+          });
+        };
+      });
     });
   }
 
   formatBytes(bytes) {
-    if (bytes < 1024) return (bytes + 'B');
-    else if (bytes < 1024 * 1024) return ((bytes / 1024).toFixed(1) + 'KB');
-    else if (bytes < 1024 * 1024 * 1024) return ((bytes / 1024 / 1024).toFixed(1) + 'MB');
-    else if (bytes < 1024 * 1024 * 1024 * 1024) return ((bytes / 1024 / 1024 / 1024).toFixed(1) + 'GB');
-    return ((bytes / 1024 / 1024 / 1024 / 1024).toFixed(1) + 'TB');
+    if (bytes < 1024) return `${bytes}B`;
+    else if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)}KB`;
+    else if (bytes < 1024 * 1024 * 1024) return `${(bytes / 1024 / 1024).toFixed(1)}MB`;
+    else if (bytes < 1024 * 1024 * 1024 * 1024) return `${(bytes / 1024 / 1024 / 1024).toFixed(1)}GB`;
+    return `${(bytes / 1024 / 1024 / 1024 / 1024).toFixed(1)}TB`;
   }
 
   onFileUpload() {
@@ -114,10 +141,7 @@ class C extends TablePageStatic {
         size: files[i].size,
         percent: 0,
         status: 'uploading',
-        actions: [
-          'pause',
-          'cancel',
-        ],
+        actions: ['pause'],
       };
     }
     this.setState({
@@ -148,24 +172,23 @@ class C extends TablePageStatic {
 
     s3Uploader.send(this.uploadOneObjectCb(index));
     s3Uploader.on('httpUploadProgress', (progress) => {
-      const percent = 100 * progress.loaded / progress.total;
-      console.log(progress.loaded);
-      console.log(progress.total);
-      console.log(percent);
-      this.setState({
-        uploadingFileList: update(this.state.uploadingFileList, {
-          [index]: { percent: { $set: percent } },
-        }),
-      });
+      if (!progress.target) { // Sometimes ProgressEvent is passed as the parameter, this statement is to rule it out. TODO: figure out why
+        const percent = 100 * progress.loaded / progress.total;
+        this.setState({
+          uploadingFileList: update(this.state.uploadingFileList, {
+            [index]: { percent: { $set: percent } },
+          }),
+        });
+      }
     });
   }
 
   uploadOneObjectCb(index) {
-    return (error, data) => {
+    return (error) => {
       if (error) {
         if (error.code !== 'RequestAbortedError') {
           this.s3Uploaders[index] = null;
-          const newUploadingFile = Object.assign(this.state.uploadingFileList[index], {
+          const newUploadingFile = Object.assign({}, this.state.uploadingFileList[index], {
             status: 'failed',
             percent: 0,
             actions: ['retry'],
@@ -178,9 +201,9 @@ class C extends TablePageStatic {
         }
       } else {
         this.s3Uploaders[index] = null;
-        const newUploadingFile = Object.assign(this.state.uploadingFileList[index], {
+        const newUploadingFile = Object.assign({}, this.state.uploadingFileList[index], {
           status: 'uploaded',
-          percent: 0,
+          percent: 'complete',
           actions: [],
         });
         this.setState({
@@ -210,11 +233,10 @@ class C extends TablePageStatic {
   pauseOneObject(index) {
     this.s3Uploaders[index].abort();
 
-    const newUploadingFile = Object.assign(this.state.uploadingFileList[index], {
+    const newUploadingFile = Object.assign({}, this.state.uploadingFileList[index], {
       status: 'paused',
-      actions: ['continue', 'cancel'],
+      actions: ['continue', 'cancel'], // Cancel action will only appear after pause because cancelling while uploading usually result in error. TODO: figure out why
     });
-
     this.setState({
       uploadingFileList: update(this.state.uploadingFileList, {
         [index]: { $set: newUploadingFile },
@@ -225,9 +247,9 @@ class C extends TablePageStatic {
   continueOneObject(index) {
     this.s3Uploaders[index].send(this.uploadOneObjectCb(index));
 
-    const newUploadingFile = Object.assign(this.state.uploadingFileList[index], {
+    const newUploadingFile = Object.assign({}, this.state.uploadingFileList[index], {
       status: 'uploading',
-      actions: ['pause', 'cancel'],
+      actions: ['pause'],
     });
 
     this.setState({
@@ -244,7 +266,7 @@ class C extends TablePageStatic {
     }
     this.s3Uploaders[index] = null;
 
-    const newUploadingFile = Object.assign(this.state.uploadingFileList[index], {
+    const newUploadingFile = Object.assign({}, this.state.uploadingFileList[index], {
       status: 'canceled',
       percent: 0,
       actions: ['retry'],
@@ -260,10 +282,10 @@ class C extends TablePageStatic {
   retryOneObject(index) {
     const file = this.refs.fileUploader.files[index];
     this.uploadOneObject(file, index);
-    const newUploadingFile = Object.assign(this.state.uploadingFileList[index], {
+    const newUploadingFile = Object.assign({}, this.state.uploadingFileList[index], {
       status: 'uploading',
       percent: 0,
-      actions: ['pause', 'cancel'],
+      actions: ['pause'],
     });
     this.setState({
       uploadingFileList: update(this.state.uploadingFileList, {
@@ -273,8 +295,13 @@ class C extends TablePageStatic {
   }
 
   calProgressWidth(percent) {
-    if (percent <= 100) return (percent * 2.5 + '%');
-    return '250%';
+    /* Paused and continued uploading will bring more uploaded bytes than total bytes, resulting percent > 100%.
+     * The thick here is to hold the percent at 99% until uploading finish.
+     * TODO: find better solution
+     */
+    if (percent <= 99) return `${percent.toFixed(0)}%`;
+    if (percent === 'complete') return '100%';
+    return '99%';
   }
 
   renderTable() {
@@ -286,10 +313,10 @@ class C extends TablePageStatic {
             <th width="40">
               <input type="checkbox" className="selected" onChange={this.onSelectAll(this.props.context.visibleObjects.map((object) => object.Key))} />
             </th>
-            <th width="500">{t('fileName')}</th>
+            <th width="600">{t('fileName')}</th>
             <th width="200">{t('size')}</th>
             <th width="200">{t('category')}</th>
-            <th width="400">{t('created')}</th>
+            <th width="300">{t('created')}</th>
           </tr>
         </thead>
         <tbody>
@@ -300,7 +327,12 @@ class C extends TablePageStatic {
                   <input type="checkbox" className="selected" onChange={this.onSelect(object.Key)} checked={this.props.context.selected[object.Key] === true} />
                 </td>
                 <td>
-                  <Link to={`${servicePath}/buckets/${params.bucketName}/objects`}>
+                  <Link
+                    to={`${servicePath}/buckets/${params.bucketName}/objects`}
+                    style={{
+                      wordBreak: 'break-word',
+                    }}
+                  >
                     {object.Key}
                   </Link>
                 </td>
@@ -364,7 +396,7 @@ class C extends TablePageStatic {
                       <table className="table">
                         <thead>
                           <tr>
-                            <th width="400">{t('fileName')}</th>
+                            <th width="600">{t('fileName')}</th>
                             <th width="200">{t('size')}</th>
                             <th width="200">{t('status')}</th>
                             <th width="200">{t('action')}</th>
@@ -376,7 +408,24 @@ class C extends TablePageStatic {
                           return (
                             <tr key={file.name}>
                               <td style={{ position: 'relative' }}>
-                                <div>{file.name}</div>
+                                <div
+                                  style={{
+                                    paddingRight: '50px',
+                                    wordBreak: 'break-word',
+                                  }}
+                                >{file.name}</div>
+                                <div
+                                  style={{
+                                    width: '100%',
+                                    position: 'absolute',
+                                    height: '100%',
+                                    top: 0,
+                                    left: 0,
+                                    textAlign: 'right',
+                                    padding: '10px 16px',
+                                    verticalAlign: 'middle',
+                                  }}
+                                >{this.calProgressWidth(file.percent)}</div>
                                 <div
                                   style={{
                                     width: this.calProgressWidth(file.percent),
@@ -386,6 +435,7 @@ class C extends TablePageStatic {
                                     top: 0,
                                     left: 0,
                                     opacity: 0.5,
+                                    textAlign: 'right',
                                   }}
                                 ></div>
                               </td>
@@ -396,7 +446,7 @@ class C extends TablePageStatic {
                                   file.actions.map((action, index) =>
                                     <i
                                       key={index}
-                                      className={'fa ' + this.action[action]}
+                                      className={`fa ${this.actions[action]}`}
                                       style={{ marginRight: 10 }}
                                       onClick={
                                         () => this.handleUploadAction(action, key)
