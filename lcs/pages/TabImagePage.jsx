@@ -154,7 +154,12 @@ class C extends TablePage {
         </div>
         {!this.isPublicImage() && <div className={Object.keys(this.props.context.selected).length > 0 ? '' : 'hidden'}>
           <div className="filter-item inline">
-            <ButtonForm onSubmit={this.onDelete} text={t('delete')} type="btn-danger" />
+            <ButtonForm
+              onSubmit={this.onDelete}
+              text={t('delete')}
+              type="btn-danger"
+              disabled={this.isBatchActionDisabled(['active'], this.props.context.imageSet, 'imageId')}
+            />
           </div>
         </div>}
       </div>
