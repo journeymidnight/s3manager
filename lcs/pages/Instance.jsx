@@ -185,7 +185,10 @@ class C extends Page {
     const { t, dispatch, region, routerKey, params } = this.props;
 
     confirmModal(t('confirmDelete'), () => {
-      dispatch(InstanceActions.requestDeleteInstances(routerKey, region.regionId, [params.instanceId]));
+      dispatch(InstanceActions.requestDeleteInstances(routerKey, region.regionId, [params.instanceId]))
+        .then(() => {
+          dispatch(Actions.notify(t('deleteSuccessed')));
+        });
     });
   }
 
