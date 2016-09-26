@@ -15,8 +15,8 @@ export const cnSouth2 = 'cn-south-2';
 export const apHongkong1 = 'ap-hongkong-1';
 export const usWest1 = 'us-west-1';
 export const usEast1 = 'us-east-1';
-export const cnTest1 = 'cn-Test-1';
-export const cnTest2 = 'cn-Test-2';
+export const cnTest1 = 'cn-test-1';
+export const cnTest2 = 'cn-test-2';
 
 class IAM {
   call(action, params) {
