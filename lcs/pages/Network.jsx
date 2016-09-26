@@ -78,7 +78,7 @@ class C extends Page {
     this.deleteNetwork = this.deleteNetwork.bind(this);
     this.updateNetwork = this.updateNetwork.bind(this);
     this.setExternalGateway = this.setExternalGateway.bind(this);
-    this.onSetExternalGateway = this.onSetExternalGateway.bind(this);    
+    this.onSetExternalGateway = this.onSetExternalGateway.bind(this);
     this.unsetExternalGateway = this.unsetExternalGateway.bind(this);
     this.updateExternalGatewayBandwidth = this.updateExternalGatewayBandwidth.bind(this);
     this.onUpdateExternalGatewayBandwidth = this.onUpdateExternalGatewayBandwidth.bind(this);
@@ -374,7 +374,7 @@ class C extends Page {
         <Modal title={t('pageNetwork.updateNetwork')} ref="updateModal" >
           <NetworkUpdateForm onSubmit={this.onUpdate} initialValues={network} />
         </Modal>
-        {!network.externalGatewayIp &&<Modal title={t('pageNetwork.setExternalGateway')} ref="setExternalGatewayModal">
+        {!network.externalGatewayIp && <Modal title={t('pageNetwork.setExternalGateway')} ref="setExternalGatewayModal">
           <BandwidthUpdateForm onSubmit={this.onSetExternalGateway} resourceName={network.name} originalBandwidth={1} />
         </Modal>}
         {!!network.externalGatewayIp && <Modal title={t('pageNetwork.updateExternalGatewayBandwidth')} ref="updateExternalGatewayBandwidthModal">
