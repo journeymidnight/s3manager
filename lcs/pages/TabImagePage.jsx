@@ -100,7 +100,7 @@ class C extends TablePage {
                   <input type="checkbox" className="selected" onChange={this.onSelect(image.imageId)} checked={this.props.context.selected[image.imageId] === true} />
                 </td>}
                 <td>
-                  {!this.isPublicImage() && <Link to={`${servicePath}/images/${image.imageId}`}>{image.imageId}</Link>}
+                  {!this.isPublicImage() && <Link to={`${servicePath}/images_snapshots/private_images/${image.imageId}`}>{image.imageId}</Link>}
                   {this.isPublicImage() && <span>{image.imageId}</span>}
                 </td>
                 <td>

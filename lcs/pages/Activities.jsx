@@ -28,7 +28,7 @@ class C extends TablePage {
       subnet: 'subnets',
       portForwarding: 'portForwardings',
       volume: 'volumes',
-      image: 'images',
+      image: 'images_snapshots/private_images',
       snapshot: 'snapshots',
       eip: 'eips',
       keyPair: 'key_pairs',
