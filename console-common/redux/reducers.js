@@ -36,10 +36,7 @@ export const globalReducer = (state = null, action) => {
       return action.context;
 
     case ActionTypes.AUTH_LOGOUT:
-      cookie.remove('lecloud_uc_jsessionid', {
-        path: '/',
-        domain: 'lecloud.com',
-      });
+      cookie.remove('oauth_session_id');
       cookie.remove('token', {
         path: '/',
         domain: !window.DEBUG ? 'console.lecloud.com' : undefined,

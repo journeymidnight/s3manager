@@ -8,6 +8,7 @@ import { push } from 'react-router-redux';
 import Page, { attach } from '../../shared/pages/Page';
 import Modal, { alertModal, confirmModal } from '../../shared/components/Modal';
 import InstanceResetForm from '../forms/InstanceResetForm';
+import InstanceRestartForm from '../forms/InstanceRestartForm';
 import InstanceResizeForm from '../forms/InstanceResizeForm';
 import InstanceEipForm from '../forms/InstanceEipForm';
 import InstanceCaptureForm from '../forms/InstanceCaptureForm';
@@ -86,6 +87,8 @@ class C extends Page {
     this.onAssociateEip = this.onAssociateEip.bind(this);
     this.onResize = this.onResize.bind(this);
     this.onReset = this.onReset.bind(this);
+    this.onRestart = this.onRestart.bind(this);
+    this.onChangeLogin = this.onChangeLogin.bind(this);
     this.onUpdate = this.onUpdate.bind(this);
     this.onAttachVolume = this.onAttachVolume.bind(this);
     this.refresh = this.refresh.bind(this);
@@ -96,6 +99,7 @@ class C extends Page {
     this.restartInstance = this.restartInstance.bind(this);
     this.resizeInstance = this.resizeInstance.bind(this);
     this.resetInstance = this.resetInstance.bind(this);
+    this.changeLoginInstance = this.changeLoginInstance.bind(this);
     this.connectVNC = this.connectVNC.bind(this);
     this.associateEip = this.associateEip.bind(this);
     this.dissociateEip = this.dissociateEip.bind(this);
@@ -142,9 +146,11 @@ class C extends Page {
   stopInstance(e) {
     e.preventDefault();
 
-    const { dispatch, region, routerKey, params } = this.props;
+    const { t, dispatch, region, routerKey, params } = this.props;
 
-    dispatch(InstanceActions.requestStopInstances(routerKey, region.regionId, [params.instanceId]));
+    confirmModal(t('confirmStop'), () => {
+      dispatch(InstanceActions.requestStopInstances(routerKey, region.regionId, [params.instanceId]));
+    });
   }
 
   onUpdate(values) {
@@ -174,9 +180,23 @@ class C extends Page {
   restartInstance(e) {
     e.preventDefault();
 
+    this.refs.restartModal.show();
+  }
+
+  onRestart(values) {
     const { dispatch, region, routerKey, params } = this.props;
 
-    dispatch(InstanceActions.requestRestartInstances(routerKey, region.regionId, [params.instanceId]));
+    return new Promise((resolve, reject) => {
+      const restartType = values.restartType;
+
+      dispatch(InstanceActions.requestRestartInstances(routerKey, region.regionId, [params.instanceId], restartType))
+      .then(() => {
+        resolve();
+        this.refs.restartModal.hide();
+      }).catch(() => {
+        reject();
+      });
+    });
   }
 
   deleteInstance(e) {
@@ -214,6 +234,30 @@ class C extends Page {
     e.preventDefault();
 
     this.refs.resetModal.show();
+  }
+
+  onChangeLogin(values) {
+    const { dispatch, region, routerKey, params } = this.props;
+
+    return new Promise((resolve, reject) => {
+      const loginMode = values.loginMode;
+      const loginPassword = values.loginPassword;
+      const keyPairId = values.keyPairId;
+
+      dispatch(InstanceActions.requestChangeLoginInstances(routerKey, region.regionId, params.instanceId, loginMode, loginPassword, keyPairId))
+      .then(() => {
+        resolve();
+        this.refs.changeLoginModal.hide();
+      }).catch(() => {
+        reject();
+      });
+    });
+  }
+
+  changeLoginInstance(e) {
+    e.preventDefault();
+
+    this.refs.changeLoginModal.show();
   }
 
   onAssociateEip(values) {
@@ -559,6 +603,14 @@ class C extends Page {
                         <li>
                           <button
                             className="btn-page-action"
+                            onClick={this.changeLoginInstance}
+                          >
+                            {t('pageInstance.changeLoginInstance')}
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            className="btn-page-action"
                             disabled={instance.status !== 'stopped'}
                             onClick={this.resetInstance}
                           >
@@ -693,6 +745,9 @@ class C extends Page {
         <Modal title={t('pageInstance.resetInstance')} ref="resetModal" >
           <InstanceResetForm onSubmit={this.onReset} instance={instance} region={region} onNoKeypairHandler={this.noKeypairHandler} />
         </Modal>
+        <Modal title={t('pageInstance.changeLoginInstance')} ref="changeLoginModal" >
+          <InstanceResetForm onSubmit={this.onChangeLogin} instance={instance} region={region} onNoKeypairHandler={this.noKeypairHandler} />
+        </Modal>
         <Modal title={t('pageInstance.resizeInstance')} ref="resizeModal" >
           <InstanceResizeForm onSubmit={this.onResize} instance={instance} region={region} />
         </Modal>
@@ -701,6 +756,9 @@ class C extends Page {
           <InstanceCaptureForm onSubmit={this.onCaptureInstance} instance={instance} region={region} />
         </Modal>
         {this.props.context.volumeSet && this.props.context.volumeSet.length && this.renderAttachVolumeModal()}
+        <Modal title={t('confirmRestart')} ref="restartModal" >
+          <InstanceRestartForm onSubmit={this.onRestart} />
+        </Modal>
       </div>
     );
   }

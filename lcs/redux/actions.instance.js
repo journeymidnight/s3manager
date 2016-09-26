@@ -150,11 +150,12 @@ export function requestStopInstances(routerKey, regionId, instanceIds) {
   };
 }
 
-export function requestRestartInstances(routerKey, regionId, instanceIds) {
+export function requestRestartInstances(routerKey, regionId, instanceIds, restartType) {
   return dispatch => {
     return IaaS
     .doAction(regionId, ACTION_NAMES.restartInstances, {
       instanceIds,
+      restartType,
     })
     .promise
     .then(() => {
@@ -292,5 +293,29 @@ export function requestCaptureInstance(routerKey, regionId, instanceId, name) {
           dispatch(notify(i18n.t('capturePending')));
         }, 1000);
       });
+  };
+}
+
+export function requestChangeLoginInstances(routerKey, regionId, instanceId, loginMode, loginPassword, keyPairId) {
+  return dispatch => {
+    const action = loginMode === 'password' ? ACTION_NAMES.changePassword : ACTION_NAMES.changeKeyPair;
+    const payload = loginMode === 'password' ? {
+      instanceId,
+      loginPassword,
+    } : {
+      instanceId,
+      keyPairId,
+    };
+    return IaaS
+    .doAction(regionId, action, payload)
+    .promise
+    .then(() => {
+      setTimeout(() => {
+        dispatch(notify(i18n.t('resetPending')));
+      }, 1000);
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
   };
 }

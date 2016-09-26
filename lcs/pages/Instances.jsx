@@ -3,8 +3,9 @@ import moment from 'moment';
 import React from 'react';
 import { Link } from 'react-router';
 import { attach } from '../../shared/pages/Page';
-import { confirmModal } from '../../shared/components/Modal';
+import Modal, { confirmModal } from '../../shared/components/Modal';
 import { buttonForm } from '../../shared/forms/ButtonForm';
+import InstanceRestartForm from '../forms/InstanceRestartForm';
 import StatusFilter from '../../shared/components/StatusFilter';
 import TimeSorter from '../../shared/components/TimeSorter';
 import TablePage from '../../shared/pages/TablePage';
@@ -24,6 +25,7 @@ class C extends TablePage {
     this.onStart = this.onStart.bind(this);
     this.onStop = this.onStop.bind(this);
     this.onRestart = this.onRestart.bind(this);
+    this.restart = this.restart.bind(this);
     this.onSearchKeyPress = this.onSearchKeyPress.bind(this);
   }
 
@@ -32,7 +34,7 @@ class C extends TablePage {
     dispatch(Actions.setHeader(t('instanceManage'), `${servicePath}/instances`));
 
     this.initTable(routerKey, {
-      status: ['pending', 'active', 'starting', 'stopped', 'stopping', 'restarting', 'scheduling'],
+      status: ['pending', 'active', 'starting', 'stopped', 'stopping', 'restarting', 'scheduling', 'error'],
     });
   }
 
@@ -79,11 +81,31 @@ class C extends TablePage {
   }
 
   onStop() {
-    return this.batchActions(InstanceActions.requestStopInstances, 'stopInstance');
+    const { t } = this.props;
+    confirmModal(t('confirmStop'), () => {
+      return this.batchActions(InstanceActions.requestStopInstances, 'stopInstance');
+    });
   }
 
-  onRestart() {
-    return this.batchActions(InstanceActions.requestRestartInstances, 'restartInstance');
+  restart() {
+    this.refs.restartModal.show();
+  }
+
+  onRestart(values) {
+    const { dispatch, region, routerKey } = this.props;
+    const instanceIds = _.keys(this.props.context.selected);
+
+    return new Promise((resolve, reject) => {
+      const restartType = values.restartType;
+
+      dispatch(InstanceActions.requestRestartInstances(routerKey, region.regionId, instanceIds, restartType))
+      .then(() => {
+        resolve();
+        this.refs.restartModal.hide();
+      }).catch(() => {
+        reject();
+      });
+    });
   }
 
   connectVNC(instance) {
@@ -175,7 +197,7 @@ class C extends TablePage {
     const { t } = this.props;
     const statusOption = [
       {
-        status: ['pending', 'active', 'starting', 'stopped', 'stopping', 'restarting', 'scheduling'],
+        status: ['pending', 'active', 'starting', 'stopped', 'stopping', 'restarting', 'scheduling', 'error'],
         name: t('allAvaliableStatus'),
       }, {
         status: ['active'],
@@ -213,7 +235,7 @@ class C extends TablePage {
             {buttonForm({ onSubmit: this.onStart, text: t('pageInstance.startInstance'), disabled: this.isBatchActionDisabled(['stopped']) })}
           </div>
           <div className="filter-item inline">
-            {buttonForm({ onSubmit: this.onRestart, text: t('pageInstance.restartInstance'), disabled: this.isBatchActionDisabled(['active']) })}
+            {buttonForm({ onSubmit: this.restart, text: t('pageInstance.restartInstance'), disabled: this.isBatchActionDisabled(['active']) })}
           </div>
           <div className="filter-item inline">
             {buttonForm({ onSubmit: this.onStop, text: t('pageInstance.stopInstance'), disabled: this.isBatchActionDisabled(['active']) })}
@@ -227,6 +249,9 @@ class C extends TablePage {
             })}
           </div>
         </div>}
+        <Modal title={t('pageInstance.resetInstance')} ref="restartModal" >
+          <InstanceRestartForm onSubmit={this.onRestart} />
+        </Modal>
       </div>
     );
   }

@@ -53,7 +53,7 @@ class C extends Page {
                     或拨打客服电话 400-055-6060 。
                   </p>
                   <a href="mailto:zhangzhenyao@le.com?subject=开通云主机账号权限" className="btn btn-success">
-                    发送邮件
+                    开通权限
                   </a>
                   &nbsp;
                   <a href="http://lecloud.com" className="btn btn-info">
