@@ -205,7 +205,10 @@ class C extends Page {
     const { t, dispatch, region, routerKey, params } = this.props;
 
     confirmModal(t('confirmDelete'), () => {
-      dispatch(InstanceActions.requestDeleteInstances(routerKey, region.regionId, [params.instanceId]));
+      dispatch(InstanceActions.requestDeleteInstances(routerKey, region.regionId, [params.instanceId]))
+        .then(() => {
+          dispatch(Actions.notify(t('deleteSuccessed')));
+        });
     });
   }
 
@@ -297,12 +300,13 @@ class C extends Page {
   dissociateEip(e) {
     e.preventDefault();
 
-    const { dispatch, region, routerKey, params } = this.props;
+    const { dispatch, region, routerKey, params, t } = this.props;
     const instance = this.props.context.instance || this.instance;
-
-    dispatch(EipActions.requestDissociateEips(routerKey, region.regionId, [instance.eipId], params.instanceId))
-    .then(() => {
-    }).catch(() => {
+    confirmModal(t('pageEip.confirmDissociateEip'), () => {
+      dispatch(EipActions.requestDissociateEips(routerKey, region.regionId, [instance.eipId], params.instanceId))
+        .then(() => {
+        }).catch(() => {
+        });
     });
   }
 

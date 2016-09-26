@@ -34,15 +34,6 @@ class C extends TablePage {
     return VolumeActions.requestDescribeVolumes(routerKey, region.regionId, filters);
   }
 
-  isBatchDeleteDisabled() {
-    const volumeIds = _.keys(this.props.context.selected);
-    const unavailabeVolumes = this.props.context.volumeSet.filter((volume) => {
-      return volumeIds.indexOf(volume.volumeId) > -1 && ['active', 'error'].indexOf(volume.status) === -1;
-    });
-
-    return !!unavailabeVolumes.length;
-  }
-
   onDelete() {
     const { t, dispatch, routerKey, region } = this.props;
     const volumeIds = _.keys(this.props.context.selected);
@@ -173,7 +164,12 @@ class C extends TablePage {
         </div>
         <div className={Object.keys(this.props.context.selected).length > 0 ? '' : 'hidden'}>
           <div className="filter-item inline">
-            <ButtonForm onSubmit={this.onDelete} text={t('delete')} type="btn-danger" disabled={this.isBatchDeleteDisabled()} />
+            <ButtonForm
+              onSubmit={this.onDelete}
+              text={t('delete')}
+              type="btn-danger"
+              disabled={this.isBatchActionDisabled(['active', 'error'], this.props.context.volumeSet, 'volumeId')}
+            />
           </div>
         </div>
       </div>

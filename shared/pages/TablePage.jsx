@@ -134,6 +134,15 @@ class C extends Page {
     }).length;
   }
 
+  isBatchActionDisabled(availabeStatuss, resourceSet, resourceIdName) {
+    const selectedIds = _.keys(this.props.context.selected);
+    const unavailabeResources = resourceSet.filter((resource) => {
+      return selectedIds.indexOf(resource[resourceIdName]) > -1 && availabeStatuss.indexOf(resource.status) === -1;
+    });
+
+    return !!unavailabeResources.length;
+  }
+
   doSearch() {
     let searchWord = this.refs.searchBox.refs.search.value;
     if (_.isEmpty(searchWord)) {

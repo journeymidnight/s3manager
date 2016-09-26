@@ -147,7 +147,12 @@ class C extends TablePage {
         </div>
         <div className={Object.keys(this.props.context.selected).length > 0 ? '' : 'hidden'}>
           <div className="filter-item inline">
-            <ButtonForm onSubmit={this.onDelete} text={t('delete')} type="btn-danger" />
+            <ButtonForm
+              onSubmit={this.onDelete}
+              text={t('delete')}
+              type="btn-danger"
+              disabled={this.isBatchActionDisabled(['active'], this.props.context.keyPairSet, 'keyPairId')}
+            />
           </div>
         </div>
       </div>
