@@ -1,9 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
+import update from 'react-addons-update';
 import NavLink from '../../shared/components/NavLink';
 
 class C extends React.Component {
+
+  constructor() {
+    super();
+    this.state = {
+      navStates: {},
+    };
+
+    this.toggleSubNavs = this.toggleSubNavs.bind(this);
+  }
 
   componentWillMount() {
     const { t } = this.props;
@@ -64,11 +74,46 @@ class C extends React.Component {
         title: t('bucketList'),
         icon: 'fa-sticky-note',
       }, {
-        path: 'monitor',
-        title: t('resourceMonitor'),
+        path: 'monitors',
+        title: t('resourceMonitors'),
         icon: 'fa-sticky-note',
+        subNavs: [{
+          path: 'monitors/usage',
+          title: t('usageMonitor'),
+          icon: 'fa-sticky-note',
+        }, {
+          path: 'monitors/flow',
+          title: t('flowMonitor'),
+          icon: 'fa-sticky-note',
+        }, {
+          path: 'monitors/api',
+          title: t('apiMonitor'),
+          icon: 'fa-sticky-note',
+        }, {
+          path: 'monitors/vendor',
+          title: t('vendorMonitor'),
+          icon: 'fa-sticky-note',
+        }, {
+          path: 'monitors/rigion',
+          title: t('rigionMonitor'),
+          icon: 'fa-sticky-note',
+        }],
       }],
     };
+
+    const navStates = {};
+    for (const service in this.services) {
+      if (!this.services.hasOwnProperty(service)) continue;
+      const navState = {};
+      this.services[service].forEach((nav) => {
+        if (nav.subNavs) navState[nav.title] = false;
+      });
+      navStates[service] = navState;
+    }
+
+    this.setState({
+      navStates,
+    }, () => console.log(this.state));
   }
 
   componentDidMount() {
@@ -79,6 +124,14 @@ class C extends React.Component {
       cursoropacitymax: '0.4',
       cursorcolor: '#fff',
       cursorborder: '1px solid #fff',
+    });
+  }
+
+  toggleSubNavs(navTitle) {
+    this.setState({
+      navStates: update(this.state.navStates, {
+        [this.props.service.servicePath]: { [navTitle]: { $apply: (state) => !state } },
+      }),
     });
   }
 
@@ -103,9 +156,27 @@ class C extends React.Component {
         <ul className="nav nav-sidebar">
           {navs.map((_nav) => {
             return (
-              <NavLink to={`${service.servicePath}/${_nav.path}`} key={_nav.path}>
+              <NavLink
+                to={`${service.servicePath}/${_nav.path}`}
+                key={_nav.path}
+                onClick={() => this.toggleSubNavs(_nav.title)}
+              >
                 <i className={`fa ${_nav.icon} fa-fw`} />
                 <span>{_nav.title}</span>
+
+                {_nav.subNavs && this.state.navState[service.servicePath][_nav.title] && <ul className="nav nav-sub">
+                  {_nav.subNavs.map((_subNav) => {
+                    return (
+                      <NavLink
+                        to={`${service.servicePath}/${_subNav.path}`}
+                        key={_subNav.path}
+                      >
+                        <i className={`fa ${_subNav.icon} fa-fw`} />
+                        <span>{_subNav.title}</span>
+                      </NavLink>
+                    );
+                  })}
+                </ul>}
               </NavLink>
             );
           })}

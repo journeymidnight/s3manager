@@ -653,11 +653,10 @@
         }
     },
     "smallScreen": "低宽度的屏幕中可能会影响组件的正常布局。",
+
     "bucketList": "空间管理",
     "bucketListDescription": "存储空间管理",
     "filterByBucketName": "按存储空间名称过滤",
-    "resourceMonitor": "资源监控",
-    "resourceMonitorDescription": "资源监控描述",
     "bucketDeletedSuccess": "空间删除成功",
     "bucketCreatedSuccess": "空间添加成功",
     "pageBucketCreate": {
@@ -721,5 +720,12 @@
         "cancel": "取消",
         "retry": "重试"
     },
-    "objectDeletedSuccess": "对象删除成功"
+    "objectDeletedSuccess": "对象删除成功",
+
+    "resourceMonitors": "资源监控",
+    "usageMonitor": "存储资源监控",
+    "flowMonitor": "流量监控",
+    "apiMonitor": "请求次数监控",
+    "vendorMonitor": "线路统计",
+    "regionMonitor": "地域统计"
 }
