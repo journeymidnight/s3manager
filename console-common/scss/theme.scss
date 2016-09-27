@@ -12,9 +12,20 @@
                 }
 
                 .table-detail > tbody > tr > td:nth-child(2) > span {
-                    max-width: 250px;
                     display: inline-block;
                     word-wrap: break-word;
+
+                    @media (min-width: $screen-md-min) {
+                        max-width: 150px;
+                    }
+
+                    @media (min-width: 1150px) {
+                        max-width: 200px;
+                    }
+
+                    @media (min-width: 1300px), (max-width: $screen-md-min) {
+                        max-width: 250px;
+                    }
                 }
 
                 .tabs {
