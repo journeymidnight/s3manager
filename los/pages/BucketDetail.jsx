@@ -10,9 +10,8 @@ import * as BucketActions from '../redux/actions.bucket';
 
 class C extends Page {
 
-  constructor(props) {
-    super(props);
-
+  constructor() {
+    super();
     this.formatBytes = this.formatBytes.bind(this);
   }
 
@@ -86,7 +85,9 @@ class C extends Page {
                         <td width="100">{t('pageBucket.usage')}</td>
                         <td>
                           <span>
-                            {(context.usagebyhour && context.usagebyhour.length > 0) ? this.formatBytes(context.usagebyhour[context.usagebyhour.length - 1].usage * 1024) : 0}
+                            {(context.usagebyhour && context.usagebyhour.length > 0) ?
+                              this.formatBytes(Number(context.usagebyhour[context.usagebyhour.length - 1].usage) * 1024)
+                              : 0}
                           </span>
                         </td>
                       </tr>
@@ -94,7 +95,8 @@ class C extends Page {
                         <td>{t('pageBucket.monthlyFlow')}</td>
                         <td>
                           <span>
-                          {(context.staticsbyday && context.flowbyhour) ? this.formatBytes(context.staticsbyday.reduce((previousValue, currentItem) =>
+                          {(context.staticsbyday && context.flowbyhour) ?
+                            this.formatBytes(context.staticsbyday.reduce((previousValue, currentItem) =>
                               (previousValue + Number(currentItem.flowInPrivate)
                               + Number(currentItem.flowOutPrivate)
                               + Number(currentItem.flowInPublic)
@@ -103,7 +105,8 @@ class C extends Page {
                             + context.flowbyhour.reduce((previousValue, currentItem) =>
                               (previousValue + Number(currentItem.flowout)
                                 + Number(currentItem.flowin)
-                              ), 0)) : 0}
+                              ), 0))
+                            : 0}
                           </span>
                         </td>
                       </tr>
@@ -111,12 +114,14 @@ class C extends Page {
                         <td>{t('pageBucket.monthlyAPI')}</td>
                         <td>
                           <span>
-                            {(context.staticsbyday && context.opbyhour) ? context.staticsbyday.reduce((previousValue, currentItem) =>
+                            {(context.staticsbyday && context.opbyhour) ?
+                            context.staticsbyday.reduce((previousValue, currentItem) =>
                                 (previousValue + Number(currentItem.ops)
                                 ), 0)
                             + context.opbyhour.reduce((previousValue, currentItem) =>
                               (previousValue + Number(currentItem.count)
-                              ), 0) : 0}
+                              ), 0)
+                              : 0}
                           </span>
                         </td>
                       </tr>

@@ -6,17 +6,12 @@ import * as BucketActions from '../redux/actions.bucket';
 
 class C extends Page {
 
-  initialize() {
-  }
-
   shouldComponentUpdate(nextProps) {
-    let shouleUpdate = false;
-
+    let shouldUpdate = false;
     if (nextProps.routerKey !== this.props.routerKey && _.keys(nextProps.context).length === 0) {
-      shouleUpdate = true;
+      shouldUpdate = true;
     }
-
-    return shouleUpdate;
+    return shouldUpdate;
   }
 
   componentWillUnmount() {
@@ -25,12 +20,12 @@ class C extends Page {
   }
 
   render() {
-    const { t, servicePath } = this.props;
+    const { t, servicePath, params, location } = this.props;
 
     let active = 'detail';
-    if (_.endsWith(this.props.location.pathname, 'detail')) {
+    if (_.endsWith(location.pathname, 'detail')) {
       active = 'detail';
-    } else if (_.endsWith(this.props.location.pathname, 'objects')) {
+    } else if (_.endsWith(location.pathname, 'objects')) {
       active = 'objects';
     }
 
@@ -40,12 +35,12 @@ class C extends Page {
           <div className="clearfix">
             <ul className="nav-links clearfix">
               <li className={`pull-left ${(active === 'detail') ? 'active' : ''}`}>
-                <Link data-placement="left" to={`${servicePath}/buckets/${this.props.global.bucketName}/detail`}>
+                <Link data-placement="left" to={`${servicePath}/buckets/${params.bucketName}/detail`}>
                   {t('bucketDetail')}
                 </Link>
               </li>
               <li className={`pull-left ${(active === 'objects') ? 'active' : ''}`}>
-                <Link data-placement="left" to={`${servicePath}/buckets/${this.props.global.bucketName}/objects`}>
+                <Link data-placement="left" to={`${servicePath}/buckets/${params.bucketName}/objects`}>
                   {t('objectManagement')}
                 </Link>
               </li>

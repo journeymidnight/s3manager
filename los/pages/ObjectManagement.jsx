@@ -33,7 +33,6 @@ class C extends TablePageStatic {
     };
 
     this.refresh = this.refresh.bind(this);
-    this.batchActions = this.batchActions.bind(this);
     this.onDelete = this.onDelete.bind(this);
     this.onSearchKeyPress = this.onSearchKeyPress.bind(this);
     this.formatBytes = this.formatBytes.bind(this);
@@ -66,61 +65,29 @@ class C extends TablePageStatic {
     return ObjectActions.setVisibleObjects(this.s3, this.props.params.bucketName, routerKey, filters);
   }
 
-  isBatchActionDisabled(availabeStatuss) {
-    const instanceIds = _.keys(this.props.context.selected);
-    const unavailabeInstances = this.props.context.objects.filter((instance) => {
-      return instanceIds.indexOf(instance.instanceId) > -1 && availabeStatuss.indexOf(instance.status) === -1;
-    });
-
-    return !!unavailabeInstances.length;
-  }
-
-  batchActions(action) {
-    const { dispatch, region, routerKey } = this.props;
+  onDelete() {
+    const { t, dispatch } = this.props;
     const objectKeys = _.keys(this.props.context.selected);
 
-    return new Promise((resolve, reject) => {
-      dispatch(action(routerKey, region.regionId, objectKeys))
-        .then(() => {
+    confirmModal(t('confirmDelete'), () => new Promise((resolve, reject) => {
+      const params = {
+        Bucket: this.props.params.bucketName,
+        Delete: {
+          Objects: objectKeys.map((key) => ({ Key: key })),
+          Quiet: true,
+        },
+      };
+
+      this.s3.deleteObjects(params, (error) => {
+        if (error) {
+          dispatch(notifyAlert(error.message));
+          reject(error);
+        } else {
+          dispatch(notify(t('objectDeletedSuccess')));
           resolve();
-          this.onRefresh({}, false)();
-        }).catch(() => {
-          reject();
-        });
-    });
-  }
-
-  onDelete() {
-    const { t } = this.props;
-    confirmModal(t('confirmDelete'), () => {
-      return this.batchActions((routerKey, regionId, objectKeys) => {
-        return dispatch => {
-          return new Promise((resolve, reject) => {
-            const params = {
-              Bucket: this.props.params.bucketName,
-              Delete: {
-                Objects: objectKeys.map((key) => {
-                  return {
-                    Key: key,
-                  };
-                }),
-                Quiet: true,
-              },
-            };
-
-            this.s3.deleteObjects(params, (error, data) => {
-              if (error) {
-                dispatch(notifyAlert(error.message));
-                reject(error);
-              } else {
-                dispatch(notify(t('objectDeletedSuccess')));
-                resolve(data);
-              }
-            });
-          });
-        };
+        }
       });
-    });
+    }));
   }
 
   formatBytes(bytes) {
@@ -493,7 +460,6 @@ class C extends TablePageStatic {
               onSubmit: this.onDelete,
               text: t('delete'),
               type: 'btn-danger',
-              disabled: this.isBatchActionDisabled(['active', 'stopped', 'error']), // TODO: modify disabled for available objects
             })}
           </div>
         </div>}
