@@ -92,7 +92,7 @@ class C extends TablePage {
   renderTable() {
     const { t } = this.props;
     return this.props.context.total > 0 && this.props.context.portForwardingSet.length > 0 && (
-      <table className="table">
+      <table className="table table-list">
         <thead>
           <tr>
             <th width="40">

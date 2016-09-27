@@ -53,6 +53,24 @@
                     }
                 }
             }
+
+            .table-list {
+                tbody > tr > td, thead > tr > th{
+                    text-align: center;
+                    @media (max-width: 1300px) {
+                        padding: 10px 8px
+                    }
+                    span.list-item-name{
+                        display: inline-block;
+                        word-wrap: break-word;
+                        max-width: 150px;
+
+                        &.instance-name {
+                            max-width: 120px;
+                        }
+                    }
+                }
+            }
         }
     }
 

@@ -52,7 +52,7 @@ class C extends TablePage {
   renderTable() {
     const { t } = this.props;
     return this.props.context.total > 0 && this.props.context.accessKeySet.length > 0 && (
-      <table className="table">
+      <table className="table table-list">
         <thead>
           <tr>
             <th width="40">
@@ -77,8 +77,10 @@ class C extends TablePage {
                   <input type="checkbox" className="selected" onChange={this.onSelect(accessKey.accessKey)} checked={this.props.context.selected[accessKey.accessKey] === true} />
                 </td>
                 <td>
+                  <span className="list-item-name">
                   {accessKey.name && <strong>{accessKey.name}</strong>}
                   {!accessKey.name && <i className="text-muted">{t('noName')}</i>}
+                  </span>
                 </td>
                 <td>
                   <div>

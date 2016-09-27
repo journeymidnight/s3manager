@@ -111,7 +111,7 @@ class C extends TablePage {
   renderTable() {
     const { t, servicePath } = this.props;
     return this.props.context.total > 0 && this.props.context.instanceSet.length > 0 && (
-      <table className="table">
+      <table className="table table-list">
         <thead>
           <tr>
             <th width="40">
@@ -148,8 +148,10 @@ class C extends TablePage {
                 </a>}
               </td>
               <td>
+                <span className="list-item-name instance-name">
                 {instance.name && <strong>{instance.name}</strong>}
                 {!instance.name && <i className="text-muted">{t('noName')}</i>}
+                </span>
               </td>
               <td className={`i-status i-status-${instance.status}`}>
                 <i className="icon"></i>
