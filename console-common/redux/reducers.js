@@ -29,7 +29,7 @@ export const serviceReducer = (state = null, action) => {
 export const globalReducer = (state = null, action) => {
   switch (action.type) {
     case ActionTypes.AUTH_LOGIN:
-      cookie.set('token', action.token, {
+      cookie.set('plato_token', action.token, {
         path: '/',
         domain: !window.DEBUG ? 'console.lecloud.com' : undefined,
       });
@@ -37,7 +37,7 @@ export const globalReducer = (state = null, action) => {
 
     case ActionTypes.AUTH_LOGOUT:
       cookie.remove('oauth_session_id');
-      cookie.remove('token', {
+      cookie.remove('plato_token', {
         path: '/',
         domain: !window.DEBUG ? 'console.lecloud.com' : undefined,
       });
