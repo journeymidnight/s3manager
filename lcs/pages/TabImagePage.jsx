@@ -74,7 +74,7 @@ class C extends TablePage {
   renderTable() {
     const { t, servicePath } = this.props;
     return this.props.context.total > 0 && this.props.context.imageSet.length > 0 && (
-      <table className="table">
+      <table className="table table-list">
         <thead>
           <tr>
             {!this.isPublicImage() && <th width="40">
@@ -100,12 +100,14 @@ class C extends TablePage {
                   <input type="checkbox" className="selected" onChange={this.onSelect(image.imageId)} checked={this.props.context.selected[image.imageId] === true} />
                 </td>}
                 <td>
-                  {!this.isPublicImage() && <Link to={`${servicePath}/images/${image.imageId}`}>{image.imageId}</Link>}
+                  {!this.isPublicImage() && <Link to={`${servicePath}/images_snapshots/private_images/${image.imageId}`}>{image.imageId}</Link>}
                   {this.isPublicImage() && <span>{image.imageId}</span>}
                 </td>
                 <td>
+                  <span className="list-item-name">
                   {image.name && <strong>{image.name}</strong>}
                   {!image.name && <i className="text-muted">{t('noName')}</i>}
+                  </span>
                 </td>
                 <td>{this.formatImageSize(image.size)}</td>
                 <td className={`i-status i-status-${image.status}`}>

@@ -54,7 +54,7 @@ class C extends TablePage {
   renderTable() {
     const { t, servicePath } = this.props;
     return this.props.context.total > 0 && this.props.context.eipSet.length > 0 && (
-      <table className="table">
+      <table className="table table-list">
         <thead>
           <tr>
             <th width="40">
@@ -87,8 +87,10 @@ class C extends TablePage {
                   </Link>
                 </td>
                 <td>
+                  <span className="list-item-name">
                   {eip.name && <strong>{eip.name}</strong>}
                   {!eip.name && <i className="text-muted">{t('noName')}</i>}
+                  </span>
                 </td>
                 <td>{eip.bandwidth}Mbps</td>
                 <td>

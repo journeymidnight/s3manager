@@ -533,6 +533,10 @@
         "4702": "尝试给主机解绑 Eip，再重试。",
         "4113": "申请的{resource}超过配额，请提交工单来申请提高配额。"
     },
+    "validationMessage": {
+        "ipAddress": "ip地址格式错误",
+        "port": "端口号格式错误"
+    },
     "actionTranslation": {
         "CreateInstances": "创建云主机",
         "StartInstances": "启动云主机",
@@ -582,7 +586,7 @@
     "sidebarInstanceType": "主机配置",
     "sidebarVolume": "云硬盘",
     "sidebarNetwork": "私有网络",
-    "sidebarImagesAndSnapshots": "映像及备份",
+    "sidebarImagesAndSnapshots": "映像",
     "sidebarEIP": "公网 IP",
     "sidebarKeyPair": "SSH 密钥",
     "sidebarFirewall": "防火墙",

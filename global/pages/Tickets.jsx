@@ -49,7 +49,7 @@ class C extends TablePage {
   renderTable() {
     const { t } = this.props;
     return this.props.context.total > 0 && this.props.context.ticketSet.length > 0 && (
-      <table className="table">
+      <table className="table table-list">
         <thead>
           <tr>
             <th width="150">{t('id')}</th>
@@ -67,7 +67,7 @@ class C extends TablePage {
                     {ticket.ticketId}
                   </Link>
                 </td>
-                <td><strong>{ticket.title}</strong></td>
+                <td><span className="list-item-name"><strong>{ticket.title}</strong></span></td>
                 <td className={`i-status i-status-${ticket.status}`}>
                   <i className="icon"></i>
                   {t(`ticketStatus.${ticket.status}`)}
