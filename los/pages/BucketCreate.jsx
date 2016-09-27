@@ -3,28 +3,28 @@ import { push } from 'react-router-redux';
 import AWS from 'aws-sdk';
 import Page, { attach } from '../../shared/pages/Page';
 import BucketCreateForm from '../forms/BucketCreateForm';
-import { setHeader, extendContext, notifyAlert } from '../../console-common/redux/actions';
+import { setHeader, extendContext, notify, notifyAlert } from '../../console-common/redux/actions';
+import { requestGetS3Domain } from '../redux/actions.s3Domain';
 import * as BucketActions from '../redux/actions.bucket';
 
 class C extends Page {
 
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.onSubmit = this.onSubmit.bind(this);
   }
 
   initialize(routerKey) {
     const { t, dispatch, servicePath, region } = this.props;
-
     dispatch(setHeader(t('bucketList'), `${servicePath}/buckets`));
-    dispatch(BucketActions.requestGetS3Domain(routerKey, region.regionId)).
+    dispatch(requestGetS3Domain(routerKey, region.regionId)).
     then(() => {
       dispatch(extendContext({ initialized: true }, routerKey));
     });
   }
 
   onSubmit(values) {
-    const { dispatch, region, routerKey, servicePath } = this.props;
+    const { dispatch, region, routerKey, servicePath, t } = this.props;
 
     return new Promise((resolve, reject) => {
       const bucketName = values.bucketName;
@@ -45,7 +45,8 @@ class C extends Page {
         })
         .then(() => {
           resolve();
-          dispatch(push(`${servicePath}/buckets`));
+          dispatch(notify(t('bucketCreatedSuccess')));
+          setTimeout(() => dispatch(push(`${servicePath}/buckets`)), 300);
         })
         .catch((error) => {
           dispatch(notifyAlert(error.message));
@@ -56,7 +57,6 @@ class C extends Page {
 
   renderAfterInitialized() {
     const { t } = this.props;
-
     return (
       <div className="container-fluid container-limited">
         <div className="content">

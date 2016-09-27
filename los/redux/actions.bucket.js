@@ -29,14 +29,15 @@ export function setVisibleBuckets(routerKey, regionId, filters = {}) {
   };
 }
 
-export function requestDeleteBuckets(routerKey, regionId, bucketNames) {
+export function requestDeleteBucket(routerKey, regionId, bucketName) {
   return dispatch => {
     return Wcs
-      .doAction(regionId, ACTION_NAMES.deletebucket, { bucket: bucketNames[0] }) // TODO: Modify to delete all buckets
+      .doAction(regionId, ACTION_NAMES.deletebucket, { bucket: bucketName })
       .promise
       .then(() => {
-        notify(i18n.t('bucketsDeletedSuccess'));
-      }).catch((error) => {
+        dispatch(notify(i18n.t('bucketDeletedSuccess')));
+      })
+      .catch((error) => {
         dispatch(notifyAlert(error.message));
       });
   };

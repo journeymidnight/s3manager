@@ -658,8 +658,8 @@
     "filterByBucketName": "按存储空间名称过滤",
     "resourceMonitor": "资源监控",
     "resourceMonitorDescription": "资源监控描述",
-    "bucketsDeletedSuccess": "空间删除成功",
-    "bucketsCreatedSuccess": "空间添加成功",
+    "bucketDeletedSuccess": "空间删除成功",
+    "bucketCreatedSuccess": "空间添加成功",
     "pageBucketCreate": {
         "createBucket": "添加空间",
         "bucketName": "空间名称",
