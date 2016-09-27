@@ -584,7 +584,7 @@
     "sidebarInstanceType": "主机配置",
     "sidebarVolume": "云硬盘",
     "sidebarNetwork": "私有网络",
-    "sidebarImagesAndSnapshots": "映像及备份",
+    "sidebarImagesAndSnapshots": "映像",
     "sidebarEIP": "公网 IP",
     "sidebarKeyPair": "SSH 密钥",
     "sidebarFirewall": "防火墙",
