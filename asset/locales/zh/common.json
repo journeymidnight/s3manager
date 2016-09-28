@@ -199,7 +199,8 @@
         "pending": "上传中",
         "active": "可用",
         "deleted": "已删除",
-        "ceased": "已删除"
+        "ceased": "已删除",
+        "error": "状态异常"
     },
     "pageImage": {
         "basic": "基本信息",
