@@ -68,6 +68,11 @@ class C extends React.Component {
         title: t('resourceMonitor'),
         icon: 'fa-sticky-note',
       }],
+      l2b: [{
+        path: 'test',
+        title: t('test'),
+        icon: 'fa-sticky-note',
+      }],
     };
   }
 
