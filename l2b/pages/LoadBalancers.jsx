@@ -14,6 +14,11 @@ import * as LoadbalanceActions from '../redux/actions.load_balancer';
 
 class C extends TablePage {
 
+  constructor(props) {
+    super(props);
+    this.onDelete = this.onDelete.bind(this);
+  }
+
   initialize(routerKey) {
     const { t, dispatch, servicePath } = this.props;
     dispatch(Actions.setHeader(t('loadbalancerManage'), `${servicePath}/loadbalancers`));
@@ -26,6 +31,23 @@ class C extends TablePage {
   refreshAction(routerKey, filters) {
     const { region } = this.props;
     return LoadbalanceActions.requestDescribeLoadBalancers(routerKey, region.regionId, filters);
+  }
+
+  onDelete() {
+    const { t, dispatch, routerKey, region } = this.props;
+    const loadbalancerIds = _.keys(this.props.context.selected);
+
+    confirmModal(t('confirmDelete'), () => {
+      return new Promise((resolve, reject) => {
+        dispatch(LoadbalanceActions.requestDeleteLoadBalancers(routerKey, region.regionId, loadbalancerIds))
+          .then(() => {
+            resolve();
+            this.onRefresh({}, false)();
+          }).catch(() => {
+            reject();
+          });
+      });
+    });
   }
 
   renderTable() {
@@ -54,7 +76,12 @@ class C extends TablePage {
             return (
               <tr key={loadbalancer.loadBalancerId}>
                 <td>
-                  <input type="checkbox" className="selected" onChange={this.onSelect(loadbalancer.loadBalancerId)} checked={this.props.context.selected[loadbalancer.loadBalancerId] === true} />
+                  <input
+                    type="checkbox"
+                    className="selected"
+                    onChange={this.onSelect(loadbalancer.loadBalancerId)}
+                    checked={this.props.context.selected[loadbalancer.loadBalancerId] === true}
+                  />
                 </td>
                 <td>
                   <Link to={`${servicePath}/loadbalancers/${loadbalancer.loadBalancerId}`}>
@@ -92,7 +119,7 @@ class C extends TablePage {
         </div>
         <div className="nav-controls">
           <Link className="btn btn-new" to={`${servicePath}/load_balancers/create`}>
-            <i className="fa fa-plus"></i>&nbsp; {t('create') }
+            <i className="fa fa-plus"></i>&nbsp; {t('create')}
           </Link>
         </div>
       </div>

@@ -1,6 +1,6 @@
-import { notifyAlert, extendContext } from '../../console-common/redux/actions';
+import { notify, notifyAlert, extendContext } from '../../console-common/redux/actions';
 import IaaS, { ACTION_NAMES } from '../services/iaas';
-
+import i18n from '../../shared/i18n';
 
 export function requestDescribeLoadBalancers(routerKey, regionId, filters) {
   return dispatch => {
@@ -17,6 +17,20 @@ export function requestDescribeLoadBalancers(routerKey, regionId, filters) {
       .catch((error) => {
         dispatch(notifyAlert(error.message));
       });
+  };
+}
+
+export function requestDeleteLoadBalancers(routerKey, regionId, loadBalancerIds) {
+  return dispatch => {
+    return IaaS
+    .doAction(regionId, ACTION_NAMES.deleteLoadBalancers, { loadBalancerIds })
+    .promise
+    .then(() => {
+      dispatch(notify(i18n.t('deleteSuccessed')));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
   };
 }
 

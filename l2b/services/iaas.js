@@ -14,5 +14,6 @@ class IaaS {
 
 export const ACTION_NAMES = {
   describeLoadBalancers: 'DescribeLoadBalancers',
+  deleteLoadBalancers: 'DeleteLoadBalancers',
 };
 export default new IaaS();
