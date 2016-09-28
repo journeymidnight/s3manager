@@ -84,7 +84,7 @@ export default function bootstrap(callback) {
     };
 
     const store = require('store');
-    const token = cookie.get('token') || store.get('token');
+    const token = cookie.get('plato_token') || store.get('plato_token');
 
     callback(token, state, renderPage);
   })
