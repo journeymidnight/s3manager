@@ -3,7 +3,7 @@ import { Route, IndexRedirect } from 'react-router';
 
 import App from '../console-common/pages/App.jsx';
 import NotFound from '../shared/pages/NotFound.jsx';
-import Test from './pages/Test.jsx';
+import LoadBalancers from './pages/LoadBalancers.jsx';
 
 export default function configureRoutes(store) {
   function requireAuth() {
@@ -15,8 +15,8 @@ export default function configureRoutes(store) {
   return (
     <Route>
       <Route path="/" component={App} onEnter={requireAuth} >
-        <IndexRedirect to="test" />
-        <Route path="test" component={Test} />
+        <IndexRedirect to="load_balancers" />
+        <Route path="load_balancers" component={LoadBalancers} />
       </Route>
       <Route path="*" component={NotFound} />
     </Route >

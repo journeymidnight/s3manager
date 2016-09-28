@@ -69,8 +69,8 @@ class C extends React.Component {
         icon: 'fa-sticky-note',
       }],
       l2b: [{
-        path: 'test',
-        title: t('test'),
+        path: 'load_balancers',
+        title: t('sidebarLoadBalancers'),
         icon: 'fa-sticky-note',
       }],
     };

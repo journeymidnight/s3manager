@@ -657,6 +657,8 @@
         }
     },
     "smallScreen": "低宽度的屏幕中可能会影响组件的正常布局。",
+
+    "___comment_begin_los": "begin los",
     "bucketList": "空间管理",
     "bucketListDescription": "存储空间管理",
     "filterByBucketName": "按存储空间名称过滤",
@@ -707,7 +709,6 @@
 
         "monitorIntervalOneHour": "间隔: 1小时"
     },
-
     "objectManagement": "对象管理",
     "filterByObjectName": "按对象名称过滤",
     "uploadFile": "上传文件",
@@ -725,5 +726,19 @@
         "cancel": "取消",
         "retry": "重试"
     },
-    "objectDeletedSuccess": "对象删除成功"
+    "objectDeletedSuccess": "对象删除成功",
+    "___comment_end_los": "end los",
+
+    "___comment_begin_l2b": "begin l2b",
+    "sidebarLoadBalancers": "负载均衡",
+    "loadbalancerManage": "负载均衡",
+    "loadBalancersManageDescription": "负载均衡管理",
+    "loadBalancerStatus": {
+        "pending": "创建中",
+        "active": "运行中",
+        "building": "构建中",
+        "error": "状态异常",
+        "deleted": "已删除"
+    },
+    "___comment_end_l2b": "end l2b"
 }

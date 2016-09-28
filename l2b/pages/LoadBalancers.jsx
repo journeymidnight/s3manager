@@ -10,7 +10,7 @@ import StatusFilter from '../../shared/components/StatusFilter';
 import TimeSorter from '../../shared/components/TimeSorter';
 import SearchBox from '../../shared/components/SearchBox';
 import * as Actions from '../../console-common/redux/actions';
-import * as LoadbalanceActions from '../redux/actions.loadbalance';
+import * as LoadbalanceActions from '../redux/actions.load_balancer';
 
 class C extends TablePage {
 
@@ -44,6 +44,7 @@ class C extends TablePage {
             </th>
             <th width="150">{t('id')}</th>
             <th>{t('name')}</th>
+            <th>{t('bandwidth')}</th>
             <th>{t('status')}</th>
             <th width="200">{t('created')}</th>
           </tr>
@@ -66,9 +67,10 @@ class C extends TablePage {
                   {!loadbalancer.name && <i className="text-muted">{t('noName')}</i>}
                   </span>
                 </td>
+                <td>{loadbalancer.bandwidth}Mbps</td>
                 <td className={`i-status i-status-${loadbalancer.status}`}>
                   <i className="icon"></i>
-                  {t(`loadbalancerStatus.${loadbalancer.status}`)}
+                  {t(`loadBalancerStatus.${loadbalancer.status}`)}
                 </td>
                 <td className="light"><Time value={loadbalancer.created} format="YYYY-MM-DD HH:mm:ss" /></td>
               </tr>
@@ -76,6 +78,72 @@ class C extends TablePage {
           })}
         </tbody>
       </table>
+    );
+  }
+
+  renderHeader() {
+    const { t, servicePath } = this.props;
+    return (
+      <div className="top-area">
+        <div className="nav-text">
+          <span className="light">
+            {t('loadBalancersManageDescription')}
+          </span>
+        </div>
+        <div className="nav-controls">
+          <Link className="btn btn-new" to={`${servicePath}/load_balancers/create`}>
+            <i className="fa fa-plus"></i>&nbsp; {t('create') }
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  renderFilters() {
+    const { t } = this.props;
+    const statusOption = [
+      {
+        status: ['active', 'pending', 'building'],
+        name: t('allAvaliableStatus'),
+      }, {
+        status: ['active'],
+        name: t('loadBalancerStatus.active'),
+      }, {
+        status: ['error'],
+        name: t('loadBalancerStatus.error'),
+      }, {
+        status: ['deleted'],
+        name: t('loadBalancerStatus.deleted'),
+      }];
+    return (
+      <div className="gray-content-block second-block">
+        <div className={Object.keys(this.props.context.selected).length > 0 ? 'hidden' : ''}>
+          <div className="filter-item inline">
+            <a className="btn btn-default" onClick={this.doSearch}>
+              <i className={`fa fa-refresh ${this.props.context.loading ? 'fa-spin' : ''}`}></i>
+            </a>
+          </div>
+          <div className="filter-item inline labels-filter">
+            <StatusFilter statusOption={statusOption} filterStatus={this.props.context.status} onRefresh={this.onRefresh} />
+          </div>
+          <div className="filter-item inline">
+            <SearchBox ref="searchBox" placeholder={t('filterByIdorName')} onEnterPress={this.onSearchKeyPress} onButtonClick={this.onSearchButtonClick} />
+          </div>
+          <div className="pull-right">
+            <TimeSorter isReverse={this.props.context.reverse} onRefresh={this.onRefresh} />
+          </div>
+        </div>
+        <div className={Object.keys(this.props.context.selected).length > 0 ? '' : 'hidden'}>
+          <div className="filter-item inline">
+            <ButtonForm
+              onSubmit={this.onDelete}
+              text={t('delete')}
+              type="btn-danger"
+              disabled={this.isBatchActionDisabled(['active', 'error'], this.props.context.loadBalancerSet, 'loadBalancerId')}
+            />
+          </div>
+        </div>
+      </div>
     );
   }
 
