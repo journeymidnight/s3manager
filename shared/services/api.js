@@ -10,7 +10,7 @@ export const call = (method, url, payload, hook) => {
     Accept: 'application/json',
   };
 
-  const token = cookie.get('token') || store.get('token');
+  const token = cookie.get('plato_token') || store.get('plato_token');
   if (token) {
     headers['X-Le-Token'] = token.token;
   }
@@ -54,8 +54,8 @@ export const call = (method, url, payload, hook) => {
         } else {
           const _ = require('lodash');
           if (data.retCode === 4101 && !_.endsWith(url, 'authorize')) {
-            store.remove('token');
-            cookie.remove('token', {
+            store.remove('plato_token');
+            cookie.remove('plato_token', {
               path: '/',
               domain: !window.DEBUG ? 'console.lecloud.com' : undefined,
             });

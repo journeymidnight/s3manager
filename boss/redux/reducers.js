@@ -11,11 +11,11 @@ export const constReducer = (state = {}) => {
 export const authReducer = (state = null, action) => {
   switch (action.type) {
     case ActionTypes.AUTH_LOGIN:
-      store.set('token', action.token);
+      store.set('plato_token', action.token);
       return action.context.auth;
 
     case ActionTypes.AUTH_LOGOUT:
-      store.remove('token');
+      store.remove('plato_token');
       return null;
 
     default:
