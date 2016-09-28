@@ -64,12 +64,14 @@ export default function configureRoutes(store) {
           <Route path=":volumeId" component={Volume} />
         </Route>
         <Route path="images_snapshots" component={ImagesAndSnapshots} >
-          <IndexRoute component={TabPublicImages} />
+          <IndexRedirect to="public_images" />
           <Route path="public_images" component={TabPublicImages} />
-          <Route path="private_images" component={TabPrivateImages} />
+          <Route path="private_images">
+            <IndexRoute component={TabPrivateImages} />
+            <Route path=":imageId" component={Image} />
+          </Route>
           <Route path="volume_snapshots" component={TabVolumeSnapshots} />
         </Route>
-        <Route path="images/:imageId" component={Image} />
         <Route path="snapshots/:snapshotId" component={VolumeSnapshot} />
         <Route path="eips">
           <IndexRoute component={Eips} />

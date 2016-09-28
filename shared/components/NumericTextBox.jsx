@@ -7,6 +7,7 @@ class NumericTextBox extends React.Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.handleBlur = this.handleBlur.bind(this);
     this.min = props.min;
     this.max = props.max;
     this.step = props.step;
@@ -56,11 +57,25 @@ class NumericTextBox extends React.Component {
     this.props.onChange(value);
   }
 
+  handleBlur() {
+    const value = this.checkAndAdjustValue(Number(this.refs.myInput.value.trim()));
+    this.setState({ value });
+    this.props.onChange(value);
+  }
+
+  handleEnterPress(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      return false;
+    }
+    return true;
+  }
+
   render() {
     const value = this.state.value;
     return (
       <div className="numericTextBox">
-        <input className="form-control" ref="myInput" onChange={this.handleChange} value={value} />
+        <input className="form-control" ref="myInput" value={value} onChange={this.handleChange} onBlur={this.handleBlur} onKeyPress={this.handleEnterPress} />
         <div className="clickDiv" onClick={this.handleClick}>
           <div className="upTriangle" />
           <div className="downTriangle" />

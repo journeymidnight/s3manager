@@ -2,7 +2,7 @@ import _ from 'lodash';
 import moment from 'moment';
 import React from 'react';
 import { attach } from '../../shared/pages/Page';
-import { confirmModal } from '../../shared/components/Modal';
+import Modal, { confirmModal } from '../../shared/components/Modal';
 import { buttonForm } from '../../shared/forms/ButtonForm';
 import TablePage from '../../shared/pages/TablePage';
 import TimeSorter from '../../shared/components/TimeSorter';
@@ -19,11 +19,7 @@ class C extends TablePage {
 
     this.onDelete = this.onDelete.bind(this);
     this.onCreatePortForwarding = this.onCreatePortForwarding.bind(this);
-    this.showCreatePanel = this.showCreatePanel.bind(this);
-
-    this.state = {
-      showCreatePanel: false,
-    };
+    this.createPortForwarding = this.createPortForwarding.bind(this);
   }
 
   initialize(routerKey) {
@@ -62,6 +58,11 @@ class C extends TablePage {
     });
   }
 
+  createPortForwarding(e) {
+    e.preventDefault();
+    this.refs.portForwardingCreateModal.show();
+  }
+
   onCreatePortForwarding(values) {
     const { dispatch, region, routerKey, network } = this.props;
 
@@ -80,23 +81,18 @@ class C extends TablePage {
       }))
       .then(() => {
         resolve();
+        this.refs.portForwardingCreateModal.hide();
         this.onRefresh({}, false)();
-        this.setState({ showCreatePanel: false });
       }).catch(() => {
         reject();
       });
     });
   }
 
-  showCreatePanel(e) {
-    e.preventDefault();
-    this.setState({ showCreatePanel: true });
-  }
-
   renderTable() {
     const { t } = this.props;
     return this.props.context.total > 0 && this.props.context.portForwardingSet.length > 0 && (
-      <table className="table">
+      <table className="table table-list">
         <thead>
           <tr>
             <th width="40">
@@ -152,17 +148,14 @@ class C extends TablePage {
             </span>
           </div>
           <div className="nav-controls">
-            <a className="btn btn-new" href onClick={this.showCreatePanel}>
+            <a className="btn btn-new" href onClick={this.createPortForwarding}>
               <i className="fa fa-plus"></i>&nbsp;{t('create')}
             </a>
           </div>
         </div>
-        {this.state.showCreatePanel && <div className="panel panel-primary">
-          <div className="panel-heading">{t('pageNetwork.createPortForwarding')}</div>
-          <div className="panel-body">
-            <PortForwardingCreateForm onSubmit={this.onCreatePortForwarding} />
-          </div>
-        </div>}
+        <Modal title={t('pageNetwork.createPortForwarding')} ref="portForwardingCreateModal" >
+          <PortForwardingCreateForm onSubmit={this.onCreatePortForwarding} />
+        </Modal>
       </div>
     );
   }

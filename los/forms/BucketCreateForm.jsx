@@ -5,6 +5,7 @@ import * as Validations from '../../shared/utils/validations';
 import i18n from '../../shared/i18n';
 
 class F extends React.Component {
+
   componentDidMount() {
     const initialValues = {
       bucketName: '',
@@ -85,12 +86,6 @@ F.propTypes = {
   submitFailed: React.PropTypes.bool.isRequired,
   resetForm: React.PropTypes.func.isRequired,
   t: React.PropTypes.any,
-  publicImageSet: React.PropTypes.array,
-  privateImageSet: React.PropTypes.array,
-  instanceTypeSet: React.PropTypes.array,
-  networkSet: React.PropTypes.array,
-  keyPairSet: React.PropTypes.array,
-  service: React.PropTypes.object,
 };
 
 F.validate = values => {

@@ -2,38 +2,7 @@ import { notify, notifyAlert, extendContext } from '../../console-common/redux/a
 import Wcs, { ACTION_NAMES } from '../services/wcs';
 import i18n from '../../shared/i18n';
 
-export function requestGetS3Domain(routerKey, regionId) {
-  return dispatch => {
-    return Wcs
-      .doAction(regionId, ACTION_NAMES.gets3domain)
-      .promise
-      .then((payload) => {
-        dispatch(extendContext({ s3Domain: payload.s3Domain }, routerKey));
-      }).catch((error) => {
-        dispatch(notifyAlert(error.message));
-      });
-  };
-}
-
-export function requestListBuckets(routerKey, regionId, filters = {}) {
-  filters.verbose = true;
-  return dispatch => {
-    return Wcs
-      .doAction(regionId, ACTION_NAMES.listbuckets, filters)
-      .promise
-      .then((payload) => {
-        dispatch(extendContext({
-          buckets: payload,
-        }, routerKey));
-      })
-      .catch((error) => {
-        dispatch(notifyAlert(error.message));
-      });
-  };
-}
-
 export function setVisibleBuckets(routerKey, regionId, filters = {}) {
-  filters.verbose = true;
   return dispatch => {
     return Wcs
       .doAction(regionId, ACTION_NAMES.listbuckets, filters)
@@ -60,14 +29,15 @@ export function setVisibleBuckets(routerKey, regionId, filters = {}) {
   };
 }
 
-export function requestDeleteBuckets(routerKey, regionId, bucketNames) {
+export function requestDeleteBucket(routerKey, regionId, bucketName) {
   return dispatch => {
     return Wcs
-      .doAction(regionId, ACTION_NAMES.deletebucket, { bucket: bucketNames[0] }) // TODO: Modify to delete all buckets
+      .doAction(regionId, ACTION_NAMES.deletebucket, { bucket: bucketName })
       .promise
       .then(() => {
-        notify(i18n.t('bucketsDeletedSuccess'));
-      }).catch((error) => {
+        dispatch(notify(i18n.t('bucketDeletedSuccess')));
+      })
+      .catch((error) => {
         dispatch(notifyAlert(error.message));
       });
   };
@@ -117,7 +87,7 @@ export function requestGetBucketAcl(s3, bucketName, routerKey) {
 
       s3.getBucketAcl(params, (error, data) => {
         if (error) {
-          dispatch(notifyAlert(error.message));// TODO: does this error have message?
+          dispatch(notifyAlert(error.message));
           reject();
         } else {
           dispatch(extendContext({
@@ -183,10 +153,10 @@ export function requestGetStaticsByDay(routerKey, regionId, bucketName, startDat
 }
 
 // Pass bucket creation date to bucket detail page. The action will be handled by rootReducer and put date into this.props.global.currentBucketCreationDate
-export function setBucket(date) {
+export function setBucket(data) {
   return {
     type: 'SET_BUCKET',
-    date,
+    data,
   };
 }
 

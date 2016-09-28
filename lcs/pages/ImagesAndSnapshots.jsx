@@ -21,7 +21,7 @@ class C extends Page {
   render() {
     const { t, servicePath } = this.props;
 
-    let active = 'public_images';
+    let active = '';
     if (_.endsWith(this.props.location.pathname, 'public_images')) {
       active = 'public_images';
     } else if (_.endsWith(this.props.location.pathname, 'private_images')) {
@@ -34,7 +34,7 @@ class C extends Page {
       <div className="container-fluid container-limited">
         <div className="content">
           <div className="clearfix">
-            <ul className="nav-links clearfix">
+            {!!active && <ul className="nav-links clearfix">
               <li className={`pull-left ${(active === 'public_images') ? 'active' : ''}`}>
                 <Link data-placement="left" to={`${servicePath}/images_snapshots/public_images`}>
                   {t('public_images')}
@@ -50,7 +50,7 @@ class C extends Page {
                   {t('volume_snapshots')}
                 </Link>
               </li>*/}
-            </ul>
+            </ul>}
             <div>
               {this.props.children}
             </div>

@@ -7,6 +7,7 @@ class Slider extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleDotMouseDown = this.handleDotMouseDown.bind(this);
     this.handleBarMouseDown = this.handleBarMouseDown.bind(this);
+    this.handleBlur = this.handleBlur.bind(this);
     this.min = this.props.min;
     this.max = this.props.max;
     this.step = this.props.step;
@@ -83,6 +84,20 @@ class Slider extends React.Component {
     }, 1500);
   }
 
+  handleBlur() {
+    const value = this.checkAndAdjustValue(Number(this.refs.myInput.value.trim()));
+    this.setState({ value });
+    this.props.onChange(value);
+  }
+
+  handleEnterPress(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      return false;
+    }
+    return true;
+  }
+
   render() {
     const value = this.state.value;
     return (
@@ -101,7 +116,14 @@ class Slider extends React.Component {
             />
           </div>
         </div>
-        <input type="text" className="form-control preview mini" value={value} ref="myInput" onChange={this.handleChange} />
+        <input
+          type="text"
+          className="form-control preview mini"
+          value={value} ref="myInput"
+          onChange={this.handleChange}
+          onBlur={this.handleBlur}
+          onKeyPress={this.handleEnterPress}
+        />
         <span className="help inline">{this.unit}</span>
         <p className="help-block">{this.min}{this.unit} - {this.max}{this.unit}</p>
       </div>

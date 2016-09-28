@@ -25,7 +25,7 @@ let NetworkUpdateForm = (props) => {
         <div className={(submitFailed || name.touched) && name.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('name')}</label>
           <div className="col-sm-10">
-            <input type="text" className="form-control" {...name} />
+            <input type="text" className="form-control" {...name} maxLength="50" />
             {(submitFailed || name.touched) && name.error && <div className="text-danger"><small>{name.error}</small></div>}
           </div>
         </div>
@@ -33,7 +33,7 @@ let NetworkUpdateForm = (props) => {
         <div className={(submitFailed || description.touched) && description.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('description')}</label>
           <div className="col-sm-10">
-            <input type="text" className="form-control" {...description} />
+            <input type="text" className="form-control" {...description} maxLength="250" />
             {(submitFailed || description.touched) && description.error && <div className="text-danger"><small>{description.error}</small></div>}
           </div>
         </div>
@@ -78,6 +78,7 @@ class C extends Page {
     this.deleteNetwork = this.deleteNetwork.bind(this);
     this.updateNetwork = this.updateNetwork.bind(this);
     this.setExternalGateway = this.setExternalGateway.bind(this);
+    this.onSetExternalGateway = this.onSetExternalGateway.bind(this);
     this.unsetExternalGateway = this.unsetExternalGateway.bind(this);
     this.updateExternalGatewayBandwidth = this.updateExternalGatewayBandwidth.bind(this);
     this.onUpdateExternalGatewayBandwidth = this.onUpdateExternalGatewayBandwidth.bind(this);
@@ -130,9 +131,24 @@ class C extends Page {
 
   setExternalGateway(e) {
     e.preventDefault();
+    this.refs.setExternalGatewayModal.show();
+  }
 
-    const { dispatch, region, routerKey, params } = this.props;
-    dispatch(NetworkActions.requestSetExternalGateway(routerKey, region.regionId, [params.networkId]));
+  onSetExternalGateway(values) {
+    const { dispatch, region, routerKey } = this.props;
+    const network = this.props.context.network;
+
+    return new Promise((resolve, reject) => {
+      const bandwidth = Number(values.bandwidth);
+
+      dispatch(NetworkActions.requestSetExternalGateway(routerKey, region.regionId, network.networkId, bandwidth))
+        .then(() => {
+          resolve();
+          this.refs.setExternalGatewayModal.hide();
+        }).catch(() => {
+          reject();
+        });
+    });
   }
 
   updateExternalGatewayBandwidth(e) {
@@ -358,9 +374,12 @@ class C extends Page {
         <Modal title={t('pageNetwork.updateNetwork')} ref="updateModal" >
           <NetworkUpdateForm onSubmit={this.onUpdate} initialValues={network} />
         </Modal>
-        <Modal title={t('pageNetwork.updateExternalGatewayBandwidth')} ref="updateExternalGatewayBandwidthModal">
+        {!network.externalGatewayIp && <Modal title={t('pageNetwork.setExternalGateway')} ref="setExternalGatewayModal">
+          <BandwidthUpdateForm onSubmit={this.onSetExternalGateway} resourceName={network.name} originalBandwidth={1} />
+        </Modal>}
+        {!!network.externalGatewayIp && <Modal title={t('pageNetwork.updateExternalGatewayBandwidth')} ref="updateExternalGatewayBandwidthModal">
           <BandwidthUpdateForm onSubmit={this.onUpdateExternalGatewayBandwidth} resourceName={network.name} originalBandwidth={network.externalGatewayBandwidth} />
-        </Modal>
+        </Modal>}
       </div>
     );
   }
