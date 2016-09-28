@@ -29,6 +29,22 @@ export function setVisibleBuckets(routerKey, regionId, filters = {}) {
   };
 }
 
+export function listBuckets(routerKey, regionId, filters = {}) {
+  return dispatch => {
+    return Wcs
+      .doAction(regionId, ACTION_NAMES.listbuckets, filters)
+      .promise
+      .then((payload) => {
+        dispatch(extendContext({
+          buckets: payload,
+        }, routerKey));
+      })
+      .catch((error) => {
+        dispatch(notifyAlert(error.message));
+      });
+  };
+}
+
 export function requestDeleteBucket(routerKey, regionId, bucketName) {
   return dispatch => {
     return Wcs

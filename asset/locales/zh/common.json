@@ -727,5 +727,16 @@
     "flowMonitor": "流量监控",
     "apiMonitor": "请求次数监控",
     "vendorMonitor": "线路统计",
-    "regionMonitor": "地域统计"
+    "regionMonitor": "地域统计",
+
+    "pageResourceMonitors": {
+        "chooseBucket": "选择空间",
+        "from": "时间范围从",
+        "to": "至",
+        "periods": {
+            "1day": "今天",
+            "7days": "最近7天",
+            "30days": "本月"
+        }
+    }
 }

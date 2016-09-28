@@ -1,135 +1,235 @@
-import _ from 'lodash';
 import moment from 'moment';
 import React from 'react';
-import { Link } from 'react-router';
-import { attach } from '../../shared/pages/Page';
-import { confirmModal } from '../../shared/components/Modal';
-import { buttonForm } from '../../shared/forms/ButtonForm';
-import TablePageStatic from '../../shared/pages/TablePageStatic';
-import { setHeader } from '../../console-common/redux/actions';
+import DatePicker from 'react-datepicker';
+import Chart from 'react-c3-component';
+import { generateLineChartConfig, generateAreaChartConfig } from '../../shared/utils/chart';
+import Page, { attach } from '../../shared/pages/Page';
+import { setHeader, extendContext } from '../../console-common/redux/actions';
 import * as BucketActions from '../redux/actions.bucket';
+import 'react-datepicker/dist/react-datepicker.css';
 
 
-class C extends TablePageStatic {
+class C extends Page {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+
+    const { t } = this.props;
+
+    this.periods = [{
+      id: '1day',
+      name: t('pageResourceMonitors.periods.1day'),
+    }, {
+      id: '7days',
+      name: t('pageResourceMonitors.periods.7days'),
+    }, {
+      id: '30days',
+      name: t('pageResourceMonitors.periods.30days'),
+    }];
+
+    this.state = {
+      bucketName: undefined,
+      startDate: moment(),
+      endDate: moment(),
+      period: '1day',
+    };
 
     this.refresh = this.refresh.bind(this);
-    this.onDelete = this.onDelete.bind(this);
-    this.onSearchKeyPress = this.onSearchKeyPress.bind(this);
+    this.requestData = this.requestData.bind(this);
+    this.handleBucket = this.handleBucket.bind(this);
+    this.handleStartDate = this.handleStartDate.bind(this);
+    this.handleEndDate = this.handleEndDate.bind(this);
+    this.handlePeriod = this.handlePeriod.bind(this);
   }
 
-  initialize(routerKey) {
-    const { t, dispatch, servicePath } = this.props;
-    dispatch(setHeader(t('bucketList'), `${servicePath}/buckets`));
-    this.initTable(routerKey, {});
+  initialize() {
+    const { t, dispatch, servicePath, routerKey, region } = this.props;
+    dispatch(setHeader(t('resourceMonitors'), `${servicePath}/monitors`));
+
+    dispatch(BucketActions.listBuckets(routerKey, region.regionId))
+      .then(() => {
+        this.setState({
+          bucketName: this.props.context.buckets[0].name,
+        }, () => this.refresh()());
+      });
   }
 
-  refreshAction(routerKey, filters) {
-    const { region } = this.props;
-    return BucketActions.setVisibleBuckets(routerKey, region.regionId, filters);
-  }
+  refresh() {
+    return (e) => {
+      if (e) {
+        e.preventDefault();
+      }
 
-  onDelete() {
-    const { t, dispatch, region, routerKey } = this.props;
-    const bucketName = _.keys(this.props.context.selected)[0];
+      const { dispatch, routerKey } = this.props;
 
-    confirmModal(t('confirmDelete'), () => new Promise((resolve, reject) => {
-      dispatch(BucketActions.requestDeleteBucket(routerKey, region.regionId, bucketName))
+      this.requestData()
         .then(() => {
-          resolve();
-          this.onRefresh({}, false)();
-        })
-        .catch(() => {
-          reject();
+          dispatch(extendContext({ loading: false }, routerKey));
         });
-    }));
+
+      dispatch(extendContext({ loading: true }, routerKey));
+    };
   }
 
-  renderTable() {
-    const { t, servicePath, dispatch, context } = this.props;
-    return context.total > 0 && (
-      <table className="table">
-        <thead>
-          <tr>
-            <th width="40">
-              <input type="checkbox" className="selected" onChange={this.onSelectAll(context.visibleBuckets.map((u) => { return u.name; }))} />
-            </th>
-            <th width="200">{t('name')}</th>
-            <th width="400">{t('created')}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {context.visibleBuckets.map((bucket) => {
-            return (
-              <tr key={bucket.name}>
-                <td>
-                  <input type="checkbox" className="selected" onChange={this.onSelect(bucket.name)} checked={context.selected[bucket.name] === true} />
-                </td>
-                <td>
-                  <Link
-                    to={`${servicePath}/buckets/${bucket.name}`}
-                    onClick={() => {
-                      dispatch(BucketActions.setBucket({
-                        bucketName: bucket.name,
-                        bucketCreationDate: bucket.creationDate,
-                      }));
-                    }}
-                  >
-                    {bucket.name}
-                  </Link>
-                </td>
-                <td>{moment.utc(bucket.creationDate).local().format('YYYY-MM-DD HH:mm:ss')}</td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    );
+  requestData() {
+    const { dispatch, region, routerKey } = this.props;
+    const { bucketName, period, startDate, endDate } = this.state;
+
+    const now = new Date();
+    dispatch(extendContext({ monitorTimestamp: now }, routerKey));
+    const today = moment.utc(now).local().format('YYYYMMDD');
+
+    switch (period) {
+      case '1day': {
+        const nowTime = moment.utc(now).local().format('YYYYMMDDHHmmss');
+        const todayBeginTime = moment.utc(now).local().format('YYYYMMDD000000');
+        return dispatch(BucketActions.requestGetUsageByHour(routerKey, region.regionId, bucketName, todayBeginTime, nowTime));
+      }
+      case '7days': {
+        const sevenDaysBefore = moment.utc(now).local().subtract(7, 'days').format('YYYYMMDD');
+        return dispatch(BucketActions.requestGetStaticsByDay(routerKey, region.regionId, bucketName, sevenDaysBefore, today));
+      }
+      case '30days': {
+        const firstDayOfMonth = moment.utc(now).local().format('YYYYMM01');
+        return dispatch(BucketActions.requestGetStaticsByDay(routerKey, region.regionId, bucketName, firstDayOfMonth, today));
+      }
+      default:
+        return dispatch(BucketActions.requestGetStaticsByDay(routerKey, region.regionId, bucketName, startDate.format('YYYYMMDD'), endDate.format('YYYYMMDD')));
+    }
   }
 
-  renderHeader() {
-    const { t, servicePath } = this.props;
+  handleBucket(e, bucketName) {
+    e.preventDefault();
+    this.setState({
+      bucketName,
+    }, () => this.refresh()());
+  }
+
+  handleStartDate(startDate) {
+    this.setState({
+      startDate,
+      period: undefined,
+    }, () => this.refresh()());
+  }
+
+  handleEndDate(endDate) {
+    this.setState({
+      endDate,
+      period: undefined,
+    }, () => this.refresh()());
+  }
+
+  handlePeriod(period) {
+    this.setState({
+      period,
+    }, () => this.refresh()());
+  }
+
+  render() {
+    const { t } = this.props;
     return (
-      <div className="top-area">
-        <div className="nav-text">
-          <span>{t('bucketListDescription')}</span>
-        </div>
-        <div className="nav-controls">
-          <Link className="btn btn-new" to={`${servicePath}/buckets/create`}>
-            <i className="fa fa-plus" />&nbsp;{t('create')}
-          </Link>
-        </div>
-      </div>
-    );
-  }
+      <div className="container-fluid container-limited">
+        <div className="content">
+          <div className="clearfix">
+            <div className="top-area">
+              <div className="nav-text">
+                <span className="light">
+                  {t('usageMonitor')}
+                </span>
+              </div>
+            </div>
 
-  renderFilters() {
-    const { t, context } = this.props;
-    return (
-      <div className="gray-content-block second-block">
-        <div className={Object.keys(context.selected).length > 0 ? 'hidden' : ''}>
-          <div className="filter-item inline">
-            <a className="btn btn-default" onClick={this.onRefresh({}, false)}>
-              <i className={`fa fa-refresh ${context.loading ? 'fa-spin' : ''}`} />
-            </a>
-          </div>
+            <div className="gray-content-block second-block">
+              <div className="filter-item inline">
+                <a className="btn btn-default" onClick={this.refresh(this.state.period)}>
+                  <i className={`fa fa-refresh ${this.props.context.loading ? 'fa-spin' : ''}`} />
+                </a>
+              </div>
 
-          <div className="filter-item inline">
-            <input type="search" ref="search" placeholder={t('filterByBucketName')} className="form-control" onKeyPress={this.onSearchKeyPress} />
+              <div className="filter-item inline labels-filter">
+                <div className="dropdown">
+                  <button className="dropdown-menu-toggle" data-toggle="dropdown" type="button">
+                    <span className="dropdown-toggle-text">{this.state.bucketName || t('pageResourceMonitors.chooseBucket')}</span>
+                    <i className="fa fa-chevron-down" />
+                  </button>
+
+                  <div className="dropdown-menu dropdown-select dropdown-menu-selectable">
+                    <div className="dropdown-content">
+                      <ul>
+                        {this.props.context.buckets && this.props.context.buckets.map((bucket) => {
+                          return (
+                            <li key={bucket.name}>
+                              <a
+                                className={this.state.bucketName === bucket.name ? 'is-active' : ''}
+                                href
+                                onClick={e => this.handleBucket(e, bucket.name)}
+                              >
+                                {bucket.name}
+                              </a>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="inline">
+                <span
+                  style={{
+                    marginLeft: 5,
+                    padding: '6px 10px',
+                    display: 'inline-block',
+                  }}
+                >
+                {t('pageResourceMonitors.from')}
+                </span>
+                <div className="filter-item inline">
+                  <DatePicker
+                    dateFormat="YYYY/MM/DD"
+                    className="dropdown-menu-toggle"
+                    selected={this.state.startDate}
+                    onChange={this.handleStartDate}
+                  />
+                </div>
+                <span
+                  style={{
+                    padding: '6px 10px 6px 4px',
+                    display: 'inline-block',
+                  }}
+                >
+                {t('pageResourceMonitors.to')}
+                </span>
+                <div className="filter-item inline">
+                  <DatePicker
+                    dateFormat="YYYY/MM/DD"
+                    className="dropdown-menu-toggle"
+                    selected={this.state.endDate}
+                    onChange={this.handleEndDate}
+                  />
+                </div>
+              </div>
+
+              <div className="filter-item inline pull-right">
+                <div className="btn-group">
+                  {this.periods.map((period) => {
+                    return (
+                      <a className={`btn ${period.id === this.state.period ? 'btn-info' : 'btn-default'}`} onClick={() => this.handlePeriod(period.id)} key={period.id}>
+                        {period.name}
+                      </a>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            <div className="row">
+              <div className="col-md-6 chart-panel">
+              </div>
+            </div>
           </div>
         </div>
-        {Object.keys(context.selected).length > 0 && <div>
-          <div className="filter-item inline">
-            {React.cloneElement(buttonForm(), {
-              onSubmit: this.onDelete,
-              text: t('delete'),
-              type: 'btn-danger',
-              disabled: (_.keys(context.selected).length > 1),
-            })}
-          </div>
-        </div>}
       </div>
     );
   }
