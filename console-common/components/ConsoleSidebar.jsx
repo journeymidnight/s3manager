@@ -138,8 +138,7 @@ class C extends React.Component {
     }
   }
 
-  toggleSubNavs(e, navTitle) {
-    e.stopPropagation();
+  toggleSubNavs(navTitle) {
     if (this.state.navStates[this.props.service.serviceKey].hasOwnProperty([navTitle])) {
       this.setState({
         navStates: update(this.state.navStates, {
@@ -170,19 +169,26 @@ class C extends React.Component {
         <ul className="nav nav-sidebar">
           {navs.map((_nav) => {
             return (
-              <div key={_nav.path}>
+              <div key={_nav.path} style={{ position: 'relative' }}>
                 <NavLink
                   to={`${service.servicePath}/${_nav.path}`}
                   onClick={() => this.showSubNavs(_nav.title)}
                 >
                   <i className={`fa ${_nav.icon} fa-fw`} />
                   <span>{_nav.title}</span>
-                  {_nav.subNavs && <i
-                    className={`fa ${this.state.navStates[this.props.service.serviceKey][_nav.title] ? 'fa-angle-down' : 'fa-angle-right'}`}
-                    style={{ marginLeft: '40px' }}
-                    onClick={e => this.toggleSubNavs(e, _nav.title)}
-                  />}
                 </NavLink>
+
+                {_nav.subNavs && <i
+                  className={`fa ${this.state.navStates[this.props.service.serviceKey][_nav.title] ? 'fa-angle-down' : 'fa-angle-right'}`}
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 162,
+                    color: '#c5d0de',
+                    padding: 10,
+                  }}
+                  onClick={() => this.toggleSubNavs(_nav.title)}
+                />}
 
                 {_nav.subNavs && this.state.navStates[service.serviceKey][_nav.title] && <ul className="nav sidebar-subnav">
                   {_nav.subNavs.map((_subNav) => {
