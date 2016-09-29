@@ -12,6 +12,7 @@ import ObjectManagement from './pages/ObjectManagement.jsx';
 import ResourceMonitorConsole from './pages/ResourceMonitorConsole.jsx';
 import UsageMonitor from './pages/UsageMonitor.jsx';
 import FlowMonitor from './pages/FlowMonitor.jsx';
+import APIMonitor from './pages/APIMonitor.jsx';
 
 export default function configureRoutes(store) {
   function requireAuth() {
@@ -39,7 +40,7 @@ export default function configureRoutes(store) {
           <IndexRedirect to="usage" />
           <Route path="usage" component={UsageMonitor} />
           <Route path="flow" component={FlowMonitor} />
-          <Route path="api" component={UsageMonitor} />
+          <Route path="api" component={APIMonitor} />
           <Route path="vendor" component={UsageMonitor} />
           <Route path="region" component={UsageMonitor} />
         </Route>

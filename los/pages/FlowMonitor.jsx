@@ -1,7 +1,7 @@
 import moment from 'moment';
 import React, { Component, PropTypes } from 'react';
 import Chart from 'react-c3-component';
-import { generateLineChartConfig, generateAreaChartConfig } from '../../shared/utils/chart';
+import { generateAreaChartConfig } from '../../shared/utils/chart';
 
 class FlowMonitor extends Component {
 
@@ -44,12 +44,18 @@ class FlowMonitor extends Component {
 
             {period !== '1day' && context.staticsbyday && !context.loading && <Chart
               className="chart"
-              config={generateLineChartConfig(context.staticsbyday.map((item) => ({
+              config={generateAreaChartConfig(context.staticsbyday.map((item) => ({
                 timestamp: moment(item.date).utc(), // TODO: is date local or utc?
-                usage: item.usage || 0,
+                flowOutPublic: item.flowOutPublic || '0',
+                flowInPublic: item.flowInPublic || '0',
+                flowOutPrivate: item.flowOutPrivate || '0',
+                flowInPrivate: item.flowInPrivate || '0',
               })), {
-                usage: { name: t('pageBucket.usageLegend') },
-              }, 'kilobytes')}
+                flowOutPublic: { name: t('pageBucket.flowOutPublic') },
+                flowInPublic: { name: t('pageBucket.flowInPublic') },
+                flowOutPrivate: { name: t('pageBucket.flowOutPrivate') },
+                flowInPrivate: { name: t('pageBucket.flowInPrivate') },
+              }, 'bytes')}
             />}
 
             {context.loading && <div className="chart loading">
