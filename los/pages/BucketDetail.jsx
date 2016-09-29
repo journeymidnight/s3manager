@@ -30,19 +30,19 @@ class C extends Page {
         return dispatch(BucketActions.requestGetBucketAcl(s3, bucketName, routerKey));
       });
 
-    const now = new Date();
-    dispatch(extendContext({ monitorTimestamp: now }, routerKey));
-    const nowTime = moment.utc(now).local().format('YYYYMMDDHHmmss');
-    const todayBeginTime = moment.utc(now).local().format('YYYYMMDD000000');
+    const nowLocal = moment();
+    dispatch(extendContext({ monitorMomentLocal: nowLocal }, routerKey));
+    const nowLocalFormat = moment(nowLocal).format('YYYYMMDDHHmmss');
 
-    const today = moment.utc(now).local().format('YYYYMMDD');
-    const firstDayOfMonth = moment.utc(now).local().format('YYYYMM01');
+    const startOfDayLocalFormat = moment(nowLocal).startOf('day').format('YYYYMMDDHHmmss');
+    const todayLocalFormat = moment(nowLocal).format('YYYYMMDD');
+    const startOfMonthLocalFormat = moment(nowLocal).startOf('month').format('YYYYMMDD');
 
     Promise.all([
-      dispatch(BucketActions.requestGetUsageByHour(routerKey, region.regionId, bucketName, todayBeginTime, nowTime)),
-      dispatch(BucketActions.requestGetStaticsByDay(routerKey, region.regionId, bucketName, firstDayOfMonth, today)),
-      dispatch(BucketActions.requestGetOpByHour(routerKey, region.regionId, bucketName, todayBeginTime, nowTime)),
-      dispatch(BucketActions.requestGetFlowByHour(routerKey, region.regionId, bucketName, todayBeginTime, nowTime)),
+      dispatch(BucketActions.requestGetUsageByHour(routerKey, region.regionId, bucketName, startOfDayLocalFormat, nowLocalFormat)),
+      dispatch(BucketActions.requestGetStaticsByDay(routerKey, region.regionId, bucketName, startOfMonthLocalFormat, todayLocalFormat)),
+      dispatch(BucketActions.requestGetOpByHour(routerKey, region.regionId, bucketName, startOfDayLocalFormat, nowLocalFormat)),
+      dispatch(BucketActions.requestGetFlowByHour(routerKey, region.regionId, bucketName, startOfDayLocalFormat, nowLocalFormat)),
     ])
       .then(() => {
         dispatch(extendContext({ loading: false }, routerKey));
