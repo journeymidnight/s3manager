@@ -103,23 +103,23 @@ class ResourceMonitorConsole extends Page {
     const { dispatch, region, routerKey } = this.props;
     const { bucketName, period, startDate, endDate } = this.state;
 
-    const now = new Date();
-    dispatch(extendContext({ monitorTimestamp: now }, routerKey));
-    const today = moment.utc(now).local().format('YYYYMMDD');
+    const nowLocal = moment();
+    dispatch(extendContext({ monitorMomentLocal: nowLocal }, routerKey));
+    const todayLocalFormat = moment(nowLocal).format('YYYYMMDD');
 
     switch (period) {
       case '1day': {
-        const nowTime = moment.utc(now).local().format('YYYYMMDDHHmmss');
-        const todayBeginTime = moment.utc(now).local().format('YYYYMMDD000000');
-        return dispatch(this.getRequestDataCb()(routerKey, region.regionId, bucketName, todayBeginTime, nowTime));
+        const nowLocalFormat = moment(nowLocal).format('YYYYMMDDHHmmss');
+        const startOfDayLocalFormat = moment(nowLocal).startOf('day').format('YYYYMMDDHHmmss');
+        return dispatch(this.getRequestDataCb()(routerKey, region.regionId, bucketName, startOfDayLocalFormat, nowLocalFormat));
       }
       case '7days': {
-        const sevenDaysBefore = moment.utc(now).local().subtract(7, 'days').format('YYYYMMDD');
-        return dispatch(BucketActions.requestGetStaticsByDay(routerKey, region.regionId, bucketName, sevenDaysBefore, today));
+        const sevenDaysBeforeLocalFormat = moment(nowLocal).subtract(7, 'days').format('YYYYMMDD');
+        return dispatch(BucketActions.requestGetStaticsByDay(routerKey, region.regionId, bucketName, sevenDaysBeforeLocalFormat, todayLocalFormat));
       }
       case '30days': {
-        const firstDayOfMonth = moment.utc(now).local().format('YYYYMM01');
-        return dispatch(BucketActions.requestGetStaticsByDay(routerKey, region.regionId, bucketName, firstDayOfMonth, today));
+        const startOfMonthLocalFormat = moment(nowLocal).startOf('month').format('YYYYMMDD');
+        return dispatch(BucketActions.requestGetStaticsByDay(routerKey, region.regionId, bucketName, startOfMonthLocalFormat, todayLocalFormat));
       }
       default:
         return dispatch(BucketActions.requestGetStaticsByDay(routerKey, region.regionId, bucketName, startDate.format('YYYYMMDD'), endDate.format('YYYYMMDD')));
@@ -154,24 +154,24 @@ class ResourceMonitorConsole extends Page {
   }
 
   getCompleteTime(dataArray) {
-    const nowHour = Number(moment.utc(this.props.context.monitorTimestamp).local().format('HH'));
-    const todayDate = moment.utc(this.props.context.monitorTimestamp).local().format('YYYY/MM/DD');
-    const todayBeginTimestamp = new Date(todayDate).getTime();
+    const nowLocal = this.props.context.monitorMomentLocal;
+    const nowHourLocal = Number(moment(nowLocal).format('HH'));
+    const startOfDayTimestampLocal = moment(nowLocal).startOf('day').valueOf();
 
-    const idealTimeArray = [];
+    const idealHourArray = [];
     let hour = 0;
-    while (hour <= nowHour) {
-      idealTimeArray.push(hour);
+    while (hour <= nowHourLocal) {
+      idealHourArray.push(hour);
       hour++;
     }
 
-    const realTimeArray = dataArray.map((data) => Number(moment.utc(Number(data.time)).local().format('HH')));
-    const supplementaryTimeArray = idealTimeArray.filter((time) => {
-      return !realTimeArray.includes(time);
+    const realHourArray = dataArray.map((data) => Number(moment.utc(Number(data.time)).local().format('HH')));
+    const missingHourArray = idealHourArray.filter((time) => {
+      return !realHourArray.includes(time);
     });
 
-    return dataArray.concat(supplementaryTimeArray.map((time) => ({
-      time: todayBeginTimestamp + time * 60 * 60 * 1000,
+    return dataArray.concat(missingHourArray.map((time) => ({
+      time: startOfDayTimestampLocal + time * 60 * 60 * 1000,
     })));
   }
 
