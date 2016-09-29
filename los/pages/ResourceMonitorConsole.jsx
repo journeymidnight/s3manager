@@ -49,11 +49,11 @@ class ResourceMonitorConsole extends Page {
     const { t, dispatch, servicePath, routerKey, region } = this.props;
     dispatch(setHeader(t('resourceMonitors'), `${servicePath}/monitors`));
 
-    dispatch(BucketActions.listBuckets(routerKey, region.regionId))
+    dispatch(BucketActions.listBuckets(undefined, region.regionId))
       .then(() => {
         this.setState({
           bucketName: this.props.context.buckets[0].name,
-        }, () => dispatch(extendContext({ initialized: true }, routerKey)));
+        }, () => dispatch(extendContext({ initialized: true }, undefined)));
       });
 
     dispatch(extendContext({ loading: true }, routerKey));

@@ -11,6 +11,7 @@ import BucketDetail from './pages/BucketDetail.jsx';
 import ObjectManagement from './pages/ObjectManagement.jsx';
 import ResourceMonitorConsole from './pages/ResourceMonitorConsole.jsx';
 import UsageMonitor from './pages/UsageMonitor.jsx';
+import FlowMonitor from './pages/FlowMonitor.jsx';
 
 export default function configureRoutes(store) {
   function requireAuth() {
@@ -37,7 +38,7 @@ export default function configureRoutes(store) {
         <Route path="monitors" component={ResourceMonitorConsole}>
           <IndexRedirect to="usage" />
           <Route path="usage" component={UsageMonitor} />
-          <Route path="flow" component={UsageMonitor} />
+          <Route path="flow" component={FlowMonitor} />
           <Route path="api" component={UsageMonitor} />
           <Route path="vendor" component={UsageMonitor} />
           <Route path="region" component={UsageMonitor} />
