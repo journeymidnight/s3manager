@@ -684,6 +684,8 @@
         "loggingService": "日志服务",
         "publicDomain": "外网域名",
         "privateDomain": "内网域名",
+        "putAcl": "更改空间权限",
+        "putAclSuccess": "更改空间权限成功",
 
         "monitor": "监控",
 

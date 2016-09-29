@@ -76,17 +76,17 @@ export function requestPutCors(routerKey, regionId, bucketName) {
 }
 
 export function requestPutBucketAcl(s3, bucketName, acl) {
-  return () => {
+  return dispatch => {
     return new Promise((resolve, reject) => {
       const params = {
         Bucket: bucketName,
         ACL: acl,
       };
-
       s3.putBucketAcl(params, (error, data) => {
         if (error) {
           reject(error);
         } else {
+          dispatch(notify(i18n.t('pageBucket.putAclSuccess')));
           resolve(data);
         }
       });
@@ -106,8 +106,13 @@ export function requestGetBucketAcl(s3, bucketName, routerKey) {
           dispatch(notifyAlert(error.message));
           reject();
         } else {
+          const acls = data.Grants.map((Grant) => Grant.Permission);
+          let acl = 'private';
+          if (acls.includes('WRITE')) acl = 'public-read-write';
+          else if (acls.includes('READ')) acl = 'public-read';
+
           dispatch(extendContext({
-            acl: data.Grants[0].Permission,
+            acl,
           }, routerKey));
           resolve(data);
         }
