@@ -601,7 +601,7 @@ class C extends Page {
                             {t('pageInstance.attachVolume')}
                           </button>
                         </li>
-                        <li>
+                        {/* <li>
                           <button
                             className="btn-page-action"
                             disabled={instance.status !== 'active'}
@@ -609,7 +609,7 @@ class C extends Page {
                           >
                             {t('pageInstance.changeLoginInstance')}
                           </button>
-                        </li>
+                        </li>*/}
                         <li>
                           <button
                             className="btn-page-action"
