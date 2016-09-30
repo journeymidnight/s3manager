@@ -34,3 +34,31 @@ export function requestDeleteLoadBalancers(routerKey, regionId, loadBalancerIds)
   };
 }
 
+export function requestCreateLoadBalancer(routerKey, regionId, loadBalancer) {
+  return dispatch => {
+    return IaaS
+      .doAction(regionId, ACTION_NAMES.createLoadBalancer, loadBalancer)
+      .promise
+      .then((payload) => {
+        dispatch(extendContext({ loadBalancer: payload }));
+        setTimeout(() => {
+          dispatch(notify(i18n.t('createSuccessed')));
+        }, 1000);
+      });
+  };
+}
+
+export function requestDescribeNetworks(routerKey, regionId, filters) {
+  return dispatch => {
+    return IaaS
+    .doAction(regionId, ACTION_NAMES.describeNetworks, filters)
+    .promise
+    .then((payload) => {
+      dispatch(extendContext(payload, routerKey));
+    })
+    .catch((error) => {
+      dispatch(notifyAlert(error.message));
+    });
+  };
+}
+

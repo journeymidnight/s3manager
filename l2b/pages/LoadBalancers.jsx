@@ -21,7 +21,7 @@ class C extends TablePage {
 
   initialize(routerKey) {
     const { t, dispatch, servicePath } = this.props;
-    dispatch(Actions.setHeader(t('loadbalancerManage'), `${servicePath}/loadbalancers`));
+    dispatch(Actions.setHeader(t('loadbalancerManage'), `${servicePath}/load_balancers`));
 
     this.initTable(routerKey, {
       status: ['active', 'pending', 'building'],
