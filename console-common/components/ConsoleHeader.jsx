@@ -103,7 +103,7 @@ const C = (props) => {
                 </a>
                 <ul className="dropdown-menu dropdown-menu-right">
                   <li><a href onClick={changeLanguage('zh')}>{t('languages.chinese')}</a></li>
-                  <li><a href onClick={changeLanguage('en')}>{t('languages.english')}</a></li>
+                  {/* <li><a href onClick={changeLanguage('en')}>{t('languages.english')}</a></li>*/}
                 </ul>
               </li>
             </ul>
