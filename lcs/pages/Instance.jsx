@@ -682,7 +682,7 @@ class C extends Page {
                           {!!instance.volumes.length && instance.volumes.map((volume) => {
                             return (<div>
                               <Link to={`${servicePath}/volumes/${volume.volumeId}`}>
-                                {volume.volumeId} ({volume.size}GB)
+                                {volume.name} ({volume.volumeId})
                               </Link>
                             </div>);
                           })}
@@ -695,7 +695,8 @@ class C extends Page {
                         <td>
                           <span>
                           {instance.networkId && <Link to={`${servicePath}/networks/${instance.networkId}`}>
-                            {instance.networkId}
+                            <div>{instance.network.name}</div>
+                            <div>({instance.networkId})</div>
                           </Link>}
                           {!instance.networkId && <i className="text-muted">{t('noName')}</i>}
                           </span>

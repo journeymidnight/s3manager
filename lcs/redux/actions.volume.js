@@ -7,6 +7,7 @@ export function requestDescribeVolume(routerKey, regionId, volumeId) {
     return IaaS
     .doAction(regionId, ACTION_NAMES.describeVolumes, {
       volumeIds: [volumeId],
+      verbose: true,
     })
     .promise
     .then((payload) => {
