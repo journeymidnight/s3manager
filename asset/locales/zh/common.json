@@ -468,7 +468,8 @@
         "typeEmail": "输入用户邮箱"
     },
     "formKeyPairForm": {
-        "publicKey": "公钥"
+        "publicKey": "公钥",
+        "publicKeyHint": "公钥的长度不得超过1024个字符"
     },
     "formServiceForm": {
         "serviceKey": "服务类型",

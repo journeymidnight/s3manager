@@ -666,7 +666,7 @@ class C extends Page {
                       <tr>
                         <td>{t('memory')}</td>
                         <td>
-                          <span>{instance.currentMemory} MB</span>
+                          <span>{instance.currentMemory / 1024} GB</span>
                         </td>
                       </tr>
                       <tr>
@@ -682,7 +682,8 @@ class C extends Page {
                           {!!instance.volumes.length && instance.volumes.map((volume) => {
                             return (<div>
                               <Link to={`${servicePath}/volumes/${volume.volumeId}`}>
-                                {volume.name} ({volume.volumeId})
+                                <div>{volume.name} ({volume.size}GB)</div>
+                                <div>({volume.volumeId})</div>
                               </Link>
                             </div>);
                           })}
@@ -716,7 +717,8 @@ class C extends Page {
                         <td>
                           <span>
                           {instance.eip && <Link to={`${servicePath}/eips/${instance.eip.eipId}`}>
-                            {instance.eip.eipId} ({instance.eip.address})
+                            <div>{instance.eip.eipId}</div>
+                            <div>({instance.eip.address})</div>
                           </Link>}
                           {!instance.eip && <i className="text-muted">{t('noName')}</i>}
                           </span>
