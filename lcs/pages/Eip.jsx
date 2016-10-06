@@ -410,7 +410,10 @@ class C extends Page {
                       <tr>
                         <td>{t('associateResource')}</td>
                         <td>
-                          <span>{eip.resourceId || <i className="text-muted">{t('noName')}</i>}</span>
+                          <span>
+                          {!!eip.resourceId && <span><div>{eip.resource.name}</div><div>({eip.resourceId})</div></span>}
+                          {!eip.resourceId && <i className="text-muted">{t('noName')}</i>}
+                          </span>
                         </td>
                       </tr>
                       <tr>
