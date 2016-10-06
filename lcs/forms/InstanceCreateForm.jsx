@@ -183,7 +183,7 @@ class F extends React.Component {
                     className={(_memory === memory.value) ? 'selected' : ''}
                     onClick={() => { this.onChangeInstanceType({ memory: _memory }); }}
                   >
-                    {_memory} MB
+                    {_memory / 1024} GB
                   </li>
                 );
               })}

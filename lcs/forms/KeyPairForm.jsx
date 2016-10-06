@@ -22,8 +22,7 @@ class F extends Form {
 
         <Input form={this.props} field={name} label={t('name')} />
         <Input form={this.props} field={description} label={t('description')} />
-        <TextArea form={this.props} field={publicKey} label={t('formKeyPairForm.publicKey')} />
-
+        <TextArea form={this.props} field={publicKey} label={t('formKeyPairForm.publicKey')} hint={t('formKeyPairForm.publicKeyHint')} />
         <Action form={this.props} submitLabel={t('create')} />
       </form>
     );
