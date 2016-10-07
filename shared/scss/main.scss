@@ -269,6 +269,7 @@ header.navbar-gitlab .container-fluid {
 .top-area {
     .nav-text {
         width: 70%;
+        line-height: 1.5;
 
         /* Small devices (phones, tablets, 768px and lower) */
         @media (max-width: $screen-sm-min) {
