@@ -37,6 +37,7 @@ export const TextArea = (props) => {
   const { submitFailed } = props.form;
   const field = props.field;
   const label = props.label;
+  const hint = props.hint;
 
   return (
     <div className={submitFailed && field.error ? 'form-group has-error' : 'form-group'}>
@@ -53,6 +54,7 @@ export const TextArea = (props) => {
           onFocus={field.onFocus}
         />
         {submitFailed && field.error && <div className="text-danger"><small>{field.error}</small></div>}
+        {!!hint && <p className="help-block">{hint}</p>}
       </div>
     </div>
   );
@@ -62,6 +64,7 @@ TextArea.propTypes = {
   field: React.PropTypes.object.isRequired,
   form: React.PropTypes.object.isRequired,
   label: React.PropTypes.string.isRequired,
+  hint: React.PropTypes.string,
 };
 
 export const Action = (props) => {

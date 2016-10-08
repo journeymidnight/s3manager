@@ -132,8 +132,13 @@ class C extends Page {
     const { t } = this.props;
 
     const keyPair = this.props.context.keyPair;
+    if (!keyPair) {
+      this.refresh();
 
-    return (keyPair || null) && (
+      return <div />;
+    }
+
+    return (
       <div className="container-fluid container-limited detail">
         <div className="content">
           <div className="clearfix">

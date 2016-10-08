@@ -21,7 +21,7 @@ let InstanceEipForm = (props) => {
               {props.availableEips.map((eip) => {
                 return (
                   <option key={eip.eipId} value={eip.eipId}>
-                    {eip.name} ({eip.eipId})
+                    {eip.name} ({eip.eipId}) {eip.address}
                   </option>
                 );
               })}

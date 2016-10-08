@@ -565,7 +565,8 @@ class C extends Page {
                         <td>{t('attachInstance')}</td>
                         <td>
                           <span>
-                          {volume.instanceId || <i className="text-muted">{t('noName')}</i>}
+                          {!!volume.instanceId && <span><div>{volume.instance.name}</div><div>({volume.instanceId})</div></span>}
+                          {!volume.instanceId && <i className="text-muted">{t('noName')}</i>}
                           </span>
                         </td>
                       </tr>
