@@ -13,9 +13,6 @@ class C extends Page {
     const { t } = this.props;
 
     this.periods = [{
-      id: '120mins',
-      name: t('monitor.periods.120mins'),
-    }, {
       id: '720mins',
       name: t('monitor.periods.720mins'),
     }, {
@@ -45,7 +42,7 @@ class C extends Page {
     const { t, dispatch, servicePath } = this.props;
     dispatch(Actions.setHeader(t('eipManage'), `${servicePath}/eips`));
 
-    this.refresh('120mins')();
+    this.refresh('720mins')();
   }
 
   refresh(period) {
