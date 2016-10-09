@@ -302,7 +302,7 @@ class C extends Page {
 
     const { dispatch, region, routerKey, params, t } = this.props;
     const instance = this.props.context.instance || this.instance;
-    confirmModal(t('pageEip.confirmDissociateEip'), () => {
+    confirmModal(t('pageInstance.confirmDissociateEip'), () => {
       dispatch(EipActions.requestDissociateEips(routerKey, region.regionId, [instance.eipId], params.instanceId))
         .then(() => {
         }).catch(() => {
@@ -761,7 +761,7 @@ class C extends Page {
           <InstanceCaptureForm onSubmit={this.onCaptureInstance} instance={instance} region={region} />
         </Modal>
         {this.props.context.volumeSet && this.props.context.volumeSet.length && this.renderAttachVolumeModal()}
-        <Modal title={t('confirmRestart')} ref="restartModal" >
+        <Modal title={t('pageInstance.restartInstance')} ref="restartModal" >
           <InstanceRestartForm onSubmit={this.onRestart} />
         </Modal>
       </div>
