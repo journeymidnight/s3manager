@@ -21,7 +21,7 @@ let KeyPairUpdateForm = (props) => {
         <div className={(submitFailed || name.touched) && name.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('name')}</label>
           <div className="col-sm-10">
-            <input type="text" className="form-control" {...name} />
+            <input type="text" className="form-control" {...name} maxLength="50" />
             {(submitFailed || name.touched) && name.error && <div className="text-danger"><small>{name.error}</small></div>}
           </div>
         </div>
@@ -29,7 +29,7 @@ let KeyPairUpdateForm = (props) => {
         <div className={(submitFailed || description.touched) && description.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('description')}</label>
           <div className="col-sm-10">
-            <input type="text" className="form-control" {...description} />
+            <input type="text" className="form-control" {...description} maxLength="250" />
             {(submitFailed || description.touched) && description.error && <div className="text-danger"><small>{description.error}</small></div>}
           </div>
         </div>
@@ -132,8 +132,13 @@ class C extends Page {
     const { t } = this.props;
 
     const keyPair = this.props.context.keyPair;
+    if (!keyPair) {
+      this.refresh();
 
-    return (keyPair || null) && (
+      return <div />;
+    }
+
+    return (
       <div className="container-fluid container-limited detail">
         <div className="content">
           <div className="clearfix">

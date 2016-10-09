@@ -34,7 +34,7 @@ let InstanceUpdateForm = (props) => {
         <div className={(submitFailed || name.touched) && name.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('name')}</label>
           <div className="col-sm-10">
-            <input type="text" className="form-control" {...name} />
+            <input type="text" className="form-control" {...name} maxLength="50" />
             {(submitFailed || name.touched) && name.error && <div className="text-danger"><small>{name.error}</small></div>}
           </div>
         </div>
@@ -42,7 +42,7 @@ let InstanceUpdateForm = (props) => {
         <div className={(submitFailed || description.touched) && description.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('description')}</label>
           <div className="col-sm-10">
-            <input type="text" className="form-control" {...description} />
+            <input type="text" className="form-control" {...description} maxLength="250" />
             {(submitFailed || description.touched) && description.error && <div className="text-danger"><small>{description.error}</small></div>}
           </div>
         </div>
@@ -601,7 +601,7 @@ class C extends Page {
                             {t('pageInstance.attachVolume')}
                           </button>
                         </li>
-                        <li>
+                        {/* <li>
                           <button
                             className="btn-page-action"
                             disabled={instance.status !== 'active'}
@@ -609,7 +609,7 @@ class C extends Page {
                           >
                             {t('pageInstance.changeLoginInstance')}
                           </button>
-                        </li>
+                        </li>*/}
                         <li>
                           <button
                             className="btn-page-action"
@@ -666,7 +666,7 @@ class C extends Page {
                       <tr>
                         <td>{t('memory')}</td>
                         <td>
-                          <span>{instance.currentMemory} MB</span>
+                          <span>{instance.currentMemory / 1024} GB</span>
                         </td>
                       </tr>
                       <tr>
@@ -682,7 +682,8 @@ class C extends Page {
                           {!!instance.volumes.length && instance.volumes.map((volume) => {
                             return (<div>
                               <Link to={`${servicePath}/volumes/${volume.volumeId}`}>
-                                {volume.volumeId} ({volume.size}GB)
+                                <div>{volume.name} ({volume.size}GB)</div>
+                                <div>({volume.volumeId})</div>
                               </Link>
                             </div>);
                           })}
@@ -695,7 +696,8 @@ class C extends Page {
                         <td>
                           <span>
                           {instance.networkId && <Link to={`${servicePath}/networks/${instance.networkId}`}>
-                            {instance.networkId}
+                            <div>{instance.network.name}</div>
+                            <div>({instance.networkId})</div>
                           </Link>}
                           {!instance.networkId && <i className="text-muted">{t('noName')}</i>}
                           </span>
@@ -715,7 +717,8 @@ class C extends Page {
                         <td>
                           <span>
                           {instance.eip && <Link to={`${servicePath}/eips/${instance.eip.eipId}`}>
-                            {instance.eip.eipId} ({instance.eip.address})
+                            <div>{instance.eip.eipId}</div>
+                            <div>({instance.eip.address})</div>
                           </Link>}
                           {!instance.eip && <i className="text-muted">{t('noName')}</i>}
                           </span>

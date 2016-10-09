@@ -53,7 +53,7 @@ class C extends TablePage {
   renderTable() {
     const { t, servicePath } = this.props;
     return this.props.context.total > 0 && this.props.context.keyPairSet.length > 0 && (
-      <table className="table">
+      <table className="table table-list">
         <thead>
           <tr>
             <th width="40">
@@ -83,8 +83,10 @@ class C extends TablePage {
                   </Link>
                 </td>
                 <td>
+                  <span className="list-item-name">
                   {keyPair.name && <strong>{keyPair.name}</strong>}
                   {!keyPair.name && <i className="text-muted">{t('noName')}</i>}
+                  </span>
                 </td>
                 <td className={`i-status i-status-${keyPair.status}`}>
                   <i className="icon"></i>

@@ -24,14 +24,14 @@ let EipUpdateForm = (props) => {
         <div className={(submitFailed || name.touched) && name.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('name')}</label>
           <div className="col-sm-10">
-            <input type="text" className="form-control" {...name} />
+            <input type="text" className="form-control" {...name} maxLength="50" />
             {(submitFailed || name.touched) && name.error && <div className="text-danger"><small>{name.error}</small></div>}
           </div>
         </div>
         <div className={(submitFailed || description.touched) && description.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('description')}</label>
           <div className="col-sm-10">
-            <input type="text" className="form-control" {...description} />
+            <input type="text" className="form-control" {...description} maxLength="250" />
             {(submitFailed || description.touched) && description.error && <div className="text-danger"><small>{description.error}</small></div>}
           </div>
         </div>
@@ -304,7 +304,6 @@ class C extends Page {
     const { t, params } = this.props;
 
     const eip = this.props.context.eip || this.eip;
-
     if (!eip || eip.eipId !== params.eipId) {
       this.refresh();
 
@@ -410,7 +409,10 @@ class C extends Page {
                       <tr>
                         <td>{t('associateResource')}</td>
                         <td>
-                          <span>{eip.resourceId || <i className="text-muted">{t('noName')}</i>}</span>
+                          <span>
+                          {!!eip.resourceId && <span><div>{eip.resource.name}</div><div>({eip.resourceId})</div></span>}
+                          {!eip.resourceId && <i className="text-muted">{t('noName')}</i>}
+                          </span>
                         </td>
                       </tr>
                       <tr>

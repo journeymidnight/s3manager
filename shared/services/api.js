@@ -10,12 +10,12 @@ export const call = (method, url, payload, hook) => {
     Accept: 'application/json',
   };
 
-  const token = cookie.get('token') || store.get('token');
+  const token = cookie.get('plato_token') || store.get('plato_token');
   if (token) {
     headers['X-Le-Token'] = token.token;
   }
 
-  const region = cookie.get('region') || store.get('region');
+  const region = store.get('region');
   if (region) {
     headers['X-Le-Endpoint'] = region.endpoint;
     headers['X-Le-Key'] = region.accessKey;
@@ -54,8 +54,8 @@ export const call = (method, url, payload, hook) => {
         } else {
           const _ = require('lodash');
           if (data.retCode === 4101 && !_.endsWith(url, 'authorize')) {
-            store.remove('token');
-            cookie.remove('token', {
+            store.remove('plato_token');
+            cookie.remove('plato_token', {
               path: '/',
               domain: !window.DEBUG ? 'console.lecloud.com' : undefined,
             });
@@ -63,11 +63,13 @@ export const call = (method, url, payload, hook) => {
             return;
           } else if (data.retCode === -1) {
             window.console.log(data);
-            reject({
-              retCode: -1,
-              message: i18n.t('networkIssue'),
-              data: null,
-            });
+            if (window.DEBUG) {
+              reject({
+                retCode: -1,
+                message: i18n.t('networkIssue'),
+                data: null,
+              });
+            }
           } else {
             reject(data);
           }
@@ -79,11 +81,13 @@ export const call = (method, url, payload, hook) => {
         reject(error.data);
       } else {
         window.console.log(error);
-        reject({
-          retCode: -1,
-          message: i18n.t('networkIssue'),
-          data: null,
-        });
+        if (window.DEBUG) {
+          reject({
+            retCode: -1,
+            message: i18n.t('networkIssue'),
+            data: null,
+          });
+        }
       }
     });
   });
