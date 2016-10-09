@@ -8,7 +8,7 @@ import { attach } from '../../shared/pages/Page';
 import { buttonForm } from '../../shared/forms/ButtonForm';
 import Modal, { confirmModal } from '../../shared/components/Modal';
 import TablePageStatic from '../../shared/pages/TablePageStatic';
-import { setHeader, notify, notifyAlert } from '../../console-common/redux/actions';
+import { setHeader, notify, notifyAlert, extendContext } from '../../console-common/redux/actions';
 import { requestGetS3Domain } from '../redux/actions.s3Domain';
 import * as ObjectActions from '../redux/actions.object';
 
@@ -16,8 +16,8 @@ class C extends TablePageStatic {
 
   constructor(props) {
     super(props);
-    this.state = {};
     const { t } = this.props;
+    this.state = {};
     this.status = {
       uploading: t('uploadModal.uploading'),
       uploaded: t('uploadModal.uploaded'),
@@ -44,11 +44,15 @@ class C extends TablePageStatic {
     this.retryOneObject = this.retryOneObject.bind(this);
     this.cancelOneObject = this.cancelOneObject.bind(this);
     this.calProgressWidth = this.calProgressWidth.bind(this);
+    this.changeFolder = this.changeFolder.bind(this);
   }
 
   initialize(routerKey) {
     const { t, dispatch, servicePath, region } = this.props;
     dispatch(setHeader(t('objectManagement'), `${servicePath}/buckets`));
+    if (!this.props.global.folderLocation) {
+      dispatch(ObjectActions.setFolderLocation(''));
+    }
 
     dispatch(requestGetS3Domain(routerKey, region.regionId))
       .then(() => {
@@ -57,7 +61,7 @@ class C extends TablePageStatic {
         AWS.config.accessKeyId = region.accessKey;
         AWS.config.secretAccessKey = region.accessSecret;
         this.s3 = new AWS.S3();
-        this.initTable(routerKey, {});
+        this.initTable(routerKey, {}, { searchWord: this.props.global.folderLocation });
       });
   }
 
@@ -80,10 +84,11 @@ class C extends TablePageStatic {
 
       this.s3.deleteObjects(params, (error) => {
         if (error) {
-          dispatch(notifyAlert(error.message));
+          dispatch(notifyAlert(error.message)); // will there be error.message?
           reject(error);
         } else {
           dispatch(notify(t('objectDeletedSuccess')));
+          this.onRefresh({ searchWord: this.props.global.folderLocation }, false)();
           resolve();
         }
       });
@@ -122,7 +127,7 @@ class C extends TablePageStatic {
   }
 
   uploadOneObject(file, index) {
-    const fileName = file.name;
+    const fileName = this.props.global.folderLocation + file.name;
     const s3Uploader = this.s3.upload(
       {
         Bucket: this.props.params.bucketName,
@@ -167,7 +172,7 @@ class C extends TablePageStatic {
           });
         }
       } else {
-        this.onRefresh({}, false)();
+        this.onRefresh({ searchWord: this.props.global.folderLocation }, false)();
         this.s3Uploaders[index] = null;
         const newUploadingFile = Object.assign({}, this.state.uploadingFileList[index], {
           status: 'uploaded',
@@ -272,27 +277,70 @@ class C extends TablePageStatic {
     return '99%';
   }
 
+  changeFolder(e, folderName) {
+    e.preventDefault();
+    const { dispatch, routerKey } = this.props;
+    dispatch(extendContext({ visibleObjects: [] }, routerKey));
+    dispatch(ObjectActions.setFolderLocation(folderName));
+    setTimeout(() => this.onRefresh({ searchWord: this.props.global.folderLocation }, false)(), 100);
+  }
+
   renderTable() {
-    const { t, params, servicePath } = this.props;
-    return this.props.context.total > 0 && (
+    const { t, params, servicePath, context } = this.props;
+    const { folderLocation } = this.props.global;
+    return (
       <table className="table">
         <thead>
           <tr>
             <th width="40">
-              <input type="checkbox" className="selected" onChange={this.onSelectAll(this.props.context.visibleObjects.map((object) => object.Key))} />
+              <input type="checkbox" className="selected" onChange={this.onSelectAll(context.visibleObjects.map((object) => object.Key))} />
             </th>
-            <th width="600">{t('fileName')}</th>
+            <th width="600">{t('objectName')}</th>
             <th width="200">{t('size')}</th>
             <th width="200">{t('category')}</th>
             <th width="300">{t('created')}</th>
           </tr>
         </thead>
         <tbody>
-          {this.props.context.visibleObjects.map((object) => {
+          {folderLocation.length > 0 && <tr>
+            <td />
+            <td>
+              <Link
+                to="#"
+                onClick={e => this.changeFolder(e, folderLocation.slice(0, folderLocation.lastIndexOf('/', folderLocation.length - 2) + 1))}
+              >
+                {t('returnUpFolder')}
+              </Link>
+            </td>
+            <td />
+            <td />
+            <td />
+          </tr>}
+
+          {context.visibleObjects.map((object) => {
             return (
+              object.Prefix ? <tr key={object.Prefix}>
+                <td>
+                  <input type="checkbox" className="selected" onChange={this.onSelect(object.Prefix)} checked={context.selected[object.Prefix] === true} />
+                </td>
+                <td>
+                  <Link
+                    to="#"
+                    style={{
+                      wordBreak: 'break-word',
+                    }}
+                    onClick={e => this.changeFolder(e, object.Prefix)}
+                  >
+                    {object.Prefix.startsWith(folderLocation) ? object.Prefix.slice(folderLocation.length, -1) : object.Prefix}
+                  </Link>
+                </td>
+                <td />
+                <td><i className="fa fa-folder-o" /></td>
+                <td />
+              </tr> :
               <tr key={object.Key}>
                 <td>
-                  <input type="checkbox" className="selected" onChange={this.onSelect(object.Key)} checked={this.props.context.selected[object.Key] === true} />
+                  <input type="checkbox" className="selected" onChange={this.onSelect(object.Key)} checked={context.selected[object.Key] === true} />
                 </td>
                 <td>
                   <Link
@@ -301,14 +349,13 @@ class C extends TablePageStatic {
                       wordBreak: 'break-word',
                     }}
                   >
-                    {object.Key}
+                    {object.Key.startsWith(folderLocation) ? object.Key.slice(folderLocation.length) : object.Key}
                   </Link>
                 </td>
                 <td>{this.formatBytes(object.Size)}</td>
-                <td>{}</td>
-                <td>{moment.utc(object.creationDate).local().format('YYYY-MM-DD HH:mm:ss')}</td>
-              </tr>
-            );
+                <td />
+                <td>{moment.utc(object.LastModified).local().format('YYYY-MM-DD HH:mm:ss')}</td>
+              </tr>);
           })}
         </tbody>
       </table>
@@ -317,10 +364,24 @@ class C extends TablePageStatic {
 
   renderHeader() {
     const { t, servicePath, params } = this.props;
+    const { folderLocation } = this.props.global;
+    const { uploadingFileList } = this.state;
     return (
       <div className="top-area">
         <div className="nav-text">
-          <span>{t('bucket')}&nbsp;<i>{params.bucketName}</i></span>
+          {folderLocation.length === 0 ? <span>
+            {t('bucket')}
+            &nbsp;
+            <i>
+              {params.bucketName}
+            </i>
+          </span> : <span>
+            {t('folder')}
+            &nbsp;
+            <i>
+              {folderLocation}
+            </i>
+          </span>}
         </div>
         <div className="nav-controls">
           <form ref="uploaderForm">
@@ -345,13 +406,13 @@ class C extends TablePageStatic {
             </label>
           </form>
 
-          <Link className="btn btn-new" to={`${servicePath}/buckets/${params.bucketName}/objects`}>
+          <Link className="btn btn-new" to={`${servicePath}/buckets/${params.bucketName}/objects/create`}>
             <i className="fa fa-plus" />&nbsp;{t('createFolder')}
           </Link>
         </div>
         <Modal title={t('uploadModal.uploadingStatus')} ref="uploadModal" >
           <div>
-            {this.state.uploadingFileList && <div className="content-wrapper">
+            {uploadingFileList && <div className="content-wrapper">
               <div
                 className="container-fluid container-limited"
                 style={{
@@ -371,8 +432,8 @@ class C extends TablePageStatic {
                           </tr>
                         </thead>
                         <tbody>
-                        {Object.keys(this.state.uploadingFileList).map((key) => {
-                          const file = this.state.uploadingFileList[key];
+                        {Object.keys(uploadingFileList).map((key) => {
+                          const file = uploadingFileList[key];
                           return (
                             <tr key={file.name}>
                               <td style={{ position: 'relative' }}>
@@ -440,13 +501,13 @@ class C extends TablePageStatic {
   }
 
   renderFilters() {
-    const { t } = this.props;
+    const { t, context } = this.props;
     return (
       <div className="gray-content-block second-block">
-        <div className={Object.keys(this.props.context.selected).length > 0 ? 'hidden' : ''}>
+        <div className={Object.keys(context.selected).length > 0 ? 'hidden' : ''}>
           <div className="filter-item inline">
             <a className="btn btn-default" onClick={this.onRefresh({}, false)}>
-              <i className={`fa fa-refresh ${this.props.context.loading ? 'fa-spin' : ''}`} />
+              <i className={`fa fa-refresh ${context.loading ? 'fa-spin' : ''}`} />
             </a>
           </div>
 
@@ -454,7 +515,7 @@ class C extends TablePageStatic {
             <input type="search" ref="search" placeholder={t('filterByObjectName')} className="form-control" onKeyPress={this.onSearchKeyPress} />
           </div>
         </div>
-        {Object.keys(this.props.context.selected).length > 0 && <div>
+        {Object.keys(context.selected).length > 0 && <div>
           <div className="filter-item inline">
             {React.cloneElement(buttonForm(), {
               onSubmit: this.onDelete,

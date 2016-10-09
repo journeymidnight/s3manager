@@ -9,6 +9,7 @@ import BucketCreate from './pages/BucketCreate.jsx';
 import Bucket from './pages/Bucket.jsx';
 import BucketDetail from './pages/BucketDetail.jsx';
 import ObjectManagement from './pages/ObjectManagement.jsx';
+import ObjectCreate from './pages/ObjectCreate.jsx';
 import ResourceMonitorConsole from './pages/ResourceMonitorConsole.jsx';
 import UsageMonitor from './pages/UsageMonitor.jsx';
 import FlowMonitor from './pages/FlowMonitor.jsx';
@@ -33,7 +34,10 @@ export default function configureRoutes(store) {
           <Route path=":bucketName" component={Bucket}>
             <IndexRedirect to="detail" />
             <Route path="detail" component={BucketDetail} />
-            <Route path="objects" component={ObjectManagement} />
+            <Route path="objects">
+              <IndexRoute component={ObjectManagement} />
+              <Route path="create" component={ObjectCreate} />
+            </Route>
           </Route>
         </Route>
         <Route path="monitors" component={ResourceMonitorConsole}>

@@ -90,6 +90,16 @@ export function rootReducer(state = {}, action) {
       delete newState.global.bucketCreationDate;
       return newState;
 
+    case ActionTypes.SET_FOLDER_LOCATION:
+      newState = Object.assign({}, state);
+      newState.global.folderLocation = action.folderLocation;
+      return newState;
+
+    case ActionTypes.REMOVE_FOLDER_LOCATION:
+      newState = Object.assign({}, state);
+      delete newState.global.folderLocation;
+      return newState;
+
     default:
       return reducers(state, action);
   }

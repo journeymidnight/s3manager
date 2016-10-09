@@ -706,8 +706,12 @@
     },
 
     "objectManagement": "对象管理",
+    "objectName": "文件夹名/文件名",
+    "folder": "文件夹",
+    "returnUpFolder": "返回上一级",
     "filterByObjectName": "按对象名称过滤",
     "uploadFile": "上传文件",
+    "objectDeletedSuccess": "对象删除成功",
     "createFolder": "新建文件夹",
     "uploadModal": {
         "uploadingStatus": "文件上传状态",
@@ -722,7 +726,13 @@
         "cancel": "取消",
         "retry": "重试"
     },
-    "objectDeletedSuccess": "对象删除成功",
+    "folderCreatedSuccess": "文件夹创建成功",
+
+    "pageObjectCreate": {
+        "folderName": "文件夹名称",
+        "folderNameHint": "文件夹命名规范： \n 1. 只能包含字母，数字，中文，下划线（_），短横线（-），和小数点（.）\n 2. 只能以字母、数字或者中文开头 \n 3. 文件夹的长度限制在1-254之间 \n 4. Object总长度必须在1-1023之间",
+        "objectNameNotValid": "文件夹名称不符合要求"
+    },
 
     "resourceMonitors": "资源监控",
     "usageMonitor": "存储资源监控",

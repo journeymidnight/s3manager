@@ -2,6 +2,7 @@
  * 1. No setInterval of onRefresh in initTable
  * 2. No status in filters
  * 3. Pagination
+ * 4. Parameter filters in initTable
  */
 
 import React from 'react';
@@ -30,8 +31,12 @@ class C extends Page {
     return reInit;
   }
 
-  initTable(routerKey, options) {
+  initTable(routerKey, options, filters) {
     const { dispatch } = this.props;
+    let searchWord = '';
+    if (filters) {
+      searchWord = filters.searchWord;
+    }
 
     const context = {
       selected: {},
@@ -43,7 +48,7 @@ class C extends Page {
     };
     dispatch(Actions.extendContext(Object.assign(context, options), routerKey));
 
-    setTimeout(this.onRefresh(), 100);
+    setTimeout(this.onRefresh({ searchWord }), 100);
   }
 
   refresh(silent = true) {

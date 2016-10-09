@@ -18,7 +18,6 @@ export function setVisibleBuckets(routerKey, regionId, filters = {}) {
         const visibleBuckets = matchedBuckets.slice(offset, offset + limit);
 
         dispatch(extendContext({
-          buckets: payload,
           visibleBuckets,
           total: matchedBuckets.length,
         }, routerKey));
@@ -173,7 +172,7 @@ export function requestGetStaticsByDay(routerKey, regionId, bucketName, startDat
   };
 }
 
-// Pass bucket creation date to bucket detail page. The action will be handled by rootReducer and put date into this.props.global.currentBucketCreationDate
+// Pass bucket name and creation date to bucket detail page. The action will be handled by rootReducer and put date into this.props.global.bucketName & bucketCreationDate
 export function setBucket(data) {
   return {
     type: 'SET_BUCKET',
@@ -181,7 +180,7 @@ export function setBucket(data) {
   };
 }
 
-// Remove this.props.global.currentBucketCreationDate. Clean up of above action
+// Remove this.props.global.bucketName & bucketCreationDate. Clean up of above action
 export function removeBucket() {
   return {
     type: 'REMOVE_BUCKET',

@@ -9,6 +9,7 @@ import PutAclForm from '../forms/PutAclForm';
 import { requestGetS3Domain } from '../redux/actions.s3Domain';
 import { setHeader, extendContext } from '../../console-common/redux/actions';
 import * as BucketActions from '../redux/actions.bucket';
+import { removeFolderLocation } from '../redux/actions.object';
 
 class C extends Page {
 
@@ -60,6 +61,9 @@ class C extends Page {
       });
 
     dispatch(extendContext({ loading: true }, routerKey));
+    if (this.props.global.folderLocation) {
+      dispatch(removeFolderLocation());
+    }
   }
 
   formatBytes(bytes) {
@@ -148,7 +152,7 @@ class C extends Page {
                       </tr>
                       <tr>
                         <td>{t('pageBucket.createDate')}</td>
-                        <td><span>{moment.utc(this.props.global.currentBucketCreationDate).local().format('YYYY-MM-DD HH:mm:ss')}</span></td>
+                        <td><span>{moment.utc(this.props.global.bucketCreationDate).local().format('YYYY-MM-DD HH:mm:ss')}</span></td>
                       </tr>
                     </tbody>
                   </table>

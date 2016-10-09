@@ -25,7 +25,7 @@ class C extends Page {
     let active = 'detail';
     if (_.endsWith(location.pathname, 'detail')) {
       active = 'detail';
-    } else if (_.endsWith(location.pathname, 'objects')) {
+    } else if (_.endsWith(location.pathname, 'objects') || _.endsWith(location.pathname, 'create')) {
       active = 'objects';
     }
 
