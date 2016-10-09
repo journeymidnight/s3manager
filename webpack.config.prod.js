@@ -9,6 +9,7 @@ function generateConfig(module) {
   config.devtool = undefined;
   config.entry = {
     main: './' + module + '/index.js',
+    'browser-detection': './browser-detection.js',
     vendor: [
       'axios',
       'bootstrap',
