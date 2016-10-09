@@ -304,7 +304,6 @@ class C extends Page {
     const { t, params } = this.props;
 
     const eip = this.props.context.eip || this.eip;
-
     if (!eip || eip.eipId !== params.eipId) {
       this.refresh();
 

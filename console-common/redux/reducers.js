@@ -1,3 +1,4 @@
+import store from 'store';
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 import { reducer as formReducer } from 'redux-form';
@@ -12,10 +13,7 @@ export const serviceReducer = (state = null, action) => {
   switch (action.type) {
     case ActionTypes.SELECT_SERVICE:
       if (action.service) {
-        cookie.set('region', action.service.region, {
-          path: '/',
-          domain: !window.DEBUG ? 'console.lecloud.com' : undefined,
-        });
+        store.set('region', action.service.region);
         action.service.servicePath = '';
       }
 

@@ -8,9 +8,10 @@ class Auth {
       projectId,
     });
   }
-  oAuthAccess(sessionId) {
+  oAuthAccess(sessionId, projectId) {
     return call('post', '/api/iam/oAuthAccess', {
       sessionId,
+      projectId,
     });
   }
   describeToken(token) {
