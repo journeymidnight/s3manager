@@ -58,7 +58,7 @@ class F extends React.Component {
         <div className={(submitFailed || subnetId.touched) && subnetId.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('subnet')}</label>
           <div className="col-sm-10">
-            <select className="form-control" {...networkId} onChange={(param) => { this.onNetworkChange(param); }}>
+            <select className="form-control form-control-md" {...networkId} onChange={(param) => { this.onNetworkChange(param); }}>
                 {this.props.availableNetworks.map((network) => {
                   return (
                     <option key={network.networkId} value={network.networkId}>
@@ -67,7 +67,7 @@ class F extends React.Component {
                   );
                 })}
             </select>
-            {this.state.subnetSet && <select className="form-control" {...subnetId}>
+            {this.state.subnetSet && <select className="form-control form-control-md select-subnet" {...subnetId}>
                 {this.state.subnetSet.map((subnet) => {
                   return (
                     <option key={subnet.subnetId} value={subnet.subnetId}>
