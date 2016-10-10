@@ -277,6 +277,7 @@ class ObjectManagement extends TablePageStatic {
 
   changeFolder(e, folderName) {
     e.preventDefault();
+    this.refs.search.value = null;
     const { dispatch, routerKey } = this.props;
     dispatch(extendContext({ visibleObjects: [] }, routerKey));
     dispatch(ObjectActions.setFolderLocation(folderName));
@@ -510,7 +511,7 @@ class ObjectManagement extends TablePageStatic {
           </div>
 
           <div className="filter-item inline">
-            <input type="search" ref="search" placeholder={t('filterByObjectName')} className="form-control" onKeyPress={this.onSearchKeyPress} />
+            <input type="search" ref="search" placeholder={t('filterByObjectName')} className="form-control" onKeyPress={e => this.onSearchKeyPress(e, this.props.global.folderLocation)} />
           </div>
         </div>
         {Object.keys(context.selected).length > 0 && <div>

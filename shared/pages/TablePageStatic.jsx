@@ -3,6 +3,7 @@
  * 2. No status in filters
  * 3. Pagination
  * 4. Parameter filters in initTable
+ * 5. Parameter prefix in onSearchKeyPress
  */
 
 import React from 'react';
@@ -128,9 +129,9 @@ class C extends Page {
     };
   }
 
-  onSearchKeyPress(e) {
+  onSearchKeyPress(e, prefix = '') {
     if (e.key === 'Enter') {
-      let searchWord = this.refs.search.value;
+      let searchWord = prefix + this.refs.search.value;
       if (_.isEmpty(searchWord)) {
         searchWord = null;
       }
