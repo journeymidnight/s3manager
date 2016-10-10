@@ -19,12 +19,32 @@ export function setVisibleObjects(s3, bucketName, routerKey, filters) {
           const visibleObjects = matchedObjects.slice(offset, offset + limit);
 
           dispatch(extendContext({
-            matchedObjects,
             visibleObjects,
             total: matchedObjects.length,
           }, routerKey));
-          resolve(data);
+          resolve();
         }
+      });
+    });
+  };
+}
+
+export function isFolderEmpty(s3, bucketName, folderName) {
+  return dispatch => {
+    return new Promise((resolve, reject) => {
+      const params = {
+        Bucket: bucketName,
+        Prefix: folderName,
+      };
+
+      s3.listObjectsV2(params, (error, data) => {
+        if (error) {
+          dispatch(notifyAlert(error.message));
+          reject(error);
+        } else if (data.Contents.length > 1) {
+          reject(folderName);
+        }
+        resolve();
       });
     });
   };

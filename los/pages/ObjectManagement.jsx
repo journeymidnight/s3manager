@@ -12,7 +12,7 @@ import { setHeader, notify, notifyAlert, extendContext } from '../../console-com
 import { requestGetS3Domain } from '../redux/actions.s3Domain';
 import * as ObjectActions from '../redux/actions.object';
 
-class C extends TablePageStatic {
+class ObjectManagement extends TablePageStatic {
 
   constructor(props) {
     super(props);
@@ -72,27 +72,25 @@ class C extends TablePageStatic {
   onDelete() {
     const { t, dispatch } = this.props;
     const objectKeys = _.keys(this.props.context.selected);
+    Promise.all(objectKeys.filter((key) => key.endsWith('/')).map((folderName) => dispatch(ObjectActions.isFolderEmpty(this.s3, this.props.params.bucketName, folderName))))
+      .then(() => confirmModal(t('confirmDelete'), () => {
+        const params = {
+          Bucket: this.props.params.bucketName,
+          Delete: {
+            Objects: objectKeys.map((key) => ({ Key: key })),
+            Quiet: true,
+          },
+        };
 
-    confirmModal(t('confirmDelete'), () => new Promise((resolve, reject) => {
-      const params = {
-        Bucket: this.props.params.bucketName,
-        Delete: {
-          Objects: objectKeys.map((key) => ({ Key: key })),
-          Quiet: true,
-        },
-      };
-
-      this.s3.deleteObjects(params, (error) => {
-        if (error) {
-          dispatch(notifyAlert(error.message)); // will there be error.message?
-          reject(error);
-        } else {
-          dispatch(notify(t('objectDeletedSuccess')));
-          this.onRefresh({ searchWord: this.props.global.folderLocation }, false)();
-          resolve();
-        }
-      });
-    }));
+        this.s3.deleteObjects(params, (error) => {
+          if (error) {
+            dispatch(notifyAlert(error.message)); // will there be error.message?
+          } else {
+            dispatch(notify(t('objectDeletedSuccess')));
+            this.onRefresh({ searchWord: this.props.global.folderLocation }, false)();
+          }
+        });
+      }), folderName => dispatch(notifyAlert(folderName.slice(this.props.global.folderLocation.length, -1) + t('cannotDeleteFolder'))));
   }
 
   formatBytes(bytes) {
@@ -529,4 +527,4 @@ class C extends TablePageStatic {
   }
 }
 
-export default attach(C);
+export default attach(ObjectManagement);
