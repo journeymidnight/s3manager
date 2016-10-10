@@ -72,12 +72,21 @@ function createConsole() {
       const html = fs
         .readFileSync(`${__dirname}/../index.html`)
         .toString()
-        .replace('<!-- JS_MODULE -->', `<script src="/dist/vendor.js"></script><script src="/dist/${item.packageName}.js"></script>`)
+        .replace('<!-- JS_MODULE -->',
+        `<script src="/dist/vendor.js"></script><script src="/dist/browser-detection.js"></script><script src="/dist/${item.packageName}.js"></script>`)
         .replace('<!-- CSS_MODULE -->', `<link href="/dist/${item.packageName}.css" rel="stylesheet">`);
 
       res.set('Content-Type', 'text/html');
       res.send(html);
     });
+  });
+
+  app.get('/browser-unsupport', (req, res) => {
+    const html = fs
+      .readFileSync(`${__dirname}/../browser-unsupport.html`)
+      .toString();
+    res.set('Content-Type', 'text/html');
+    res.send(html);
   });
 
   app.get('/', (req, res) => {
