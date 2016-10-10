@@ -23,7 +23,7 @@
                         max-width: 200px;
                     }
 
-                    @media (min-width: 1300px), (max-width: $screen-md-min) {
+                    @media (max-width: $screen-md-min) {
                         max-width: 250px;
                     }
                 }

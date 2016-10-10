@@ -9,6 +9,7 @@ module.exports = {
     los: './los/index.js',
     global: './global/index.js',
     boss: './boss/index.js',
+    'browser-detection': './browser-detection.js',
     vendor: [
       'axios',
       'bootstrap',
@@ -36,7 +37,8 @@ module.exports = {
       'redux-logger',
       'redux-thunk',
       'store',
-      'superagent'
+      'superagent',
+      'bowser'
     ]
   },
 

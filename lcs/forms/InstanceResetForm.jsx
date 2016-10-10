@@ -90,8 +90,8 @@ class InstanceResetForm extends React.Component {
             <label className="control-label" >{t('pageInstanceCreate.loginPassword')}</label>
             <div className="col-sm-10">
               <input type="password" className="form-control" {...loginPassword} />
-              {(submitFailed || loginPassword.touched) && loginPassword.error && <div className="text-danger"><small>{loginPassword.error}</small></div>}
-              <p className="help-block">{t('pageInstanceCreate.passwordHint')}</p>
+              {(submitFailed || loginPassword.touched) && loginPassword.error ? <div className="text-danger"><small>{loginPassword.error}</small></div>
+                : <p className="help-block">{t('pageInstanceCreate.passwordHint')}</p>}
             </div>
           </div>}
 
