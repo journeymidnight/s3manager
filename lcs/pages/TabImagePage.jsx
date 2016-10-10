@@ -25,7 +25,7 @@ class C extends TablePage {
 
     this.initTable(routerKey, {
       isTabPage: true,
-      status: ['active'],
+      status: ['pending', 'active'],
     });
   }
 
@@ -127,6 +127,9 @@ class C extends TablePage {
     const { t } = this.props;
     const statusOption = [
       {
+        status: ['pending', 'active'],
+        name: t('allAvaliableStatus'),
+      }, {
         status: ['active'],
         name: t('imageStatus.active'),
       }, {

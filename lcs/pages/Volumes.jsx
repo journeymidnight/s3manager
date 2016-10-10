@@ -25,7 +25,7 @@ class C extends TablePage {
     dispatch(Actions.setHeader(t('volumeManage'), `${servicePath}/volumes`));
 
     this.initTable(routerKey, {
-      status: ['pending', 'active', 'attaching', 'inuse', 'backup_ing', 'backup_restoring'],
+      status: ['pending', 'active', 'attaching', 'detaching', 'inuse', 'backup_ing', 'backup_restoring'],
     });
   }
 
@@ -131,7 +131,7 @@ class C extends TablePage {
     const { t } = this.props;
     const statusOption = [
       {
-        status: ['pending', 'active', 'attaching', 'inuse', 'backup_ing', 'backup_restoring'],
+        status: ['pending', 'active', 'attaching', 'detaching', 'inuse', 'backup_ing', 'backup_restoring'],
         name: t('allAvaliableStatus'),
       }, {
         status: ['active'],

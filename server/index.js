@@ -72,7 +72,8 @@ function createConsole() {
       const html = fs
         .readFileSync(`${__dirname}/../index.html`)
         .toString()
-        .replace('<!-- JS_MODULE -->', `<script src="/dist/vendor.js"></script><script src="/dist/browser-detection.js"></script><script src="/dist/${item.packageName}.js"></script>`)
+        .replace('<!-- JS_MODULE -->',
+        `<script src="/dist/vendor.js"></script><script src="/dist/browser-detection.js"></script><script src="/dist/${item.packageName}.js"></script>`)
         .replace('<!-- CSS_MODULE -->', `<link href="/dist/${item.packageName}.css" rel="stylesheet">`);
 
       res.set('Content-Type', 'text/html');
@@ -93,7 +94,7 @@ function createConsole() {
       return item.isDefault === true;
     })[0];
     res.redirect(defaultPath.path);
-  });  
+  });
 
   return app;
 }
