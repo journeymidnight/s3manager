@@ -2,7 +2,7 @@
  * 1. No setInterval of onRefresh in initTable
  * 2. No status in filters
  * 3. Pagination
- * 4. Parameter filters in initTable
+ * 4. searchWord in initTable
  * 5. Parameter prefix in onSearchKeyPress
  */
 
@@ -32,13 +32,8 @@ class C extends Page {
     return reInit;
   }
 
-  initTable(routerKey, options, filters) {
+  initTable(routerKey, options) {
     const { dispatch } = this.props;
-    let searchWord = '';
-    if (filters) {
-      searchWord = filters.searchWord;
-    }
-
     const context = {
       selected: {},
       currentPage: 1,
@@ -49,6 +44,7 @@ class C extends Page {
     };
     dispatch(Actions.extendContext(Object.assign(context, options), routerKey));
 
+    const searchWord = options.searchWord || null;
     setTimeout(this.onRefresh({ searchWord }), 100);
   }
 

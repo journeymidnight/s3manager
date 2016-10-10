@@ -25,34 +25,29 @@ class C extends Page {
 
   onSubmit(values) {
     const { dispatch, region, routerKey, servicePath, t } = this.props;
+    const bucketName = values.bucketName;
+    const acl = values.acl;
 
-    return new Promise((resolve, reject) => {
-      const bucketName = values.bucketName;
-      const acl = values.acl;
+    AWS.config.endpoint = this.props.context.s3Domain;
+    AWS.config.region = region.regionId;
+    AWS.config.accessKeyId = region.accessKey;
+    AWS.config.secretAccessKey = region.accessSecret;
+    const s3 = new AWS.S3();
 
-      AWS.config.endpoint = this.props.context.s3Domain;
-      AWS.config.region = region.regionId;
-      AWS.config.accessKeyId = region.accessKey;
-      AWS.config.secretAccessKey = region.accessSecret;
-      const s3 = new AWS.S3();
-
-      dispatch(BucketActions.requestCreateBucket(routerKey, region.regionId, bucketName))
-        .then(() => {
-          return dispatch(BucketActions.requestPutCors(routerKey, region.regionId, bucketName));
-        })
-        .then(() => {
-          return dispatch(BucketActions.requestPutBucketAcl(s3, bucketName, acl));
-        })
-        .then(() => {
-          resolve();
-          dispatch(notify(t('bucketCreatedSuccess')));
-          setTimeout(() => dispatch(push(`${servicePath}/buckets`)), 300);
-        })
-        .catch((error) => {
-          dispatch(notifyAlert(error.message));
-          reject({ _error: error.message });
-        });
-    });
+    dispatch(BucketActions.requestCreateBucket(routerKey, region.regionId, bucketName))
+      .then(() => {
+        return dispatch(BucketActions.requestPutCors(routerKey, region.regionId, bucketName));
+      })
+      .then(() => {
+        return dispatch(BucketActions.requestPutBucketAcl(s3, bucketName, acl));
+      })
+      .then(() => {
+        dispatch(notify(t('bucketCreatedSuccess')));
+        setTimeout(() => dispatch(push(`${servicePath}/buckets`)), 300);
+      })
+      .catch((error) => {
+        dispatch(notifyAlert(error.message));
+      });
   }
 
   renderAfterInitialized() {

@@ -35,16 +35,10 @@ class C extends TablePageStatic {
     const { t, dispatch, region, routerKey } = this.props;
     const bucketName = _.keys(this.props.context.selected)[0];
 
-    confirmModal(t('confirmDelete'), () => new Promise((resolve, reject) => {
-      dispatch(BucketActions.requestDeleteBucket(routerKey, region.regionId, bucketName))
-        .then(() => {
-          resolve();
-          this.onRefresh({}, false)();
-        })
-        .catch(() => {
-          reject();
-        });
-    }));
+    confirmModal(t('confirmDelete'), () => dispatch(BucketActions.requestDeleteBucket(routerKey, region.regionId, bucketName))
+      .then(() => {
+        this.onRefresh({}, false)();
+      }));
   }
 
   renderTable() {

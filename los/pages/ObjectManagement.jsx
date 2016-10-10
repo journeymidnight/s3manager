@@ -61,7 +61,7 @@ class ObjectManagement extends TablePageStatic {
         AWS.config.accessKeyId = region.accessKey;
         AWS.config.secretAccessKey = region.accessSecret;
         this.s3 = new AWS.S3();
-        this.initTable(routerKey, {}, { searchWord: this.props.global.folderLocation });
+        this.initTable(routerKey, { searchWord: this.props.global.folderLocation });
       });
   }
 
@@ -336,8 +336,7 @@ class ObjectManagement extends TablePageStatic {
                 <td />
                 <td><i className="fa fa-folder-o" /></td>
                 <td />
-              </tr> :
-              <tr key={object.Key}>
+              </tr> : <tr key={object.Key}>
                 <td>
                   <input type="checkbox" className="selected" onChange={this.onSelect(object.Key)} checked={context.selected[object.Key] === true} />
                 </td>
@@ -511,7 +510,13 @@ class ObjectManagement extends TablePageStatic {
           </div>
 
           <div className="filter-item inline">
-            <input type="search" ref="search" placeholder={t('filterByObjectName')} className="form-control" onKeyPress={e => this.onSearchKeyPress(e, this.props.global.folderLocation)} />
+            <input
+              type="search"
+              ref="search"
+              placeholder={t('filterByObjectName')}
+              className="form-control"
+              onKeyPress={e => this.onSearchKeyPress(e, this.props.global.folderLocation)}
+            />
           </div>
         </div>
         {Object.keys(context.selected).length > 0 && <div>
