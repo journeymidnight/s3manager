@@ -81,7 +81,7 @@ function createConsole() {
     });
   });
 
-  app.get('/browser-unsupport', (req, res) => {
+  app.get('/browser-unsupport.html', (req, res) => {
     const html = fs
       .readFileSync(`${__dirname}/../browser-unsupport.html`)
       .toString();
