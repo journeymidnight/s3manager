@@ -37,8 +37,7 @@ module.exports = {
       'redux-logger',
       'redux-thunk',
       'store',
-      'superagent',
-      'bowser'
+      'superagent'
     ]
   },
 
