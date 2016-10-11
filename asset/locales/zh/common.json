@@ -58,6 +58,7 @@
     "publicIP": "公网 IP",
     "mountpoint": "挂载点",
     "size": "大小",
+    "port": "端口",
     "category": "类型",
     "download": "下载",
     "key_pair": "SSH 密钥",
@@ -746,7 +747,9 @@
     "pageLoadBalancer": {
         "basic": "基本信息",
         "updateLoadBalancer": "更新",
-        "deleteLoadBalancer": "删除"
+        "deleteLoadBalancer": "删除",
+        "listener": "监听器",
+        "backend": "后端服务"
     },
     "___comment_end_l2b": "end l2b"
 }

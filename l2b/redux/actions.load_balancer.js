@@ -81,3 +81,35 @@ export function requestDescribeNetworks(routerKey, regionId, filters) {
   };
 }
 
+export function requestDescribeLbListeners(routerKey, regionId, filters) {
+  return dispatch => {
+    return IaaS
+      .doAction(regionId, ACTION_NAMES.describeLoadBalancerListeners, filters)
+      .promise
+      .then((payload) => {
+        dispatch(extendContext(Object.assign(payload, {
+          currentPage: parseInt(payload.offset / payload.limit, 10) + 1,
+          size: payload.limit,
+          totalPage: parseInt((payload.total - 1) / payload.limit, 10) + 1,
+        })));
+      })
+      .catch((error) => {
+        dispatch(notifyAlert(error.message));
+      });
+  };
+}
+
+export function requestCreateLbListener(routerKey, regionId, loadBalancer) {
+  return dispatch => {
+    return IaaS
+      .doAction(regionId, ACTION_NAMES.createLoadBalancerListener, loadBalancer)
+      .promise
+      .then((payload) => {
+        dispatch(extendContext({ listener: payload }));
+        setTimeout(() => {
+          dispatch(notify(i18n.t('createSuccessed')));
+        }, 1000);
+      });
+  };
+}
+

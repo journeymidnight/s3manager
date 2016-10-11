@@ -1,5 +1,7 @@
 import moment from 'moment';
 import React from 'react';
+import _ from 'lodash';
+import { Link } from 'react-router';
 import Page, { attach } from '../../shared/pages/Page';
 import * as Actions from '../../console-common/redux/actions';
 import * as LoadBalancerActions from '../redux/actions.load_balancer';
@@ -42,13 +44,20 @@ class C extends Page {
 
 
   render() {
-    const { t, params } = this.props;
+    const { t, params, servicePath } = this.props;
 
     const loadBalancer = this.props.context.loadBalancer || this.loadBalancer;
     if (!loadBalancer || loadBalancer.loadBalancerId !== params.loadBalancerId) {
       this.refresh();
 
       return <div />;
+    }
+
+    let active = 'lb_listeners';
+    if (_.endsWith(this.props.location.pathname, 'lb_listeners')) {
+      active = 'lb_listeners';
+    } else if (_.endsWith(this.props.location.pathname, 'lb_backends')) {
+      active = 'lb_backends';
     }
 
     return (
@@ -101,7 +110,7 @@ class C extends Page {
                     <tbody>
                       <tr>
                         <td>{t('id')}</td>
-                        <td><span>{loadBalancer.LoadBalancerId}</span></td>
+                        <td><span>{loadBalancer.loadBalancerId}</span></td>
                       </tr>
                       <tr>
                         <td>{t('name')}</td>
@@ -144,6 +153,23 @@ class C extends Page {
                   </table>
                 </div>
               </div>
+              {this.isEnabled(loadBalancer) && <div className="col-md-8 tabs">
+                <ul className="nav-links clearfix">
+                  <li className={`pull-left ${(active === 'lb_listeners') ? 'active' : ''}`}>
+                    <Link data-placement="left" to={`${servicePath}/load_balancers/${loadBalancer.loadBalancerId}/lb_listeners`}>
+                      {t('pageLoadBalancer.listener')}
+                    </Link>
+                  </li>
+                  <li className={`pull-left ${(active === 'lb_backends') ? 'active' : ''}`}>
+                    <Link data-placement="left" to={`${servicePath}/load_balancers/${loadBalancer.loadBalancerId}/lb_backends`}>
+                      {t('pageLoadBalancer.backend')}
+                    </Link>
+                  </li>
+                </ul>
+                <div>
+                  {React.cloneElement(this.props.children, { loadBalancer })}
+                </div>
+              </div>}
             </div>
 
           </div>

@@ -17,5 +17,7 @@ export const ACTION_NAMES = {
   deleteLoadBalancers: 'DeleteLoadBalancers',
   describeNetworks: 'DescribeNetworks',
   createLoadBalancer: 'CreateLoadBalancer',
+  describeLoadBalancerListeners: 'DescribeLoadBalancerListeners',
+  createLoadBalancerListener: 'CreateLoadBalancerListener',
 };
 export default new IaaS();
