@@ -1,7 +1,7 @@
 const bowser = require('bowser');
 
 function detectUnsupportedHandler() {
-  window.location = '/browser-unsupport';
+  window.location = '/browser-unsupport.html';
 }
 
 if (bowser.msie) {

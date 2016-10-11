@@ -32,7 +32,7 @@ require('../shared/vendors/sidebar');
 require('../shared/vendors/jquery.nicescroll');
 
 if (!window.DEBUG) {
-  const analytics = require('./analytics');
+  const analytics = require('./analytics').default;
 
   analytics.track('Visited', {
     source: undefined,

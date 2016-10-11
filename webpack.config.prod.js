@@ -64,7 +64,12 @@ function generateConfig(module) {
       },
     }),
     new HtmlWebpackPlugin({
-      template: 'index.html'
+      template: 'index.html',
+      filename: 'index.html'
+    }),
+    new HtmlWebpackPlugin({
+      template: 'browser-unsupport.html',
+      filename: 'browser-unsupport.html'
     })
   ];
 
