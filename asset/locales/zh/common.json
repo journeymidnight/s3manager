@@ -732,6 +732,7 @@
     "___comment_end_los": "end los",
 
     "___comment_begin_l2b": "begin l2b",
+    "load_balancer": "负载均衡",
     "sidebarLoadBalancers": "负载均衡",
     "loadbalancerManage": "负载均衡",
     "loadBalancersManageDescription": "负载均衡管理",
@@ -741,6 +742,11 @@
         "building": "构建中",
         "error": "状态异常",
         "deleted": "已删除"
+    },
+    "pageLoadBalancer": {
+        "basic": "基本信息",
+        "updateLoadBalancer": "更新",
+        "deleteLoadBalancer": "删除"
     },
     "___comment_end_l2b": "end l2b"
 }

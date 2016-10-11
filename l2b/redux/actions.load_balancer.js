@@ -2,6 +2,25 @@ import { notify, notifyAlert, extendContext } from '../../console-common/redux/a
 import IaaS, { ACTION_NAMES } from '../services/iaas';
 import i18n from '../../shared/i18n';
 
+export function requestDescribeLoadBalancer(routerKey, regionId, loadBalancerId) {
+  return dispatch => {
+    return IaaS
+      .doAction(regionId, ACTION_NAMES.describeLoadBalancers, {
+        loadBalancerIds: [loadBalancerId],
+        verbose: true,
+      })
+      .promise
+      .then((payload) => {
+        dispatch(extendContext({
+          loadBalancer: payload.loadBalancerSet[0],
+        }, routerKey));
+      })
+      .catch((error) => {
+        dispatch(notifyAlert(error.message));
+      });
+  };
+}
+
 export function requestDescribeLoadBalancers(routerKey, regionId, filters) {
   return dispatch => {
     return IaaS

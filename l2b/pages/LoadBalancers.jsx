@@ -10,7 +10,7 @@ import StatusFilter from '../../shared/components/StatusFilter';
 import TimeSorter from '../../shared/components/TimeSorter';
 import SearchBox from '../../shared/components/SearchBox';
 import * as Actions from '../../console-common/redux/actions';
-import * as LoadbalanceActions from '../redux/actions.load_balancer';
+import * as LoadBalancerActions from '../redux/actions.load_balancer';
 
 class C extends TablePage {
 
@@ -30,7 +30,7 @@ class C extends TablePage {
 
   refreshAction(routerKey, filters) {
     const { region } = this.props;
-    return LoadbalanceActions.requestDescribeLoadBalancers(routerKey, region.regionId, filters);
+    return LoadBalancerActions.requestDescribeLoadBalancers(routerKey, region.regionId, filters);
   }
 
   onDelete() {
@@ -39,7 +39,7 @@ class C extends TablePage {
 
     confirmModal(t('confirmDelete'), () => {
       return new Promise((resolve, reject) => {
-        dispatch(LoadbalanceActions.requestDeleteLoadBalancers(routerKey, region.regionId, loadbalancerIds))
+        dispatch(LoadBalancerActions.requestDeleteLoadBalancers(routerKey, region.regionId, loadbalancerIds))
           .then(() => {
             resolve();
             this.onRefresh({}, false)();
@@ -84,7 +84,7 @@ class C extends TablePage {
                   />
                 </td>
                 <td>
-                  <Link to={`${servicePath}/loadbalancers/${loadbalancer.loadBalancerId}`}>
+                  <Link to={`${servicePath}/load_balancers/${loadbalancer.loadBalancerId}`}>
                     {loadbalancer.loadBalancerId}
                   </Link>
                 </td>
