@@ -721,6 +721,7 @@
     "filterByObjectName": "按对象名称过滤",
     "uploadFile": "上传文件",
     "objectDeletedSuccess": "对象删除成功",
+    "folderCreatedSuccess": "文件夹创建成功",
     "cannotDeleteFolder": "不为空，无法删除",
     "createFolder": "新建文件夹",
     "uploadModal": {
@@ -736,32 +737,6 @@
         "cancel": "取消",
         "retry": "重试"
     },
-<<<<<<< HEAD
-    "objectDeletedSuccess": "对象删除成功",
-    "___comment_end_los": "end los",
-
-    "___comment_begin_l2b": "begin l2b",
-    "load_balancer": "负载均衡",
-    "sidebarLoadBalancers": "负载均衡",
-    "loadbalancerManage": "负载均衡",
-    "loadBalancersManageDescription": "负载均衡管理",
-    "loadBalancerStatus": {
-        "pending": "创建中",
-        "active": "运行中",
-        "building": "构建中",
-        "error": "状态异常",
-        "deleted": "已删除"
-    },
-    "pageLoadBalancer": {
-        "basic": "基本信息",
-        "updateLoadBalancer": "更新",
-        "deleteLoadBalancer": "删除",
-        "listener": "监听器",
-        "backend": "后端服务"
-    },
-    "___comment_end_l2b": "end l2b"
-=======
-    "folderCreatedSuccess": "文件夹创建成功",
 
     "pageObjectCreate": {
         "folderName": "文件夹名称",
@@ -785,6 +760,27 @@
             "7days": "最近7天",
             "30days": "本月"
         }
-    }
->>>>>>> ft_ding_develop
+    },
+    "___comment_end_los": "end los",
+
+    "___comment_begin_l2b": "begin l2b",
+    "load_balancer": "负载均衡",
+    "sidebarLoadBalancers": "负载均衡",
+    "loadbalancerManage": "负载均衡",
+    "loadBalancersManageDescription": "负载均衡管理",
+    "loadBalancerStatus": {
+        "pending": "创建中",
+        "active": "运行中",
+        "building": "构建中",
+        "error": "状态异常",
+        "deleted": "已删除"
+    },
+    "pageLoadBalancer": {
+        "basic": "基本信息",
+        "updateLoadBalancer": "更新",
+        "deleteLoadBalancer": "删除",
+        "listener": "监听器",
+        "backend": "后端服务"
+    },
+    "___comment_end_l2b": "end l2b"
 }
