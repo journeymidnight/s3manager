@@ -59,6 +59,7 @@
     "mountpoint": "挂载点",
     "size": "大小",
     "port": "端口",
+    "protocol": "端口协议",
     "category": "类型",
     "download": "下载",
     "key_pair": "SSH 密钥",

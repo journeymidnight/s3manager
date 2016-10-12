@@ -1,5 +1,6 @@
 import moment from 'moment';
 import React from 'react';
+import { Link } from 'react-router';
 import { attach } from '../../shared/pages/Page';
 import Modal from '../../shared/components/Modal';
 import TablePage from '../../shared/pages/TablePage';
@@ -86,7 +87,7 @@ class C extends TablePage {
   }
 
   renderTable() {
-    const { t } = this.props;
+    const { t, servicePath, loadBalancer } = this.props;
     return this.props.context.total > 0 && this.props.context.loadBalancerListenerSet.length > 0 && (
       <table className="table table-list">
         <thead>
@@ -116,7 +117,11 @@ class C extends TablePage {
                   checked={this.props.context.selected[listener.loadBalancerListenerId] === true}
                 />
               </td>
-              <td>{listener.loadBalancerListenerId}</td>
+              <td>
+                <Link to={`${servicePath}/load_balancers/${loadBalancer.loadBalancerId}/${listener.loadBalancerListenerId}`}>
+                  {listener.loadBalancerListenerId}
+                </Link>
+              </td>
               <td>
                 {listener.port}
               </td>
