@@ -244,7 +244,7 @@ class C extends Page {
     const { t, dispatch, region, routerKey } = this.props;
     const eip = this.props.context.eip;
 
-    confirmModal(t('pageEip.confirmDissociateEip'), () => {
+    confirmModal(t('pageEip.confirmDissociateResource'), () => {
       dispatch(EipActions.requestDissociateEips(routerKey, region.regionId, [eip.eipId]))
         .then(() => {
           dispatch(EipActions.requestDescribeEip(routerKey, region.regionId, eip.eipId));

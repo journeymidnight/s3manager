@@ -254,7 +254,7 @@ class C extends TablePage {
             })}
           </div>
         </div>}
-        <Modal title={t('pageInstance.resetInstance')} ref="restartModal" >
+        <Modal title={t('pageInstance.restartInstance')} ref="restartModal" >
           <InstanceRestartForm onSubmit={this.onRestart} />
         </Modal>
       </div>

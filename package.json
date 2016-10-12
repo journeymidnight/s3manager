@@ -5,7 +5,7 @@
     "lint": "eslint global boss shared server lcs los console-common",
     "test": "mocha --compilers js:babel-register --require './shared/__tests__/mock.js' 'shared/**/__tests__/*.spec.js' 'boss/**/__tests__/*.spec.js' 'global/**/__tests__/*.spec.js' 'lcs/**/__tests__/*.spec.js' 'los/**/__tests__/*.spec.js'",
     "clean": "rimraf dist",
-    "build": "mkdir -p dist/console && webpack --config webpack.config.prod.js && cp -r asset dist/boss && cp -r asset dist/console && cp console-common/index.html dist/console",
+    "build": "mkdir -p dist/console && webpack --config webpack.config.prod.js && cp -r asset dist/boss && cp -r asset dist/console && cp console-common/index.html dist/console && cp browser-unsupport.html dist/console",
     "start": "babel-watch -w ./server index.js"
   },
   "pre-commit": [
@@ -22,6 +22,7 @@
     "body-parser": "^1.15.0",
     "bootstrap": "^3.3.6",
     "bootstrap-sass": "^3.3.6",
+    "bowser": "^1.4.6",
     "c3": "^0.4.11",
     "d3": "^3.5.17",
     "eslint-loader": "^1.3.0",

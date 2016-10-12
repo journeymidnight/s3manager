@@ -63,11 +63,13 @@ export const call = (method, url, payload, hook) => {
             return;
           } else if (data.retCode === -1) {
             window.console.log(data);
-            reject({
-              retCode: -1,
-              message: i18n.t('networkIssue'),
-              data: null,
-            });
+            if (window.DEBUG) {
+              reject({
+                retCode: -1,
+                message: i18n.t('networkIssue'),
+                data: null,
+              });
+            }
           } else {
             reject(data);
           }
@@ -79,11 +81,13 @@ export const call = (method, url, payload, hook) => {
         reject(error.data);
       } else {
         window.console.log(error);
-        reject({
-          retCode: -1,
-          message: i18n.t('networkIssue'),
-          data: null,
-        });
+        if (window.DEBUG) {
+          reject({
+            retCode: -1,
+            message: i18n.t('networkIssue'),
+            data: null,
+          });
+        }
       }
     });
   });

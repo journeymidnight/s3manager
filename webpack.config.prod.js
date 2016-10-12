@@ -9,6 +9,7 @@ function generateConfig(module) {
   config.devtool = undefined;
   config.entry = {
     main: './' + module + '/index.js',
+    'browser-detection': './browser-detection.js',
     vendor: [
       'axios',
       'bootstrap',
@@ -63,7 +64,12 @@ function generateConfig(module) {
       },
     }),
     new HtmlWebpackPlugin({
-      template: 'index.html'
+      template: 'index.html',
+      filename: 'index.html'
+    }),
+    new HtmlWebpackPlugin({
+      template: 'browser-unsupport.html',
+      filename: 'browser-unsupport.html'
     })
   ];
 
