@@ -2,12 +2,11 @@ import React from 'react';
 import { push } from 'react-router-redux';
 import AWS from 'aws-sdk';
 import Page, { attach } from '../../shared/pages/Page';
-import BucketCreateForm from '../forms/BucketCreateForm';
+import ObjectCreateForm from '../forms/ObjectCreateForm';
 import { setHeader, extendContext, notify, notifyAlert } from '../../console-common/redux/actions';
 import { requestGetS3Domain } from '../redux/actions.s3Domain';
-import * as BucketActions from '../redux/actions.bucket';
 
-class C extends Page {
+class ObjectCreate extends Page {
 
   constructor() {
     super();
@@ -24,9 +23,11 @@ class C extends Page {
   }
 
   onSubmit(values) {
-    const { dispatch, region, routerKey, servicePath, t } = this.props;
-    const bucketName = values.bucketName;
-    const acl = values.acl;
+    const { dispatch, region, servicePath, t } = this.props;
+    const params = {
+      Bucket: this.props.params.bucketName,
+      Key: `${this.props.global.folderLocation}${values.objectName}/`,
+    };
 
     AWS.config.endpoint = this.props.context.s3Domain;
     AWS.config.region = region.regionId;
@@ -34,20 +35,14 @@ class C extends Page {
     AWS.config.secretAccessKey = region.accessSecret;
     const s3 = new AWS.S3();
 
-    dispatch(BucketActions.requestCreateBucket(routerKey, region.regionId, bucketName))
-      .then(() => {
-        return dispatch(BucketActions.requestPutCors(routerKey, region.regionId, bucketName));
-      })
-      .then(() => {
-        return dispatch(BucketActions.requestPutBucketAcl(s3, bucketName, acl));
-      })
-      .then(() => {
-        dispatch(notify(t('bucketCreatedSuccess')));
-        setTimeout(() => dispatch(push(`${servicePath}/buckets`)), 300);
-      })
-      .catch((error) => {
-        dispatch(notifyAlert(error.message));
-      });
+    s3.putObject(params, (error) => {
+      if (error) {
+        dispatch(notifyAlert(error.message)); // error has message? error.stack in s3 sdk doc;
+      } else {
+        dispatch(notify(t('folderCreatedSuccess')));
+        setTimeout(() => dispatch(push(`${servicePath}/buckets/${this.props.params.bucketName}/objects`)), 300);
+      }
+    });
   }
 
   renderAfterInitialized() {
@@ -58,10 +53,10 @@ class C extends Page {
           <div className="clearfix">
             <div className="top-area append-bottom-20">
               <div className="nav-text">
-                <span>{t('pageBucketCreate.createBucket')}</span>
+                <span>{t('createFolder')}</span>
               </div>
             </div>
-            <BucketCreateForm
+            <ObjectCreateForm
               onSubmit={this.onSubmit}
             />
           </div>
@@ -71,4 +66,4 @@ class C extends Page {
   }
 }
 
-export default attach(C);
+export default attach(ObjectCreate);

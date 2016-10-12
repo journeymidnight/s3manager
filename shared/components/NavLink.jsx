@@ -5,7 +5,7 @@ const C = (props, context) => {
   const isActive = context.router.isActive(props.to);
   const className = isActive ? 'active' : '';
   const link = (
-    <Link to={props.to} >
+    <Link to={props.to} onClick={props.onClick}>
     {props.children}
     </Link>
   );
@@ -18,6 +18,7 @@ C.contextTypes = {
 
 C.propTypes = {
   to: React.PropTypes.string,
+  onClick: React.PropTypes.func,
   children: React.PropTypes.any,
 };
 

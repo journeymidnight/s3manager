@@ -667,8 +667,6 @@
     "bucketList": "空间管理",
     "bucketListDescription": "存储空间管理",
     "filterByBucketName": "按存储空间名称过滤",
-    "resourceMonitor": "资源监控",
-    "resourceMonitorDescription": "资源监控描述",
     "bucketDeletedSuccess": "空间删除成功",
     "bucketCreatedSuccess": "空间添加成功",
     "pageBucketCreate": {
@@ -696,6 +694,8 @@
         "loggingService": "日志服务",
         "publicDomain": "外网域名",
         "privateDomain": "内网域名",
+        "putAcl": "更改空间权限",
+        "putAclSuccess": "更改空间权限成功",
 
         "monitor": "监控",
 
@@ -715,8 +715,13 @@
         "monitorIntervalOneHour": "间隔: 1小时"
     },
     "objectManagement": "对象管理",
+    "objectName": "文件夹名/文件名",
+    "folder": "文件夹",
+    "returnUpFolder": "返回上一级",
     "filterByObjectName": "按对象名称过滤",
     "uploadFile": "上传文件",
+    "objectDeletedSuccess": "对象删除成功",
+    "cannotDeleteFolder": "不为空，无法删除",
     "createFolder": "新建文件夹",
     "uploadModal": {
         "uploadingStatus": "文件上传状态",
@@ -731,6 +736,7 @@
         "cancel": "取消",
         "retry": "重试"
     },
+<<<<<<< HEAD
     "objectDeletedSuccess": "对象删除成功",
     "___comment_end_los": "end los",
 
@@ -754,4 +760,31 @@
         "backend": "后端服务"
     },
     "___comment_end_l2b": "end l2b"
+=======
+    "folderCreatedSuccess": "文件夹创建成功",
+
+    "pageObjectCreate": {
+        "folderName": "文件夹名称",
+        "folderNameHint": "文件夹命名规范： \n 1. 只能包含字母，数字，中文，下划线（_），短横线（-），和小数点（.）\n 2. 只能以字母、数字或者中文开头 \n 3. 文件夹的长度限制在1-254之间 \n 4. Object总长度必须在1-1023之间",
+        "objectNameNotValid": "文件夹名称不符合要求"
+    },
+
+    "resourceMonitors": "资源监控",
+    "usageMonitor": "存储资源监控",
+    "flowMonitor": "流量监控",
+    "apiMonitor": "请求次数监控",
+    "vendorMonitor": "线路统计",
+    "regionMonitor": "地域统计",
+
+    "pageResourceMonitors": {
+        "chooseBucket": "选择空间",
+        "from": "时间范围从",
+        "to": "至",
+        "periods": {
+            "1day": "今天",
+            "7days": "最近7天",
+            "30days": "本月"
+        }
+    }
+>>>>>>> ft_ding_develop
 }

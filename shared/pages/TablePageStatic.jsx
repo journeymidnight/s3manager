@@ -2,6 +2,8 @@
  * 1. No setInterval of onRefresh in initTable
  * 2. No status in filters
  * 3. Pagination
+ * 4. searchWord in initTable
+ * 5. Parameter prefix in onSearchKeyPress
  */
 
 import React from 'react';
@@ -32,7 +34,6 @@ class C extends Page {
 
   initTable(routerKey, options) {
     const { dispatch } = this.props;
-
     const context = {
       selected: {},
       currentPage: 1,
@@ -43,7 +44,8 @@ class C extends Page {
     };
     dispatch(Actions.extendContext(Object.assign(context, options), routerKey));
 
-    setTimeout(this.onRefresh(), 100);
+    const searchWord = options.searchWord || null;
+    setTimeout(this.onRefresh({ searchWord }), 100);
   }
 
   refresh(silent = true) {
@@ -123,9 +125,9 @@ class C extends Page {
     };
   }
 
-  onSearchKeyPress(e) {
+  onSearchKeyPress(e, prefix = '') {
     if (e.key === 'Enter') {
-      let searchWord = this.refs.search.value;
+      let searchWord = prefix + this.refs.search.value;
       if (_.isEmpty(searchWord)) {
         searchWord = null;
       }

@@ -4,15 +4,27 @@ import { Link } from 'react-router';
 import AWS from 'aws-sdk';
 import Page, { attach } from '../../shared/pages/Page';
 import BucketMonitors from './BucketMonitors';
+import Modal from '../../shared/components/Modal';
+import PutAclForm from '../forms/PutAclForm';
 import { requestGetS3Domain } from '../redux/actions.s3Domain';
 import { setHeader, extendContext } from '../../console-common/redux/actions';
 import * as BucketActions from '../redux/actions.bucket';
+import { removeFolderLocation } from '../redux/actions.object';
 
 class C extends Page {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+
+    const { t } = this.props;
+    this.acl = {
+      private: t('pageBucketCreate.aclPrivate'),
+      'public-read': t('pageBucketCreate.aclPublicR'),
+      'public-read-write': t('pageBucketCreate.aclPublicRW'),
+    };
+
     this.formatBytes = this.formatBytes.bind(this);
+    this.onPutAcl = this.onPutAcl.bind(this);
   }
 
   initialize() {
@@ -26,29 +38,32 @@ class C extends Page {
         AWS.config.region = region.regionId;
         AWS.config.accessKeyId = region.accessKey;
         AWS.config.secretAccessKey = region.accessSecret;
-        const s3 = new AWS.S3();
-        return dispatch(BucketActions.requestGetBucketAcl(s3, bucketName, routerKey));
+        this.s3 = new AWS.S3();
+        dispatch(BucketActions.requestGetBucketAcl(this.s3, bucketName, routerKey));
       });
 
-    const now = new Date();
-    dispatch(extendContext({ monitorTimestamp: now }, routerKey));
-    const nowTime = moment.utc(now).local().format('YYYYMMDDHHmmss');
-    const todayBeginTime = moment.utc(now).local().format('YYYYMMDD000000');
+    const nowLocal = moment();
+    dispatch(extendContext({ monitorMomentLocal: nowLocal }, routerKey));
+    const nowLocalFormat = moment(nowLocal).format('YYYYMMDDHHmmss');
 
-    const today = moment.utc(now).local().format('YYYYMMDD');
-    const firstDayOfMonth = moment.utc(now).local().format('YYYYMM01');
+    const startOfDayLocalFormat = moment(nowLocal).startOf('day').format('YYYYMMDDHHmmss');
+    const todayLocalFormat = moment(nowLocal).format('YYYYMMDD');
+    const startOfMonthLocalFormat = moment(nowLocal).startOf('month').format('YYYYMMDD');
 
     Promise.all([
-      dispatch(BucketActions.requestGetUsageByHour(routerKey, region.regionId, bucketName, todayBeginTime, nowTime)),
-      dispatch(BucketActions.requestGetStaticsByDay(routerKey, region.regionId, bucketName, firstDayOfMonth, today)),
-      dispatch(BucketActions.requestGetOpByHour(routerKey, region.regionId, bucketName, todayBeginTime, nowTime)),
-      dispatch(BucketActions.requestGetFlowByHour(routerKey, region.regionId, bucketName, todayBeginTime, nowTime)),
+      dispatch(BucketActions.requestGetUsageByHour(routerKey, region.regionId, bucketName, startOfDayLocalFormat, nowLocalFormat)),
+      dispatch(BucketActions.requestGetStaticsByDay(routerKey, region.regionId, bucketName, startOfMonthLocalFormat, todayLocalFormat)),
+      dispatch(BucketActions.requestGetOpByHour(routerKey, region.regionId, bucketName, startOfDayLocalFormat, nowLocalFormat)),
+      dispatch(BucketActions.requestGetFlowByHour(routerKey, region.regionId, bucketName, startOfDayLocalFormat, nowLocalFormat)),
     ])
       .then(() => {
         dispatch(extendContext({ loading: false }, routerKey));
       });
 
     dispatch(extendContext({ loading: true }, routerKey));
+    if (this.props.global.folderLocation) {
+      dispatch(removeFolderLocation());
+    }
   }
 
   formatBytes(bytes) {
@@ -57,6 +72,16 @@ class C extends Page {
     else if (bytes < 1024 * 1024 * 1024) return `${(bytes / 1024 / 1024).toFixed(1)}MB`;
     else if (bytes < 1024 * 1024 * 1024 * 1024) return `${(bytes / 1024 / 1024 / 1024).toFixed(1)}GB`;
     return `${(bytes / 1024 / 1024 / 1024 / 1024).toFixed(1)}TB`;
+  }
+
+  onPutAcl(values) {
+    const { acl } = values;
+    const { dispatch, params, routerKey } = this.props;
+    dispatch(BucketActions.requestPutBucketAcl(this.s3, params.bucketName, acl))
+      .then(() => {
+        this.refs.aclModal.hide();
+        dispatch(BucketActions.requestGetBucketAcl(this.s3, params.bucketName, routerKey));
+      });
   }
 
   render() {
@@ -127,7 +152,7 @@ class C extends Page {
                       </tr>
                       <tr>
                         <td>{t('pageBucket.createDate')}</td>
-                        <td><span>{moment.utc(this.props.global.currentBucketCreationDate).local().format('YYYY-MM-DD HH:mm:ss')}</span></td>
+                        <td><span>{moment.utc(this.props.global.bucketCreationDate).local().format('YYYY-MM-DD HH:mm:ss')}</span></td>
                       </tr>
                     </tbody>
                   </table>
@@ -136,13 +161,28 @@ class C extends Page {
                 <div className="panel panel-default">
                   <div className="panel-heading">
                     {t('pageBucket.configuration')}
+                    <div className="btn-group pull-right">
+                      <button type="button" className="btn dropdown-toggle" data-toggle="dropdown">
+                        <i className="fa fa-bars" />
+                      </button>
+                      <ul className="dropdown-menu">
+                        <li>
+                          <button
+                            className="btn-page-action"
+                            onClick={() => this.refs.aclModal.show()}
+                          >
+                            {t('pageBucket.putAcl')}
+                          </button>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                   <table className="table table-detail">
                     <tbody>
                       <tr>
                         <td width="100">{t('pageBucket.bucketAcl')}</td>
                         <td>
-                          <span>{context.acl}</span>
+                          <span>{this.acl[context.acl]}</span>
                         </td>
                       </tr>
                       <tr>
@@ -182,6 +222,10 @@ class C extends Page {
             </div>
           </div>
         </div>
+
+        <Modal title={t('pageBucket.putAcl')} ref="aclModal">
+          <PutAclForm onSubmit={this.onPutAcl} />
+        </Modal>
       </div>
     );
   }
