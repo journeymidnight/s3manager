@@ -7,6 +7,7 @@ module.exports = {
   entry: {
     lcs: './lcs/index.js',
     los: './los/index.js',
+    l2b: './l2b/index.js',
     global: './global/index.js',
     boss: './boss/index.js',
     'browser-detection': './browser-detection.js',
@@ -66,6 +67,7 @@ module.exports = {
         includes: [
           /lcs/,
           /los/,
+          /l2b/,          
           /global/,
           /boss/,
           /console-common/,

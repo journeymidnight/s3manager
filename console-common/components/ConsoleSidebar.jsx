@@ -68,6 +68,11 @@ class C extends React.Component {
         title: t('resourceMonitor'),
         icon: 'fa-sticky-note',
       }],
+      l2b: [{
+        path: 'load_balancers',
+        title: t('sidebarLoadBalancers'),
+        icon: 'fa-sticky-note',
+      }],
     };
   }
 
