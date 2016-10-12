@@ -1,12 +1,8 @@
-import _ from 'lodash';
 import moment from 'moment';
 import React from 'react';
 import { attach } from '../../shared/pages/Page';
-import Modal, { confirmModal } from '../../shared/components/Modal';
-import { buttonForm } from '../../shared/forms/ButtonForm';
+import Modal from '../../shared/components/Modal';
 import TablePage from '../../shared/pages/TablePage';
-import TimeSorter from '../../shared/components/TimeSorter';
-import SearchBox from '../../shared/components/SearchBox';
 import ListenerCreateForm from '../forms/ListenerCreateForm';
 import * as Actions from '../../console-common/redux/actions';
 import * as LoadBalancerActions from '../redux/actions.load_balancer';
@@ -46,7 +42,7 @@ class C extends TablePage {
 
       dispatch(LoadBalancerActions.requestCreateLbListener(routerKey, region.regionId, {
         loadBalancerId: loadBalancer.loadBalancerId,
-        protocol: 'tcp', 
+        protocol: 'tcp',
         name,
         port,
       }))
@@ -113,7 +109,12 @@ class C extends TablePage {
           return (
             <tr key={listener.loadBalancerListenerId}>
               <td>
-                <input type="checkbox" className="selected" onChange={this.onSelect(listener.loadBalancerListenerId)} checked={this.props.context.selected[listener.loadBalancerListenerId] === true} />
+                <input
+                  type="checkbox"
+                  className="selected"
+                  onChange={this.onSelect(listener.loadBalancerListenerId)}
+                  checked={this.props.context.selected[listener.loadBalancerListenerId] === true}
+                />
               </td>
               <td>{listener.loadBalancerListenerId}</td>
               <td>
