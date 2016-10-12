@@ -2,25 +2,42 @@ import { notify, notifyAlert, extendContext } from '../../console-common/redux/a
 import Wcs, { ACTION_NAMES } from '../services/wcs';
 import i18n from '../../shared/i18n';
 
-export function setVisibleBuckets(routerKey, regionId, filters = {}) {
+export function setVisibleBuckets(routerKey, regionId, filters) {
   return dispatch => {
     return Wcs
-      .doAction(regionId, ACTION_NAMES.listbuckets, filters)
+      .doAction(regionId, ACTION_NAMES.listbuckets, {})
       .promise
       .then((payload) => {
         const { offset, limit, searchWord } = filters;
-        const matchedBuckets = payload.filter(
-          (bucket) => {
-            if (searchWord) return bucket.name.indexOf(searchWord) > -1;
-            return true;
-          }
-        );
-        const visibleBuckets = matchedBuckets.slice(offset, offset + limit);
+        if (payload) {
+          const matchedBuckets = payload.filter(
+            (bucket) => {
+              if (searchWord) return bucket.name.indexOf(searchWord) > -1;
+              return true;
+            }
+          );
+          const visibleBuckets = matchedBuckets.slice(offset, offset + limit);
 
+          dispatch(extendContext({
+            visibleBuckets,
+            total: matchedBuckets.length,
+          }, routerKey));
+        }
+      })
+      .catch((error) => {
+        dispatch(notifyAlert(error.message));
+      });
+  };
+}
+
+export function listBuckets(routerKey, regionId) {
+  return dispatch => {
+    return Wcs
+      .doAction(regionId, ACTION_NAMES.listbuckets, {})
+      .promise
+      .then((payload) => {
         dispatch(extendContext({
           buckets: payload,
-          visibleBuckets,
-          total: matchedBuckets.length,
         }, routerKey));
       })
       .catch((error) => {
@@ -60,18 +77,18 @@ export function requestPutCors(routerKey, regionId, bucketName) {
 }
 
 export function requestPutBucketAcl(s3, bucketName, acl) {
-  return () => {
+  return dispatch => {
     return new Promise((resolve, reject) => {
       const params = {
         Bucket: bucketName,
         ACL: acl,
       };
-
-      s3.putBucketAcl(params, (error, data) => {
+      s3.putBucketAcl(params, (error) => {
         if (error) {
-          reject(error);
+          reject();
         } else {
-          resolve(data);
+          dispatch(notify(i18n.t('pageBucket.putAclSuccess')));
+          resolve();
         }
       });
     });
@@ -90,10 +107,16 @@ export function requestGetBucketAcl(s3, bucketName, routerKey) {
           dispatch(notifyAlert(error.message));
           reject();
         } else {
+          // Below 4 lines of code may lead to bug in future
+          const acls = data.Grants.map((Grant) => Grant.Permission);
+          let acl = 'private';
+          if (acls.includes('WRITE')) acl = 'public-read-write';
+          else if (acls.includes('READ')) acl = 'public-read';
+
           dispatch(extendContext({
-            acl: data.Grants[0].Permission,
+            acl,
           }, routerKey));
-          resolve(data);
+          resolve();
         }
       });
     });
@@ -152,7 +175,7 @@ export function requestGetStaticsByDay(routerKey, regionId, bucketName, startDat
   };
 }
 
-// Pass bucket creation date to bucket detail page. The action will be handled by rootReducer and put date into this.props.global.currentBucketCreationDate
+// Pass bucket name and creation date to bucket detail page. The action will be handled by rootReducer and put date into this.props.global.bucketName & bucketCreationDate
 export function setBucket(data) {
   return {
     type: 'SET_BUCKET',
@@ -160,7 +183,7 @@ export function setBucket(data) {
   };
 }
 
-// Remove this.props.global.currentBucketCreationDate. Clean up of above action
+// Remove this.props.global.bucketName & bucketCreationDate. Clean up of above action
 export function removeBucket() {
   return {
     type: 'REMOVE_BUCKET',
