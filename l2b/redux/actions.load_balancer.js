@@ -113,3 +113,17 @@ export function requestCreateLbListener(routerKey, regionId, loadBalancer) {
   };
 }
 
+export function requestModifyLoadBalancerListenerAttributes(routerKey, regionId, loadBalancerListenerId, name, description) {
+  return dispatch => {
+    return IaaS
+      .doAction(regionId, ACTION_NAMES.modifyLoadBalancerListenerAttributes, { loadBalancerListenerId, name, description })
+      .promise
+      .then(() => {
+        dispatch(notify(i18n.t('updateSuccessed')));
+      })
+      .catch((error) => {
+        dispatch(notifyAlert(error.message));
+      });
+  };
+}
+

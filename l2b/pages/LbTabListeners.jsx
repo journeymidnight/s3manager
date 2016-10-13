@@ -88,7 +88,7 @@ class C extends TablePage {
 
   renderTable() {
     const { t, servicePath, loadBalancer } = this.props;
-    return this.props.context.total > 0 && this.props.context.loadBalancerListenerSet.length > 0 && (
+    return this.props.context.total > 0 && this.props.context.listenerSet.length > 0 && (
       <table className="table table-list">
         <thead>
           <tr>
@@ -96,8 +96,8 @@ class C extends TablePage {
               <input
                 type="checkbox"
                 className="selected"
-                onChange={this.onSelectAll(this.props.context.loadBalancerListenerSet.map((u) => { return u.loadBalancerListenerId; }))}
-                checked={this.isAllSelected(this.props.context.loadBalancerListenerSet.map((u) => { return u.loadBalancerListenerId; }))}
+                onChange={this.onSelectAll(this.props.context.listenerSet.map((u) => { return u.loadBalancerListenerId; }))}
+                checked={this.isAllSelected(this.props.context.listenerSet.map((u) => { return u.loadBalancerListenerId; }))}
               />
             </th>
             <th width="150">{t('id')}</th>
@@ -106,7 +106,7 @@ class C extends TablePage {
           </tr>
         </thead>
         <tbody>
-        {this.props.context.loadBalancerListenerSet.map((listener) => {
+        {this.props.context.listenerSet.map((listener) => {
           return (
             <tr key={listener.loadBalancerListenerId}>
               <td>

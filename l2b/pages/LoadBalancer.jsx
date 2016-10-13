@@ -55,7 +55,7 @@ class C extends Page {
 
     let active = 'lb_listeners';
     if (_.endsWith(this.props.location.pathname, 'lb_listeners')) {
-      active = 'lb_listeners';
+      active = 'lb_listeners'; // TODO:
     } else if (_.endsWith(this.props.location.pathname, 'lb_backends')) {
       active = 'lb_backends';
     }
@@ -86,7 +86,7 @@ class C extends Page {
                             className="btn-page-action"
                             onClick={this.updateLoadBalancer}
                           >
-                            {t('pageLoadBalancer.updateLoadBalancer')}
+                            {t('pageLoadBalancer.update')}
                           </button>
                         </li>
                         <li>
@@ -95,14 +95,14 @@ class C extends Page {
                             disabled={loadBalancer.status !== 'active'}
                             onClick={this.deleteLoadBalancer}
                           >
-                            {t('pageLoadBalancer.deleteLoadBalancer')}
+                            {t('pageLoadBalancer.delete')}
                           </button>
                         </li>
                       </ul>
                     </div>}
                     {!this.isEnabled(loadBalancer) && this.isDeletable(loadBalancer) && <div className="btn-group pull-right">
                       <button type="button" className="btn" onClick={this.deleteLoadBalancer}>
-                        {t('pageLoadBalancer.deleteLoadBalancer')}
+                        {t('pageLoadBalancer.delete')}
                       </button>
                     </div>}
                   </div>

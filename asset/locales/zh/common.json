@@ -776,10 +776,14 @@
         "error": "状态异常",
         "deleted": "已删除"
     },
+    "lblistenerStatus": {
+        "active": "运行中",
+        "deleted": "已删除"
+    },
     "pageLoadBalancer": {
         "basic": "基本信息",
-        "updateLoadBalancer": "更新",
-        "deleteLoadBalancer": "删除",
+        "update": "更新",
+        "delete": "删除",
         "listener": "监听器",
         "backend": "后端服务"
     },
