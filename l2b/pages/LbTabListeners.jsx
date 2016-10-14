@@ -8,7 +8,6 @@ import ListenerCreateForm from '../forms/ListenerCreateForm';
 import * as Actions from '../../console-common/redux/actions';
 import * as LoadBalancerActions from '../redux/actions.load_balancer';
 
-
 class C extends TablePage {
 
   constructor(props) {
@@ -19,12 +18,9 @@ class C extends TablePage {
   }
 
   initialize(routerKey) {
-    const { t, dispatch, servicePath } = this.props;
-    dispatch(Actions.setHeader(t('networkManage'), `${servicePath}/networks`));
-
     this.initTable(routerKey, {
       status: ['active'],
-      isTabPage: true,
+      isTabPage: false,
     });
   }
 
@@ -70,7 +66,7 @@ class C extends TablePage {
         <div className="top-area">
           <div className="nav-text">
             <span className="light">
-              {t('pageLoadBalancer.listener')}
+              {t('pageLoadBalancer.listenerList')}
             </span>
           </div>
           <div className="nav-controls">

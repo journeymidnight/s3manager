@@ -5,6 +5,7 @@ import Modal from '../../shared/components/Modal';
 import * as Actions from '../../console-common/redux/actions';
 import * as LoadBalancerActions from '../redux/actions.load_balancer';
 import ListenerUpdateForm from '../forms/ListenerUpdateForm';
+import LbBackends from './LbBackends';
 
 
 class LbListener extends Page {
@@ -167,6 +168,8 @@ class LbListener extends Page {
         <Modal title={t('pageLoadBalancer.update')} ref="updateModal" >
           <ListenerUpdateForm onSubmit={this.onUpdate} initialValues={listener} />
         </Modal>
+
+        <LbBackends {...this.props} />
       </div>
     );
   }

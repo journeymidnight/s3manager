@@ -36,6 +36,15 @@ export function maxLength(max) {
   };
 }
 
+export function maxLengthNotRequired(max) {
+  return value => {
+    if (value && value.length > max) {
+      return `最多填写 ${max} 字符`;
+    }
+    return null;
+  };
+}
+
 export function integer(value) {
   if (!Number.isInteger(Number(value))) {
     return '必须填写整型数值。';
@@ -83,6 +92,13 @@ export function ipAddress(value) {
 export function port(value) {
   if (isEmpty(value) || !/^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$/.test(value)) {
     return i18n.t('validationMessage.port');
+  }
+  return null;
+}
+
+export function weight(value) {
+  if (value && !/^([0-9]{1,2}|[1][0-9]{2}|2[0-4][0-9]|25[0-6])$/.test(value)) {
+    return i18n.t('validationMessage.weight');
   }
   return null;
 }

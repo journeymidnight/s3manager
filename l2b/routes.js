@@ -26,8 +26,7 @@ export default function configureRoutes(store) {
           <Route path=":loadBalancerId" component={LoadBalancer}>
             <IndexRoute component={LbTabListeners} />
             <Route path="lb_listeners" component={LbTabListeners} />
-            <Route path=":listenerId" component={LbListener} /> {/* TODO:*/}
-            <Route path="lb_backends" component={NotFound} />
+            <Route path=":listenerId" component={LbListener} />
           </Route>
         </Route>
       </Route>

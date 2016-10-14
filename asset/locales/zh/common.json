@@ -60,6 +60,7 @@
     "size": "大小",
     "port": "端口",
     "protocol": "端口协议",
+    "weight": "权重",
     "category": "类型",
     "download": "下载",
     "key_pair": "SSH 密钥",
@@ -541,7 +542,8 @@
     },
     "validationMessage": {
         "ipAddress": "ip地址格式错误",
-        "port": "端口号格式错误"
+        "port": "端口号格式错误",
+        "weight": "权重格式错误"
     },
     "actionTranslation": {
         "CreateInstances": "创建云主机",
@@ -784,8 +786,11 @@
         "basic": "基本信息",
         "update": "更新",
         "delete": "删除",
+        "listenerList": "监听器列表",
         "listener": "监听器",
-        "backend": "后端服务"
+        "backendList": "后端服务列表",
+        "backend": "后端服务",
+        "createBackend": "添加后端服务"
     },
     "___comment_end_l2b": "end l2b"
 }
