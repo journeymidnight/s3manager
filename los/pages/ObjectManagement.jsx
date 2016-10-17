@@ -7,6 +7,7 @@ import { Link } from 'react-router';
 import { attach } from '../../shared/pages/Page';
 import { buttonForm } from '../../shared/forms/ButtonForm';
 import Modal, { confirmModal } from '../../shared/components/Modal';
+import PropertyForm from '../forms/PropertyForm';
 import TablePageStatic from '../../shared/pages/TablePageStatic';
 import { setHeader, notify, notifyAlert, extendContext } from '../../console-common/redux/actions';
 import { requestGetS3Domain } from '../redux/actions.s3Domain';
@@ -45,6 +46,7 @@ class ObjectManagement extends TablePageStatic {
     this.cancelOneObject = this.cancelOneObject.bind(this);
     this.onFileDownload = this.onFileDownload.bind(this);
     this.downloadOneObject = this.downloadOneObject.bind(this);
+    this.checkObjectProperty = this.checkObjectProperty.bind(this);
     this.calProgressWidth = this.calProgressWidth.bind(this);
     this.changeFolder = this.changeFolder.bind(this);
   }
@@ -286,6 +288,23 @@ class ObjectManagement extends TablePageStatic {
     parser.click();
   }
 
+  checkObjectProperty(key) {
+    const { routerKey, dispatch, params } = this.props;
+    dispatch(extendContext({ objectName: null, objectAcl: null, objectUrl: null }, routerKey));
+    dispatch(ObjectActions.requestGetObjectAcl(this.s3, params.bucketName, key, routerKey))
+      .then(() => {
+        const { context } = this.props;
+        if (context.objectAcl === 'public-read') {
+          const url = this.s3.getSignedUrl('getObject', {
+            Bucket: params.bucketName,
+            Key: context.objectName,
+          });
+          dispatch(extendContext({ objectUrl: url }, routerKey));
+        }
+        setTimeout(() => this.refs.propertyModal.show(), 100);
+      });
+  }
+
   calProgressWidth(percent) {
     /* Paused and continued uploading will bring more uploaded bytes than total bytes, resulting percent > 100%.
      * The thick here is to hold the percent at 99% until uploading finish.
@@ -316,6 +335,7 @@ class ObjectManagement extends TablePageStatic {
               <input type="checkbox" className="selected" onChange={this.onSelectAll(context.visibleObjects.map((object) => object.Key || object.Prefix))} />
             </th>
             <th width="600">{t('objectName')}</th>
+            <th width="200">{}</th>
             <th width="200">{t('size')}</th>
             <th width="200">{t('category')}</th>
             <th width="300">{t('created')}</th>
@@ -355,6 +375,7 @@ class ObjectManagement extends TablePageStatic {
                   </Link>
                 </td>
                 <td />
+                <td />
                 <td><i className="fa fa-folder-o" /></td>
                 <td />
               </tr> : <tr key={object.Key}>
@@ -371,6 +392,14 @@ class ObjectManagement extends TablePageStatic {
                   >
                     {object.Key.startsWith(folderLocation) ? object.Key.slice(folderLocation.length) : object.Key}
                   </Link>
+                </td>
+                <td>
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => this.checkObjectProperty(object.Key)}
+                  >
+                    {t('property')}
+                  </button>
                 </td>
                 <td>{this.formatBytes(object.Size)}</td>
                 <td>{object.Key.slice(object.Key.lastIndexOf('.') + 1)}</td>
@@ -515,6 +544,12 @@ class ObjectManagement extends TablePageStatic {
               </div>
             </div>}
           </div>
+        </Modal>
+        <Modal title={t('objectPropertyPage.property')} ref="propertyModal">
+          <PropertyForm
+            {...this.props}
+            s3={this.s3}
+          />
         </Modal>
       </div>
     );

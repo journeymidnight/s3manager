@@ -37,6 +37,7 @@
     "admin": "管理员",
     "cidr": "网段地址",
     "status": "状态",
+    "property": "属性",
     "volume": "云硬盘",
     "image": "映像",
     "instance": "云主机",
@@ -724,6 +725,17 @@
     "folderCreatedSuccess": "文件夹创建成功",
     "cannotDeleteFolder": "不为空，无法删除",
     "createFolder": "新建文件夹",
+    "objectPropertyPage": {
+        "property": "文件属性",
+        "acl": "文件权限",
+        "period": "获得地址",
+        "second": "秒",
+        "url": "文件地址",
+        "update": "更改",
+        "authorize": "授权",
+        "aclPrivate": "私有",
+        "aclPublicR": "公共可读"
+    },
     "uploadModal": {
         "uploadingStatus": "文件上传状态",
         "waiting": "等待上传",
