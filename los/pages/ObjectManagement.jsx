@@ -43,6 +43,8 @@ class ObjectManagement extends TablePageStatic {
     this.continueOneObject = this.continueOneObject.bind(this);
     this.retryOneObject = this.retryOneObject.bind(this);
     this.cancelOneObject = this.cancelOneObject.bind(this);
+    this.onFileDownload = this.onFileDownload.bind(this);
+    this.downloadOneObject = this.downloadOneObject.bind(this);
     this.calProgressWidth = this.calProgressWidth.bind(this);
     this.changeFolder = this.changeFolder.bind(this);
   }
@@ -265,6 +267,25 @@ class ObjectManagement extends TablePageStatic {
     });
   }
 
+  onFileDownload() {
+    const filenames = _.keys(this.props.context.selected);
+    filenames.forEach(filename => {
+      this.downloadOneObject(filename);
+    });
+  }
+
+  downloadOneObject(filename, event) {
+    if (event) {
+      event.preventDefault();
+    }
+
+    const parser = document.createElement('a');
+    parser.download = filename;
+    parser.href = this.s3.getSignedUrl('getObject', { Bucket: this.props.params.bucketName, Key: filename, Expires: 60 * 60 * 24 }); // expires in 1 day
+
+    parser.click();
+  }
+
   calProgressWidth(percent) {
     /* Paused and continued uploading will bring more uploaded bytes than total bytes, resulting percent > 100%.
      * The thick here is to hold the percent at 99% until uploading finish.
@@ -292,7 +313,7 @@ class ObjectManagement extends TablePageStatic {
         <thead>
           <tr>
             <th width="40">
-              <input type="checkbox" className="selected" onChange={this.onSelectAll(context.visibleObjects.map((object) => object.Key))} />
+              <input type="checkbox" className="selected" onChange={this.onSelectAll(context.visibleObjects.map((object) => object.Key || object.Prefix))} />
             </th>
             <th width="600">{t('objectName')}</th>
             <th width="200">{t('size')}</th>
@@ -520,14 +541,23 @@ class ObjectManagement extends TablePageStatic {
             />
           </div>
         </div>
-        {Object.keys(context.selected).length > 0 && <div>
-          <div className="filter-item inline">
-            {React.cloneElement(buttonForm(), {
-              onSubmit: this.onDelete,
-              text: t('delete'),
-              type: 'btn-danger',
-            })}
-          </div>
+        {Object.keys(context.selected).length > 0 &&
+        <div className="filter-item inline">
+          {React.cloneElement(buttonForm(), {
+            onSubmit: this.onFileDownload,
+            text: t('download'),
+            type: 'btn-primary',
+            disabled: (_.keys(context.selected).filter(key => key.endsWith('/')).length > 0),
+          })}
+        </div>}
+
+        {Object.keys(context.selected).length > 0 &&
+        <div className="filter-item inline">
+          {React.cloneElement(buttonForm(), {
+            onSubmit: this.onDelete,
+            text: t('delete'),
+            type: 'btn-danger',
+          })}
         </div>}
       </div>
     );
