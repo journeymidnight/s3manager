@@ -21,6 +21,7 @@ export const ACTION_NAMES = {
   getflowbyhour: 'GetFlowByHour',
   getstaticsbyday: 'GetStaticsByDay',
   gets3domain: 'GetS3Domain',
+  getbucketstats: 'GetBucketStats',
 };
 
 export default new Wcs();

@@ -51,10 +51,11 @@ class C extends Page {
     const startOfMonthLocalFormat = moment(nowLocal).startOf('month').format('YYYYMMDD');
 
     Promise.all([
-      dispatch(BucketActions.requestGetUsageByHour(routerKey, region.regionId, bucketName, startOfDayLocalFormat, nowLocalFormat)),
+      dispatch(BucketActions.requestGetUsageByHour(routerKey, 'cn-north-1', bucketName, startOfDayLocalFormat, nowLocalFormat)),
       dispatch(BucketActions.requestGetStaticsByDay(routerKey, region.regionId, bucketName, startOfMonthLocalFormat, todayLocalFormat)),
-      dispatch(BucketActions.requestGetOpByHour(routerKey, region.regionId, bucketName, startOfDayLocalFormat, nowLocalFormat)),
-      dispatch(BucketActions.requestGetFlowByHour(routerKey, region.regionId, bucketName, startOfDayLocalFormat, nowLocalFormat)),
+      dispatch(BucketActions.requestGetOpByHour(routerKey, 'cn-north-1', bucketName, startOfDayLocalFormat, nowLocalFormat)),
+      dispatch(BucketActions.requestGetFlowByHour(routerKey, 'cn-north-1', bucketName, startOfDayLocalFormat, nowLocalFormat)),
+      dispatch(BucketActions.requestGetUsageByNow(routerKey, region.regionId, bucketName, this.props.global.project.projectId)), // TODO: change regionId
     ])
       .then(() => {
         dispatch(extendContext({ loading: false }, routerKey));
@@ -110,8 +111,8 @@ class C extends Page {
                         <td width="100">{t('pageBucket.usage')}</td>
                         <td>
                           <span>
-                            {(context.usagebyhour && context.usagebyhour.length > 0) ?
-                              this.formatBytes(Number(context.usagebyhour[context.usagebyhour.length - 1].usage) * 1024)
+                            {context.usageByNow ?
+                              this.formatBytes(Number(context.usageByNow) * 1024)
                               : 0}
                           </span>
                         </td>

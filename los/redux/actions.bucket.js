@@ -175,6 +175,19 @@ export function requestGetStaticsByDay(routerKey, regionId, bucketName, startDat
   };
 }
 
+export function requestGetUsageByNow(routerKey, regionId, bucketName, projectId) {
+  return dispatch => {
+    return Wcs
+      .doAction(regionId, ACTION_NAMES.getbucketstats, { bucket: bucketName, projectId })
+      .promise
+      .then((payload) => {
+        dispatch(extendContext({ usageByNow: JSON.parse(payload).usage['rgw.main'].size_kb_actual }, routerKey));
+      }).catch((error) => {
+        dispatch(notifyAlert(error.message));
+      });
+  };
+}
+
 // Pass bucket name and creation date to bucket detail page. The action will be handled by rootReducer and put date into this.props.global.bucketName & bucketCreationDate
 export function setBucket(data) {
   return {

@@ -346,6 +346,7 @@ class ObjectManagement extends TablePageStatic {
                     style={{
                       wordBreak: 'break-word',
                     }}
+                    onClick={e => this.downloadOneObject(object.Key, e)}
                   >
                     {object.Key.startsWith(folderLocation) ? object.Key.slice(folderLocation.length) : object.Key}
                   </Link>
