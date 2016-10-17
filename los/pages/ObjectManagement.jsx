@@ -373,7 +373,7 @@ class ObjectManagement extends TablePageStatic {
                   </Link>
                 </td>
                 <td>{this.formatBytes(object.Size)}</td>
-                <td />
+                <td>{object.Key.slice(object.Key.lastIndexOf('.') + 1)}</td>
                 <td>{moment.utc(object.LastModified).local().format('YYYY-MM-DD HH:mm:ss')}</td>
               </tr>);
           })}
@@ -542,23 +542,23 @@ class ObjectManagement extends TablePageStatic {
           </div>
         </div>
         {Object.keys(context.selected).length > 0 &&
-        <div className="filter-item inline">
-          {React.cloneElement(buttonForm(), {
-            onSubmit: this.onFileDownload,
-            text: t('download'),
-            type: 'btn-primary',
-            disabled: (_.keys(context.selected).filter(key => key.endsWith('/')).length > 0),
-          })}
-        </div>}
+          <div className="filter-item inline">
+            {React.cloneElement(buttonForm(), {
+              onSubmit: this.onFileDownload,
+              text: t('download'),
+              type: 'btn-primary',
+              disabled: (_.keys(context.selected).filter(key => key.endsWith('/')).length > 0),
+            })}
+          </div>}
 
         {Object.keys(context.selected).length > 0 &&
-        <div className="filter-item inline">
-          {React.cloneElement(buttonForm(), {
-            onSubmit: this.onDelete,
-            text: t('delete'),
-            type: 'btn-danger',
-          })}
-        </div>}
+          <div className="filter-item inline">
+            {React.cloneElement(buttonForm(), {
+              onSubmit: this.onDelete,
+              text: t('delete'),
+              type: 'btn-danger',
+            })}
+          </div>}
       </div>
     );
   }
