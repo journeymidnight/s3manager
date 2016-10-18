@@ -1,5 +1,6 @@
 import moment from 'moment';
 import React from 'react';
+import { Link } from 'react-router';
 import Page, { attach } from '../../shared/pages/Page';
 import Modal from '../../shared/components/Modal';
 import * as Actions from '../../console-common/redux/actions';
@@ -7,11 +8,14 @@ import * as LoadBalancerActions from '../redux/actions.load_balancer';
 import ListenerUpdateForm from '../forms/ListenerUpdateForm';
 import LbBackends from './LbBackends';
 
-
 class LbListener extends Page {
 
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
+
+    this.state = {
+      listenerList: false,
+    };
 
     this.refresh = this.refresh.bind(this);
     this.updateListener = this.updateListener.bind(this);
@@ -62,7 +66,7 @@ class LbListener extends Page {
   }
 
   render() {
-    const { t, params } = this.props;
+    const { t, params, servicePath } = this.props;
 
     let listener = this.listener;
     if (this.props.context.listenerSet) {
@@ -83,9 +87,28 @@ class LbListener extends Page {
               <div className="nav-text">
                 <span>{t('pageLoadBalancer.listener')}&nbsp;<i>{listener.loadBalancerListenerId}</i></span>
               </div>
+
+              <div className="nav-controls">
+                <Link className="btn btn-primary" to={`${servicePath}/load_balancers/${params.loadBalancerId}/lb_listeners`}>
+                  <i className="fa fa-reply"></i>&nbsp;{t('pageLoadBalancer.back')}
+                </Link>
+
+                <a
+                  className="btn btn-primary"
+                  href
+                  onClick={e => {
+                    e.preventDefault();
+                    this.setState({ listenerList: !this.state.listenerList });
+                  }}
+                >
+                  {this.state.listenerList ? <i className="fa fa-chevron-up"></i> : <i className="fa fa-chevron-down"></i>}
+                  &nbsp;
+                  {this.state.listenerList ? t('pageLoadBalancer.fold') : t('pageLoadBalancer.unfold')}
+                </a>
+              </div>
             </div>
 
-            <div className="row">
+            {this.state.listenerList && <div className="row">
               <div className="col-md-12 side">
                 <div className="panel panel-default">
                   <div className="panel-heading">
@@ -161,7 +184,7 @@ class LbListener extends Page {
                   </table>
                 </div>
               </div>
-            </div>
+            </div>}
           </div>
         </div>
 

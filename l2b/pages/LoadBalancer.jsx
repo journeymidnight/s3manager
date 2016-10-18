@@ -1,5 +1,6 @@
 import moment from 'moment';
 import React from 'react';
+import { Link } from 'react-router';
 import Page, { attach } from '../../shared/pages/Page';
 import * as Actions from '../../console-common/redux/actions';
 import * as LoadBalancerActions from '../redux/actions.load_balancer';
@@ -41,13 +42,20 @@ class C extends Page {
 
 
   render() {
-    const { t, params } = this.props;
+    const { t, params, servicePath } = this.props;
 
     const loadBalancer = this.props.context.loadBalancer || this.loadBalancer;
     if (!loadBalancer || loadBalancer.loadBalancerId !== params.loadBalancerId) {
       this.refresh();
 
       return <div />;
+    }
+
+    let active = 'lb_listeners';
+    if (this.props.location.pathname.endsWith('lb_listeners')) {
+      active = 'lb_listeners'; // TODO:
+    } else if (this.props.location.pathname.endsWith('lb_monitors')) {
+      active = 'lb_monitors';
     }
 
     return (
@@ -143,8 +151,22 @@ class C extends Page {
                   </table>
                 </div>
               </div>
-              {this.isEnabled(loadBalancer) && <div className="col-md-8">
-                {React.cloneElement(this.props.children, { loadBalancer })}
+              {this.isEnabled(loadBalancer) && <div className="col-md-8 tabs">
+                <ul className="nav-links clearfix">
+                  <li className={`pull-left ${(active === 'lb_listeners') ? 'active' : ''}`}>
+                    <Link data-placement="left" to={`${servicePath}/load_balancers/${loadBalancer.loadBalancerId}/lb_listeners`}>
+                      {t('pageLoadBalancer.listener')}
+                    </Link>
+                  </li>
+                  <li className={`pull-left ${(active === 'lb_monitors') ? 'active' : ''}`}>
+                    <Link data-placement="left" to={`${servicePath}/load_balancers/${loadBalancer.loadBalancerId}/lb_monitors`}>
+                      {t('pageLoadBalancer.monitors')}
+                    </Link>
+                  </li>
+                </ul>
+                <div>
+                  {React.cloneElement(this.props.children, { loadBalancer })}
+                </div>
               </div>}
             </div>
 

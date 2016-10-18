@@ -27,6 +27,7 @@ export default function configureRoutes(store) {
             <IndexRoute component={LbTabListeners} />
             <Route path="lb_listeners" component={LbTabListeners} />
             <Route path=":listenerId" component={LbListener} />
+            <Route path="lb_monitors" component={NotFound} />
           </Route>
         </Route>
       </Route>

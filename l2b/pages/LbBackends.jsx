@@ -24,7 +24,7 @@ class LbBackends extends TablePage {
   initialize(routerKey) {
     this.initTable(routerKey, {
       status: ['active'],
-      isTabPage: false,
+      isTabPage: true,
     });
   }
 

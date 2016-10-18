@@ -790,10 +790,14 @@
         "delete": "删除",
         "listenerList": "监听器列表",
         "listener": "监听器",
+        "monitors": "资源监控",
         "createListener": "添加监听器",
         "backendList": "后端服务列表",
         "backend": "后端服务",
-        "createBackend": "添加后端服务"
+        "createBackend": "添加后端服务",
+        "back": "返回",
+        "unfold": "详情",
+        "fold": "收起"
     },
     "___comment_end_l2b": "end l2b"
 }
