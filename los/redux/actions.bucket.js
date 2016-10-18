@@ -107,11 +107,10 @@ export function requestGetBucketAcl(s3, bucketName, routerKey) {
           dispatch(notifyAlert(error.message));
           reject();
         } else {
-          // Below 4 lines of code may lead to bug in future
+          // Below 3 lines of code may lead to bug in future
           const acls = data.Grants.map((Grant) => Grant.Permission);
           let acl = 'private';
-          if (acls.includes('WRITE')) acl = 'public-read-write';
-          else if (acls.includes('READ')) acl = 'public-read';
+          if (acls.includes('READ')) acl = 'public-read';
 
           dispatch(extendContext({
             acl,
@@ -169,6 +168,19 @@ export function requestGetStaticsByDay(routerKey, regionId, bucketName, startDat
       .promise
       .then((payload) => {
         dispatch(extendContext({ staticsbyday: payload }, routerKey));
+      }).catch((error) => {
+        dispatch(notifyAlert(error.message));
+      });
+  };
+}
+
+export function requestGetUsageByNow(routerKey, regionId, bucketName, projectId) {
+  return dispatch => {
+    return Wcs
+      .doAction(regionId, ACTION_NAMES.getbucketstats, { bucket: bucketName, projectId })
+      .promise
+      .then((payload) => {
+        dispatch(extendContext({ usageByNow: JSON.parse(payload).usage['rgw.main'].size_kb_actual }, routerKey));
       }).catch((error) => {
         dispatch(notifyAlert(error.message));
       });

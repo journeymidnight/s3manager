@@ -45,8 +45,6 @@ export default function configureRoutes(store) {
           <Route path="usage" component={UsageMonitor} />
           <Route path="flow" component={FlowMonitor} />
           <Route path="api" component={APIMonitor} />
-          <Route path="vendor" component={UsageMonitor} />
-          <Route path="region" component={UsageMonitor} />
         </Route>
       </Route>
       <Route path="*" component={NotFound} />
