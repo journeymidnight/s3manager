@@ -5,7 +5,7 @@ import AWS from 'aws-sdk';
 import Page, { attach } from '../../shared/pages/Page';
 import BucketMonitors from './BucketMonitors';
 import Modal from '../../shared/components/Modal';
-import PutAclForm from '../forms/PutAclForm';
+import BucketPutAclForm from '../forms/BucketPutAclForm';
 import { requestGetS3Domain } from '../redux/actions.s3Domain';
 import { setHeader, extendContext } from '../../console-common/redux/actions';
 import * as BucketActions from '../redux/actions.bucket';
@@ -20,7 +20,6 @@ class C extends Page {
     this.acl = {
       private: t('pageBucketCreate.aclPrivate'),
       'public-read': t('pageBucketCreate.aclPublicR'),
-      'public-read-write': t('pageBucketCreate.aclPublicRW'),
     };
 
     this.formatBytes = this.formatBytes.bind(this);
@@ -51,10 +50,11 @@ class C extends Page {
     const startOfMonthLocalFormat = moment(nowLocal).startOf('month').format('YYYYMMDD');
 
     Promise.all([
-      dispatch(BucketActions.requestGetUsageByHour(routerKey, region.regionId, bucketName, startOfDayLocalFormat, nowLocalFormat)),
+      dispatch(BucketActions.requestGetUsageByHour(routerKey, 'cn-north-1', bucketName, startOfDayLocalFormat, nowLocalFormat)),
       dispatch(BucketActions.requestGetStaticsByDay(routerKey, region.regionId, bucketName, startOfMonthLocalFormat, todayLocalFormat)),
-      dispatch(BucketActions.requestGetOpByHour(routerKey, region.regionId, bucketName, startOfDayLocalFormat, nowLocalFormat)),
-      dispatch(BucketActions.requestGetFlowByHour(routerKey, region.regionId, bucketName, startOfDayLocalFormat, nowLocalFormat)),
+      dispatch(BucketActions.requestGetOpByHour(routerKey, 'cn-north-1', bucketName, startOfDayLocalFormat, nowLocalFormat)),
+      dispatch(BucketActions.requestGetFlowByHour(routerKey, 'cn-north-1', bucketName, startOfDayLocalFormat, nowLocalFormat)),
+      dispatch(BucketActions.requestGetUsageByNow(routerKey, region.regionId, bucketName, this.props.global.project.projectId)), // TODO: change regionId
     ])
       .then(() => {
         dispatch(extendContext({ loading: false }, routerKey));
@@ -110,8 +110,8 @@ class C extends Page {
                         <td width="100">{t('pageBucket.usage')}</td>
                         <td>
                           <span>
-                            {(context.usagebyhour && context.usagebyhour.length > 0) ?
-                              this.formatBytes(Number(context.usagebyhour[context.usagebyhour.length - 1].usage) * 1024)
+                            {context.usageByNow ?
+                              this.formatBytes(Number(context.usageByNow) * 1024)
                               : 0}
                           </span>
                         </td>
@@ -224,7 +224,7 @@ class C extends Page {
         </div>
 
         <Modal title={t('pageBucket.putAcl')} ref="aclModal">
-          <PutAclForm onSubmit={this.onPutAcl} />
+          <BucketPutAclForm onSubmit={this.onPutAcl} />
         </Modal>
       </div>
     );

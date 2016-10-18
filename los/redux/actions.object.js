@@ -1,4 +1,5 @@
-import { notifyAlert, extendContext } from '../../console-common/redux/actions';
+import { notify, notifyAlert, extendContext } from '../../console-common/redux/actions';
+import i18n from '../../shared/i18n';
 
 export function setVisibleObjects(s3, bucketName, routerKey, filters) {
   return dispatch => {
@@ -45,6 +46,53 @@ export function isFolderEmpty(s3, bucketName, folderName) {
           reject(folderName);
         }
         resolve();
+      });
+    });
+  };
+}
+
+export function requestPutObjectAcl(s3, bucketName, objectName, acl) {
+  return dispatch => {
+    return new Promise((resolve, reject) => {
+      const params = {
+        Bucket: bucketName,
+        Key: objectName,
+        ACL: acl,
+      };
+      s3.putObjectAcl(params, (error) => {
+        if (error) {
+          dispatch(notifyAlert(i18n.t('objectPropertyPage.aclFail')));
+          reject();
+        } else {
+          dispatch(notify(i18n.t('objectPropertyPage.aclSuccess')));
+          resolve();
+        }
+      });
+    });
+  };
+}
+
+export function requestGetObjectAcl(s3, bucketName, objectName, routerKey) {
+  return dispatch => {
+    return new Promise((resolve, reject) => {
+      const params = {
+        Bucket: bucketName,
+        Key: objectName,
+      };
+
+      s3.getObjectAcl(params, (error, data) => {
+        if (error) {
+          dispatch(notifyAlert(error.message));
+          reject();
+        } else {
+          // Below 3 lines of code may lead to bug in future
+          const acls = data.Grants.map((Grant) => Grant.Permission);
+          let acl = 'private';
+          if (acls.includes('READ')) acl = 'public-read';
+
+          dispatch(extendContext({ objectName, objectAcl: acl }, routerKey));
+          resolve();
+        }
       });
     });
   };

@@ -39,7 +39,7 @@ class APIMonitor extends Component {
             {period !== '1day' && context.staticsbyday && !context.loading && <Chart
               className="chart"
               config={generateAreaChartConfig(context.staticsbyday.map((item) => ({
-                timestamp: moment(item.date).utc(), // TODO: is date local or utc?
+                timestamp: moment(item.date).utc(),
                 get: item.getOps || 0,
                 put: item.putOps || 0,
               })), {

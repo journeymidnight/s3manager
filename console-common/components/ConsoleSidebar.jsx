@@ -90,14 +90,6 @@ class C extends React.Component {
           path: 'monitors/api',
           title: t('apiMonitor'),
           icon: 'fa-sticky-note',
-        }, {
-          path: 'monitors/vendor',
-          title: t('vendorMonitor'),
-          icon: 'fa-sticky-note',
-        }, {
-          path: 'monitors/region',
-          title: t('regionMonitor'),
-          icon: 'fa-sticky-note',
         }],
       }],
       l2b: [{
