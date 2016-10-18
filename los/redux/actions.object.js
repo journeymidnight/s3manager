@@ -61,9 +61,10 @@ export function requestPutObjectAcl(s3, bucketName, objectName, acl) {
       };
       s3.putObjectAcl(params, (error) => {
         if (error) {
+          dispatch(notifyAlert(i18n.t('objectPropertyPage.aclFail')));
           reject();
         } else {
-          dispatch(notify(i18n.t('pageBucket.putAclSuccess')));
+          dispatch(notify(i18n.t('objectPropertyPage.aclSuccess')));
           resolve();
         }
       });

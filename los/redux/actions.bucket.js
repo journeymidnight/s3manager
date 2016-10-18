@@ -107,11 +107,10 @@ export function requestGetBucketAcl(s3, bucketName, routerKey) {
           dispatch(notifyAlert(error.message));
           reject();
         } else {
-          // Below 4 lines of code may lead to bug in future
+          // Below 3 lines of code may lead to bug in future
           const acls = data.Grants.map((Grant) => Grant.Permission);
           let acl = 'private';
-          if (acls.includes('WRITE')) acl = 'public-read-write';
-          else if (acls.includes('READ')) acl = 'public-read';
+          if (acls.includes('READ')) acl = 'public-read';
 
           dispatch(extendContext({
             acl,

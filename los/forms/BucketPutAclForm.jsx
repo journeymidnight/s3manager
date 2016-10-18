@@ -2,7 +2,7 @@ import React from 'react';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
 
-class PutAclForm extends React.Component {
+class BucketPutAclForm extends React.Component {
 
   componentDidMount() {
     const initialValues = { acl: 'private' };
@@ -53,7 +53,7 @@ class PutAclForm extends React.Component {
   }
 }
 
-PutAclForm.propTypes = {
+BucketPutAclForm.propTypes = {
   fields: React.PropTypes.object.isRequired,
   handleSubmit: React.PropTypes.func.isRequired,
   submitting: React.PropTypes.bool.isRequired,
@@ -62,6 +62,6 @@ PutAclForm.propTypes = {
 };
 
 export default reduxForm({
-  form: 'PutAclForm',
+  form: 'BucketPutAclForm',
   fields: ['acl'],
-})(translate()(PutAclForm));
+})(translate()(BucketPutAclForm));

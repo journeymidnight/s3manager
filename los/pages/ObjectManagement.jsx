@@ -7,7 +7,7 @@ import { Link } from 'react-router';
 import { attach } from '../../shared/pages/Page';
 import { buttonForm } from '../../shared/forms/ButtonForm';
 import Modal, { confirmModal } from '../../shared/components/Modal';
-import PropertyForm from '../forms/PropertyForm';
+import ObjectPropertyForm from '../forms/ObjectPropertyForm';
 import TablePageStatic from '../../shared/pages/TablePageStatic';
 import { setHeader, notify, notifyAlert, extendContext } from '../../console-common/redux/actions';
 import { requestGetS3Domain } from '../redux/actions.s3Domain';
@@ -18,7 +18,9 @@ class ObjectManagement extends TablePageStatic {
   constructor(props) {
     super(props);
     const { t } = this.props;
+
     this.state = {};
+
     this.status = {
       uploading: t('uploadModal.uploading'),
       uploaded: t('uploadModal.uploaded'),
@@ -290,10 +292,17 @@ class ObjectManagement extends TablePageStatic {
 
   checkObjectProperty(key) {
     const { routerKey, dispatch, params } = this.props;
-    dispatch(extendContext({ objectName: null, objectAcl: null, objectUrl: null }, routerKey));
+
+    dispatch(extendContext({
+      objectName: null,
+      objectAcl: null,
+      objectUrl: null,
+    }, routerKey));
+
     dispatch(ObjectActions.requestGetObjectAcl(this.s3, params.bucketName, key, routerKey))
       .then(() => {
         const { context } = this.props;
+
         if (context.objectAcl === 'public-read') {
           const url = this.s3.getSignedUrl('getObject', {
             Bucket: params.bucketName,
@@ -546,7 +555,7 @@ class ObjectManagement extends TablePageStatic {
           </div>
         </Modal>
         <Modal title={t('objectPropertyPage.property')} ref="propertyModal">
-          <PropertyForm
+          <ObjectPropertyForm
             {...this.props}
             s3={this.s3}
           />

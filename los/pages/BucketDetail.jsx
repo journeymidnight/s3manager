@@ -5,7 +5,7 @@ import AWS from 'aws-sdk';
 import Page, { attach } from '../../shared/pages/Page';
 import BucketMonitors from './BucketMonitors';
 import Modal from '../../shared/components/Modal';
-import PutAclForm from '../forms/PutAclForm';
+import BucketPutAclForm from '../forms/BucketPutAclForm';
 import { requestGetS3Domain } from '../redux/actions.s3Domain';
 import { setHeader, extendContext } from '../../console-common/redux/actions';
 import * as BucketActions from '../redux/actions.bucket';
@@ -20,7 +20,6 @@ class C extends Page {
     this.acl = {
       private: t('pageBucketCreate.aclPrivate'),
       'public-read': t('pageBucketCreate.aclPublicR'),
-      'public-read-write': t('pageBucketCreate.aclPublicRW'),
     };
 
     this.formatBytes = this.formatBytes.bind(this);
@@ -225,7 +224,7 @@ class C extends Page {
         </div>
 
         <Modal title={t('pageBucket.putAcl')} ref="aclModal">
-          <PutAclForm onSubmit={this.onPutAcl} />
+          <BucketPutAclForm onSubmit={this.onPutAcl} />
         </Modal>
       </div>
     );

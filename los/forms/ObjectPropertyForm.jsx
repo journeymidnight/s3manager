@@ -1,14 +1,15 @@
 import React from 'react';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
-import { notifyAlert, extendContext } from '../../console-common/redux/actions';
+import { extendContext } from '../../console-common/redux/actions';
 import * as ObjectActions from '../redux/actions.object';
 
-class PropertyForm extends React.Component {
+class ObjectPropertyForm extends React.Component {
 
   constructor(props) {
     super(props);
     const { t } = this.props;
+
     this.acl = {
       private: t('objectPropertyPage.aclPrivate'),
       'public-read': t('objectPropertyPage.aclPublicR'),
@@ -24,11 +25,11 @@ class PropertyForm extends React.Component {
   }
 
   onPutAcl(acl) {
-    const { dispatch, params, routerKey, context, s3, t } = this.props;
+    const { dispatch, params, routerKey, context, s3 } = this.props;
     dispatch(ObjectActions.requestPutObjectAcl(s3, params.bucketName, context.objectName, acl))
       .then(() => {
         return dispatch(ObjectActions.requestGetObjectAcl(s3, params.bucketName, context.objectName, routerKey));
-      }, () => dispatch(notifyAlert(t('updateAclFail')))) // TODO
+      })
       .then(() => {
         if (this.props.context.objectAcl === 'public-read') {
           const url = s3.getSignedUrl('getObject', {
@@ -97,8 +98,7 @@ class PropertyForm extends React.Component {
           {!context.objectUrl && <div className="form-group">
             <label className="control-label" >{t('objectPropertyPage.period')}</label>
             <div className="col-sm-8">
-              <input type="number" className="form-control" onChange={period.onChange} />
-              <p className="help-block">{t('objectPropertyPage.second')}</p>
+              <input type="number" className="form-control" onChange={period.onChange} placeholder={t('objectPropertyPage.second')} />
             </div>
             <div className="col-sm-2">
               <button
@@ -123,7 +123,7 @@ class PropertyForm extends React.Component {
   }
 }
 
-PropertyForm.propTypes = {
+ObjectPropertyForm.propTypes = {
   fields: React.PropTypes.object.isRequired,
   initializeForm: React.PropTypes.func.isRequired,
   dispatch: React.PropTypes.func.isRequired,
@@ -135,6 +135,6 @@ PropertyForm.propTypes = {
 };
 
 export default reduxForm({
-  form: 'PropertyForm',
+  form: 'ObjectPropertyForm',
   fields: ['acl', 'period'],
-})(translate()(PropertyForm));
+})(translate()(ObjectPropertyForm));

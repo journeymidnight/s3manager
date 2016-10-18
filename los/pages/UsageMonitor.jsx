@@ -28,7 +28,7 @@ class UsageMonitor extends Component {
             {period !== '1day' && context.staticsbyday && !context.loading && <Chart
               className="chart"
               config={generateLineChartConfig(context.staticsbyday.map((item) => ({
-                timestamp: moment(item.date).utc(), // TODO: is date local or utc?
+                timestamp: moment(item.date).utc(),
                 usage: item.usage || 0,
               })), {
                 usage: { name: t('pageBucket.usageLegend') },

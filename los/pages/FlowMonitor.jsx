@@ -45,7 +45,7 @@ class FlowMonitor extends Component {
             {period !== '1day' && context.staticsbyday && !context.loading && <Chart
               className="chart"
               config={generateAreaChartConfig(context.staticsbyday.map((item) => ({
-                timestamp: moment(item.date).utc(), // TODO: is date local or utc?
+                timestamp: moment(item.date).utc(),
                 flowOutPublic: item.flowOutPublic || '0',
                 flowInPublic: item.flowInPublic || '0',
                 flowOutPrivate: item.flowOutPrivate || '0',
