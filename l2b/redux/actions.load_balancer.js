@@ -63,6 +63,9 @@ export function requestCreateLoadBalancer(routerKey, regionId, loadBalancer) {
         setTimeout(() => {
           dispatch(notify(i18n.t('createSuccessed')));
         }, 1000);
+      })
+      .catch((error) => {
+        dispatch(notifyAlert(error.message));
       });
   };
 }
@@ -109,6 +112,23 @@ export function requestCreateLbListener(routerKey, regionId, loadBalancer) {
         setTimeout(() => {
           dispatch(notify(i18n.t('createSuccessed')));
         }, 1000);
+      })
+      .catch((error) => {
+        dispatch(notifyAlert(error.message));
+      });
+  };
+}
+
+export function requestDeleteLbListeners(routerKey, regionId, listenerIds) {
+  return dispatch => {
+    return IaaS
+      .doAction(regionId, ACTION_NAMES.deleteLoadBalancerListeners, { loadBalancerListenerIds: listenerIds })
+      .promise
+      .then(() => {
+        dispatch(notify(i18n.t('deleteSuccessed')));
+      })
+      .catch((error) => {
+        dispatch(notifyAlert(error.message));
       });
   };
 }
@@ -152,7 +172,23 @@ export function requestCreateLbBackend(routerKey, regionId, filters) {
       .promise
       .then(() => {
         dispatch(notify(i18n.t('createSuccessed')));
+      })
+      .catch((error) => {
+        dispatch(notifyAlert(error.message));
       });
   };
 }
 
+export function requestDeleteLbBackends(routerKey, regionId, backendsIds) {
+  return dispatch => {
+    return IaaS
+      .doAction(regionId, ACTION_NAMES.deleteLoadBalancerBackends, { loadBalancerBackendIds: backendsIds })
+      .promise
+      .then(() => {
+        dispatch(notify(i18n.t('deleteSuccessed')));
+      })
+      .catch((error) => {
+        dispatch(notifyAlert(error.message));
+      });
+  };
+}

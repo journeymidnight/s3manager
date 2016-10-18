@@ -20,7 +20,7 @@ class LbListener extends Page {
 
   initialize() {
     const { t, dispatch, servicePath } = this.props;
-    dispatch(Actions.setHeader(t('loadbalancerManage'), `${servicePath}/load_balancers`)); // TODO:
+    dispatch(Actions.setHeader(t('loadbalancerManage'), `${servicePath}/load_balancers`));
 
     this.setInterval(() => {
       this.refresh();

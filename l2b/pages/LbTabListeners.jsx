@@ -2,8 +2,11 @@ import moment from 'moment';
 import React from 'react';
 import { Link } from 'react-router';
 import { attach } from '../../shared/pages/Page';
-import Modal from '../../shared/components/Modal';
+import Modal, { confirmModal } from '../../shared/components/Modal';
 import TablePage from '../../shared/pages/TablePage';
+import ButtonForm from '../../shared/forms/ButtonForm';
+import TimeSorter from '../../shared/components/TimeSorter';
+import SearchBox from '../../shared/components/SearchBox';
 import ListenerCreateForm from '../forms/ListenerCreateForm';
 import * as Actions from '../../console-common/redux/actions';
 import * as LoadBalancerActions from '../redux/actions.load_balancer';
@@ -15,6 +18,7 @@ class C extends TablePage {
 
     this.onCreateListener = this.onCreateListener.bind(this);
     this.showCreatePanel = this.showCreatePanel.bind(this);
+    this.onDelete = this.onDelete.bind(this);
   }
 
   initialize(routerKey) {
@@ -39,7 +43,7 @@ class C extends TablePage {
 
       dispatch(LoadBalancerActions.requestCreateLbListener(routerKey, region.regionId, {
         loadBalancerId: loadBalancer.loadBalancerId,
-        protocol: 'tcp',
+        protocol: 'TCP',
         name,
         port,
       }))
@@ -59,6 +63,24 @@ class C extends TablePage {
     this.refs.listenerCreateModal.show();
   }
 
+  onDelete() {
+    const { t, dispatch, routerKey, region } = this.props;
+    const listenerIds = Object.keys(this.props.context.selected);
+
+    confirmModal(t('confirmDelete'), () => {
+      return new Promise((resolve, reject) => {
+        dispatch(LoadBalancerActions.requestDeleteLbListeners(routerKey, region.regionId, listenerIds))
+          .then(() => {
+            resolve();
+            this.onRefresh({}, false)();
+          })
+          .catch(() => {
+            reject();
+          });
+      });
+    });
+  }
+
   renderHeader() {
     const { t } = this.props;
     return (
@@ -75,7 +97,7 @@ class C extends TablePage {
             </a>
           </div>
         </div>
-        <Modal title={t('pageNetwork.createSubnet')} ref="listenerCreateModal" >
+        <Modal title={t('pageLoadBalancer.createListener')} ref="listenerCreateModal" >
           <ListenerCreateForm onSubmit={this.onCreateListener} />
         </Modal>
       </div>
@@ -130,6 +152,35 @@ class C extends TablePage {
     );
   }
 
+  renderFilters() {
+    const { t } = this.props;
+    return (
+      <div className="gray-content-block second-block">
+        <div className={Object.keys(this.props.context.selected).length > 0 ? 'hidden' : ''}>
+          <div className="filter-item inline">
+            <a className="btn btn-default" onClick={this.doSearch}>
+              <i className={`fa fa-refresh ${this.props.context.loading ? 'fa-spin' : ''}`}></i>
+            </a>
+          </div>
+          <div className="filter-item inline">
+            <SearchBox ref="searchBox" placeholder={t('filterByIdorName')} onEnterPress={this.onSearchKeyPress} onButtonClick={this.onSearchButtonClick} />
+          </div>
+          <div className="pull-right">
+            <TimeSorter isReverse={this.props.context.reverse} onRefresh={this.onRefresh} />
+          </div>
+        </div>
+        <div className={Object.keys(this.props.context.selected).length > 0 ? '' : 'hidden'}>
+          <div className="filter-item inline">
+            <ButtonForm
+              onSubmit={this.onDelete}
+              text={t('delete')}
+              type="btn-danger"
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
 
 export default attach(C);

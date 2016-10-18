@@ -19,8 +19,10 @@ export const ACTION_NAMES = {
   createLoadBalancer: 'CreateLoadBalancer',
   describeLoadBalancerListeners: 'DescribeLoadBalancerListeners',
   createLoadBalancerListener: 'CreateLoadBalancerListener',
+  deleteLoadBalancerListeners: 'DeleteLoadBalancerListeners',
   modifyLoadBalancerListenerAttributes: 'ModifyLoadBalancerListenerAttributes',
   describeLoadBalancerBackends: 'DescribeLoadBalancerBackends',
   createLoadBalancerBackend: 'CreateLoadBalancerBackend',
+  deleteLoadBalancerBackends: 'DeleteLoadBalancerBackends',
 };
 export default new IaaS();

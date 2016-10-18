@@ -63,7 +63,7 @@ class C extends Page {
           <div className="clearfix">
             <div className="top-area append-bottom-20">
               <div className="nav-text">
-                <span>{t('pageVolumeCreate.createVolume')}</span>
+                <span>{t('createLoadBalancers')}</span>
               </div>
             </div>
             {availableNetworks.length > 0 && <LoadBalancerForm onSubmit={this.onSubmit} availableNetworks={availableNetworks} />}

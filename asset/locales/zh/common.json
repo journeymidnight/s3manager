@@ -159,7 +159,8 @@
     "services": {
         "g": "帐号信息",
         "lcs": "云主机",
-        "los": "对象存储"
+        "los": "对象存储",
+        "l2b": "负载均衡"
     },
     "restartTypes": {
         "SOFT": "软重启",
@@ -771,6 +772,7 @@
     "sidebarLoadBalancers": "负载均衡",
     "loadbalancerManage": "负载均衡",
     "loadBalancersManageDescription": "负载均衡管理",
+    "createLoadBalancers": "添加负载均衡",
     "loadBalancerStatus": {
         "pending": "创建中",
         "active": "运行中",
@@ -788,6 +790,7 @@
         "delete": "删除",
         "listenerList": "监听器列表",
         "listener": "监听器",
+        "createListener": "添加监听器",
         "backendList": "后端服务列表",
         "backend": "后端服务",
         "createBackend": "添加后端服务"
