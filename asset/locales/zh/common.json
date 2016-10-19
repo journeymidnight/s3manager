@@ -809,7 +809,8 @@
         "createBackend": "添加后端服务",
         "back": "返回",
         "unfold": "详情",
-        "fold": "收起"
+        "fold": "收起",
+        "disablePrompt": "负载均衡非运行中，无法进行相关操作"
     },
     "___comment_end_l2b": "end l2b"
 }

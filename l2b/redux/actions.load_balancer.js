@@ -192,3 +192,9 @@ export function requestDeleteLbBackends(routerKey, regionId, backendsIds) {
       });
   };
 }
+
+export function disable() {
+  return dispatch => {
+    dispatch(notifyAlert(i18n.t('pageLoadBalancer.disablePrompt')));
+  };
+}

@@ -60,25 +60,34 @@ class LbBackends extends TablePage {
 
   showCreatePanel(e) {
     e.preventDefault();
-    this.refs.backendCreateModal.show();
+
+    if (this.props.context.loadBalancer.status !== 'active') {
+      this.props.dispatch(LoadBalancerActions.disable());
+    } else {
+      this.refs.backendCreateModal.show();
+    }
   }
 
   onDelete() {
-    const { t, dispatch, routerKey, region } = this.props;
-    const backendIds = Object.keys(this.props.context.selected);
+    const { t, dispatch, routerKey, region, context } = this.props;
+    const backendIds = Object.keys(context.selected);
 
-    confirmModal(t('confirmDelete'), () => {
-      return new Promise((resolve, reject) => {
-        dispatch(LoadBalancerActions.requestDeleteLbBackends(routerKey, region.regionId, backendIds))
-          .then(() => {
-            resolve();
-            this.onRefresh({}, false)();
-          })
-          .catch(() => {
-            reject();
-          });
+    if (context.loadBalancer.status !== 'active') {
+      dispatch(LoadBalancerActions.disable());
+    } else {
+      confirmModal(t('confirmDelete'), () => {
+        return new Promise((resolve, reject) => {
+          dispatch(LoadBalancerActions.requestDeleteLbBackends(routerKey, region.regionId, backendIds))
+            .then(() => {
+              resolve();
+              this.onRefresh({}, false)();
+            })
+            .catch(() => {
+              reject();
+            });
+        });
       });
-    });
+    }
   }
 
   renderHeader() {

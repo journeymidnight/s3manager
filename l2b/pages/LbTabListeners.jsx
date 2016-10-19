@@ -36,7 +36,6 @@ class C extends TablePage {
 
   onCreateListener(values) {
     const { dispatch, region, routerKey, loadBalancer } = this.props;
-
     return new Promise((resolve, reject) => {
       const name = values.name;
       const port = Number(values.port);
@@ -51,7 +50,8 @@ class C extends TablePage {
           resolve();
           this.refs.listenerCreateModal.hide();
           this.onRefresh({}, false)();
-        }).catch((error) => {
+        })
+        .catch((error) => {
           dispatch(Actions.notifyAlert(error.displayMsg || error.message));
           reject();
         });
@@ -60,25 +60,34 @@ class C extends TablePage {
 
   showCreatePanel(e) {
     e.preventDefault();
-    this.refs.listenerCreateModal.show();
+
+    if (this.props.context.loadBalancer.status !== 'active') {
+      this.props.dispatch(LoadBalancerActions.disable());
+    } else {
+      this.refs.listenerCreateModal.show();
+    }
   }
 
   onDelete() {
-    const { t, dispatch, routerKey, region } = this.props;
-    const listenerIds = Object.keys(this.props.context.selected);
+    const { t, dispatch, routerKey, region, context } = this.props;
+    const listenerIds = Object.keys(context.selected);
 
-    confirmModal(t('confirmDelete'), () => {
-      return new Promise((resolve, reject) => {
-        dispatch(LoadBalancerActions.requestDeleteLbListeners(routerKey, region.regionId, listenerIds))
-          .then(() => {
-            resolve();
-            this.onRefresh({}, false)();
-          })
-          .catch(() => {
-            reject();
-          });
+    if (context.loadBalancer.status !== 'active') {
+      dispatch(LoadBalancerActions.disable());
+    } else {
+      confirmModal(t('confirmDelete'), () => {
+        return new Promise((resolve, reject) => {
+          dispatch(LoadBalancerActions.requestDeleteLbListeners(routerKey, region.regionId, listenerIds))
+            .then(() => {
+              resolve();
+              this.onRefresh({}, false)();
+            })
+            .catch(() => {
+              reject();
+            });
+        });
       });
-    });
+    }
   }
 
   renderHeader() {
