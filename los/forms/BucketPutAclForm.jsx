@@ -32,11 +32,6 @@ class BucketPutAclForm extends React.Component {
                 <option key="public-read" value="public-read">
                   {t('pageBucketCreate.aclPublicR')}
                 </option>
-
-                <option key="public-read-write" value="public-read-write">
-                  {t('pageBucketCreate.aclPublicRW')}
-                </option>
-
               </select>
             </div>
           </div>
