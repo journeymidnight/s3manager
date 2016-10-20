@@ -2,7 +2,7 @@ import React from 'react';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
 
-let ListenerUpdateForm = (props) => {
+let UpdateForm = (props) => {
   const { fields:
     { name, description },
     handleSubmit,
@@ -40,7 +40,7 @@ let ListenerUpdateForm = (props) => {
   );
 };
 
-ListenerUpdateForm.propTypes = {
+UpdateForm.propTypes = {
   fields: React.PropTypes.object.isRequired,
   error: React.PropTypes.string,
   handleSubmit: React.PropTypes.func.isRequired,
@@ -49,15 +49,15 @@ ListenerUpdateForm.propTypes = {
   t: React.PropTypes.any,
 };
 
-ListenerUpdateForm.validate = () => {
+UpdateForm.validate = () => {
   const errors = {};
   return errors;
 };
 
-ListenerUpdateForm = reduxForm({
-  form: 'KeyPairForm',
+UpdateForm = reduxForm({
+  form: 'UpdateForm',
   fields: ['name', 'description'],
-  validate: ListenerUpdateForm.validate,
-})(translate()(ListenerUpdateForm));
+  validate: UpdateForm.validate,
+})(translate()(UpdateForm));
 
-export default ListenerUpdateForm;
+export default UpdateForm;

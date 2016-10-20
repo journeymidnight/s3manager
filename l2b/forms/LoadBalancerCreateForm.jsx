@@ -122,7 +122,7 @@ F.validate = values => {
 };
 
 export default reduxForm({
-  form: 'LoadBalancerForm',
+  form: 'LoadBalancerCreateForm',
   fields: ['name', 'subnetId', 'bandwidth', 'networkId'],
   validate: F.validate,
 })(translate()(F));

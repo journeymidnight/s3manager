@@ -545,7 +545,9 @@
     "validationMessage": {
         "ipAddress": "ip地址格式错误",
         "port": "端口号格式错误",
-        "weight": "权重格式错误"
+        "weight": "权重格式错误",
+        "healthMonitorDelay": "间隔时间格式错误",
+        "healthMonitorTimeout": "超时时间格式错误"
     },
     "actionTranslation": {
         "CreateInstances": "创建云主机",
@@ -801,6 +803,22 @@
         "delete": "删除",
         "listenerList": "监听器列表",
         "listener": "监听器",
+        "forward": "转发规则",
+        "roundRobin": "轮询",
+        "session": "会话保持",
+        "on": "开启",
+        "off": "关闭",
+        "sessionPersistenceMode": "模式",
+        "sessionPersistenceTimeout": "超时时间",
+        "sessionPersistenceTimeoutRange": "秒",
+        "health": "健康检查",
+        "healthMonitorType": "类型",
+        "healthMonitorDelay": "间隔时间",
+        "healthMonitorDelayRange": "1-50秒，默认10秒",
+        "healthMonitorTimeout": "超时时间",
+        "healthMonitorTimeoutRange": "1-300秒，默认10秒",
+        "healthMonitorMaxRetries": "重试次数",
+        "healthMonitorMaxRetriesRange": "默认3次",
         "monitors": "资源监控",
         "createListener": "添加监听器",
         "backendList": "后端服务列表",
@@ -810,6 +828,9 @@
         "unfold": "详情",
         "fold": "收起",
         "disablePrompt": "负载均衡非运行中，无法进行相关操作"
+    },
+    "pageListenerCreate": {
+
     },
     "___comment_end_l2b": "end l2b"
 }

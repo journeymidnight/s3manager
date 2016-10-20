@@ -1,46 +1,195 @@
 import React from 'react';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
+import Slider from '../../shared/components/Slider';
 import * as Validations from '../../shared/utils/validations';
 
-const F = (props) => {
-  const { fields:
-    { name, port },
-    handleSubmit,
-    submitting,
-    submitFailed,
-    t,
-  } = props;
-  return (
-    <form className="form-horizontal" onSubmit={handleSubmit}>
-      <div className="modal-body">
-        <div className={(submitFailed || name.touched) && name.error ? 'form-group has-error' : 'form-group'}>
-          <label className="control-label" >{t('name')}</label>
-          <div className="col-sm-10">
-            <input type="text" className="form-control" {...name} maxLength="50" />
-            {(submitFailed || name.touched) && name.error && <div className="text-danger"><small>{name.error}</small></div>}
+class ListenerCreateForm extends React.Component {
+
+  constructor() {
+    super();
+
+    this.protocols = ['TCP'];
+    this.forwards = [
+      { name: 'roundRobin', value: 'ROUND_ROBIN' },
+    ];
+    this.sessionPersistenceModes = ['SOURCE_IP', 'HTTP_COOKIE', 'APP_COOKIE'];
+    this.healthMonitorTypes = ['PING', 'TCP', 'HTTP', 'HTTPS'];
+  }
+
+  componentDidMount() {
+    const initialValues = {
+      protocol: 'TCP',
+      forward: 'ROUND_ROBIN',
+      session: false,
+      healthMonitorType: 'TCP',
+      healthMonitorMaxRetries: 3,
+    };
+
+    this.props.initializeForm(initialValues);
+  }
+
+  render() {
+    const { fields:
+      {
+        name,
+        protocol,
+        port,
+        forward,
+        session,
+        sessionPersistenceMode,
+        sessionPersistenceTimeout,
+        healthMonitorType,
+        healthMonitorDelay,
+        healthMonitorTimeout,
+        healthMonitorMaxRetries,
+      },
+      handleSubmit,
+      submitting,
+      submitFailed,
+      t,
+    } = this.props;
+
+    return (
+      <form className="form-horizontal" onSubmit={handleSubmit}>
+        <div className="modal-body">
+          <div className={(submitFailed || name.touched) && name.error ? 'form-group has-error' : 'form-group'}>
+            <label className="control-label" >{t('name')}</label>
+            <div className="col-sm-10">
+              <input type="text" className="form-control" {...name} maxLength="50" />
+              {(submitFailed || name.touched) && name.error && <div className="text-danger"><small>{name.error}</small></div>}
+            </div>
           </div>
+
+          <div className="form-group">
+            <label className="control-label" >{t('protocol')}</label>
+            <div className="col-sm-10">
+              <select className="form-control" {...protocol}>
+                {this.protocols.map((item) =>
+                  <option key={item} value={item}>{item}</option>)}
+              </select>
+            </div>
+          </div>
+
+          <div className={(submitFailed || port.touched) && port.error ? 'form-group has-error' : 'form-group'}>
+            <label className="control-label" >{t('port')}</label>
+            <div className="col-sm-10">
+              <input type="number" className="form-control" {...port} />
+              {(submitFailed || port.touched) && port.error && <div className="text-danger"><small>{port.error}</small></div>}
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label className="control-label" >{t('pageLoadBalancer.forward')}</label>
+            <div className="col-sm-10">
+              <select className="form-control" {...forward}>
+                {this.forwards.map((item) =>
+                  <option key={item.name} value={item.value}>{t(`pageLoadBalancer.${item.name}`)}</option>)}
+              </select>
+            </div>
+          </div>
+
+          <fieldset className="features">
+            <legend><strong>{t('pageLoadBalancer.session')}</strong></legend>
+
+            <div className="form-group">
+              <label className="control-label" >{t('pageLoadBalancer.session')}</label>
+              <div className="col-sm-10">
+                <div>
+                  <label className="radio inline">
+                    <input
+                      type="radio"
+                      checked={session.value}
+                      name="session"
+                      onChange={() => {}}
+                      onClick={() => {
+                        session.onChange(true);
+                        sessionPersistenceMode.onChange('SOURCE_IP');
+                      }}
+                    />
+                    {t('pageLoadBalancer.on')}
+                  </label>
+
+                  <label className="radio inline">
+                    <input type="radio" checked={!session.value} name="session" onChange={() => {}} onClick={() => { session.onChange(false); }} />
+                    {t('pageLoadBalancer.off')}&nbsp;
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            {session.value && <div className="form-group">
+              <label className="control-label" >{t('pageLoadBalancer.sessionPersistenceMode')}</label>
+              <div className="col-sm-10">
+                <select className="form-control" {...sessionPersistenceMode}>
+                  {this.sessionPersistenceModes.map((mode) =>
+                    <option key={mode} value={mode}>{mode}</option>)}
+                </select>
+              </div>
+            </div>}
+
+            {session.value && <div className={(submitFailed || sessionPersistenceTimeout.touched) && sessionPersistenceTimeout.error ? 'form-group has-error' : 'form-group'}>
+              <label className="control-label" >{t('pageLoadBalancer.sessionPersistenceTimeout')}</label>
+              <div className="col-sm-10">
+                <input type="number" className="form-control" min="1" placeholder={t('pageLoadBalancer.sessionPersistenceTimeoutRange')} {...sessionPersistenceTimeout} />
+                {(submitFailed || sessionPersistenceTimeout.touched) && sessionPersistenceTimeout.error &&
+                  <div className="text-danger"><small>{sessionPersistenceTimeout.error}</small></div>
+                }
+              </div>
+            </div>}
+          </fieldset>
+
+          <fieldset className="features">
+            <legend><strong>{t('pageLoadBalancer.health')}</strong></legend>
+
+            <div className="form-group">
+              <label className="control-label" >{t('pageLoadBalancer.healthMonitorType')}</label>
+              <div className="col-sm-10">
+                <select className="form-control" {...healthMonitorType}>
+                  {this.healthMonitorTypes.map((type) =>
+                    <option key={type} value={type}>{type}</option>)}
+                </select>
+              </div>
+            </div>
+
+            <div className={(submitFailed || healthMonitorDelay.touched) && healthMonitorDelay.error ? 'form-group has-error' : 'form-group'}>
+              <label className="control-label" >{t('pageLoadBalancer.healthMonitorDelay')}</label>
+              <div className="col-sm-10">
+                <input type="number" className="form-control" placeholder={t('pageLoadBalancer.healthMonitorDelayRange')} min="1" max="50" {...healthMonitorDelay} />
+                {(submitFailed || healthMonitorDelay.touched) && healthMonitorDelay.error && <div className="text-danger"><small>{healthMonitorDelay.error}</small></div>}
+              </div>
+            </div>
+
+            <div className={(submitFailed || healthMonitorTimeout.touched) && healthMonitorTimeout.error ? 'form-group has-error' : 'form-group'}>
+              <label className="control-label" >{t('pageLoadBalancer.healthMonitorTimeout')}</label>
+              <div className="col-sm-10">
+                <input type="number" className="form-control" placeholder={t('pageLoadBalancer.healthMonitorTimeoutRange')} min="1" max="300" {...healthMonitorTimeout} />
+                {(submitFailed || healthMonitorTimeout.touched) && healthMonitorTimeout.error && <div className="text-danger"><small>{healthMonitorTimeout.error}</small></div>}
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label className="control-label" >{t('pageLoadBalancer.healthMonitorMaxRetries')}</label>
+              <div className="col-sm-10">
+                <input type="hidden" className="form-control" value={healthMonitorMaxRetries.value} disabled="disabled" />
+                <Slider min={1} max={10} step={1} value={healthMonitorMaxRetries.value} onChange={param => healthMonitorMaxRetries.onChange(param)} />
+              </div>
+            </div>
+          </fieldset>
         </div>
 
-        <div className={(submitFailed || port.touched) && port.error ? 'form-group has-error' : 'form-group'}>
-          <label className="control-label" >{t('port')}</label>
-          <div className="col-sm-10">
-            <input type="text" className="form-control" {...port} />
-            {(submitFailed || port.touched) && port.error && <div className="text-danger"><small>{port.error}</small></div>}
-          </div>
+        <div className="modal-footer">
+          <button type="button" className="btn btn-default" data-dismiss="modal">{t('closeModal')}</button>
+          <button type="submit" className="btn btn-save" disabled={submitting}>
+            {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('create')}
+          </button>
         </div>
-      </div>
-      <div className="modal-footer">
-        <button type="button" className="btn btn-default" data-dismiss="modal">{t('closeModal')}</button>
-        <button type="submit" className="btn btn-save" disabled={submitting}>
-          {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('create')}
-        </button>
-      </div>
-    </form>
-  );
-};
+      </form>
+    );
+  }
+}
 
-F.propTypes = {
+ListenerCreateForm.propTypes = {
   fields: React.PropTypes.object.isRequired,
   error: React.PropTypes.string,
   handleSubmit: React.PropTypes.func.isRequired,
@@ -50,15 +199,32 @@ F.propTypes = {
   t: React.PropTypes.any,
 };
 
-F.validate = values => {
+ListenerCreateForm.validate = values => {
   const errors = {};
   errors.name = Validations.required(values.name);
   errors.port = Validations.port(values.port);
+  if (values.session) {
+    errors.sessionPersistenceTimeout = Validations.integer(values.sessionPersistenceTimeout);
+  }
+  errors.healthMonitorDelay = Validations.healthMonitorDelay(values.healthMonitorDelay);
+  errors.healthMonitorTimeout = Validations.healthMonitorTimeout(values.healthMonitorTimeout);
   return errors;
 };
 
 export default reduxForm({
   form: 'ListenerCreateForm',
-  fields: ['name', 'port'],
-  validate: F.validate,
-})(translate()(F));
+  fields: [
+    'name',
+    'protocol',
+    'port',
+    'forward',
+    'session',
+    'sessionPersistenceMode',
+    'sessionPersistenceTimeout',
+    'healthMonitorType',
+    'healthMonitorDelay',
+    'healthMonitorTimeout',
+    'healthMonitorMaxRetries',
+  ],
+  validate: ListenerCreateForm.validate,
+})(translate()(ListenerCreateForm));

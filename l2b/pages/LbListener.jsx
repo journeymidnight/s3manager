@@ -5,7 +5,7 @@ import Page, { attach } from '../../shared/pages/Page';
 import Modal from '../../shared/components/Modal';
 import * as Actions from '../../console-common/redux/actions';
 import * as LoadBalancerActions from '../redux/actions.load_balancer';
-import ListenerUpdateForm from '../forms/ListenerUpdateForm';
+import UpdateForm from '../forms/UpdateForm';
 import LbBackends from './LbBackends';
 
 class LbListener extends Page {
@@ -54,7 +54,7 @@ class LbListener extends Page {
       const name = values.name;
       const description = values.description;
 
-      dispatch(LoadBalancerActions.requestModifyLoadBalancerListenerAttributes(routerKey, region.regionId, params.listenerId, name, description))
+      dispatch(LoadBalancerActions.requestModifyLoadBalancerListener(routerKey, region.regionId, params.listenerId, name, description))
         .then(() => {
           resolve();
           this.refs.updateModal.hide();
@@ -189,7 +189,7 @@ class LbListener extends Page {
         </div>
 
         <Modal title={t('pageLoadBalancer.update')} ref="updateModal" >
-          <ListenerUpdateForm onSubmit={this.onUpdate} initialValues={listener} />
+          <UpdateForm onSubmit={this.onUpdate} initialValues={listener} />
         </Modal>
 
         <LbBackends {...this.props} />

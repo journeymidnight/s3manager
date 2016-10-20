@@ -1,4 +1,3 @@
-import moment from 'moment';
 import React from 'react';
 import { Link } from 'react-router';
 import { attach } from '../../shared/pages/Page';
@@ -37,14 +36,9 @@ class C extends TablePage {
   onCreateListener(values) {
     const { dispatch, region, routerKey, loadBalancer } = this.props;
     return new Promise((resolve, reject) => {
-      const name = values.name;
-      const port = Number(values.port);
-
       dispatch(LoadBalancerActions.requestCreateLbListener(routerKey, region.regionId, {
         loadBalancerId: loadBalancer.loadBalancerId,
-        protocol: 'TCP',
-        name,
-        port,
+        ...values,
       }))
         .then(() => {
           resolve();
@@ -128,8 +122,10 @@ class C extends TablePage {
               />
             </th>
             <th width="150">{t('id')}</th>
-            <th>{t('port')}</th>
-            <th width="200">{t('created')}</th>
+            <th>{t('name')}</th>
+            <th>{`${t('protocol')}/${t('port')}`}</th>
+            <th>{t('pageLoadBalancer.forward')}</th>
+            <th>{t('pageLoadBalancer.session')}</th>
           </tr>
         </thead>
         <tbody>
@@ -150,9 +146,20 @@ class C extends TablePage {
                 </Link>
               </td>
               <td>
-                {listener.port}
+                <span className="list-item-name">
+                  {listener.name && <strong>{listener.name}</strong>}
+                  {!listener.name && <i className="text-muted">{t('noName')}</i>}
+                </span>
               </td>
-              <td>{moment.utc(listener.created).local().format('YYYY-MM-DD HH:mm:ss')}</td>
+              <td>
+                {`${listener.protocol}/${listener.port}`}
+              </td>
+              <td>
+                {t('pageLoadBalancer.roundRobin')}
+              </td>
+              <td>
+                {listener.sessionPersistenceMode ? t('pageLoadBalancer.on') : t('pageLoadBalancer.off')}
+              </td>
             </tr>
           );
         })}

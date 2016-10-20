@@ -103,6 +103,20 @@ export function weight(value) {
   return null;
 }
 
+export function healthMonitorDelay(value) {
+  if (value && !/^([0-9]{1}|[1-4][0-9]|50)$/.test(value)) {
+    return i18n.t('validationMessage.healthMonitorDelay');
+  }
+  return null;
+}
+
+export function healthMonitorTimeout(value) {
+  if (value && !/^([0-9]{1,2}|[1-2][0-9]{2}|300)$/.test(value)) {
+    return i18n.t('validationMessage.healthMonitorTimeout');
+  }
+  return null;
+}
+
 export function createValidator(rules) {
   return (data = {}) => {
     const errors = {};

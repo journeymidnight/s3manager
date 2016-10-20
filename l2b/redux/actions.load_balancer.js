@@ -84,6 +84,20 @@ export function requestDescribeNetworks(routerKey, regionId, filters) {
   };
 }
 
+export function requestModifyLoadBalancer(routerKey, regionId, loadBalancerId, name, description) {
+  return dispatch => {
+    return IaaS
+      .doAction(regionId, ACTION_NAMES.modifyLoadBalancer, { loadBalancerId, name, description })
+      .promise
+      .then(() => {
+        dispatch(notify(i18n.t('updateSuccessed')));
+      })
+      .catch((error) => {
+        dispatch(notifyAlert(error.message));
+      });
+  };
+}
+
 export function requestDescribeLbListeners(routerKey, regionId, filters) {
   return dispatch => {
     return IaaS
@@ -133,10 +147,10 @@ export function requestDeleteLbListeners(routerKey, regionId, listenerIds) {
   };
 }
 
-export function requestModifyLoadBalancerListenerAttributes(routerKey, regionId, loadBalancerListenerId, name, description) {
+export function requestModifyLoadBalancerListener(routerKey, regionId, loadBalancerListenerId, name, description) {
   return dispatch => {
     return IaaS
-      .doAction(regionId, ACTION_NAMES.modifyLoadBalancerListenerAttributes, { loadBalancerListenerId, name, description })
+      .doAction(regionId, ACTION_NAMES.modifyLoadBalancerListener, { loadBalancerListenerId, name, description })
       .promise
       .then(() => {
         dispatch(notify(i18n.t('updateSuccessed')));
