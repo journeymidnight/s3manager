@@ -186,21 +186,9 @@ class C extends Page {
                         </td>
                       </tr>
                       <tr>
-                        <td>{t('pageBucket.loggingService')}</td>
-                        <td>
-                          <span>test</span>
-                        </td>
-                      </tr>
-                      <tr>
                         <td>{t('pageBucket.publicDomain')}</td>
                         <td>
                           <span>{params.bucketName}.{context.s3Domain}</span>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>{t('pageBucket.privateDomain')}</td>
-                        <td>
-                          <span>test</span>
                         </td>
                       </tr>
                     </tbody>

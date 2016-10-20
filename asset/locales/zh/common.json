@@ -680,8 +680,7 @@
         "bucketNameHint": "Bucket命名规范: \n 1. 只能包含小写字母，数字和短横线 \n 2. 必须以小写字母和数字开头和结尾 \n 3. bucketName的长度限制在3-63之间",
         "acl": "权限控制",
         "aclPrivate": "私有",
-        "aclPublicR": "公共可读",
-        "aclPublicRW": "公共读写",
+        "aclPublicR": "公共",
         "bucketNameNotValid": "空间名称不符合要求"
     },
     "bucketManage": "空间管理",
@@ -738,7 +737,7 @@
         "update": "更改",
         "authorize": "授权",
         "aclPrivate": "私有",
-        "aclPublicR": "公共可读",
+        "aclPublicR": "公共",
         "aclFail": "更改文件权限失败",
         "aclSuccess": "更改文件权限成功"
     },
