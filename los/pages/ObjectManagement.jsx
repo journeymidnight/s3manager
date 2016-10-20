@@ -344,10 +344,10 @@ class ObjectManagement extends TablePageStatic {
               <input type="checkbox" className="selected" onChange={this.onSelectAll(context.visibleObjects.map((object) => object.Key || object.Prefix))} />
             </th>
             <th width="600">{t('objectName')}</th>
-            <th width="200">{}</th>
             <th width="200">{t('size')}</th>
             <th width="200">{t('category')}</th>
             <th width="300">{t('created')}</th>
+            <th width="100">{t('action')}</th>
           </tr>
         </thead>
         <tbody>
@@ -384,8 +384,8 @@ class ObjectManagement extends TablePageStatic {
                   </Link>
                 </td>
                 <td />
-                <td />
                 <td><i className="fa fa-folder-o" /></td>
+                <td />
                 <td />
               </tr> : <tr key={object.Key}>
                 <td>
@@ -402,17 +402,20 @@ class ObjectManagement extends TablePageStatic {
                     {object.Key.startsWith(folderLocation) ? object.Key.slice(folderLocation.length) : object.Key}
                   </Link>
                 </td>
-                <td>
-                  <button
-                    className="btn btn-primary"
-                    onClick={() => this.checkObjectProperty(object.Key)}
-                  >
-                    {t('property')}
-                  </button>
-                </td>
                 <td>{this.formatBytes(object.Size)}</td>
                 <td>{object.Key.slice(object.Key.lastIndexOf('.') + 1)}</td>
                 <td>{moment.utc(object.LastModified).local().format('YYYY-MM-DD HH:mm:ss')}</td>
+                <td>
+                  <a
+                    href
+                    onClick={e => {
+                      e.preventDefault();
+                      this.checkObjectProperty(object.Key);
+                    }}
+                  >
+                    {t('property')}
+                  </a>
+                </td>
               </tr>);
           })}
         </tbody>
