@@ -111,7 +111,17 @@ class ListenerCreateForm extends React.Component {
                   </label>
 
                   <label className="radio inline">
-                    <input type="radio" checked={!session.value} name="session" onChange={() => {}} onClick={() => { session.onChange(false); }} />
+                    <input
+                      type="radio"
+                      checked={!session.value}
+                      name="session"
+                      onChange={() => {}}
+                      onClick={() => {
+                        session.onChange(false);
+                        sessionPersistenceMode.onChange(undefined);
+                        sessionPersistenceTimeout.onChange(undefined);
+                      }}
+                    />
                     {t('pageLoadBalancer.off')}&nbsp;
                   </label>
                 </div>
