@@ -7,7 +7,6 @@ export function requestDescribeLoadBalancer(routerKey, regionId, loadBalancerId)
     return IaaS
       .doAction(regionId, ACTION_NAMES.describeLoadBalancers, {
         loadBalancerIds: [loadBalancerId],
-        verbose: true,
       })
       .promise
       .then((payload) => {
@@ -161,6 +160,20 @@ export function requestModifyLoadBalancerListener(routerKey, regionId, loadBalan
   };
 }
 
+export function requestUpdateLoadBalancerListener(routerKey, regionId, loadBalancerListenerId, params) {
+  return dispatch => {
+    return IaaS
+      .doAction(regionId, ACTION_NAMES.updateLoadBalancerListener, { loadBalancerListenerId, ...params })
+      .promise
+      .then(() => {
+        dispatch(notify(i18n.t('updateSuccessed')));
+      })
+      .catch((error) => {
+        dispatch(notifyAlert(error.message));
+      });
+  };
+}
+
 export function requestDescribeLbBackends(routerKey, regionId, filters) {
   return dispatch => {
     return IaaS
@@ -200,6 +213,34 @@ export function requestDeleteLbBackends(routerKey, regionId, backendsIds) {
       .promise
       .then(() => {
         dispatch(notify(i18n.t('deleteSuccessed')));
+      })
+      .catch((error) => {
+        dispatch(notifyAlert(error.message));
+      });
+  };
+}
+
+export function requestModifyLoadBalancerBackend(routerKey, regionId, loadBalancerBackendId, name, description) {
+  return dispatch => {
+    return IaaS
+      .doAction(regionId, ACTION_NAMES.modifyLoadBalancerBackend, { loadBalancerBackendId, name, description })
+      .promise
+      .then(() => {
+        dispatch(notify(i18n.t('updateSuccessed')));
+      })
+      .catch((error) => {
+        dispatch(notifyAlert(error.message));
+      });
+  };
+}
+
+export function requestUpdateLoadBalancerBackend(routerKey, regionId, loadBalancerBackendId, params) {
+  return dispatch => {
+    return IaaS
+      .doAction(regionId, ACTION_NAMES.updateLoadBalancerBackend, { loadBalancerBackendId, ...params })
+      .promise
+      .then(() => {
+        dispatch(notify(i18n.t('updateSuccessed')));
       })
       .catch((error) => {
         dispatch(notifyAlert(error.message));

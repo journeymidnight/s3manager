@@ -8,6 +8,8 @@ import ButtonForm from '../../shared/forms/ButtonForm';
 import TimeSorter from '../../shared/components/TimeSorter';
 import SearchBox from '../../shared/components/SearchBox';
 import BackendCreateForm from '../forms/BackendCreateForm';
+import UpdateForm from '../forms/UpdateForm';
+import WeightForm from '../forms/WeightForm';
 import * as Actions from '../../console-common/redux/actions';
 import * as LoadBalancerActions from '../redux/actions.load_balancer';
 
@@ -19,6 +21,10 @@ class LbBackends extends TablePage {
     this.onCreateBackend = this.onCreateBackend.bind(this);
     this.showCreatePanel = this.showCreatePanel.bind(this);
     this.onDelete = this.onDelete.bind(this);
+    this.onUpdateBackend = this.onUpdateBackend.bind(this);
+    this.onUpdate = this.onUpdate.bind(this);
+    this.onChangeWeight = this.onChangeWeight.bind(this);
+    this.onChange = this.onChange.bind(this);
   }
 
   initialize(routerKey) {
@@ -68,6 +74,60 @@ class LbBackends extends TablePage {
     }
   }
 
+  onUpdateBackend(backendId) {
+    const { routerKey, dispatch } = this.props;
+
+    dispatch(Actions.extendContext({
+      backendId,
+    }, routerKey));
+
+    setTimeout(() => this.refs.updateModal.show(), 100);
+  }
+
+  onChangeWeight(backendId) {
+    const { routerKey, dispatch } = this.props;
+    dispatch(Actions.extendContext({
+      backendId,
+    }, routerKey));
+
+    setTimeout(() => this.refs.weightModal.show(), 100);
+  }
+
+  onUpdate(values) {
+    const { dispatch, region, routerKey, context } = this.props;
+
+    return new Promise((resolve, reject) => {
+      const name = values.name;
+      const description = values.description;
+
+      dispatch(LoadBalancerActions.requestModifyLoadBalancerBackend(routerKey, region.regionId, context.backendId, name, description))
+        .then(() => {
+          resolve();
+          this.refs.updateModal.hide();
+          this.refresh();
+        })
+        .catch(() => {
+          reject();
+        });
+    });
+  }
+
+  onChange(values) {
+    const { dispatch, region, routerKey, context } = this.props;
+
+    return new Promise((resolve, reject) => {
+      dispatch(LoadBalancerActions.requestUpdateLoadBalancerBackend(routerKey, region.regionId, context.backendId, values))
+        .then(() => {
+          resolve();
+          this.refs.weightModal.hide();
+          this.refresh();
+        })
+        .catch(() => {
+          reject();
+        });
+    });
+  }
+
   onDelete() {
     const { t, dispatch, routerKey, region, context } = this.props;
     const backendIds = Object.keys(context.selected);
@@ -91,7 +151,7 @@ class LbBackends extends TablePage {
   }
 
   renderHeader() {
-    const { t } = this.props;
+    const { t, context } = this.props;
     return (
       <div>
         <div className="top-area">
@@ -109,12 +169,20 @@ class LbBackends extends TablePage {
         <Modal title={t('pageLoadBalancer.createBackend')} ref="backendCreateModal" >
           <BackendCreateForm onSubmit={this.onCreateBackend} />
         </Modal>
+
+        <Modal title={t('pageLoadBalancer.update')} ref="updateModal" >
+          <UpdateForm onSubmit={this.onUpdate} initialValues={context.backendSet.filter(backend => backend.loadBalancerBackendId === context.backendId)[0]} />
+        </Modal>
+
+        <Modal title={t('weight')} ref="weightModal" >
+          <WeightForm onSubmit={this.onChange} initialValues={context.backendSet.filter(backend => backend.loadBalancerBackendId === context.backendId)[0]} />
+        </Modal>
       </div>
     );
   }
 
   renderTable() {
-    const { t, servicePath, loadBalancer } = this.props;
+    const { t } = this.props;
     return this.props.context.total > 0 && this.props.context.backendSet.length > 0 && (
       <table className="table table-list">
         <thead>
@@ -128,11 +196,13 @@ class LbBackends extends TablePage {
               />
             </th>
             <th width="150">{t('id')}</th>
+            <th>{t('name')}</th>
             <th>{t('address')}</th>
-            <th width="60">{t('port')}</th>
-            <th width="60">{t('weight')}</th>
-            <th width="60">{t('status')}</th>
-            <th width="200">{t('created')}</th>
+            <th>{t('port')}</th>
+            <th>{t('weight')}</th>
+            <th>{t('action')}</th>
+            {/* <th width="60">{t('status')}</th>
+            <th width="200">{t('created')}</th> */}
           </tr>
         </thead>
         <tbody>
@@ -148,9 +218,13 @@ class LbBackends extends TablePage {
                   />
                 </td>
                 <td>
-                  <Link to={`${servicePath}/load_balancers/${loadBalancer.loadBalancerId}/${backend.loadBalancerBackendId}`}>
-                    {backend.loadBalancerBackendId}
-                  </Link>
+                  {backend.loadBalancerBackendId}
+                </td>
+                <td>
+                  <span className="list-item-name">
+                    {backend.name && <strong>{backend.name}</strong>}
+                    {!backend.name && <i className="text-muted">{t('noName')}</i>}
+                  </span>
                 </td>
                 <td>
                   {backend.address}
@@ -161,13 +235,34 @@ class LbBackends extends TablePage {
                 <td>
                   {backend.weight}
                 </td>
-                <td className={`i-status i-status-${backend.status}`}>
+                <td>
+                  <a
+                    href
+                    onClick={e => {
+                      e.preventDefault();
+                      this.onUpdateBackend(backend.loadBalancerBackendId);
+                    }}
+                  >
+                    {t('pageLoadBalancer.update')}
+                  </a>
+                  /
+                  <a
+                    href
+                    onClick={e => {
+                      e.preventDefault();
+                      this.onChangeWeight(backend.loadBalancerBackendId);
+                    }}
+                  >
+                    {t('property')}
+                  </a>
+                </td>
+                {/* <td className={`i-status i-status-${backend.status}`}>
                   <span>
                     <i className="icon"></i>
                     {t(`lblistenerStatus.${backend.status}`)}
                   </span>
                 </td>
-                <td>{moment.utc(backend.created).local().format('YYYY-MM-DD HH:mm:ss')}</td>
+                <td>{moment.utc(backend.created).local().format('YYYY-MM-DD HH:mm:ss')}</td> */}
               </tr>
             );
           })}

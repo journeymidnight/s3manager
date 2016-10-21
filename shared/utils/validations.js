@@ -36,15 +36,6 @@ export function maxLength(max) {
   };
 }
 
-export function maxLengthNotRequired(max) {
-  return value => {
-    if (value && value.length > max) {
-      return `最多填写 ${max} 字符`;
-    }
-    return null;
-  };
-}
-
 export function integer(value) {
   if (!Number.isInteger(Number(value))) {
     return '必须填写整型数值。';

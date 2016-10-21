@@ -25,7 +25,7 @@ const BackendCreateForm = (props) => {
         <div className={(submitFailed || description.touched) && description.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('description')}</label>
           <div className="col-sm-10">
-            <input type="text" className="form-control" {...description} />
+            <input type="text" className="form-control" {...description} maxLength="250" />
             {(submitFailed || description.touched) && description.error && <div className="text-danger"><small>{description.error}</small></div>}
           </div>
         </div>
@@ -41,7 +41,7 @@ const BackendCreateForm = (props) => {
         <div className={(submitFailed || port.touched) && port.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('port')}</label>
           <div className="col-sm-10">
-            <input type="text" className="form-control" {...port} />
+            <input type="number" className="form-control" {...port} />
             {(submitFailed || port.touched) && port.error && <div className="text-danger"><small>{port.error}</small></div>}
           </div>
         </div>
@@ -49,7 +49,7 @@ const BackendCreateForm = (props) => {
         <div className={(submitFailed || weight.touched) && weight.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('weight')}</label>
           <div className="col-sm-10">
-            <input type="text" className="form-control" {...weight} />
+            <input type="number" className="form-control" {...weight} />
             {(submitFailed || weight.touched) && weight.error && <div className="text-danger"><small>{weight.error}</small></div>}
           </div>
         </div>
@@ -76,8 +76,7 @@ BackendCreateForm.propTypes = {
 
 BackendCreateForm.validate = values => {
   const errors = {};
-  errors.name = Validations.maxLength(50)(values.name);
-  errors.description = Validations.maxLengthNotRequired(250)(values.description);
+  errors.name = Validations.required(values.name);
   errors.address = Validations.ipAddress(values.address);
   errors.port = Validations.port(values.port);
   errors.weight = Validations.weight(values.weight);

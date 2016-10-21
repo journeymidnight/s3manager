@@ -6,6 +6,8 @@ import Modal from '../../shared/components/Modal';
 import * as Actions from '../../console-common/redux/actions';
 import * as LoadBalancerActions from '../redux/actions.load_balancer';
 import UpdateForm from '../forms/UpdateForm';
+import SessionForm from '../forms/SessionForm';
+import HealthForm from '../forms/HealthForm';
 import LbBackends from './LbBackends';
 
 class LbListener extends Page {
@@ -16,10 +18,14 @@ class LbListener extends Page {
     this.state = {
       listenerList: false,
     };
+    this.forwards = { ROUND_ROBIN: 'roundRobin' };
 
     this.refresh = this.refresh.bind(this);
     this.updateListener = this.updateListener.bind(this);
+    this.updateSession = this.updateSession.bind(this);
+    this.updateHealth = this.updateHealth.bind(this);
     this.onUpdate = this.onUpdate.bind(this);
+    this.onUpdateParams = this.onUpdateParams.bind(this);
   }
 
   initialize() {
@@ -47,6 +53,14 @@ class LbListener extends Page {
     this.refs.updateModal.show();
   }
 
+  updateSession() {
+    this.refs.sessionModal.show();
+  }
+
+  updateHealth() {
+    this.refs.healthModal.show();
+  }
+
   onUpdate(values) {
     const { dispatch, region, routerKey, params } = this.props;
 
@@ -60,6 +74,23 @@ class LbListener extends Page {
           this.refs.updateModal.hide();
           this.refresh();
         }).catch(() => {
+          reject();
+        });
+    });
+  }
+
+  onUpdateParams(values) {
+    const { dispatch, region, routerKey, params } = this.props;
+
+    return new Promise((resolve, reject) => {
+      dispatch(LoadBalancerActions.requestUpdateLoadBalancerListener(routerKey, region.regionId, params.listenerId, values))
+        .then(() => {
+          resolve();
+          this.refs.sessionModal.hide();
+          this.refs.healthModal.hide();
+          this.refresh();
+        })
+        .catch(() => {
           reject();
         });
     });
@@ -132,7 +163,7 @@ class LbListener extends Page {
                   <table className="table table-detail">
                     <tbody>
                       <tr>
-                        <td>{t('id')}</td>
+                        <td style={{ width: '40%' }}>{t('id')}</td>
                         <td><span>{listener.loadBalancerListenerId}</span></td>
                       </tr>
                       <tr>
@@ -151,14 +182,6 @@ class LbListener extends Page {
                         </td>
                       </tr>
                       <tr>
-                        <td>{t('port')}</td>
-                        <td>
-                          <span>
-                            {listener.port}
-                          </span>
-                        </td>
-                      </tr>
-                      <tr>
                         <td>{t('protocol')}</td>
                         <td>
                           <span>
@@ -167,6 +190,22 @@ class LbListener extends Page {
                         </td>
                       </tr>
                       <tr>
+                        <td>{t('port')}</td>
+                        <td>
+                          <span>
+                            {listener.port}
+                          </span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>{t('pageLoadBalancer.forward')}</td>
+                        <td>
+                          <span>
+                            {t(`pageLoadBalancer.${this.forwards[listener.balanceMode]}`)}
+                          </span>
+                        </td>
+                      </tr>
+                      {/* <tr>
                         <td>{t('status')}</td>
                         <td className={`i-status i-status-${listener.status}`}>
                           <span>
@@ -175,10 +214,101 @@ class LbListener extends Page {
                             <br />
                           </span>
                         </td>
-                      </tr>
+                      </tr> */}
                       <tr>
                         <td>{t('created')}</td>
                         <td><span>{moment.utc(listener.created).local().format('YYYY-MM-DD HH:mm:ss')}</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>}
+
+            {this.state.listenerList && <div className="row">
+              <div className="col-md-12 side">
+                <div className="panel panel-default">
+                  <div className="panel-heading">
+                    {t('pageLoadBalancer.session')}
+                    <div className="btn-group pull-right">
+                      <button type="button" className="btn dropdown-toggle" data-toggle="dropdown">
+                        <i className="fa fa-bars"></i>
+                      </button>
+                      <ul className="dropdown-menu">
+                        <li>
+                          <button
+                            className="btn-page-action"
+                            onClick={this.updateSession}
+                          >
+                            {t('pageLoadBalancer.update')}
+                          </button>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <table className="table table-detail">
+                    <tbody>
+                      <tr>
+                        <td style={{ width: '40%' }}>{t('pageLoadBalancer.sessionStatus')}</td>
+                        <td><span>{listener.sessionPersistenceMode ? t('pageLoadBalancer.on') : t('pageLoadBalancer.off')}</span></td>
+                      </tr>
+
+                      {listener.sessionPersistenceMode && <tr>
+                        <td>{t('pageLoadBalancer.sessionPersistenceMode')}</td>
+                        <td><span>{listener.sessionPersistenceMode}</span></td>
+                      </tr>}
+
+                      {listener.sessionPersistenceMode && <tr>
+                        <td>{t('pageLoadBalancer.sessionPersistenceTimeout')}</td>
+                        <td><span>{listener.sessionPersistenceTimeout}{t('pageLoadBalancer.second')}</span></td>
+                      </tr>}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>}
+
+            {this.state.listenerList && <div className="row">
+              <div className="col-md-12 side">
+                <div className="panel panel-default">
+                  <div className="panel-heading">
+                    {t('pageLoadBalancer.health')}
+                    <div className="btn-group pull-right">
+                      <button type="button" className="btn dropdown-toggle" data-toggle="dropdown">
+                        <i className="fa fa-bars"></i>
+                      </button>
+                      <ul className="dropdown-menu">
+                        <li>
+                          <button
+                            className="btn-page-action"
+                            onClick={this.updateHealth}
+                          >
+                            {t('pageLoadBalancer.update')}
+                          </button>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <table className="table table-detail">
+                    <tbody>
+                      <tr>
+                        <td style={{ width: '40%' }}>{t('pageLoadBalancer.healthMonitorType')}</td>
+                        <td><span>{listener.healthMonitorType}</span></td>
+                      </tr>
+
+                      <tr>
+                        <td>{t('pageLoadBalancer.healthMonitorDelay')}</td>
+                        <td><span>{listener.healthMonitorDelay}{t('pageLoadBalancer.second')}</span></td>
+                      </tr>
+
+                      <tr>
+                        <td>{t('pageLoadBalancer.healthMonitorTimeout')}</td>
+                        <td><span>{listener.healthMonitorTimeout}{t('pageLoadBalancer.second')}</span></td>
+                      </tr>
+
+                      <tr>
+                        <td>{t('pageLoadBalancer.healthMonitorMaxRetries')}</td>
+                        <td><span>{listener.healthMonitorMaxRetries}{t('pageLoadBalancer.count')}</span></td>
                       </tr>
                     </tbody>
                   </table>
@@ -190,6 +320,14 @@ class LbListener extends Page {
 
         <Modal title={t('pageLoadBalancer.update')} ref="updateModal" >
           <UpdateForm onSubmit={this.onUpdate} initialValues={listener} />
+        </Modal>
+
+        <Modal title={t('pageLoadBalancer.session')} ref="sessionModal" >
+          <SessionForm onSubmit={this.onUpdateParams} initialValues={Object.assign({}, listener, { session: listener.sessionPersistenceMode ? 'on' : 'off' })} />
+        </Modal>
+
+        <Modal title={t('pageLoadBalancer.health')} ref="healthModal" >
+          <HealthForm onSubmit={this.onUpdateParams} initialValues={listener} />
         </Modal>
 
         <LbBackends {...this.props} />

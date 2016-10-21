@@ -22,8 +22,11 @@ export const ACTION_NAMES = {
   createLoadBalancerListener: 'CreateLoadBalancerListener',
   deleteLoadBalancerListeners: 'DeleteLoadBalancerListeners',
   modifyLoadBalancerListener: 'ModifyLoadBalancerListenerAttributes',
+  updateLoadBalancerListener: 'UpdateLoadBalancerListener',
   describeLoadBalancerBackends: 'DescribeLoadBalancerBackends',
   createLoadBalancerBackend: 'CreateLoadBalancerBackend',
   deleteLoadBalancerBackends: 'DeleteLoadBalancerBackends',
+  modifyLoadBalancerBackend: 'ModifyLoadBalancerBackendAttributes',
+  updateLoadBalancerBackend: 'UpdateLoadBalancerBackend',
 };
 export default new IaaS();
