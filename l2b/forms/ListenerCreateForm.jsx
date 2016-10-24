@@ -13,7 +13,7 @@ class ListenerCreateForm extends React.Component {
     this.forwards = [
       { name: 'roundRobin', value: 'ROUND_ROBIN' },
     ];
-    this.sessionPersistenceModes = ['SOURCE_IP', 'HTTP_COOKIE', 'APP_COOKIE'];
+    this.sessionPersistenceModes = ['SOURCE_IP'];
     this.healthMonitorTypes = ['PING', 'TCP', 'HTTP', 'HTTPS'];
   }
 
@@ -21,6 +21,7 @@ class ListenerCreateForm extends React.Component {
     const initialValues = {
       protocol: 'TCP',
       forward: 'ROUND_ROBIN',
+      connectionLimit: -1,
       session: false,
       healthMonitorType: 'TCP',
       healthMonitorMaxRetries: 3,
@@ -36,9 +37,9 @@ class ListenerCreateForm extends React.Component {
         protocol,
         port,
         forward,
+        connectionLimit,
         session,
         sessionPersistenceMode,
-        sessionPersistenceTimeout,
         healthMonitorType,
         healthMonitorDelay,
         healthMonitorTimeout,
@@ -89,6 +90,16 @@ class ListenerCreateForm extends React.Component {
             </div>
           </div>
 
+          <div className={(submitFailed || connectionLimit.touched) && connectionLimit.error ? 'form-group has-error' : 'form-group'}>
+            <label className="control-label" >{t('pageLoadBalancer.connectionLimit')}</label>
+            <div className="col-sm-10">
+              <input type="number" className="form-control" min="-1" placeholder={t('pageLoadBalancer.connectionLimitRange')} {...connectionLimit} />
+              {(submitFailed || connectionLimit.touched) && connectionLimit.error &&
+                <div className="text-danger"><small>{connectionLimit.error}</small></div>
+              }
+            </div>
+          </div>
+
           <fieldset className="features">
             <legend><strong>{t('pageLoadBalancer.session')}</strong></legend>
 
@@ -119,7 +130,6 @@ class ListenerCreateForm extends React.Component {
                       onClick={() => {
                         session.onChange(false);
                         sessionPersistenceMode.onChange(undefined);
-                        sessionPersistenceTimeout.onChange(undefined);
                       }}
                     />
                     {t('pageLoadBalancer.off')}&nbsp;
@@ -135,16 +145,6 @@ class ListenerCreateForm extends React.Component {
                   {this.sessionPersistenceModes.map((mode) =>
                     <option key={mode} value={mode}>{mode}</option>)}
                 </select>
-              </div>
-            </div>}
-
-            {session.value && <div className={(submitFailed || sessionPersistenceTimeout.touched) && sessionPersistenceTimeout.error ? 'form-group has-error' : 'form-group'}>
-              <label className="control-label" >{t('pageLoadBalancer.sessionPersistenceTimeout')}</label>
-              <div className="col-sm-10">
-                <input type="number" className="form-control" min="1" placeholder={t('pageLoadBalancer.sessionPersistenceTimeoutRange')} {...sessionPersistenceTimeout} />
-                {(submitFailed || sessionPersistenceTimeout.touched) && sessionPersistenceTimeout.error &&
-                  <div className="text-danger"><small>{sessionPersistenceTimeout.error}</small></div>
-                }
               </div>
             </div>}
           </fieldset>
@@ -213,9 +213,7 @@ ListenerCreateForm.validate = values => {
   const errors = {};
   errors.name = Validations.required(values.name);
   errors.port = Validations.port(values.port);
-  if (values.session) {
-    errors.sessionPersistenceTimeout = Validations.integer(values.sessionPersistenceTimeout);
-  }
+  errors.connectionLimit = Validations.integer(values.connectionLimit);
   errors.healthMonitorDelay = Validations.healthMonitorDelay(values.healthMonitorDelay);
   errors.healthMonitorTimeout = Validations.healthMonitorTimeout(values.healthMonitorTimeout);
   return errors;
@@ -228,9 +226,9 @@ export default reduxForm({
     'protocol',
     'port',
     'forward',
+    'connectionLimit',
     'session',
     'sessionPersistenceMode',
-    'sessionPersistenceTimeout',
     'healthMonitorType',
     'healthMonitorDelay',
     'healthMonitorTimeout',

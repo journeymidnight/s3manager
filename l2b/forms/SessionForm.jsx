@@ -1,14 +1,13 @@
 import React from 'react';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
-import * as Validations from '../../shared/utils/validations';
 
 class SessionForm extends React.Component {
 
   constructor() {
     super();
 
-    this.sessionPersistenceModes = ['SOURCE_IP', 'HTTP_COOKIE', 'APP_COOKIE'];
+    this.sessionPersistenceModes = ['SOURCE_IP'];
   }
 
   render() {
@@ -16,11 +15,9 @@ class SessionForm extends React.Component {
       {
         session,
         sessionPersistenceMode,
-        sessionPersistenceTimeout,
       },
       handleSubmit,
       submitting,
-      submitFailed,
       t,
     } = this.props;
 
@@ -54,7 +51,6 @@ class SessionForm extends React.Component {
                     onClick={() => {
                       session.onChange(false);
                       sessionPersistenceMode.onChange(undefined);
-                      sessionPersistenceTimeout.onChange(undefined);
                     }}
                   />
                   {t('pageLoadBalancer.off')}&nbsp;
@@ -72,22 +68,12 @@ class SessionForm extends React.Component {
               </select>
             </div>
           </div>}
-
-          {session.value && <div className={(submitFailed || sessionPersistenceTimeout.touched) && sessionPersistenceTimeout.error ? 'form-group has-error' : 'form-group'}>
-            <label className="control-label" >{t('pageLoadBalancer.sessionPersistenceTimeout')}</label>
-            <div className="col-sm-10">
-              <input type="number" className="form-control" min="1" placeholder={t('pageLoadBalancer.sessionPersistenceTimeoutRange')} {...sessionPersistenceTimeout} />
-              {(submitFailed || sessionPersistenceTimeout.touched) && sessionPersistenceTimeout.error &&
-                <div className="text-danger"><small>{sessionPersistenceTimeout.error}</small></div>
-              }
-            </div>
-          </div>}
         </div>
 
         <div className="modal-footer">
           <button type="button" className="btn btn-default" data-dismiss="modal">{t('closeModal')}</button>
           <button type="submit" className="btn btn-save" disabled={submitting}>
-            {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('create')}
+            {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('update')}
           </button>
         </div>
       </form>
@@ -105,11 +91,8 @@ SessionForm.propTypes = {
   t: React.PropTypes.any,
 };
 
-SessionForm.validate = values => {
+SessionForm.validate = () => {
   const errors = {};
-  if (values.session) {
-    errors.sessionPersistenceTimeout = Validations.integer(values.sessionPersistenceTimeout);
-  }
   return errors;
 };
 
@@ -118,7 +101,6 @@ export default reduxForm({
   fields: [
     'session',
     'sessionPersistenceMode',
-    'sessionPersistenceTimeout',
   ],
   validate: SessionForm.validate,
 })(translate()(SessionForm));

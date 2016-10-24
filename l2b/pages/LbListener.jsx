@@ -6,6 +6,7 @@ import Modal from '../../shared/components/Modal';
 import * as Actions from '../../console-common/redux/actions';
 import * as LoadBalancerActions from '../redux/actions.load_balancer';
 import UpdateForm from '../forms/UpdateForm';
+import LimitForm from '../forms/LimitForm';
 import SessionForm from '../forms/SessionForm';
 import HealthForm from '../forms/HealthForm';
 import LbBackends from './LbBackends';
@@ -21,6 +22,7 @@ class LbListener extends Page {
     this.forwards = { ROUND_ROBIN: 'roundRobin' };
 
     this.refresh = this.refresh.bind(this);
+    this.updateLimit = this.updateLimit.bind(this);
     this.updateListener = this.updateListener.bind(this);
     this.updateSession = this.updateSession.bind(this);
     this.updateHealth = this.updateHealth.bind(this);
@@ -53,6 +55,10 @@ class LbListener extends Page {
     this.refs.updateModal.show();
   }
 
+  updateLimit() {
+    this.refs.limitModal.show();
+  }
+
   updateSession() {
     this.refs.sessionModal.show();
   }
@@ -82,10 +88,21 @@ class LbListener extends Page {
   onUpdateParams(values) {
     const { dispatch, region, routerKey, params } = this.props;
 
+    let listener = this.listener;
+    if (this.props.context.listenerSet) {
+      listener = this.props.context.listenerSet[0];
+    }
+    const { sessionPersistenceMode } = listener;
+
     return new Promise((resolve, reject) => {
-      dispatch(LoadBalancerActions.requestUpdateLoadBalancerListener(routerKey, region.regionId, params.listenerId, values))
+      console.log(values)
+      console.log(listener)
+      console.log(sessionPersistenceMode)
+      console.log( Object.assign({}, sessionPersistenceMode, values))
+      dispatch(LoadBalancerActions.requestUpdateLoadBalancerListener(routerKey, region.regionId, params.listenerId, Object.assign({}, sessionPersistenceMode, values)))
         .then(() => {
           resolve();
+          this.refs.limitModal.hide();
           this.refs.sessionModal.hide();
           this.refs.healthModal.hide();
           this.refresh();
@@ -157,6 +174,15 @@ class LbListener extends Page {
                             {t('pageLoadBalancer.update')}
                           </button>
                         </li>
+
+                        <li>
+                          <button
+                            className="btn-page-action"
+                            onClick={this.updateLimit}
+                          >
+                            {t('pageLoadBalancer.changeLimit')}
+                          </button>
+                        </li>
                       </ul>
                     </div>
                   </div>
@@ -204,6 +230,10 @@ class LbListener extends Page {
                             {t(`pageLoadBalancer.${this.forwards[listener.balanceMode]}`)}
                           </span>
                         </td>
+                      </tr>
+                      <tr>
+                        <td>{t('pageLoadBalancer.connectionLimit')}</td>
+                        <td><span>{listener.connectionLimit === -1 ? t('pageLoadBalancer.limitOff') : listener.connectionLimit}</span></td>
                       </tr>
                       {/* <tr>
                         <td>{t('status')}</td>
@@ -256,11 +286,6 @@ class LbListener extends Page {
                       {listener.sessionPersistenceMode && <tr>
                         <td>{t('pageLoadBalancer.sessionPersistenceMode')}</td>
                         <td><span>{listener.sessionPersistenceMode}</span></td>
-                      </tr>}
-
-                      {listener.sessionPersistenceMode && <tr>
-                        <td>{t('pageLoadBalancer.sessionPersistenceTimeout')}</td>
-                        <td><span>{listener.sessionPersistenceTimeout}{t('pageLoadBalancer.second')}</span></td>
                       </tr>}
                     </tbody>
                   </table>
@@ -320,6 +345,10 @@ class LbListener extends Page {
 
         <Modal title={t('pageLoadBalancer.update')} ref="updateModal" >
           <UpdateForm onSubmit={this.onUpdate} initialValues={listener} />
+        </Modal>
+
+        <Modal title={t('pageLoadBalancer.connectionLimit')} ref="limitModal" >
+          <LimitForm onSubmit={this.onUpdateParams} initialValues={listener} />
         </Modal>
 
         <Modal title={t('pageLoadBalancer.session')} ref="sessionModal" >
