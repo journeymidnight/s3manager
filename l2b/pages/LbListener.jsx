@@ -95,11 +95,7 @@ class LbListener extends Page {
     const { sessionPersistenceMode } = listener;
 
     return new Promise((resolve, reject) => {
-      console.log(values)
-      console.log(listener)
-      console.log(sessionPersistenceMode)
-      console.log( Object.assign({}, sessionPersistenceMode, values))
-      dispatch(LoadBalancerActions.requestUpdateLoadBalancerListener(routerKey, region.regionId, params.listenerId, Object.assign({}, sessionPersistenceMode, values)))
+      dispatch(LoadBalancerActions.requestUpdateLoadBalancerListener(routerKey, region.regionId, params.listenerId, Object.assign({}, { sessionPersistenceMode }, values)))
         .then(() => {
           resolve();
           this.refs.limitModal.hide();
@@ -352,7 +348,7 @@ class LbListener extends Page {
         </Modal>
 
         <Modal title={t('pageLoadBalancer.session')} ref="sessionModal" >
-          <SessionForm onSubmit={this.onUpdateParams} initialValues={Object.assign({}, listener, { session: listener.sessionPersistenceMode ? 'on' : 'off' })} />
+          <SessionForm onSubmit={this.onUpdateParams} initialValues={Object.assign({}, listener, { session: listener.sessionPersistenceMode || false })} />
         </Modal>
 
         <Modal title={t('pageLoadBalancer.health')} ref="healthModal" >
