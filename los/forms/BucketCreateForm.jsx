@@ -49,17 +49,6 @@ class F extends React.Component {
               <input type="radio" value="public-read" onChange={() => {}} onClick={() => { acl.onChange('public-read'); }} checked={acl.value === 'public-read'} />
               {t('pageBucketCreate.aclPublicR')}
             </label>
-
-            <label className="radio inline">
-              <input
-                type="radio"
-                value="public-read-write"
-                onChange={() => {}}
-                onClick={() => { acl.onChange('public-read-write'); }}
-                checked={acl.value === 'public-read-write'}
-              />
-              {t('pageBucketCreate.aclPublicRW')}
-            </label>
           </div>
         </div>
 
