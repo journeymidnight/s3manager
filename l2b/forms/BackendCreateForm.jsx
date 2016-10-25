@@ -49,7 +49,7 @@ const BackendCreateForm = (props) => {
         <div className={(submitFailed || weight.touched) && weight.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('weight')}</label>
           <div className="col-sm-10">
-            <input type="number" className="form-control" {...weight} />
+            <input type="number" className="form-control" placeholder={t('pageLoadBalancer.weightRange')} {...weight} />
             {(submitFailed || weight.touched) && weight.error && <div className="text-danger"><small>{weight.error}</small></div>}
           </div>
         </div>
