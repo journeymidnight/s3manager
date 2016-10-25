@@ -18,6 +18,8 @@
     &.i-status-stopping,
     &.i-status-restarting,
     &.i-status-scheduling,
+    &.i-status-attaching,
+    &.i-status-detaching,
     &.i-status-pending {
         color: #c09853;
         font-style: italic;
