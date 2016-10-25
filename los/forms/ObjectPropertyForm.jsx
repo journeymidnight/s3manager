@@ -74,7 +74,7 @@ class ObjectPropertyForm extends React.Component {
           <div className="form-group">
             <label className="control-label" />
             <div className="col-sm-8">
-              <select className="form-control" onChange={acl.onChange}>
+              <select className="form-control" { ...acl }>
                 <option key="private" value="private">
                   {t('pageBucketCreate.aclPrivate')}
                 </option>
@@ -98,7 +98,7 @@ class ObjectPropertyForm extends React.Component {
           {!context.objectUrl && <div className="form-group">
             <label className="control-label" >{t('objectPropertyPage.period')}</label>
             <div className="col-sm-8">
-              <input type="number" className="form-control" onChange={period.onChange} placeholder={t('objectPropertyPage.second')} />
+              <input type="number" className="form-control" { ...period } placeholder={t('objectPropertyPage.second')} />
             </div>
             <div className="col-sm-2">
               <button
