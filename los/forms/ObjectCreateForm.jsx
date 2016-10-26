@@ -28,7 +28,7 @@ class ObjectCreateForm extends React.Component {
         <div className="form-group">
           <label className="control-label" >{t('pageObjectCreate.folderName')}</label>
           <div className="col-sm-10">
-            <input type="text" className="form-control" { ...objectName } />
+            <input type="text" className="form-control" {...objectName} />
             {submitFailed && objectName.error && <div className="text-danger"><small>{objectName.error}</small></div>}
             <p className="help-block">{t('pageObjectCreate.folderNameHint').split('\n').map((item) =>
               <span key={Math.random()}>{item}<br /></span>
@@ -63,7 +63,7 @@ ObjectCreateForm.propTypes = {
 
 ObjectCreateForm.validate = values => {
   const errors = {};
-  errors.bucketName = Validations.required(values.objectName);
+  errors.objectName = Validations.required(values.objectName);
   if (Validations.isEmpty(values.objectName) || !/^[0-9a-z\u4E00-\u9FA5]{1}([a-z0-9\u4E00-\u9FA5_]|[-]|[.]){0,253}$/i.test(values.objectName)) {
     errors.objectName = i18n.t('pageObjectCreate.objectNameNotValid');
   }

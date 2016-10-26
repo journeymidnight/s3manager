@@ -1,13 +1,16 @@
 import _ from 'lodash';
 import moment from 'moment';
 import React from 'react';
+import AWS from 'aws-sdk';
 import { Link } from 'react-router';
 import { attach } from '../../shared/pages/Page';
 import { confirmModal } from '../../shared/components/Modal';
 import { buttonForm } from '../../shared/forms/ButtonForm';
 import TablePageStatic from '../../shared/pages/TablePageStatic';
-import { setHeader } from '../../console-common/redux/actions';
+import SearchBox from '../../shared/components/SearchBox';
+import { setHeader, notifyAlert } from '../../console-common/redux/actions';
 import * as BucketActions from '../redux/actions.bucket';
+import { requestGetS3Domain } from '../redux/actions.s3Domain';
 
 
 class C extends TablePageStatic {
@@ -21,9 +24,17 @@ class C extends TablePageStatic {
   }
 
   initialize(routerKey) {
-    const { t, dispatch, servicePath } = this.props;
+    const { t, dispatch, servicePath, region } = this.props;
     dispatch(setHeader(t('bucketList'), `${servicePath}/buckets`));
     this.initTable(routerKey, {});
+    dispatch(requestGetS3Domain(routerKey, region.regionId))
+      .then(() => {
+        AWS.config.endpoint = this.props.context.s3Domain;
+        AWS.config.region = region.regionId;
+        AWS.config.accessKeyId = region.accessKey;
+        AWS.config.secretAccessKey = region.accessSecret;
+        this.s3 = new AWS.S3();
+      });
   }
 
   refreshAction(routerKey, filters) {
@@ -35,10 +46,15 @@ class C extends TablePageStatic {
     const { t, dispatch, region, routerKey } = this.props;
     const bucketName = _.keys(this.props.context.selected)[0];
 
-    confirmModal(t('confirmDelete'), () => dispatch(BucketActions.requestDeleteBucket(routerKey, region.regionId, bucketName))
+    setTimeout(() => dispatch(BucketActions.isBucketEmpty(this.s3, bucketName))
+      .then(() => confirmModal(t('confirmDelete'), () => dispatch(BucketActions.requestDeleteBucket(routerKey, region.regionId, bucketName))), bucket => {
+        if (bucket) {
+          dispatch(notifyAlert(bucket + t('cannotDelete')));
+        }
+      })
       .then(() => {
         this.onRefresh({}, false)();
-      }));
+      }), 1000);
   }
 
   renderTable() {
@@ -64,6 +80,9 @@ class C extends TablePageStatic {
               <td>
                 <Link
                   to={`${servicePath}/buckets/${bucket.name}`}
+                  style={{
+                    wordBreak: 'break-all',
+                  }}
                   onClick={() => {
                     dispatch(BucketActions.setBucket({
                       bucketName: bucket.name,
@@ -111,7 +130,12 @@ class C extends TablePageStatic {
           </div>
 
           <div className="filter-item inline">
-            <input type="search" ref="search" placeholder={t('filterByBucketName')} className="form-control" onKeyPress={this.onSearchKeyPress} />
+            <SearchBox
+              ref="searchBox"
+              placeholder={t('filterByBucketName')}
+              onEnterPress={this.onSearchKeyPress}
+              onButtonClick={this.onSearchButtonClick}
+            />
           </div>
         </div>
         {Object.keys(context.selected).length > 0 && <div>

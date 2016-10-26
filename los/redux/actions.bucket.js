@@ -180,10 +180,31 @@ export function requestGetUsageByNow(routerKey, regionId, bucketName, projectId)
       .doAction(regionId, ACTION_NAMES.getbucketstats, { bucket: bucketName, projectId })
       .promise
       .then((payload) => {
-        dispatch(extendContext({ usageByNow: JSON.parse(payload).usage['rgw.main'].size_kb_actual }, routerKey));
+        const usageByNow = JSON.parse(payload).usage.hasOwnProperty('rgw.main') ? JSON.parse(payload).usage['rgw.main'].size_kb_actual : 0;
+        dispatch(extendContext({ usageByNow }, routerKey));
       }).catch((error) => {
         dispatch(notifyAlert(error.message));
       });
+  };
+}
+
+export function isBucketEmpty(s3, bucketName) {
+  return dispatch => {
+    return new Promise((resolve, reject) => {
+      const params = {
+        Bucket: bucketName,
+      };
+
+      s3.listObjectsV2(params, (error, data) => {
+        if (error) {
+          dispatch(notifyAlert(error.message));
+          reject();
+        } else if (data.Contents.length > 1 || data.CommonPrefixes.length > 1) {
+          reject(bucketName);
+        }
+        resolve();
+      });
+    });
   };
 }
 

@@ -9,6 +9,7 @@ import { buttonForm } from '../../shared/forms/ButtonForm';
 import Modal, { confirmModal } from '../../shared/components/Modal';
 import ObjectPropertyForm from '../forms/ObjectPropertyForm';
 import TablePageStatic from '../../shared/pages/TablePageStatic';
+import SearchBox from '../../shared/components/SearchBox';
 import { setHeader, notify, notifyAlert, extendContext } from '../../console-common/redux/actions';
 import { requestGetS3Domain } from '../redux/actions.s3Domain';
 import * as ObjectActions from '../redux/actions.object';
@@ -96,7 +97,7 @@ class ObjectManagement extends TablePageStatic {
             this.onRefresh({ searchWord: this.props.global.folderLocation }, false)();
           }
         });
-      }), folderName => dispatch(notifyAlert(folderName.slice(this.props.global.folderLocation.length, -1) + t('cannotDeleteFolder'))));
+      }), folderName => dispatch(notifyAlert(folderName.slice(this.props.global.folderLocation.length, -1) + t('cannotDelete'))));
   }
 
   formatBytes(bytes) {
@@ -326,7 +327,7 @@ class ObjectManagement extends TablePageStatic {
 
   changeFolder(e, folderName) {
     e.preventDefault();
-    this.refs.search.value = null;
+    this.refs.searchBox.refs.search.value = null;
     const { dispatch, routerKey } = this.props;
     dispatch(extendContext({ visibleObjects: [] }, routerKey));
     dispatch(ObjectActions.setFolderLocation(folderName));
@@ -334,7 +335,7 @@ class ObjectManagement extends TablePageStatic {
   }
 
   renderTable() {
-    const { t, params, servicePath, context } = this.props;
+    const { t, context } = this.props;
     const { folderLocation } = this.props.global;
     return (
       <table className="table">
@@ -376,7 +377,7 @@ class ObjectManagement extends TablePageStatic {
                   <Link
                     to="#"
                     style={{
-                      wordBreak: 'break-word',
+                      wordBreak: 'break-all',
                     }}
                     onClick={e => this.changeFolder(e, object.Prefix)}
                   >
@@ -393,9 +394,9 @@ class ObjectManagement extends TablePageStatic {
                 </td>
                 <td>
                   <Link
-                    to={`${servicePath}/buckets/${params.bucketName}/objects`}
+                    to="#"
                     style={{
-                      wordBreak: 'break-word',
+                      wordBreak: 'break-all',
                     }}
                     onClick={e => this.downloadOneObject(object.Key, e)}
                   >
@@ -439,7 +440,7 @@ class ObjectManagement extends TablePageStatic {
           </span> : <span>
             {t('folder')}
             &nbsp;
-            <i>
+            <i style={{ wordBreak: 'break-all' }}>
               {folderLocation}
             </i>
           </span>}
@@ -501,7 +502,7 @@ class ObjectManagement extends TablePageStatic {
                                 <div
                                   style={{
                                     paddingRight: '50px',
-                                    wordBreak: 'break-word',
+                                    wordBreak: 'break-all',
                                   }}
                                 >{file.name}</div>
                                 <div
@@ -579,12 +580,11 @@ class ObjectManagement extends TablePageStatic {
           </div>
 
           <div className="filter-item inline">
-            <input
-              type="search"
-              ref="search"
+            <SearchBox
+              ref="searchBox"
               placeholder={t('filterByObjectName')}
-              className="form-control"
-              onKeyPress={e => this.onSearchKeyPress(e, this.props.global.folderLocation)}
+              onEnterPress={e => this.onSearchKeyPress(e, this.props.global.folderLocation)}
+              onButtonClick={e => this.onSearchButtonClick(e, this.props.global.folderLocation)}
             />
           </div>
         </div>
