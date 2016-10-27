@@ -29,12 +29,12 @@ class C extends Page {
           <div className="clearfix">
             <ul className="nav-links clearfix">
               <li className={`pull-left ${(active === 'detail') ? 'active' : ''}`}>
-                <Link data-placement="left" to={`${servicePath}/buckets/${params.bucketName}/${params.date}/detail`}>
+                <Link data-placement="left" to={`${servicePath}/buckets/${params.bucketName}/detail?date=${this.props.location.query.date}`}>
                   {t('bucketDetail')}
                 </Link>
               </li>
               <li className={`pull-left ${(active === 'objects') ? 'active' : ''}`}>
-                <Link data-placement="left" to={`${servicePath}/buckets/${params.bucketName}/${params.date}/objects`}>
+                <Link data-placement="left" to={`${servicePath}/buckets/${params.bucketName}/objects?date=${this.props.location.query.date}`}>
                   {t('objectManagement')}
                 </Link>
               </li>

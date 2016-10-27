@@ -30,7 +30,7 @@ export default function configureRoutes(store) {
         <Route path="buckets">
           <IndexRoute component={BucketList} />
           <Route path="create" component={BucketCreate} />
-          <Route path=":bucketName/:date" component={Bucket}>
+          <Route path=":bucketName" component={Bucket}>
             <IndexRedirect to="detail" />
             <Route path="detail" component={BucketDetail} />
             <Route path="objects" component={ObjectManagement} />

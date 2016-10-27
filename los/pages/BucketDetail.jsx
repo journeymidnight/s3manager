@@ -152,7 +152,7 @@ class C extends Page {
                       </tr>
                       <tr>
                         <td>{t('pageBucket.createDate')}</td>
-                        <td><span>{moment(Number(params.date)).local().format('YYYY-MM-DD HH:mm:ss')}</span></td>
+                        <td><span>{moment(Number(this.props.location.query.date)).local().format('YYYY-MM-DD HH:mm:ss')}</span></td>
                       </tr>
                     </tbody>
                   </table>
@@ -198,7 +198,7 @@ class C extends Page {
               <div className="col-md-8 tabs">
                 <ul className="nav-links clearfix">
                   <li className="pull-left active">
-                    <Link data-placement="left" to={`${servicePath}/buckets/${params.bucketName}/${params.date}/detail`}>
+                    <Link data-placement="left" to={`${servicePath}/buckets/${params.bucketName}/detail`}>
                       {t('pageBucket.monitor')}
                     </Link>
                   </li>

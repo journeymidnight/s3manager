@@ -85,7 +85,7 @@ class C extends TablePageStatic {
                 }}
               >
                 <Link
-                  to={`${servicePath}/buckets/${bucket.name}/${moment.utc(bucket.creationDate)}`}
+                  to={`${servicePath}/buckets/${bucket.name}/detail?date=${moment.utc(bucket.creationDate)}`}
                 >
                   {bucket.name}
                 </Link>
