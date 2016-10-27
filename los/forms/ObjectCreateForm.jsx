@@ -9,6 +9,7 @@ class ObjectCreateForm extends React.Component {
   componentDidMount() {
     const initialValues = {
       objectName: '',
+      folderNames: this.props.folderNames,
     };
     this.props.initializeForm(initialValues);
   }
@@ -25,18 +26,20 @@ class ObjectCreateForm extends React.Component {
 
     return (
       <form className="form-horizontal" onSubmit={handleSubmit} autoComplete="off">
-        <div className={(submitFailed || objectName.touched) && objectName.error ? 'form-group has-error' : 'form-group'}>
-          <label className="control-label" >{t('pageObjectCreate.folderName')}</label>
-          <div className="col-sm-10">
-            <input type="text" className="form-control" {...objectName} />
-            {objectName.error && <div className="text-danger"><small>{objectName.error}</small></div>}
-            <p className="help-block">{t('pageObjectCreate.folderNameHint').split('\n').map((item) =>
-              <span key={Math.random()}>{item}<br /></span>
-            )}</p>
+        <div className="modal-body">
+          <div className={(submitFailed || objectName.touched) && objectName.error ? 'form-group has-error' : 'form-group'}>
+            <label className="control-label" >{t('pageObjectCreate.folderName')}</label>
+            <div className="col-sm-10">
+              <input type="text" className="form-control" {...objectName} />
+              {objectName.error && <div className="text-danger"><small>{objectName.error}</small></div>}
+              <p className="help-block">{t('pageObjectCreate.folderNameHint').split('\n').map((item) =>
+                <span key={Math.random()}>{item}<br /></span>
+              )}</p>
+            </div>
           </div>
         </div>
 
-        <div className="form-actions">
+        <div className="modal-footer">
           <button type="submit" className="btn btn-save" disabled={submitting}>
             {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('create')}
           </button>
@@ -59,7 +62,7 @@ ObjectCreateForm.propTypes = {
   submitFailed: React.PropTypes.bool.isRequired,
   resetForm: React.PropTypes.func.isRequired,
   t: React.PropTypes.any,
-  folders: React.PropTypes.array,
+  folderNames: React.PropTypes.array,
 };
 
 ObjectCreateForm.validate = values => {
@@ -68,12 +71,15 @@ ObjectCreateForm.validate = values => {
   if (!Validations.isEmpty(values.objectName) && !/^[0-9a-z\u4E00-\u9FA5]{1}([a-z0-9\u4E00-\u9FA5_]|[-]|[.]){0,253}$/i.test(values.objectName)) {
     errors.objectName = i18n.t('pageObjectCreate.objectNameNotValid');
   }
+  if (!Validations.isEmpty(values.objectName) && values.folderNames.find(folderName => folderName === values.objectName)) {
+    errors.objectName = i18n.t('pageObjectCreate.objectNameDuplicated');
+  }
 
   return errors;
 };
 
 export default reduxForm({
   form: 'ObjectCreateForm',
-  fields: ['objectName'],
+  fields: ['objectName', 'folderNames'],
   validate: ObjectCreateForm.validate,
 })(translate()(ObjectCreateForm));

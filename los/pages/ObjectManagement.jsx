@@ -7,6 +7,7 @@ import { Link } from 'react-router';
 import { attach } from '../../shared/pages/Page';
 import { buttonForm } from '../../shared/forms/ButtonForm';
 import Modal, { confirmModal } from '../../shared/components/Modal';
+import ObjectCreateForm from '../forms/ObjectCreateForm';
 import ObjectPropertyForm from '../forms/ObjectPropertyForm';
 import TablePageStatic from '../../shared/pages/TablePageStatic';
 import SearchBox from '../../shared/components/SearchBox';
@@ -52,6 +53,7 @@ class ObjectManagement extends TablePageStatic {
     this.checkObjectProperty = this.checkObjectProperty.bind(this);
     this.calProgressWidth = this.calProgressWidth.bind(this);
     this.changeFolder = this.changeFolder.bind(this);
+    this.onCreateObject = this.onCreateObject.bind(this);
   }
 
   initialize(routerKey) {
@@ -91,7 +93,7 @@ class ObjectManagement extends TablePageStatic {
 
         this.s3.deleteObjects(params, (error) => {
           if (error) {
-            dispatch(notifyAlert(error.message)); // will there be error.message?
+            dispatch(notifyAlert(error.message));
           } else {
             dispatch(notify(t('objectDeletedSuccess')));
             this.onRefresh({ searchWord: this.props.global.folderLocation }, false)();
@@ -325,6 +327,24 @@ class ObjectManagement extends TablePageStatic {
     return '99%';
   }
 
+  onCreateObject(values) {
+    const { dispatch, t } = this.props;
+    const params = {
+      Bucket: this.props.params.bucketName,
+      Key: `${this.props.global.folderLocation}${values.objectName}/`,
+    };
+
+    this.s3.putObject(params, (error) => {
+      if (error) {
+        dispatch(notifyAlert(error.message));
+      } else {
+        dispatch(notify(t('folderCreatedSuccess')));
+        this.onRefresh({ searchWord: this.props.global.folderLocation }, false)();
+        this.refs.folderModal.hide();
+      }
+    });
+  }
+
   changeFolder(e, folderName) {
     e.preventDefault();
     this.refs.searchBox.refs.search.value = null;
@@ -431,7 +451,7 @@ class ObjectManagement extends TablePageStatic {
   }
 
   renderHeader() {
-    const { t, servicePath, params } = this.props;
+    const { t, params } = this.props;
     const { folderLocation } = this.props.global;
     const { uploadingFileList } = this.state;
     return (
@@ -474,9 +494,9 @@ class ObjectManagement extends TablePageStatic {
             </label>
           </form>
 
-          <Link className="btn btn-new" to={`${servicePath}/buckets/${params.bucketName}/objects/create`}>
+          <button className="btn btn-new" onClick={() => this.refs.folderModal.show()}>
             <i className="fa fa-plus" />&nbsp;{t('createFolder')}
-          </Link>
+          </button>
         </div>
         <Modal title={t('uploadModal.uploadingStatus')} ref="uploadModal" >
           <div>
@@ -566,10 +586,18 @@ class ObjectManagement extends TablePageStatic {
             </div>}
           </div>
         </Modal>
+
         <Modal title={t('objectPropertyPage.property')} ref="propertyModal">
           <ObjectPropertyForm
             {...this.props}
             s3={this.s3}
+          />
+        </Modal>
+
+        <Modal title={t('createFolder')} ref="folderModal">
+          <ObjectCreateForm
+            onSubmit={this.onCreateObject}
+            folderNames={this.props.context.folderNames}
           />
         </Modal>
       </div>

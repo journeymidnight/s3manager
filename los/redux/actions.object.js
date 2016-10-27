@@ -20,7 +20,7 @@ export function setVisibleObjects(s3, bucketName, routerKey, filters) {
           const visibleObjects = matchedObjects.slice(offset, offset + limit);
 
           dispatch(extendContext({
-            data,
+            folderNames: data.CommonPrefixes.map(prefix => prefix.Prefix.slice(0, -1)),
             visibleObjects,
             total: matchedObjects.length,
           }, routerKey));
