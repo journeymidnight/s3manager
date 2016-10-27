@@ -17,7 +17,7 @@ class UsageMonitor extends Component {
           <div className="col-md-12 chart-panel">
             {period === '1day' && context.usagebyhour && !context.loading && <Chart
               className="chart"
-              config={generateLineChartConfig(this.props.getCompleteTime(context.usagebyhour).map((item) => ({
+              config={generateLineChartConfig(context.usagebyhour.map((item) => ({
                 timestamp: Number(item.time),
                 usage: item.usage || 0,
               })), {

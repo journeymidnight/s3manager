@@ -26,11 +26,11 @@ class F extends React.Component {
 
     return (
       <form className="form-horizontal" onSubmit={handleSubmit} autoComplete="off">
-        <div className="form-group">
+        <div className={(submitFailed || bucketName.touched) && bucketName.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('pageBucketCreate.bucketName')}</label>
           <div className="col-sm-10">
-            <input type="text" className="form-control" onChange={bucketName.onChange} />
-            {submitFailed && bucketName.error && <div className="text-danger"><small>{bucketName.error}</small></div>}
+            <input type="text" className="form-control" {...bucketName} />
+            {bucketName.error && <div className="text-danger"><small>{bucketName.error}</small></div>}
             <p className="help-block">{t('pageBucketCreate.bucketNameHint').split('\n').map((item) =>
               <span key={Math.random()}>{item}<br /></span>
             )}</p>
@@ -48,17 +48,6 @@ class F extends React.Component {
             <label className="radio inline">
               <input type="radio" value="public-read" onChange={() => {}} onClick={() => { acl.onChange('public-read'); }} checked={acl.value === 'public-read'} />
               {t('pageBucketCreate.aclPublicR')}
-            </label>
-
-            <label className="radio inline">
-              <input
-                type="radio"
-                value="public-read-write"
-                onChange={() => {}}
-                onClick={() => { acl.onChange('public-read-write'); }}
-                checked={acl.value === 'public-read-write'}
-              />
-              {t('pageBucketCreate.aclPublicRW')}
             </label>
           </div>
         </div>
@@ -91,7 +80,7 @@ F.propTypes = {
 F.validate = values => {
   const errors = {};
   errors.bucketName = Validations.required(values.bucketName);
-  if (Validations.isEmpty(values.bucketName) || !/^[0-9a-z]{1}([a-z0-9]|[-]){1,61}[0-9a-z]{1}$/i.test(values.bucketName)) {
+  if (!Validations.isEmpty(values.bucketName) && !/^[0-9a-z]{1}([a-z0-9]|[-]){1,61}[0-9a-z]{1}$/.test(values.bucketName)) {
     errors.bucketName = i18n.t('pageBucketCreate.bucketNameNotValid');
   }
 

@@ -16,10 +16,11 @@ export function setVisibleObjects(s3, bucketName, routerKey, filters) {
           reject(error);
         } else {
           const { offset, limit } = filters;
-          const matchedObjects = data.CommonPrefixes.concat(data.Contents.filter((object) => object.Key !== filters.searchWord));
+          const matchedObjects = data.CommonPrefixes.concat(data.Contents.filter((object) => object.Key !== filters.searchWord || !object.Key.endsWith('/')));
           const visibleObjects = matchedObjects.slice(offset, offset + limit);
 
           dispatch(extendContext({
+            folderNames: data.CommonPrefixes.map(prefix => prefix.Prefix.slice(0, -1)),
             visibleObjects,
             total: matchedObjects.length,
           }, routerKey));
@@ -42,7 +43,7 @@ export function isFolderEmpty(s3, bucketName, folderName) {
         if (error) {
           dispatch(notifyAlert(error.message));
           reject(error);
-        } else if (data.Contents.length > 1) {
+        } else if (data.Contents.length > 1 || data.CommonPrefixes.length > 1) {
           reject(folderName);
         }
         resolve();

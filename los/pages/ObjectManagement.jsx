@@ -7,8 +7,10 @@ import { Link } from 'react-router';
 import { attach } from '../../shared/pages/Page';
 import { buttonForm } from '../../shared/forms/ButtonForm';
 import Modal, { confirmModal } from '../../shared/components/Modal';
+import ObjectCreateForm from '../forms/ObjectCreateForm';
 import ObjectPropertyForm from '../forms/ObjectPropertyForm';
 import TablePageStatic from '../../shared/pages/TablePageStatic';
+import SearchBox from '../../shared/components/SearchBox';
 import { setHeader, notify, notifyAlert, extendContext } from '../../console-common/redux/actions';
 import { requestGetS3Domain } from '../redux/actions.s3Domain';
 import * as ObjectActions from '../redux/actions.object';
@@ -51,6 +53,7 @@ class ObjectManagement extends TablePageStatic {
     this.checkObjectProperty = this.checkObjectProperty.bind(this);
     this.calProgressWidth = this.calProgressWidth.bind(this);
     this.changeFolder = this.changeFolder.bind(this);
+    this.onCreateObject = this.onCreateObject.bind(this);
   }
 
   initialize(routerKey) {
@@ -90,13 +93,13 @@ class ObjectManagement extends TablePageStatic {
 
         this.s3.deleteObjects(params, (error) => {
           if (error) {
-            dispatch(notifyAlert(error.message)); // will there be error.message?
+            dispatch(notifyAlert(error.message));
           } else {
             dispatch(notify(t('objectDeletedSuccess')));
             this.onRefresh({ searchWord: this.props.global.folderLocation }, false)();
           }
         });
-      }), folderName => dispatch(notifyAlert(folderName.slice(this.props.global.folderLocation.length, -1) + t('cannotDeleteFolder'))));
+      }), folderName => dispatch(notifyAlert(folderName.slice(this.props.global.folderLocation.length, -1) + t('cannotDelete'))));
   }
 
   formatBytes(bytes) {
@@ -324,9 +327,27 @@ class ObjectManagement extends TablePageStatic {
     return '99%';
   }
 
+  onCreateObject(values) {
+    const { dispatch, t } = this.props;
+    const params = {
+      Bucket: this.props.params.bucketName,
+      Key: `${this.props.global.folderLocation}${values.objectName}/`,
+    };
+
+    this.s3.putObject(params, (error) => {
+      if (error) {
+        dispatch(notifyAlert(error.message));
+      } else {
+        dispatch(notify(t('folderCreatedSuccess')));
+        this.onRefresh({ searchWord: this.props.global.folderLocation }, false)();
+        this.refs.folderModal.hide();
+      }
+    });
+  }
+
   changeFolder(e, folderName) {
     e.preventDefault();
-    this.refs.search.value = null;
+    this.refs.searchBox.refs.search.value = null;
     const { dispatch, routerKey } = this.props;
     dispatch(extendContext({ visibleObjects: [] }, routerKey));
     dispatch(ObjectActions.setFolderLocation(folderName));
@@ -334,20 +355,20 @@ class ObjectManagement extends TablePageStatic {
   }
 
   renderTable() {
-    const { t, params, servicePath, context } = this.props;
+    const { t, context } = this.props;
     const { folderLocation } = this.props.global;
     return (
-      <table className="table">
+      <table className="table" style={{ tableLayout: 'fixed' }}>
         <thead>
           <tr>
-            <th width="40">
+            <th style={{ width: 40 }}>
               <input type="checkbox" className="selected" onChange={this.onSelectAll(context.visibleObjects.map((object) => object.Key || object.Prefix))} />
             </th>
-            <th width="600">{t('objectName')}</th>
-            <th width="200">{t('size')}</th>
-            <th width="200">{t('category')}</th>
-            <th width="300">{t('created')}</th>
-            <th width="100">{t('action')}</th>
+            <th style={{ width: '40%' }}>{t('objectName')}</th>
+            <th>{t('size')}</th>
+            <th>{t('category')}</th>
+            <th style={{ width: '20%' }}>{t('created')}</th>
+            <th>{t('action')}</th>
           </tr>
         </thead>
         <tbody>
@@ -372,31 +393,37 @@ class ObjectManagement extends TablePageStatic {
                 <td>
                   <input type="checkbox" className="selected" onChange={this.onSelect(object.Prefix)} checked={context.selected[object.Prefix] === true} />
                 </td>
-                <td>
+                <td
+                  style={{
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  }}
+                >
                   <Link
                     to="#"
-                    style={{
-                      wordBreak: 'break-word',
-                    }}
                     onClick={e => this.changeFolder(e, object.Prefix)}
                   >
                     {object.Prefix.startsWith(folderLocation) ? object.Prefix.slice(folderLocation.length, -1) : object.Prefix}
                   </Link>
                 </td>
-                <td />
+                <td>-</td>
                 <td><i className="fa fa-folder-o" /></td>
-                <td />
-                <td />
+                <td>-</td>
+                <td>-</td>
               </tr> : <tr key={object.Key}>
                 <td>
                   <input type="checkbox" className="selected" onChange={this.onSelect(object.Key)} checked={context.selected[object.Key] === true} />
                 </td>
-                <td>
+                <td
+                  style={{
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  }}
+                >
                   <Link
-                    to={`${servicePath}/buckets/${params.bucketName}/objects`}
-                    style={{
-                      wordBreak: 'break-word',
-                    }}
+                    to="#"
                     onClick={e => this.downloadOneObject(object.Key, e)}
                   >
                     {object.Key.startsWith(folderLocation) ? object.Key.slice(folderLocation.length) : object.Key}
@@ -424,7 +451,7 @@ class ObjectManagement extends TablePageStatic {
   }
 
   renderHeader() {
-    const { t, servicePath, params } = this.props;
+    const { t, params } = this.props;
     const { folderLocation } = this.props.global;
     const { uploadingFileList } = this.state;
     return (
@@ -439,7 +466,7 @@ class ObjectManagement extends TablePageStatic {
           </span> : <span>
             {t('folder')}
             &nbsp;
-            <i>
+            <i style={{ wordBreak: 'break-all' }}>
               {folderLocation}
             </i>
           </span>}
@@ -467,9 +494,9 @@ class ObjectManagement extends TablePageStatic {
             </label>
           </form>
 
-          <Link className="btn btn-new" to={`${servicePath}/buckets/${params.bucketName}/objects/create`}>
+          <button className="btn btn-new" onClick={() => this.refs.folderModal.show()}>
             <i className="fa fa-plus" />&nbsp;{t('createFolder')}
-          </Link>
+          </button>
         </div>
         <Modal title={t('uploadModal.uploadingStatus')} ref="uploadModal" >
           <div>
@@ -483,13 +510,13 @@ class ObjectManagement extends TablePageStatic {
                 <div className="content">
                   <div className="clearfix">
                     <div className="table-holder">
-                      <table className="table">
+                      <table className="table" style={{ tableLayout: 'fixed' }}>
                         <thead>
                           <tr>
-                            <th width="600">{t('fileName')}</th>
-                            <th width="200">{t('size')}</th>
-                            <th width="200">{t('status')}</th>
-                            <th width="200">{t('action')}</th>
+                            <th style={{ width: '50%' }}>{t('fileName')}</th>
+                            <th>{t('size')}</th>
+                            <th>{t('status')}</th>
+                            <th>{t('action')}</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -500,8 +527,10 @@ class ObjectManagement extends TablePageStatic {
                               <td style={{ position: 'relative' }}>
                                 <div
                                   style={{
+                                    whiteSpace: 'nowrap',
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
                                     paddingRight: '50px',
-                                    wordBreak: 'break-word',
                                   }}
                                 >{file.name}</div>
                                 <div
@@ -557,10 +586,18 @@ class ObjectManagement extends TablePageStatic {
             </div>}
           </div>
         </Modal>
+
         <Modal title={t('objectPropertyPage.property')} ref="propertyModal">
           <ObjectPropertyForm
             {...this.props}
             s3={this.s3}
+          />
+        </Modal>
+
+        <Modal title={t('createFolder')} ref="folderModal">
+          <ObjectCreateForm
+            onSubmit={this.onCreateObject}
+            folderNames={this.props.context.folderNames}
           />
         </Modal>
       </div>
@@ -579,12 +616,11 @@ class ObjectManagement extends TablePageStatic {
           </div>
 
           <div className="filter-item inline">
-            <input
-              type="search"
-              ref="search"
+            <SearchBox
+              ref="searchBox"
               placeholder={t('filterByObjectName')}
-              className="form-control"
-              onKeyPress={e => this.onSearchKeyPress(e, this.props.global.folderLocation)}
+              onEnterPress={e => this.onSearchKeyPress(e, this.props.global.folderLocation)}
+              onButtonClick={e => this.onSearchButtonClick(e, this.props.global.folderLocation)}
             />
           </div>
         </div>

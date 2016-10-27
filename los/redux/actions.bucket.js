@@ -180,24 +180,30 @@ export function requestGetUsageByNow(routerKey, regionId, bucketName, projectId)
       .doAction(regionId, ACTION_NAMES.getbucketstats, { bucket: bucketName, projectId })
       .promise
       .then((payload) => {
-        dispatch(extendContext({ usageByNow: JSON.parse(payload).usage['rgw.main'].size_kb_actual }, routerKey));
+        const usageByNow = JSON.parse(payload).usage.hasOwnProperty('rgw.main') ? JSON.parse(payload).usage['rgw.main'].size_kb_actual : 0;
+        dispatch(extendContext({ usageByNow }, routerKey));
       }).catch((error) => {
         dispatch(notifyAlert(error.message));
       });
   };
 }
 
-// Pass bucket name and creation date to bucket detail page. The action will be handled by rootReducer and put date into this.props.global.bucketName & bucketCreationDate
-export function setBucket(data) {
-  return {
-    type: 'SET_BUCKET',
-    data,
-  };
-}
+export function isBucketEmpty(s3, bucketName) {
+  return dispatch => {
+    return new Promise((resolve, reject) => {
+      const params = {
+        Bucket: bucketName,
+      };
 
-// Remove this.props.global.bucketName & bucketCreationDate. Clean up of above action
-export function removeBucket() {
-  return {
-    type: 'REMOVE_BUCKET',
+      s3.listObjectsV2(params, (error, data) => {
+        if (error) {
+          dispatch(notifyAlert(error.message));
+          reject();
+        } else if (data.Contents.length > 1 || data.CommonPrefixes.length > 1) {
+          reject(bucketName);
+        }
+        resolve();
+      });
+    });
   };
 }

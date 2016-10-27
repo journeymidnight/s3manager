@@ -42,8 +42,8 @@ class C extends Page {
         return dispatch(BucketActions.requestPutBucketAcl(s3, bucketName, acl));
       })
       .then(() => {
-        dispatch(notify(t('bucketCreatedSuccess')));
-        setTimeout(() => dispatch(push(`${servicePath}/buckets`)), 300);
+        dispatch(push(`${servicePath}/buckets`));
+        setTimeout(() => dispatch(notify(t('bucketCreatedSuccess'))), 100);
       })
       .catch((error) => {
         dispatch(notifyAlert(error.message));

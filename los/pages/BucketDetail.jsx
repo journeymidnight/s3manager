@@ -107,7 +107,7 @@ class C extends Page {
                   <table className="table table-detail">
                     <tbody>
                       <tr>
-                        <td width="100">{t('pageBucket.usage')}</td>
+                        <td style={{ width: 100 }}>{t('pageBucket.usage')}</td>
                         <td>
                           <span>
                             {context.usageByNow ?
@@ -152,7 +152,7 @@ class C extends Page {
                       </tr>
                       <tr>
                         <td>{t('pageBucket.createDate')}</td>
-                        <td><span>{moment.utc(this.props.global.bucketCreationDate).local().format('YYYY-MM-DD HH:mm:ss')}</span></td>
+                        <td><span>{moment(Number(this.props.location.query.date)).local().format('YYYY-MM-DD HH:mm:ss')}</span></td>
                       </tr>
                     </tbody>
                   </table>
@@ -180,7 +180,7 @@ class C extends Page {
                   <table className="table table-detail">
                     <tbody>
                       <tr>
-                        <td width="100">{t('pageBucket.bucketAcl')}</td>
+                        <td style={{ width: 100 }}>{t('pageBucket.bucketAcl')}</td>
                         <td>
                           <span>{this.acl[context.acl]}</span>
                         </td>
@@ -198,7 +198,7 @@ class C extends Page {
               <div className="col-md-8 tabs">
                 <ul className="nav-links clearfix">
                   <li className="pull-left active">
-                    <Link data-placement="left" to={`${servicePath}/buckets/${params.bucketName}`}>
+                    <Link data-placement="left" to={`${servicePath}/buckets/${params.bucketName}/detail?date=${this.props.location.query.date}`}>
                       {t('pageBucket.monitor')}
                     </Link>
                   </li>

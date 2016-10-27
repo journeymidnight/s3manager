@@ -111,7 +111,7 @@ class ResourceMonitorConsole extends Page {
       case '1day': {
         const nowLocalFormat = moment(nowLocal).format('YYYYMMDDHHmmss');
         const startOfDayLocalFormat = moment(nowLocal).startOf('day').format('YYYYMMDDHHmmss');
-        return dispatch(this.getRequestDataCb()(routerKey, region.regionId, bucketName, startOfDayLocalFormat, nowLocalFormat));
+        return dispatch(this.getRequestDataCb()(routerKey, 'cn-north-1', bucketName, startOfDayLocalFormat, nowLocalFormat)); // TODO: change regionId
       }
       case '7days': {
         const sevenDaysBeforeLocalFormat = moment(nowLocal).subtract(7, 'days').format('YYYYMMDD');

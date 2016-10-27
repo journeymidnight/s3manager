@@ -21,7 +21,9 @@ class C extends Page {
     this.onSelect = this.onSelect.bind(this);
     this.onSelectAll = this.onSelectAll.bind(this);
     this.onRefresh = this.onRefresh.bind(this);
+    this.doSearch = this.doSearch.bind(this);
     this.onSearchKeyPress = this.onSearchKeyPress.bind(this);
+    this.onSearchButtonClick = this.onSearchButtonClick.bind(this);
   }
 
   // need inherit
@@ -125,14 +127,22 @@ class C extends Page {
     };
   }
 
-  onSearchKeyPress(e, prefix = '') {
-    if (e.key === 'Enter') {
-      let searchWord = prefix + this.refs.search.value;
-      if (_.isEmpty(searchWord)) {
-        searchWord = null;
-      }
-      this.onRefresh({ searchWord })();
+  doSearch(prefix = '') {
+    let searchWord = (prefix + (this.refs.searchBox.refs.search.value ? this.refs.searchBox.refs.search.value.trim() : '')).trim();
+    if (_.isEmpty(searchWord)) {
+      searchWord = null;
     }
+    this.onRefresh({ searchWord })();
+  }
+
+  onSearchKeyPress(e, prefix) {
+    if (e.key === 'Enter') {
+      this.doSearch(prefix);
+    }
+  }
+
+  onSearchButtonClick(e, prefix) {
+    this.doSearch(prefix);
   }
 
   renderHeader() {

@@ -673,7 +673,7 @@
     "pageBucketCreate": {
         "createBucket": "添加空间",
         "bucketName": "空间名称",
-        "bucketNameHint": "Bucket命名规范: \n 1. 只能包含小写字母，数字和短横线 \n 2. 必须以小写字母和数字开头和结尾 \n 3. bucketName的长度限制在3-63之间",
+        "bucketNameHint": "空间名称命名规范: \n 1. 只能包含小写字母，数字和短横线 \n 2. 必须以小写字母和数字开头和结尾 \n 3. 长度限制在3-63之间",
         "acl": "权限控制",
         "aclPrivate": "私有",
         "aclPublicR": "公共",
@@ -684,7 +684,7 @@
     "bucketDetail": "空间概览",
     "pageBucket": {
         "basicInfo": "基本信息",
-        "usage": "容量",
+        "usage": "存储容量",
         "monthlyFlow": "当月流量",
         "monthlyAPI": "当月API请求次数",
         "createDate": "创建时间",
@@ -699,16 +699,16 @@
 
         "monitor": "监控",
 
-        "usageMonitor": "存储空间",
+        "usageMonitor": "当日存储容量",
         "usageLegend": "存储占用量",
 
-        "flowMonitor": "使用流量",
+        "flowMonitor": "当日流量",
         "flowOutPublic": "公网流出",
         "flowInPublic": "公网流入",
         "flowOutPrivate": "内网流出",
         "flowInPrivate": "内网流入",
 
-        "apiMonitor": "请求次数",
+        "apiMonitor": "当日API请求次数",
         "apiGet": "API访问次数（GET）",
         "apiPut": "API访问次数（PUT）",
 
@@ -718,11 +718,11 @@
     "objectName": "文件夹名/文件名",
     "folder": "文件夹",
     "returnUpFolder": "返回上一级",
-    "filterByObjectName": "按名称过滤",
+    "filterByObjectName": "按文件夹名/文件名过滤",
     "uploadFile": "上传文件",
     "objectDeletedSuccess": "删除成功",
     "folderCreatedSuccess": "文件夹创建成功",
-    "cannotDeleteFolder": "不为空，无法删除",
+    "cannotDelete": "不为空，无法删除",
     "createFolder": "新建文件夹",
     "objectPropertyPage": {
         "property": "文件属性",
@@ -752,13 +752,14 @@
     },
 
     "pageObjectCreate": {
-        "folderName": "文件夹名称",
-        "folderNameHint": "文件夹命名规范： \n 1. 只能包含字母，数字，中文，下划线（_），短横线（-），和小数点（.）\n 2. 只能以字母、数字或者中文开头 \n 3. 文件夹的长度限制在1-254之间 \n 4. Object总长度必须在1-1023之间",
-        "objectNameNotValid": "文件夹名称不符合要求"
+        "folderName": "文件夹名",
+        "folderNameHint": "文件夹命名规范： \n 1. 只能包含字母，数字，中文，下划线（_），短横线（-），和小数点（.）\n 2. 只能以字母、数字或者中文开头 \n 3. 文件夹的长度限制在1-254之间",
+        "objectNameNotValid": "文件夹名称不符合要求",
+        "objectNameDuplicated": "文件夹名重复"
     },
 
     "resourceMonitors": "资源监控",
-    "usageMonitor": "存储资源监控",
+    "usageMonitor": "存储容量监控",
     "flowMonitor": "流量监控",
     "apiMonitor": "请求次数监控",
 

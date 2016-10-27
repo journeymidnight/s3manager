@@ -71,7 +71,7 @@ class C extends Component {
             <span className="pull-right text-muted">{t('pageBucket.monitorIntervalOneHour')}</span>
             {context.usagebyhour && <Chart
               className="chart"
-              config={generateLineChartConfig(this.getCompleteTime(context.usagebyhour).map((item) => ({
+              config={generateLineChartConfig(context.usagebyhour.map((item) => ({
                 timestamp: Number(item.time),
                 usage: item.usage || 0,
               })), {
