@@ -58,7 +58,7 @@ class C extends TablePageStatic {
   }
 
   renderTable() {
-    const { t, servicePath, dispatch, context } = this.props;
+    const { t, servicePath, context } = this.props;
     return context.total > 0 && (
       <table className="table" style={{ tableLayout: 'fixed' }}>
         <thead>
@@ -85,13 +85,7 @@ class C extends TablePageStatic {
                 }}
               >
                 <Link
-                  to={`${servicePath}/buckets/${bucket.name}`}
-                  onClick={() => {
-                    dispatch(BucketActions.setBucket({
-                      bucketName: bucket.name,
-                      bucketCreationDate: bucket.creationDate,
-                    }));
-                  }}
+                  to={`${servicePath}/buckets/${bucket.name}/${moment.utc(bucket.creationDate)}`}
                 >
                   {bucket.name}
                 </Link>

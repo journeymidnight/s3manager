@@ -207,18 +207,3 @@ export function isBucketEmpty(s3, bucketName) {
     });
   };
 }
-
-// Pass bucket name and creation date to bucket detail page. The action will be handled by rootReducer and put date into this.props.global.bucketName & bucketCreationDate
-export function setBucket(data) {
-  return {
-    type: 'SET_BUCKET',
-    data,
-  };
-}
-
-// Remove this.props.global.bucketName & bucketCreationDate. Clean up of above action
-export function removeBucket() {
-  return {
-    type: 'REMOVE_BUCKET',
-  };
-}
