@@ -39,8 +39,8 @@ class ObjectCreate extends Page {
       if (error) {
         dispatch(notifyAlert(error.message)); // error has message? error.stack in s3 sdk doc;
       } else {
-        dispatch(notify(t('folderCreatedSuccess')));
-        setTimeout(() => dispatch(push(`${servicePath}/buckets/${this.props.params.bucketName}/objects`)), 300);
+        dispatch(push(`${servicePath}/buckets/${this.props.params.bucketName}/objects`));
+        setTimeout(() => dispatch(notify(t('folderCreatedSuccess'))), 100);
       }
     });
   }

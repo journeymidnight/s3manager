@@ -26,11 +26,11 @@ class F extends React.Component {
 
     return (
       <form className="form-horizontal" onSubmit={handleSubmit} autoComplete="off">
-        <div className="form-group">
+        <div className={(submitFailed || bucketName.touched) && bucketName.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('pageBucketCreate.bucketName')}</label>
           <div className="col-sm-10">
             <input type="text" className="form-control" {...bucketName} />
-            {submitFailed && bucketName.error && <div className="text-danger"><small>{bucketName.error}</small></div>}
+            {bucketName.error && <div className="text-danger"><small>{bucketName.error}</small></div>}
             <p className="help-block">{t('pageBucketCreate.bucketNameHint').split('\n').map((item) =>
               <span key={Math.random()}>{item}<br /></span>
             )}</p>
@@ -80,7 +80,7 @@ F.propTypes = {
 F.validate = values => {
   const errors = {};
   errors.bucketName = Validations.required(values.bucketName);
-  if (Validations.isEmpty(values.bucketName) || !/^[0-9a-z]{1}([a-z0-9]|[-]){1,61}[0-9a-z]{1}$/i.test(values.bucketName)) {
+  if (!Validations.isEmpty(values.bucketName) && !/^[0-9a-z]{1}([a-z0-9]|[-]){1,61}[0-9a-z]{1}$/i.test(values.bucketName)) {
     errors.bucketName = i18n.t('pageBucketCreate.bucketNameNotValid');
   }
 
