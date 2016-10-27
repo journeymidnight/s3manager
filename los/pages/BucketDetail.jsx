@@ -39,6 +39,10 @@ class C extends Page {
         AWS.config.secretAccessKey = region.accessSecret;
         this.s3 = new AWS.S3();
         dispatch(BucketActions.requestGetBucketAcl(this.s3, bucketName, routerKey));
+        this.s3.headBucket({Bucket: 'bucket1'}, (err, data) => {
+          if (err) console.log(err, err.stack); // an error occurred
+          else     console.log(data);
+        });
       });
 
     const nowLocal = moment();

@@ -158,7 +158,7 @@ export function generateChartConfig(data, cols, yFormat) {
       if (bytes < 0) {
         return '';
       } else if (bytes < 1024) {
-        return `${fmt(bytes)}kB`;
+        return `${fmt(bytes)}KB`;
       } else if (bytes < 1024 * 1024) {
         return `${fmt(bytes / 1024)}MB`;
       } else if (bytes < 1024 * 1024 * 1024) {

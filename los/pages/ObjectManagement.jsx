@@ -338,17 +338,17 @@ class ObjectManagement extends TablePageStatic {
     const { t, context } = this.props;
     const { folderLocation } = this.props.global;
     return (
-      <table className="table">
+      <table className="table" style={{ tableLayout: 'fixed' }}>
         <thead>
           <tr>
             <th width="40">
               <input type="checkbox" className="selected" onChange={this.onSelectAll(context.visibleObjects.map((object) => object.Key || object.Prefix))} />
             </th>
-            <th width="600">{t('objectName')}</th>
-            <th width="200">{t('size')}</th>
-            <th width="200">{t('category')}</th>
-            <th width="300">{t('created')}</th>
-            <th width="100">{t('action')}</th>
+            <th style={{ width: '40%' }}>{t('objectName')}</th>
+            <th>{t('size')}</th>
+            <th>{t('category')}</th>
+            <th style={{ width: '20%' }}>{t('created')}</th>
+            <th>{t('action')}</th>
           </tr>
         </thead>
         <tbody>
@@ -373,31 +373,37 @@ class ObjectManagement extends TablePageStatic {
                 <td>
                   <input type="checkbox" className="selected" onChange={this.onSelect(object.Prefix)} checked={context.selected[object.Prefix] === true} />
                 </td>
-                <td>
+                <td
+                  style={{
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  }}
+                >
                   <Link
                     to="#"
-                    style={{
-                      wordBreak: 'break-all',
-                    }}
                     onClick={e => this.changeFolder(e, object.Prefix)}
                   >
                     {object.Prefix.startsWith(folderLocation) ? object.Prefix.slice(folderLocation.length, -1) : object.Prefix}
                   </Link>
                 </td>
-                <td />
+                <td>-</td>
                 <td><i className="fa fa-folder-o" /></td>
-                <td />
-                <td />
+                <td>-</td>
+                <td>-</td>
               </tr> : <tr key={object.Key}>
                 <td>
                   <input type="checkbox" className="selected" onChange={this.onSelect(object.Key)} checked={context.selected[object.Key] === true} />
                 </td>
-                <td>
+                <td
+                  style={{
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  }}
+                >
                   <Link
                     to="#"
-                    style={{
-                      wordBreak: 'break-all',
-                    }}
                     onClick={e => this.downloadOneObject(object.Key, e)}
                   >
                     {object.Key.startsWith(folderLocation) ? object.Key.slice(folderLocation.length) : object.Key}
@@ -484,13 +490,13 @@ class ObjectManagement extends TablePageStatic {
                 <div className="content">
                   <div className="clearfix">
                     <div className="table-holder">
-                      <table className="table">
+                      <table className="table" style={{ tableLayout: 'fixed' }}>
                         <thead>
                           <tr>
-                            <th width="600">{t('fileName')}</th>
-                            <th width="200">{t('size')}</th>
-                            <th width="200">{t('status')}</th>
-                            <th width="200">{t('action')}</th>
+                            <th style={{ width: '50%' }}>{t('fileName')}</th>
+                            <th>{t('size')}</th>
+                            <th>{t('status')}</th>
+                            <th>{t('action')}</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -501,8 +507,10 @@ class ObjectManagement extends TablePageStatic {
                               <td style={{ position: 'relative' }}>
                                 <div
                                   style={{
+                                    whiteSpace: 'nowrap',
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
                                     paddingRight: '50px',
-                                    wordBreak: 'break-all',
                                   }}
                                 >{file.name}</div>
                                 <div

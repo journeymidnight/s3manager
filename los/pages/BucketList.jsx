@@ -60,14 +60,14 @@ class C extends TablePageStatic {
   renderTable() {
     const { t, servicePath, dispatch, context } = this.props;
     return context.total > 0 && (
-      <table className="table">
+      <table className="table" style={{ tableLayout: 'fixed' }}>
         <thead>
           <tr>
             <th width="40">
               <input type="checkbox" className="selected" onChange={this.onSelectAll(context.visibleBuckets.map((u) => { return u.name; }))} />
             </th>
-            <th width="200">{t('name')}</th>
-            <th width="400">{t('created')}</th>
+            <th style={{ width: '60%' }}>{t('name')}</th>
+            <th>{t('created')}</th>
           </tr>
         </thead>
         <tbody>
@@ -77,12 +77,15 @@ class C extends TablePageStatic {
               <td>
                 <input type="checkbox" className="selected" onChange={this.onSelect(bucket.name)} checked={context.selected[bucket.name] === true} />
               </td>
-              <td>
+              <td
+                style={{
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}
+              >
                 <Link
                   to={`${servicePath}/buckets/${bucket.name}`}
-                  style={{
-                    wordBreak: 'break-all',
-                  }}
                   onClick={() => {
                     dispatch(BucketActions.setBucket({
                       bucketName: bucket.name,
