@@ -198,7 +198,7 @@ class C extends Page {
               <div className="col-md-8 tabs">
                 <ul className="nav-links clearfix">
                   <li className="pull-left active">
-                    <Link data-placement="left" to={`${servicePath}/buckets/${params.bucketName}/detail`}>
+                    <Link data-placement="left" to={`${servicePath}/buckets/${params.bucketName}/detail?date=${this.props.location.query.date}`}>
                       {t('pageBucket.monitor')}
                     </Link>
                   </li>
