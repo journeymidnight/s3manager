@@ -39,10 +39,6 @@ class C extends Page {
         AWS.config.secretAccessKey = region.accessSecret;
         this.s3 = new AWS.S3();
         dispatch(BucketActions.requestGetBucketAcl(this.s3, bucketName, routerKey));
-        this.s3.headBucket({Bucket: 'bucket1'}, (err, data) => {
-          if (err) console.log(err, err.stack); // an error occurred
-          else     console.log(data);
-        });
       });
 
     const nowLocal = moment();
@@ -111,7 +107,7 @@ class C extends Page {
                   <table className="table table-detail">
                     <tbody>
                       <tr>
-                        <td width="100">{t('pageBucket.usage')}</td>
+                        <td style={{ width: 100 }}>{t('pageBucket.usage')}</td>
                         <td>
                           <span>
                             {context.usageByNow ?
@@ -184,7 +180,7 @@ class C extends Page {
                   <table className="table table-detail">
                     <tbody>
                       <tr>
-                        <td width="100">{t('pageBucket.bucketAcl')}</td>
+                        <td style={{ width: 100 }}>{t('pageBucket.bucketAcl')}</td>
                         <td>
                           <span>{this.acl[context.acl]}</span>
                         </td>

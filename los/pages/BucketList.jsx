@@ -63,7 +63,7 @@ class C extends TablePageStatic {
       <table className="table" style={{ tableLayout: 'fixed' }}>
         <thead>
           <tr>
-            <th width="40">
+            <th style={{ width: 40 }}>
               <input type="checkbox" className="selected" onChange={this.onSelectAll(context.visibleBuckets.map((u) => { return u.name; }))} />
             </th>
             <th style={{ width: '60%' }}>{t('name')}</th>

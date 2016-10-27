@@ -341,7 +341,7 @@ class ObjectManagement extends TablePageStatic {
       <table className="table" style={{ tableLayout: 'fixed' }}>
         <thead>
           <tr>
-            <th width="40">
+            <th style={{ width: 40 }}>
               <input type="checkbox" className="selected" onChange={this.onSelectAll(context.visibleObjects.map((object) => object.Key || object.Prefix))} />
             </th>
             <th style={{ width: '40%' }}>{t('objectName')}</th>
