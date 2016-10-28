@@ -66,7 +66,7 @@ class C extends TablePageStatic {
             <th style={{ width: 40 }}>
               <input type="checkbox" className="selected" onChange={this.onSelectAll(context.visibleBuckets.map((u) => { return u.name; }))} />
             </th>
-            <th style={{ width: '60%' }}>{t('name')}</th>
+            <th style={{ width: '60%' }}>{t('bucketName')}</th>
             <th>{t('created')}</th>
           </tr>
         </thead>
@@ -121,7 +121,7 @@ class C extends TablePageStatic {
       <div className="gray-content-block second-block">
         <div className={Object.keys(context.selected).length > 0 ? 'hidden' : ''}>
           <div className="filter-item inline">
-            <a className="btn btn-default" onClick={this.onRefresh({}, false)}>
+            <a className="btn btn-default" onClick={this.doSearch}>
               <i className={`fa fa-refresh ${context.loading ? 'fa-spin' : ''}`} />
             </a>
           </div>

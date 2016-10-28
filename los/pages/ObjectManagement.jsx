@@ -47,6 +47,7 @@ class ObjectManagement extends TablePageStatic {
     this.pauseOneObject = this.pauseOneObject.bind(this);
     this.continueOneObject = this.continueOneObject.bind(this);
     this.retryOneObject = this.retryOneObject.bind(this);
+    this.onCancelUploading = this.onCancelUploading.bind(this);
     this.cancelOneObject = this.cancelOneObject.bind(this);
     this.onFileDownload = this.onFileDownload.bind(this);
     this.downloadOneObject = this.downloadOneObject.bind(this);
@@ -239,9 +240,18 @@ class ObjectManagement extends TablePageStatic {
     });
   }
 
+  onCancelUploading() {
+    for (let i = 0, len = Object.keys(this.state.uploadingFileList).length; i < len; i++) {
+      this.cancelOneObject(i);
+    }
+  }
+
   cancelOneObject(index) {
     const s3Uploader = this.s3Uploaders[index];
-    if (s3Uploader && s3Uploader.service.config.params.UploadId) {
+    if (s3Uploader &&
+      s3Uploader.service.config.params.UploadId &&
+      (this.state.uploadingFileList[index].status === 'uploading' || this.state.uploadingFileList[index].status === 'paused')
+    ) {
       s3Uploader.service.abortMultipartUpload().send();
     }
     this.s3Uploaders[index] = null;
@@ -498,7 +508,13 @@ class ObjectManagement extends TablePageStatic {
             <i className="fa fa-plus" />&nbsp;{t('createFolder')}
           </button>
         </div>
-        <Modal title={t('uploadModal.uploadingStatus')} ref="uploadModal" >
+        <Modal
+          title={t('uploadModal.uploadingStatus')}
+          ref="uploadModal"
+          postponeClosing
+          closingPrompt={t('uploadModal.close')}
+          closingCb={this.onCancelUploading}
+        >
           <div>
             {uploadingFileList && <div className="content-wrapper">
               <div
@@ -610,7 +626,7 @@ class ObjectManagement extends TablePageStatic {
       <div className="gray-content-block second-block">
         <div className={Object.keys(context.selected).length > 0 ? 'hidden' : ''}>
           <div className="filter-item inline">
-            <a className="btn btn-default" onClick={this.onRefresh({}, false)}>
+            <a className="btn btn-default" onClick={e => this.doSearch(e, this.props.global.folderLocation)}>
               <i className={`fa fa-refresh ${context.loading ? 'fa-spin' : ''}`} />
             </a>
           </div>
