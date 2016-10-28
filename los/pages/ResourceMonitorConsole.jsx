@@ -28,11 +28,11 @@ class ResourceMonitorConsole extends Page {
       monitorType: undefined,
       bucketName: undefined,
       startDate: moment(),
-      startDateMinDate: moment.utc(moment() - 30 * 24 * 60 * 60 * 1000),
+      startDateMinDate: moment().subtract(30, 'days'),
       startDateMaxDate: moment(),
       endDate: moment(),
       endDateMinDate: moment(),
-      endDateMaxDate: moment.utc(moment() + 30 * 24 * 60 * 60 * 1000),
+      endDateMaxDate: moment().subtract(30, 'days'),
       period: '1day',
     };
 
@@ -159,23 +159,30 @@ class ResourceMonitorConsole extends Page {
   }
 
   handlePeriod(period) {
+    const startDate = (() => {
+      switch (period) {
+        case '1day': {
+          return moment();
+        }
+        case '7days': {
+          return moment().subtract(7, 'days');
+        }
+        case '30days': {
+          return moment().startOf('month');
+        }
+        default:
+          return moment();
+      }
+    })();
+
     this.setState({
       period,
-      startDate: (() => {
-        switch (period) {
-          case '1day': {
-            return moment();
-          }
-          case '7days': {
-            return moment().subtract(7, 'days');
-          }
-          case '30days': {
-            return moment().startOf('month');
-          }
-          default:
-            return moment();
-        }
-      })(),
+      startDate,
+      startDateMinDate: moment().subtract(30, 'days'),
+      startDateMaxDate: moment(),
+      endDate: moment(),
+      endDateMinDate: moment(),
+      endDateMaxDate: moment(startDate).add(30, 'days'),
     }, () => {
       this.refresh()();
     });
