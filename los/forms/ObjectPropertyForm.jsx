@@ -105,7 +105,7 @@ class ObjectPropertyForm extends React.Component {
                 type="button"
                 className="btn btn-success"
                 onClick={() => this.onAuthorize(period.value)}
-                disabled={period.value || period.value <= 0 || !Number.isInteger(period.value)}
+                disabled={!period.value || period.value <= 0 || !Number.isInteger(period.value)}
               >
                 {t('objectPropertyPage.authorize')}
               </button>
