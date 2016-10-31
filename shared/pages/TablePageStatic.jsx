@@ -127,7 +127,7 @@ class C extends Page {
     };
   }
 
-  doSearch(prefix = '') {
+  doSearch(e, prefix = '') {
     let searchWord = (prefix + (this.refs.searchBox.refs.search.value ? this.refs.searchBox.refs.search.value.trim() : '')).trim();
     if (_.isEmpty(searchWord)) {
       searchWord = null;
@@ -137,12 +137,12 @@ class C extends Page {
 
   onSearchKeyPress(e, prefix) {
     if (e.key === 'Enter') {
-      this.doSearch(prefix);
+      this.doSearch(e, prefix);
     }
   }
 
   onSearchButtonClick(e, prefix) {
-    this.doSearch(prefix);
+    this.doSearch(e, prefix);
   }
 
   renderHeader() {

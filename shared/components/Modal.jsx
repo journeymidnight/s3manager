@@ -10,6 +10,7 @@ class Modal extends React.Component {
 
     this.show = this.show.bind(this);
     this.hide = this.hide.bind(this);
+    this.onHide = this.onHide.bind(this);
     this.state = {
       hidden: !props.pop,
     };
@@ -22,6 +23,14 @@ class Modal extends React.Component {
 
     if (this.props.pop) {
       this.show();
+    }
+  }
+
+  onHide() {
+    if (!this.props.postponeClosing) {
+      this.hide();
+    } else {
+      this.props.closingCb();
     }
   }
 
@@ -43,7 +52,7 @@ class Modal extends React.Component {
         <div className="modal-dialog">
           <div className="modal-content">
             {props.title && <div className="modal-header">
-              <button type="button" className="close" data-dismiss="modal"><span>&times;</span></button>
+              <button type="button" className="close" onClick={this.onHide}><span>&times;</span></button>
               <h4 className="modal-title">{props.title}</h4>
             </div>}
             {!this.state.hidden && props.children}
@@ -57,6 +66,8 @@ class Modal extends React.Component {
 Modal.propTypes = {
   id: React.PropTypes.string,
   title: React.PropTypes.string,
+  postponeClosing: React.PropTypes.bool,
+  closingCb: React.PropTypes.func,
   pop: React.PropTypes.any,
   children: React.PropTypes.element.isRequired,
 };

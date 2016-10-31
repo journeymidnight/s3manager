@@ -11,7 +11,6 @@ class ResourceMonitorConsole extends Page {
 
   constructor(props) {
     super(props);
-
     const { t } = this.props;
 
     this.periods = [{
@@ -29,7 +28,11 @@ class ResourceMonitorConsole extends Page {
       monitorType: undefined,
       bucketName: undefined,
       startDate: moment(),
+      startDateMinDate: moment().subtract(30, 'days'),
+      startDateMaxDate: moment(),
       endDate: moment(),
+      endDateMinDate: moment(),
+      endDateMaxDate: moment().subtract(30, 'days'),
       period: '1day',
     };
 
@@ -136,21 +139,53 @@ class ResourceMonitorConsole extends Page {
   handleStartDate(startDate) {
     this.setState({
       startDate,
+      endDateMinDate: startDate,
+      endDateMaxDate: moment(startDate).add(30, 'days'),
       period: undefined,
-    }, () => this.refresh()());
+    }, () => {
+      this.refresh()();
+    });
   }
 
   handleEndDate(endDate) {
     this.setState({
       endDate,
+      startDateMinDate: moment(endDate).subtract(30, 'days'),
+      startDateMaxDate: endDate,
       period: undefined,
-    }, () => this.refresh()());
+    }, () => {
+      this.refresh()();
+    });
   }
 
   handlePeriod(period) {
+    const startDate = (() => {
+      switch (period) {
+        case '1day': {
+          return moment();
+        }
+        case '7days': {
+          return moment().subtract(7, 'days');
+        }
+        case '30days': {
+          return moment().startOf('month');
+        }
+        default:
+          return moment();
+      }
+    })();
+
     this.setState({
       period,
-    }, () => this.refresh()());
+      startDate,
+      startDateMinDate: moment().subtract(30, 'days'),
+      startDateMaxDate: moment(),
+      endDate: moment(),
+      endDateMinDate: moment(),
+      endDateMaxDate: moment(startDate).add(30, 'days'),
+    }, () => {
+      this.refresh()();
+    });
   }
 
   getCompleteTime(dataArray) {
@@ -204,7 +239,7 @@ class ResourceMonitorConsole extends Page {
             <div className="top-area">
               <div className="nav-text">
                 <span className="light">
-                  {t('usageMonitor')}
+                  {this.state.monitorType ? t(`${this.state.monitorType}Monitor`) : null}
                 </span>
               </div>
             </div>
@@ -258,6 +293,8 @@ class ResourceMonitorConsole extends Page {
                 <div className="filter-item inline">
                   <DatePicker
                     dateFormat="YYYY/MM/DD"
+                    minDate={this.state.startDateMinDate}
+                    maxDate={this.state.startDateMaxDate}
                     className="dropdown-menu-toggle"
                     selected={this.state.startDate}
                     onChange={this.handleStartDate}
@@ -274,6 +311,8 @@ class ResourceMonitorConsole extends Page {
                 <div className="filter-item inline">
                   <DatePicker
                     dateFormat="YYYY/MM/DD"
+                    minDate={this.state.endDateMinDate}
+                    maxDate={this.state.endDateMaxDate}
                     className="dropdown-menu-toggle"
                     selected={this.state.endDate}
                     onChange={this.handleEndDate}
