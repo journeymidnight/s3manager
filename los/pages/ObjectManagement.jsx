@@ -537,7 +537,8 @@ class ObjectManagement extends TablePageStatic {
                       <table className="table" style={{ tableLayout: 'fixed' }}>
                         <thead>
                           <tr>
-                            <th style={{ width: '50%' }}>{t('fileName')}</th>
+                            <th style={{ width: '40%' }}>{t('fileName')}</th>
+                            <th style={{ width: '20%' }}>{t('uploadModal.progress')}</th>
                             <th>{t('size')}</th>
                             <th>{t('status')}</th>
                             <th>{t('action')}</th>
@@ -548,27 +549,17 @@ class ObjectManagement extends TablePageStatic {
                           const file = uploadingFileList[key];
                           return (
                             <tr key={file.name}>
+                              <td
+                                style={{
+                                  whiteSpace: 'nowrap',
+                                  overflow: 'hidden',
+                                  textOverflow: 'ellipsis',
+                                  paddingRight: '50px',
+                                }}
+                              >{file.name}
+                              </td>
                               <td style={{ position: 'relative' }}>
-                                <div
-                                  style={{
-                                    whiteSpace: 'nowrap',
-                                    overflow: 'hidden',
-                                    textOverflow: 'ellipsis',
-                                    paddingRight: '50px',
-                                  }}
-                                >{file.name}</div>
-                                <div
-                                  style={{
-                                    width: '100%',
-                                    position: 'absolute',
-                                    height: '100%',
-                                    top: 0,
-                                    left: 0,
-                                    textAlign: 'right',
-                                    padding: '10px 16px',
-                                    verticalAlign: 'middle',
-                                  }}
-                                >{this.calProgressWidth(file.percent)}</div>
+                                {this.calProgressWidth(file.percent)}
                                 <div
                                   style={{
                                     width: this.calProgressWidth(file.percent),
@@ -578,7 +569,6 @@ class ObjectManagement extends TablePageStatic {
                                     top: 0,
                                     left: 0,
                                     opacity: 0.5,
-                                    textAlign: 'right',
                                   }}
                                 ></div>
                               </td>

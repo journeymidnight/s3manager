@@ -750,7 +750,8 @@
         "pause": "暂停",
         "continue": "继续",
         "cancel": "取消",
-        "retry": "重试"
+        "retry": "重试",
+        "progress": "进度"
     },
 
     "pageObjectCreate": {
