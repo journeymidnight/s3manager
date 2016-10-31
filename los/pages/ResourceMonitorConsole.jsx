@@ -2,7 +2,7 @@ import moment from 'moment';
 import React from 'react';
 import DatePicker from 'react-datepicker';
 import Page, { attach } from '../../shared/pages/Page';
-import { setHeader, extendContext } from '../../console-common/redux/actions';
+import { setHeader, extendContext, notifyAlert } from '../../console-common/redux/actions';
 import * as BucketActions from '../redux/actions.bucket';
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -28,15 +28,14 @@ class ResourceMonitorConsole extends Page {
       monitorType: undefined,
       bucketName: undefined,
       startDate: moment(),
-      startDateMinDate: moment().subtract(30, 'days'),
       startDateMaxDate: moment(),
       endDate: moment(),
-      endDateMinDate: moment(),
-      endDateMaxDate: moment().subtract(30, 'days'),
+      endDateMaxDate: moment(),
       period: '1day',
     };
 
     this.refresh = this.refresh.bind(this);
+    this.compareDate = this.compareDate.bind(this);
     this.changeMonitorType = this.changeMonitorType.bind(this);
     this.getRequestDataCb = this.getRequestDataCb.bind(this);
     this.requestData = this.requestData.bind(this);
@@ -60,6 +59,13 @@ class ResourceMonitorConsole extends Page {
       });
 
     dispatch(extendContext({ loading: true }, routerKey));
+  }
+
+  compareDate(date1, date2) {
+    if (moment(date1) < moment(date2)) {
+      return date1;
+    }
+    return date2;
   }
 
   changeMonitorType(monitorType) {
@@ -109,23 +115,32 @@ class ResourceMonitorConsole extends Page {
     const nowLocal = moment();
     dispatch(extendContext({ monitorMomentLocal: nowLocal }, routerKey));
     const todayLocalFormat = moment(nowLocal).format('YYYYMMDD');
+    const nowLocalFormat = moment(nowLocal).format('YYYYMMDDHHmmss');
+    const startOfDayLocalFormat = moment(nowLocal).startOf('day').format('YYYYMMDDHHmmss');
 
-    switch (period) {
+    switch (period) { // TODO: change regionId
       case '1day': {
-        const nowLocalFormat = moment(nowLocal).format('YYYYMMDDHHmmss');
-        const startOfDayLocalFormat = moment(nowLocal).startOf('day').format('YYYYMMDDHHmmss');
-        return dispatch(this.getRequestDataCb()(routerKey, 'cn-north-1', bucketName, startOfDayLocalFormat, nowLocalFormat)); // TODO: change regionId
+        return dispatch(this.getRequestDataCb()(routerKey, 'cn-north-1', bucketName, startOfDayLocalFormat, nowLocalFormat));
       }
       case '7days': {
         const sevenDaysBeforeLocalFormat = moment(nowLocal).subtract(7, 'days').format('YYYYMMDD');
-        return dispatch(BucketActions.requestGetStaticsByDay(routerKey, region.regionId, bucketName, sevenDaysBeforeLocalFormat, todayLocalFormat));
+        return Promise.all([
+          dispatch(this.getRequestDataCb()(routerKey, 'cn-north-1', bucketName, startOfDayLocalFormat, nowLocalFormat)),
+          dispatch(BucketActions.requestGetStaticsByDay(routerKey, region.regionId, bucketName, sevenDaysBeforeLocalFormat, todayLocalFormat)),
+        ]);
       }
       case '30days': {
         const startOfMonthLocalFormat = moment(nowLocal).startOf('month').format('YYYYMMDD');
-        return dispatch(BucketActions.requestGetStaticsByDay(routerKey, region.regionId, bucketName, startOfMonthLocalFormat, todayLocalFormat));
+        return Promise.all([
+          dispatch(this.getRequestDataCb()(routerKey, 'cn-north-1', bucketName, startOfDayLocalFormat, nowLocalFormat)),
+          dispatch(BucketActions.requestGetStaticsByDay(routerKey, region.regionId, bucketName, startOfMonthLocalFormat, todayLocalFormat)),
+        ]);
       }
       default:
-        return dispatch(BucketActions.requestGetStaticsByDay(routerKey, region.regionId, bucketName, startDate.format('YYYYMMDD'), endDate.format('YYYYMMDD')));
+        return Promise.all([
+          dispatch(this.getRequestDataCb()(routerKey, 'cn-north-1', bucketName, startOfDayLocalFormat, nowLocalFormat)),
+          dispatch(BucketActions.requestGetStaticsByDay(routerKey, region.regionId, bucketName, startDate.format('YYYYMMDD'), endDate.format('YYYYMMDD'))),
+        ]);
     }
   }
 
@@ -137,25 +152,47 @@ class ResourceMonitorConsole extends Page {
   }
 
   handleStartDate(startDate) {
-    this.setState({
-      startDate,
-      endDateMinDate: startDate,
-      endDateMaxDate: moment(startDate).add(30, 'days'),
-      period: undefined,
-    }, () => {
-      this.refresh()();
-    });
+    if (this.state.endDate > this.compareDate(moment(startDate).add(30, 'days'), moment()) || this.state.endDate < this.startDate) {
+      this.setState({
+        startDate,
+        endDateMinDate: startDate,
+        endDateMaxDate: this.compareDate(moment(startDate).add(30, 'days'), moment()),
+        startDateMinDate: undefined,
+        startDateMaxDate: moment(),
+      }, () => this.props.dispatch(notifyAlert(this.props.t('pageResourceMonitors.endDateWrong'))));
+    } else {
+      this.setState({
+        shouldAddTodayPoint: moment(this.state.endDate).get('date') === moment().get('date'),
+        startDate,
+        endDateMinDate: undefined,
+        endDateMaxDate: moment(),
+        startDateMinDate: undefined,
+        startDateMaxDate: moment(),
+        period: undefined,
+      }, () => this.refresh()());
+    }
   }
 
   handleEndDate(endDate) {
-    this.setState({
-      endDate,
-      startDateMinDate: moment(endDate).subtract(30, 'days'),
-      startDateMaxDate: endDate,
-      period: undefined,
-    }, () => {
-      this.refresh()();
-    });
+    if (this.state.startDate < moment(endDate).subtract(30, 'days') || this.state.startDate > endDate) {
+      this.setState({
+        endDate,
+        startDateMinDate: moment(endDate).subtract(30, 'days'),
+        startDateMaxDate: endDate,
+        endDateMinDate: undefined,
+        endDateMaxDate: moment(),
+      }, () => this.props.dispatch(notifyAlert(this.props.t('pageResourceMonitors.startDateWrong'))));
+    } else {
+      this.setState({
+        shouldAddTodayPoint: moment(endDate).get('date') === moment().get('date'),
+        endDate,
+        startDateMinDate: undefined,
+        startDateMaxDate: moment(),
+        endDateMinDate: undefined,
+        endDateMaxDate: moment(),
+        period: undefined,
+      }, () => this.refresh()());
+    }
   }
 
   handlePeriod(period) {
@@ -176,13 +213,14 @@ class ResourceMonitorConsole extends Page {
     })();
 
     this.setState({
+      shouldAddTodayPoint: true,
       period,
       startDate,
-      startDateMinDate: moment().subtract(30, 'days'),
+      startDateMinDate: undefined,
       startDateMaxDate: moment(),
       endDate: moment(),
-      endDateMinDate: moment(),
-      endDateMaxDate: moment(startDate).add(30, 'days'),
+      endDateMinDate: undefined,
+      endDateMaxDate: moment(),
     }, () => {
       this.refresh()();
     });
@@ -337,6 +375,7 @@ class ResourceMonitorConsole extends Page {
               t: this.props.t,
               context: this.props.context,
               period: this.state.period,
+              shouldAddTodayPoint: this.state.shouldAddTodayPoint,
               changeMonitorType: this.changeMonitorType,
               getCompleteTime: this.getCompleteTime,
               combineYValue: this.combineYValue,

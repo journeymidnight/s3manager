@@ -25,9 +25,12 @@ class UsageMonitor extends Component {
               }, 'kilobytes')}
             />}
 
-            {period !== '1day' && context.staticsbyday && !context.loading && <Chart
+            {period !== '1day' && context.staticsbyday && context.usagebyhour && !context.loading && <Chart
               className="chart"
-              config={generateLineChartConfig(context.staticsbyday.map((item) => ({
+              config={generateLineChartConfig(context.staticsbyday.concat([{
+                date: moment().local().format('YYYYMMDD'),
+                usage: context.usagebyhour.pop().usage,
+              }]).map((item) => ({
                 timestamp: moment(item.date).utc(),
                 usage: item.usage || 0,
               })), {

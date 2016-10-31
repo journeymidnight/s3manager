@@ -5,8 +5,26 @@ import { generateAreaChartConfig } from '../../shared/utils/chart';
 
 class APIMonitor extends Component {
 
+  constructor() {
+    super();
+
+    this.getTodayOp = this.getTodayOp.bind(this);
+  }
+
   componentWillMount() {
     this.props.changeMonitorType('api');
+  }
+
+  getTodayOp(opbyhourArray) {
+    const opGetArray = opbyhourArray.filter(op => op.method === 'GET');
+    const opPutArray = opbyhourArray.filter(op => op.method === 'PUT');
+    const getOps = opGetArray.reduce((previousValue, currentItem) => (previousValue + Number(currentItem.count)), 0);
+    const putOps = opPutArray.reduce((previousValue, currentItem) => (previousValue + Number(currentItem.count)), 0);
+    return {
+      date: moment().format('YYYYMMDD'),
+      getOps,
+      putOps,
+    };
   }
 
   render() {
@@ -36,9 +54,9 @@ class APIMonitor extends Component {
               }, 'count')}
             />}
 
-            {period !== '1day' && context.staticsbyday && !context.loading && <Chart
+            {period !== '1day' && context.staticsbyday && context.opbyhour && !context.loading && <Chart
               className="chart"
-              config={generateAreaChartConfig(context.staticsbyday.map((item) => ({
+              config={generateAreaChartConfig(context.staticsbyday.concat([this.getTodayOp(context.opbyhour)]).map((item) => ({
                 timestamp: moment(item.date).utc(),
                 get: item.getOps || 0,
                 put: item.putOps || 0,

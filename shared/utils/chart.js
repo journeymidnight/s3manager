@@ -83,7 +83,7 @@ export function generateChartConfig(data, cols, yFormat) {
     padding: {
       top: 10,
       left: 60,
-      right: 0,
+      right: 20,
       bottom: 0,
     },
     data: {
