@@ -47,6 +47,7 @@ class ObjectManagement extends TablePageStatic {
     this.pauseOneObject = this.pauseOneObject.bind(this);
     this.continueOneObject = this.continueOneObject.bind(this);
     this.retryOneObject = this.retryOneObject.bind(this);
+    this.onClose = this.onClose.bind(this);
     this.onCancelUploading = this.onCancelUploading.bind(this);
     this.cancelOneObject = this.cancelOneObject.bind(this);
     this.onFileDownload = this.onFileDownload.bind(this);
@@ -238,6 +239,14 @@ class ObjectManagement extends TablePageStatic {
         [index]: { $set: newUploadingFile },
       }),
     });
+  }
+
+  onClose() {
+    const hidable = confirm(this.props.t('uploadModal.close'));
+    if (hidable) {
+      this.onCancelUploading();
+      this.refs.uploadModal.hide();
+    }
   }
 
   onCancelUploading() {
@@ -512,8 +521,7 @@ class ObjectManagement extends TablePageStatic {
           title={t('uploadModal.uploadingStatus')}
           ref="uploadModal"
           postponeClosing
-          closingPrompt={t('uploadModal.close')}
-          closingCb={this.onCancelUploading}
+          closingCb={this.onClose}
         >
           <div>
             {uploadingFileList && <div className="content-wrapper">

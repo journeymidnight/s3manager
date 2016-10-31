@@ -30,11 +30,7 @@ class Modal extends React.Component {
     if (!this.props.postponeClosing) {
       this.hide();
     } else {
-      const hidable = confirm(this.props.closingPrompt);
-      if (hidable) {
-        this.props.closingCb();
-        this.hide();
-      }
+      this.props.closingCb();
     }
   }
 
@@ -71,7 +67,6 @@ Modal.propTypes = {
   id: React.PropTypes.string,
   title: React.PropTypes.string,
   postponeClosing: React.PropTypes.bool,
-  closingPrompt: React.PropTypes.string,
   closingCb: React.PropTypes.func,
   pop: React.PropTypes.any,
   children: React.PropTypes.element.isRequired,
