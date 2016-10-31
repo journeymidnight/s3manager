@@ -202,10 +202,10 @@ export function generateChartConfig(data, cols, yFormat) {
       if (count < 0) {
         return '';
       } else if (count < 1000) {
-        return `${fmt(count)}`;
+        return `${fmt(count)}次`;
       }
 
-      return `${fmt(count / 1000)}k`;
+      return `${fmt(count / 1000)}千次`;
     };
   } else {
     config.axis.y.min = 0;

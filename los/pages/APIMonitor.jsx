@@ -28,7 +28,7 @@ class APIMonitor extends Component {
   }
 
   render() {
-    const { t, period, context } = this.props;
+    const { t, period, shouldAddTodayPoint, context } = this.props;
     return (
       <div>
         <div className="row">
@@ -56,7 +56,11 @@ class APIMonitor extends Component {
 
             {period !== '1day' && context.staticsbyday && context.opbyhour && !context.loading && <Chart
               className="chart"
-              config={generateAreaChartConfig(context.staticsbyday.concat([this.getTodayOp(context.opbyhour)]).map((item) => ({
+              config={generateAreaChartConfig(context.staticsbyday.concat(
+                shouldAddTodayPoint ?
+                  [this.getTodayOp(context.opbyhour)] :
+                  []
+              ).map((item) => ({
                 timestamp: moment(item.date).utc(),
                 get: item.getOps || 0,
                 put: item.putOps || 0,
@@ -80,6 +84,7 @@ APIMonitor.propTypes = {
   t: PropTypes.func,
   context: PropTypes.object,
   period: PropTypes.string,
+  shouldAddTodayPoint: PropTypes.bool,
   changeMonitorType: PropTypes.func,
   getCompleteTime: PropTypes.func,
   combineYValue: PropTypes.func,
