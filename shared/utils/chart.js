@@ -194,7 +194,7 @@ export function generateChartConfig(data, cols, yFormat) {
     config.axis.y.tick.format = (count) => {
       const fmt = d3.format('d');
 
-      if (count < 0 || !(fmt(count) > 0)) {
+      if (count < 0 || !(fmt(count) >= 0)) {
         return '';
       } else if (count < 1000) {
         return `${fmt(count)}${i18n.t('units.count')}`;
