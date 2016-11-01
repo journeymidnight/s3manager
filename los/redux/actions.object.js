@@ -16,11 +16,14 @@ export function setVisibleObjects(s3, bucketName, routerKey, filters) {
           reject(error);
         } else {
           const { offset, limit } = filters;
-          const matchedObjects = data.CommonPrefixes.concat(data.Contents.filter((object) => object.Key !== filters.searchWord || !object.Key.endsWith('/')));
+          const matchedFolders = data.CommonPrefixes;
+          const matchedFiles = data.Contents.filter((object) => object.Key !== filters.searchWord || !object.Key.endsWith('/'));
+          const matchedObjects = matchedFolders.concat(matchedFiles);
           const visibleObjects = matchedObjects.slice(offset, offset + limit);
 
           dispatch(extendContext({
-            folderNames: data.CommonPrefixes.map(prefix => prefix.Prefix.slice(0, -1)),
+            folderNames: matchedFolders.map(prefix => prefix.Prefix.slice(0, -1)),
+            fileNames: matchedFiles.map(file => file.Key),
             visibleObjects,
             total: matchedObjects.length,
           }, routerKey));
@@ -43,7 +46,7 @@ export function isFolderEmpty(s3, bucketName, folderName) {
         if (error) {
           dispatch(notifyAlert(error.message));
           reject(error);
-        } else if (data.Contents.length > 1 || data.CommonPrefixes.length > 1) {
+        } else if (data.Contents.length > 0 || data.CommonPrefixes.length > 0) {
           reject(folderName);
         }
         resolve();

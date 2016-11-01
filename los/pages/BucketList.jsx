@@ -46,15 +46,18 @@ class C extends TablePageStatic {
     const { t, dispatch, region, routerKey } = this.props;
     const bucketName = _.keys(this.props.context.selected)[0];
 
-    setTimeout(() => dispatch(BucketActions.isBucketEmpty(this.s3, bucketName))
-      .then(() => confirmModal(t('confirmDelete'), () => dispatch(BucketActions.requestDeleteBucket(routerKey, region.regionId, bucketName))), bucket => {
+    dispatch(BucketActions.isBucketEmpty(this.s3, bucketName))
+      .then(() => confirmModal(t('confirmDelete'), () => {
+        dispatch(BucketActions.requestDeleteBucket(routerKey, region.regionId, bucketName))
+          .then(() => {
+            this.onRefresh({}, false)();
+          });
+      }))
+      .catch(bucket => {
         if (bucket) {
           dispatch(notifyAlert(bucket + t('cannotDelete')));
         }
-      })
-      .then(() => {
-        this.onRefresh({}, false)();
-      }), 1000);
+      });
   }
 
   renderTable() {
