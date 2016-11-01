@@ -750,7 +750,8 @@
         "pause": "暂停",
         "continue": "继续",
         "cancel": "取消",
-        "retry": "重试"
+        "retry": "重试",
+        "progress": "进度"
     },
 
     "pageObjectCreate": {
@@ -773,7 +774,9 @@
             "1day": "今天",
             "7days": "最近7天",
             "30days": "本月"
-        }
+        },
+        "startDateError": "只能查看30天内的数据，请重新选择开始时间。",
+        "endDateError": "只能查看30天内的数据，请重新选择结束时间。"
     },
     "___comment_end_los": "end los",
 
@@ -796,5 +799,13 @@
         "listener": "监听器",
         "backend": "后端服务"
     },
-    "___comment_end_l2b": "end l2b"
+    "___comment_end_l2b": "end l2b",
+
+    "units": {
+        "yuan": "元",
+        "count": "次",
+        "k": "千",
+        "w": "万",
+        "y": "亿"
+    }
 }
