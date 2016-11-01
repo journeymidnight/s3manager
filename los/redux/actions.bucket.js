@@ -199,7 +199,7 @@ export function isBucketEmpty(s3, bucketName) {
         if (error) {
           dispatch(notifyAlert(error.message));
           reject();
-        } else if (data.Contents.length > 1 || data.CommonPrefixes.length > 1) {
+        } else if (data.Contents.length > 0 || data.CommonPrefixes.length > 0) {
           reject(bucketName);
         }
         resolve();

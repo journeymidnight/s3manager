@@ -41,7 +41,9 @@ class ObjectManagement extends TablePageStatic {
     this.onDelete = this.onDelete.bind(this);
     this.onSearchKeyPress = this.onSearchKeyPress.bind(this);
     this.formatBytes = this.formatBytes.bind(this);
+    this.checkFileDuplication = this.checkFileDuplication.bind(this);
     this.onFileUpload = this.onFileUpload.bind(this);
+    this.uploadObjects = this.uploadObjects.bind(this);
     this.uploadOneObject = this.uploadOneObject.bind(this);
     this.handleUploadAction = this.handleUploadAction.bind(this);
     this.pauseOneObject = this.pauseOneObject.bind(this);
@@ -105,14 +107,33 @@ class ObjectManagement extends TablePageStatic {
   }
 
   formatBytes(bytes) {
-    if (bytes < 1024) return `${bytes}B`;
+    if (bytes === 0) return 0;
+    else if (bytes < 1024) return `${bytes}B`;
     else if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)}KB`;
     else if (bytes < 1024 * 1024 * 1024) return `${(bytes / 1024 / 1024).toFixed(1)}MB`;
     else if (bytes < 1024 * 1024 * 1024 * 1024) return `${(bytes / 1024 / 1024 / 1024).toFixed(1)}GB`;
     return `${(bytes / 1024 / 1024 / 1024 / 1024).toFixed(1)}TB`;
   }
 
+  checkFileDuplication() {
+    const files = this.refs.fileUploader.files;
+    for (let i = 0, len = files.length; i < len; i++) {
+      if (this.props.context.fileNames.includes(this.props.global.folderLocation + files[i].name)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   onFileUpload() {
+    if (this.checkFileDuplication()) {
+      confirmModal(this.props.t('有重名文件，确认继续上传会覆盖原有文件。'), this.uploadObjects);
+    } else {
+      this.uploadObjects();
+    }
+  }
+
+  uploadObjects() {
     const files = this.refs.fileUploader.files;
     const uploadingFileList = {};
     this.s3Uploaders = [];
@@ -242,9 +263,13 @@ class ObjectManagement extends TablePageStatic {
   }
 
   onClose() {
-    const hidable = confirm(this.props.t('uploadModal.close'));
-    if (hidable) {
-      this.onCancelUploading();
+    if (Object.keys(this.state.uploadingFileList).find(key => this.state.uploadingFileList[key].status === 'uploading' || this.state.uploadingFileList[key].status === 'paused')) {
+      const hidable = confirm(this.props.t('uploadModal.close'));
+      if (hidable) {
+        this.onCancelUploading();
+        this.refs.uploadModal.hide();
+      }
+    } else {
       this.refs.uploadModal.hide();
     }
   }

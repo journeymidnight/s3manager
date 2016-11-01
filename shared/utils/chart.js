@@ -56,8 +56,6 @@ export function generateChartConfig(data, cols, yFormat) {
         localtime: true,
         tick: {
           format: (x) => {
-            const yearFormatter = d3.time.format('%Y');
-            const monthFormatter = d3.time.format('%Y-%m');
             const dayFormatter = d3.time.format('%m-%d');
             const hourFormatter = d3.time.format('%H:%M');
             const minuteFormatter = d3.time.format('%H:%M');
@@ -70,13 +68,9 @@ export function generateChartConfig(data, cols, yFormat) {
               return minuteFormatter(x);
             } else if (timestamp % 86400) {
               return hourFormatter(x);
-            } else if (x.getDate() !== 1) {
-              return dayFormatter(x);
-            } else if (x.getMonth() !== 1) {
-              return monthFormatter(x);
             }
 
-            return yearFormatter(x);
+            return dayFormatter(x);
           },
         },
       },
@@ -198,9 +192,9 @@ export function generateChartConfig(data, cols, yFormat) {
   } else if (yFormat === 'count') {
     config.axis.y.min = 0;
     config.axis.y.tick.format = (count) => {
-      const fmt = d3.format('.f');
+      const fmt = d3.format('d');
 
-      if (count < 0) {
+      if (count < 0 || !(fmt(count) > 0)) {
         return '';
       } else if (count < 1000) {
         return `${fmt(count)}${i18n.t('units.count')}`;
