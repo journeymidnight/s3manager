@@ -1,6 +1,7 @@
 import d3 from 'd3';
 import _ from 'lodash';
 import moment from 'moment';
+import i18n from '../i18n';
 
 export function mergeTimeSeries(...args) {
   const mergedTimeSeries = {};
@@ -175,14 +176,14 @@ export function generateChartConfig(data, cols, yFormat) {
       if (currency < 0) {
         return '';
       } else if (currency < 1000) {
-        return `${fmt(currency)}元`;
+        return `${fmt(currency)}${i18n.t('units.yuan')}`;
       } else if (currency < 10000) {
-        return `${fmt(currency / 1000)}千元`;
+        return `${fmt(currency / 1000)}${i18n.t('units.k')}${i18n.t('units.yuan')}`;
       } else if (currency < 10000 * 10000) {
-        return `${fmt(currency / 10000)}万元`;
+        return `${fmt(currency / 10000)}${i18n.t('units.w')}${i18n.t('units.yuan')}`;
       }
 
-      return `${fmt(currency / 10000 / 10000)}亿元`;
+      return `${fmt(currency / 10000 / 10000)}${i18n.t('units.y')}${i18n.t('units.yuan')}`;
     };
   } else if (yFormat === 'percentage') {
     config.axis.y.min = 0;
@@ -202,10 +203,10 @@ export function generateChartConfig(data, cols, yFormat) {
       if (count < 0) {
         return '';
       } else if (count < 1000) {
-        return `${fmt(count)}次`;
+        return `${fmt(count)}${i18n.t('units.count')}`;
       }
 
-      return `${fmt(count / 1000)}千次`;
+      return `${fmt(count / 1000)}${i18n.t('units.k')}${i18n.t('units.count')}`;
     };
   } else {
     config.axis.y.min = 0;

@@ -155,19 +155,24 @@ class ResourceMonitorConsole extends Page {
     if (this.state.endDate > this.compareDate(moment(startDate).add(30, 'days'), moment()) || this.state.endDate < this.startDate) {
       this.setState({
         startDate,
-        endDateMinDate: startDate,
-        endDateMaxDate: this.compareDate(moment(startDate).add(30, 'days'), moment()),
         startDateMinDate: undefined,
         startDateMaxDate: moment(),
-      }, () => this.props.dispatch(notifyAlert(this.props.t('pageResourceMonitors.endDateWrong'))));
+        startDateError: false,
+        endDate: undefined,
+        endDateMinDate: startDate,
+        endDateMaxDate: this.compareDate(moment(startDate).add(30, 'days'), moment()),
+        endDateError: true,
+      }, () => this.props.dispatch(notifyAlert(this.props.t('pageResourceMonitors.endDateError'))));
     } else {
       this.setState({
         shouldAddTodayPoint: moment(this.state.endDate).get('date') === moment().get('date'),
         startDate,
-        endDateMinDate: undefined,
-        endDateMaxDate: moment(),
         startDateMinDate: undefined,
         startDateMaxDate: moment(),
+        startDateError: false,
+        endDateMinDate: undefined,
+        endDateMaxDate: moment(),
+        endDateError: false,
         period: undefined,
       }, () => this.refresh()());
     }
@@ -176,20 +181,25 @@ class ResourceMonitorConsole extends Page {
   handleEndDate(endDate) {
     if (this.state.startDate < moment(endDate).subtract(30, 'days') || this.state.startDate > endDate) {
       this.setState({
-        endDate,
+        startDate: undefined,
         startDateMinDate: moment(endDate).subtract(30, 'days'),
         startDateMaxDate: endDate,
+        startDateError: true,
+        endDate,
         endDateMinDate: undefined,
         endDateMaxDate: moment(),
-      }, () => this.props.dispatch(notifyAlert(this.props.t('pageResourceMonitors.startDateWrong'))));
+        endDateError: false,
+      }, () => this.props.dispatch(notifyAlert(this.props.t('pageResourceMonitors.startDateError'))));
     } else {
       this.setState({
         shouldAddTodayPoint: moment(endDate).get('date') === moment().get('date'),
-        endDate,
         startDateMinDate: undefined,
         startDateMaxDate: moment(),
+        startDateError: false,
+        endDate,
         endDateMinDate: undefined,
         endDateMaxDate: moment(),
+        endDateError: false,
         period: undefined,
       }, () => this.refresh()());
     }
@@ -214,13 +224,15 @@ class ResourceMonitorConsole extends Page {
 
     this.setState({
       shouldAddTodayPoint: true,
-      period,
       startDate,
       startDateMinDate: undefined,
       startDateMaxDate: moment(),
+      startDateError: false,
       endDate: moment(),
       endDateMinDate: undefined,
       endDateMaxDate: moment(),
+      endDateError: false,
+      period,
     }, () => {
       this.refresh()();
     });
@@ -333,7 +345,7 @@ class ResourceMonitorConsole extends Page {
                     dateFormat="YYYY/MM/DD"
                     minDate={this.state.startDateMinDate}
                     maxDate={this.state.startDateMaxDate}
-                    className="dropdown-menu-toggle"
+                    className={`dropdown-menu-toggle ${this.state.startDateError ? 'has-error' : ''}`}
                     selected={this.state.startDate}
                     onChange={this.handleStartDate}
                   />
@@ -351,7 +363,7 @@ class ResourceMonitorConsole extends Page {
                     dateFormat="YYYY/MM/DD"
                     minDate={this.state.endDateMinDate}
                     maxDate={this.state.endDateMaxDate}
-                    className="dropdown-menu-toggle"
+                    className={`dropdown-menu-toggle ${this.state.endDateError ? 'has-error' : ''}`}
                     selected={this.state.endDate}
                     onChange={this.handleEndDate}
                   />

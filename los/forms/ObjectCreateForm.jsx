@@ -31,7 +31,7 @@ class ObjectCreateForm extends React.Component {
             <label className="control-label" >{t('pageObjectCreate.folderName')}</label>
             <div className="col-sm-10">
               <input type="text" className="form-control" {...objectName} />
-              {objectName.error && <div className="text-danger"><small>{objectName.error}</small></div>}
+              {(submitFailed || objectName.touched) && objectName.error && <div className="text-danger"><small>{objectName.error}</small></div>}
               <p className="help-block">{t('pageObjectCreate.folderNameHint').split('\n').map((item) =>
                 <span key={Math.random()}>{item}<br /></span>
               )}</p>
