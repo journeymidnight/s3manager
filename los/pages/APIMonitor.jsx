@@ -28,14 +28,14 @@ class APIMonitor extends Component {
   }
 
   render() {
-    const { t, period, shouldAddTodayPoint, context } = this.props;
+    const { t, period, date, shouldAddTodayPoint, context } = this.props;
     return (
       <div>
         <div className="row">
           <div className="col-md-12 chart-panel">
-            {period === '1day' && context.opbyhour && !context.loading && <Chart
+            {(period === '1day' || period === 'someDay') && context.opbyhour && !context.loading && <Chart
               className="chart"
-              config={generateAreaChartConfig(this.props.combineYValue(this.props.getCompleteTime(context.opbyhour).map((item) => {
+              config={generateAreaChartConfig(this.props.combineYValue(this.props.getCompleteTime(context.opbyhour, date).map((item) => {
                 const newItem = { time: item.time };
                 if (item.method === 'GET') {
                   newItem.get = item.count;
@@ -54,7 +54,7 @@ class APIMonitor extends Component {
               }, 'count')}
             />}
 
-            {period !== '1day' && context.staticsbyday && context.opbyhour && !context.loading && <Chart
+            {period !== '1day' && period !== 'someDay' && context.staticsbyday && context.opbyhour && !context.loading && <Chart
               className="chart"
               config={generateAreaChartConfig(context.staticsbyday.concat(
                 shouldAddTodayPoint ?
@@ -84,6 +84,7 @@ APIMonitor.propTypes = {
   t: PropTypes.func,
   context: PropTypes.object,
   period: PropTypes.string,
+  date: PropTypes.string,
   shouldAddTodayPoint: PropTypes.bool,
   changeMonitorType: PropTypes.func,
   getCompleteTime: PropTypes.func,

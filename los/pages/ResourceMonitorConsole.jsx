@@ -53,19 +53,29 @@ class ResourceMonitorConsole extends Page {
 
     dispatch(BucketActions.listBuckets(undefined, region.regionId))
       .then(() => {
+        const { creationDate } = this.props.context.buckets[0];
         this.setState({
           bucketName: this.props.context.buckets[0].name,
+          creationDate,
+          startDateMinDate: moment(creationDate),
+          endDateMinDate: moment(creationDate),
         }, () => dispatch(extendContext({ initialized: true }, undefined)));
       });
 
     dispatch(extendContext({ loading: true }, routerKey));
   }
 
-  compareDate(date1, date2) {
-    if (moment(date1) < moment(date2)) {
-      return date1;
+  compareDate(date1, date2, before) {
+    if (before) {
+      if (date1.isSameOrBefore(date2, 'day')) {
+        return date1;
+      }
+      return date2;
     }
-    return date2;
+    if (date1.isSameOrBefore(date2, 'day')) {
+      return date2;
+    }
+    return date1;
   }
 
   changeMonitorType(monitorType) {
@@ -119,6 +129,10 @@ class ResourceMonitorConsole extends Page {
     const startOfDayLocalFormat = moment(nowLocal).startOf('day').format('YYYYMMDDHHmmss');
 
     switch (period) { // TODO: change regionId
+      case 'someDay': {
+        return dispatch(this.getRequestDataCb()(routerKey, 'cn-north-1', bucketName, startDate.format('YYYYMMDDHHmmss'),
+          moment(endDate).add(1, 'days').subtract(1, 'seconds').format('YYYYMMDDHHmmss')));
+      }
       case '1day': {
         return dispatch(this.getRequestDataCb()(routerKey, 'cn-north-1', bucketName, startOfDayLocalFormat, nowLocalFormat));
       }
@@ -146,61 +160,105 @@ class ResourceMonitorConsole extends Page {
 
   handleBucket(e, bucketName) {
     e.preventDefault();
+    const creationDate = this.props.context.buckets.find(bucket => bucket.name === bucketName).creationDate;
     this.setState({
       bucketName,
-    }, () => this.refresh()());
+      creationDate,
+      startDateMinDate: moment(creationDate),
+      endDateMinDate: moment(creationDate),
+    }, () => {
+      if (this.state.startDate && this.state.endDate) {
+        this.refresh()();
+      }
+    });
   }
 
   handleStartDate(startDate) {
-    if (this.state.endDate > this.compareDate(moment(startDate).add(30, 'days'), moment()) || this.state.endDate < this.startDate) {
+    if (!this.state.endDate ||
+      this.state.endDate.isAfter(this.compareDate(moment(startDate).add(30, 'days'), moment(), true), 'day') ||
+      this.state.endDate.isBefore(startDate, 'day')
+    ) {
       this.setState({
         startDate,
-        startDateMinDate: undefined,
+        startDateMinDate: moment(this.state.creationDate),
         startDateMaxDate: moment(),
         startDateError: false,
         endDate: undefined,
         endDateMinDate: startDate,
-        endDateMaxDate: this.compareDate(moment(startDate).add(30, 'days'), moment()),
+        endDateMaxDate: this.compareDate(moment(startDate).add(30, 'days'), moment(), true),
         endDateError: true,
       }, () => this.props.dispatch(notifyAlert(this.props.t('pageResourceMonitors.endDateError'))));
     } else {
       this.setState({
         shouldAddTodayPoint: moment(this.state.endDate).get('date') === moment().get('date'),
         startDate,
-        startDateMinDate: undefined,
+        startDateMinDate: moment(this.state.creationDate),
         startDateMaxDate: moment(),
         startDateError: false,
-        endDateMinDate: undefined,
+        endDateMinDate: moment(this.state.creationDate),
         endDateMaxDate: moment(),
         endDateError: false,
-        period: undefined,
-      }, () => this.refresh()());
+        period: (() => {
+          if (startDate.isSame(this.state.endDate, 'day')) {
+            if (startDate.isSame(moment(), 'day')) {
+              return '1day';
+            }
+            return 'someDay';
+          }
+          return undefined;
+        })(),
+        date: (() => {
+          if (startDate.isSame(this.state.endDate, 'day') && !startDate.isSame(moment(), 'day')) {
+            return startDate;
+          }
+          return undefined;
+        })(),
+      }, () => {
+        this.refresh()();
+      });
     }
   }
 
   handleEndDate(endDate) {
-    if (this.state.startDate < moment(endDate).subtract(30, 'days') || this.state.startDate > endDate) {
+    if (!this.state.startDate ||
+      this.state.startDate.isBefore(this.compareDate(moment(endDate).subtract(30, 'days'), moment(this.state.creationDate)), 'day') ||
+      this.state.startDate.isAfter(endDate, 'day')
+    ) {
       this.setState({
         startDate: undefined,
-        startDateMinDate: moment(endDate).subtract(30, 'days'),
+        startDateMinDate: this.compareDate(moment(endDate).subtract(30, 'days'), moment(this.state.creationDate)),
         startDateMaxDate: endDate,
         startDateError: true,
         endDate,
-        endDateMinDate: undefined,
+        endDateMinDate: moment(this.state.creationDate),
         endDateMaxDate: moment(),
         endDateError: false,
       }, () => this.props.dispatch(notifyAlert(this.props.t('pageResourceMonitors.startDateError'))));
     } else {
       this.setState({
         shouldAddTodayPoint: moment(endDate).get('date') === moment().get('date'),
-        startDateMinDate: undefined,
+        startDateMinDate: moment(this.state.creationDate),
         startDateMaxDate: moment(),
         startDateError: false,
         endDate,
-        endDateMinDate: undefined,
+        endDateMinDate: moment(this.state.creationDate),
         endDateMaxDate: moment(),
         endDateError: false,
-        period: undefined,
+        period: (() => {
+          if (endDate.isSame(this.state.startDate, 'day')) {
+            if (endDate.isSame(moment(), 'day')) {
+              return '1day';
+            }
+            return 'someDay';
+          }
+          return undefined;
+        })(),
+        date: (() => {
+          if (endDate.isSame(this.state.startDate, 'day') && !endDate.isSame(moment(), 'day')) {
+            return endDate;
+          }
+          return undefined;
+        })(),
       }, () => this.refresh()());
     }
   }
@@ -225,29 +283,37 @@ class ResourceMonitorConsole extends Page {
     this.setState({
       shouldAddTodayPoint: true,
       startDate,
-      startDateMinDate: undefined,
+      startDateMinDate: moment(this.state.creationDate),
       startDateMaxDate: moment(),
       startDateError: false,
       endDate: moment(),
-      endDateMinDate: undefined,
+      endDateMinDate: moment(this.state.creationDate),
       endDateMaxDate: moment(),
       endDateError: false,
       period,
+      date: undefined,
     }, () => {
       this.refresh()();
     });
   }
 
-  getCompleteTime(dataArray) {
-    const nowLocal = this.props.context.monitorMomentLocal;
-    const nowHourLocal = Number(moment(nowLocal).format('HH'));
-    const startOfDayTimestampLocal = moment(nowLocal).startOf('day').valueOf();
-
+  getCompleteTime(dataArray, date) {
     const idealHourArray = [];
-    let hour = 0;
-    while (hour <= nowHourLocal) {
-      idealHourArray.push(hour);
-      hour++;
+    let startOfDayTimestampLocal = moment(date).valueOf();
+    if (date) {
+      for (let i = 0; i < 24; i++) {
+        idealHourArray.push(i);
+      }
+    } else {
+      const nowLocal = this.props.context.monitorMomentLocal;
+      const nowHourLocal = Number(moment(nowLocal).format('HH'));
+      startOfDayTimestampLocal = moment(nowLocal).startOf('day').valueOf();
+
+      let hour = 0;
+      while (hour <= nowHourLocal) {
+        idealHourArray.push(hour);
+        hour++;
+      }
     }
 
     const realHourArray = dataArray.map((data) => Number(moment.utc(Number(data.time)).local().format('HH')));
@@ -387,6 +453,7 @@ class ResourceMonitorConsole extends Page {
               t: this.props.t,
               context: this.props.context,
               period: this.state.period,
+              date: this.state.date,
               shouldAddTodayPoint: this.state.shouldAddTodayPoint,
               changeMonitorType: this.changeMonitorType,
               getCompleteTime: this.getCompleteTime,

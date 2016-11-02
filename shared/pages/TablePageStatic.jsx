@@ -20,6 +20,7 @@ class C extends Page {
     this.refresh = this.refresh.bind(this);
     this.onSelect = this.onSelect.bind(this);
     this.onSelectAll = this.onSelectAll.bind(this);
+    this.isAllSelected = this.isAllSelected.bind(this);
     this.onRefresh = this.onRefresh.bind(this);
     this.doSearch = this.doSearch.bind(this);
     this.onSearchKeyPress = this.onSearchKeyPress.bind(this);
@@ -125,6 +126,12 @@ class C extends Page {
       const { dispatch, routerKey } = this.props;
       dispatch(Actions.extendContext({ selected }, routerKey));
     };
+  }
+
+  isAllSelected(allIds) {
+    return allIds.length && !allIds.filter((id) => {
+      return this.props.context.selected[id] !== true;
+    }).length;
   }
 
   doSearch(e, prefix = '') {

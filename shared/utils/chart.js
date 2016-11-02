@@ -192,15 +192,13 @@ export function generateChartConfig(data, cols, yFormat) {
   } else if (yFormat === 'count') {
     config.axis.y.min = 0;
     config.axis.y.tick.format = (count) => {
-      const fmt = d3.format('d');
-
-      if (count < 0 || !(fmt(count) >= 0)) {
+      if ((count < 0 || count % 1 !== 0) && count !== 0) {
         return '';
       } else if (count < 1000) {
-        return `${fmt(count)}${i18n.t('units.count')}`;
+        return `${d3.format('d')(count)}${i18n.t('units.count')}`;
       }
 
-      return `${fmt(count / 1000)}${i18n.t('units.k')}${i18n.t('units.count')}`;
+      return `${d3.format('.1f')(count / 1000)}${i18n.t('units.k')}${i18n.t('units.count')}`;
     };
   } else {
     config.axis.y.min = 0;

@@ -728,7 +728,7 @@
     "objectPropertyPage": {
         "property": "文件属性",
         "acl": "文件权限",
-        "period": "获得地址",
+        "period": "授权时长",
         "second": "秒",
         "url": "文件地址",
         "update": "更改",
@@ -740,7 +740,7 @@
     },
     "uploadModal": {
         "close": "关闭窗口会停止文件上传，确认关闭？",
-        "uploadingStatus": "文件上传状态",
+        "uploadingStatus": "上传文件",
         "waiting": "等待上传",
         "uploading": "上传中",
         "uploaded": "成功",

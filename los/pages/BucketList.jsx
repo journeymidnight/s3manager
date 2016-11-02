@@ -67,7 +67,12 @@ class C extends TablePageStatic {
         <thead>
           <tr>
             <th style={{ width: 40 }}>
-              <input type="checkbox" className="selected" onChange={this.onSelectAll(context.visibleBuckets.map((u) => { return u.name; }))} />
+              <input
+                type="checkbox"
+                className="selected"
+                onChange={this.onSelectAll(context.visibleBuckets.map((u) => { return u.name; }))}
+                checked={this.isAllSelected(this.props.context.visibleBuckets.map((u) => { return u.name; }))}
+              />
             </th>
             <th style={{ width: '60%' }}>{t('bucketName')}</th>
             <th>{t('created')}</th>

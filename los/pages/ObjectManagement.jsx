@@ -351,10 +351,7 @@ class ObjectManagement extends TablePageStatic {
         const { context } = this.props;
 
         if (context.objectAcl === 'public-read') {
-          const url = this.s3.getSignedUrl('getObject', {
-            Bucket: params.bucketName,
-            Key: context.objectName,
-          });
+          const url = `http://${params.bucketName}.${context.s3Domain}/${context.objectName}`;
           dispatch(extendContext({ objectUrl: url }, routerKey));
         }
         setTimeout(() => this.refs.propertyModal.show(), 100);
@@ -406,7 +403,12 @@ class ObjectManagement extends TablePageStatic {
         <thead>
           <tr>
             <th style={{ width: 40 }}>
-              <input type="checkbox" className="selected" onChange={this.onSelectAll(context.visibleObjects.map((object) => object.Key || object.Prefix))} />
+              <input
+                type="checkbox"
+                className="selected"
+                onChange={this.onSelectAll(context.visibleObjects.map((object) => object.Key || object.Prefix))}
+                checked={this.isAllSelected(this.props.context.visibleObjects.map((object) => object.Key || object.Prefix))}
+              />
             </th>
             <th style={{ width: '40%' }}>{t('objectName')}</th>
             <th>{t('size')}</th>
@@ -545,6 +547,10 @@ class ObjectManagement extends TablePageStatic {
         <Modal
           title={t('uploadModal.uploadingStatus')}
           ref="uploadModal"
+          style={{
+            height: 400,
+            overflowY: 'scroll',
+          }}
           postponeClosing
           closingCb={this.onClose}
         >
@@ -579,7 +585,6 @@ class ObjectManagement extends TablePageStatic {
                                   whiteSpace: 'nowrap',
                                   overflow: 'hidden',
                                   textOverflow: 'ellipsis',
-                                  paddingRight: '50px',
                                 }}
                               >{file.name}
                               </td>

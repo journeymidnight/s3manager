@@ -46,7 +46,7 @@ export function isFolderEmpty(s3, bucketName, folderName) {
         if (error) {
           dispatch(notifyAlert(error.message));
           reject(error);
-        } else if (data.Contents.length > 0 || data.CommonPrefixes.length > 0) {
+        } else if (data.Contents.filter((object) => object.Key !== folderName).length > 0 || data.CommonPrefixes.length > 0) {
           reject(folderName);
         }
         resolve();

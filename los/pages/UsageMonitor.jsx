@@ -15,7 +15,7 @@ class UsageMonitor extends Component {
       <div>
         <div className="row">
           <div className="col-md-12 chart-panel">
-            {period === '1day' && context.usagebyhour && !context.loading && <Chart
+            {(period === '1day' || period === 'someDay') && context.usagebyhour && !context.loading && <Chart
               className="chart"
               config={generateLineChartConfig(context.usagebyhour.map((item) => ({
                 timestamp: Number(item.time),
@@ -25,7 +25,7 @@ class UsageMonitor extends Component {
               }, 'kilobytes')}
             />}
 
-            {period !== '1day' && context.staticsbyday && context.usagebyhour && !context.loading && <Chart
+            {period !== '1day' && period !== 'someDay' && context.staticsbyday && context.usagebyhour && !context.loading && <Chart
               className="chart"
               config={generateLineChartConfig(context.staticsbyday.concat(
                 shouldAddTodayPoint ?
