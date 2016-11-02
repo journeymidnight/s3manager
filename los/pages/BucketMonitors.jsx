@@ -60,7 +60,13 @@ class C extends Component {
       <div>
         <div className="gray-content-block second-block">
           <div className="filter-item inline">
-            <a className="btn btn-default">
+            <a
+              className="btn btn-default"
+              onClick={e => {
+                e.preventDefault();
+                this.props.refresh();
+              }}
+            >
               <i className={`fa fa-refresh ${context.loading ? 'fa-spin' : ''}`} />
             </a>
           </div>
@@ -153,6 +159,7 @@ class C extends Component {
 C.propTypes = {
   t: PropTypes.func.isRequired,
   context: PropTypes.object.isRequired,
+  refresh: PropTypes.func.isRequired,
 };
 
 export default C;

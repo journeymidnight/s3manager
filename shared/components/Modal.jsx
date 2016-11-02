@@ -48,8 +48,8 @@ class Modal extends React.Component {
     const props = this.props;
 
     return (
-      <div className="modal fade" tabIndex="-1" role="dialog" id={props.id} ref="modal">
-        <div className="modal-dialog">
+      <div className="modal fade" tabIndex="-1" role="dialog" id={props.id} ref="modal" data-backdrop="static">
+        <div className="modal-dialog" style={props.style} >
           <div className="modal-content">
             {props.title && <div className="modal-header">
               <button type="button" className="close" onClick={this.onHide}><span>&times;</span></button>
@@ -66,6 +66,7 @@ class Modal extends React.Component {
 Modal.propTypes = {
   id: React.PropTypes.string,
   title: React.PropTypes.string,
+  style: React.PropTypes.object,
   postponeClosing: React.PropTypes.bool,
   closingCb: React.PropTypes.func,
   pop: React.PropTypes.any,

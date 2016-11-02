@@ -22,13 +22,19 @@ class C extends Page {
       'public-read': t('pageBucketCreate.aclPublicR'),
     };
 
+    this.refresh = this.refresh.bind(this);
     this.formatBytes = this.formatBytes.bind(this);
     this.onPutAcl = this.onPutAcl.bind(this);
   }
 
   initialize() {
-    const { t, dispatch, servicePath, region, routerKey, params } = this.props;
+    const { t, dispatch, servicePath } = this.props;
     dispatch(setHeader(t('bucketDetail'), `${servicePath}/buckets`));
+    this.refresh();
+  }
+
+  refresh() {
+    const { dispatch, region, routerKey, params } = this.props;
     const bucketName = params.bucketName;
 
     dispatch(requestGetS3Domain(routerKey, region.regionId))
@@ -205,7 +211,7 @@ class C extends Page {
                   </li>
                 </ul>
                 <div>
-                  <BucketMonitors {...this.props} />
+                  <BucketMonitors {...this.props} refresh={this.refresh} />
                 </div>
               </div>
             </div>
