@@ -548,8 +548,8 @@ class ObjectManagement extends TablePageStatic {
           title={t('uploadModal.uploadingStatus')}
           ref="uploadModal"
           style={{
-            height: 400,
-            overflowY: 'scroll',
+            height: '70%',
+            overflowY: 'auto',
           }}
           postponeClosing
           closingCb={this.onClose}
