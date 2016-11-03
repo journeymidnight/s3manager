@@ -97,7 +97,11 @@ class ObjectManagement extends TablePageStatic {
 
         this.s3.deleteObjects(params, (error) => {
           if (error) {
-            dispatch(notifyAlert(error.message));
+            if (error.code === 'InvalidAccessKeyId' || error.code === 'NetworkingError') {
+              window.location = '/';
+            } else {
+              dispatch(notifyAlert(error.message));
+            }
           } else {
             dispatch(notify(t('objectDeletedSuccess')));
             this.onRefresh({ searchWord: this.props.global.folderLocation }, false)();
@@ -188,7 +192,9 @@ class ObjectManagement extends TablePageStatic {
   uploadOneObjectCb(index) {
     return (error) => {
       if (error) {
-        if (error.code !== 'RequestAbortedError') {
+        if (error.code === 'InvalidAccessKeyId' || error.code === 'NetworkingError') {
+          window.location = '/';
+        } else if (error.code !== 'RequestAbortedError') {
           this.s3Uploaders[index] = null;
           const newUploadingFile = Object.assign({}, this.state.uploadingFileList[index], {
             status: 'failed',
@@ -377,7 +383,11 @@ class ObjectManagement extends TablePageStatic {
 
     this.s3.putObject(params, (error) => {
       if (error) {
-        dispatch(notifyAlert(error.message));
+        if (error.code === 'InvalidAccessKeyId' || error.code === 'NetworkingError') {
+          window.location = '/';
+        } else {
+          dispatch(notifyAlert(error.message));
+        }
       } else {
         dispatch(notify(t('folderCreatedSuccess')));
         this.onRefresh({ searchWord: this.props.global.folderLocation }, false)();
@@ -547,10 +557,6 @@ class ObjectManagement extends TablePageStatic {
         <Modal
           title={t('uploadModal.uploadingStatus')}
           ref="uploadModal"
-          style={{
-            height: 400,
-            overflowY: 'scroll',
-          }}
           postponeClosing
           closingCb={this.onClose}
         >
@@ -565,64 +571,68 @@ class ObjectManagement extends TablePageStatic {
                 <div className="content">
                   <div className="clearfix">
                     <div className="table-holder">
-                      <table className="table" style={{ tableLayout: 'fixed' }}>
+                      <table className="table" style={{ tableLayout: 'fixed', marginBottom: 0 }}>
                         <thead>
                           <tr>
                             <th style={{ width: '40%' }}>{t('fileName')}</th>
                             <th style={{ width: '20%' }}>{t('uploadModal.progress')}</th>
-                            <th>{t('size')}</th>
-                            <th>{t('status')}</th>
-                            <th>{t('action')}</th>
+                            <th style={{ width: '12%' }}>{t('size')}</th>
+                            <th style={{ width: '14%' }}>{t('status')}</th>
+                            <th style={{ width: '14%' }}>{t('action')}</th>
                           </tr>
                         </thead>
-                        <tbody>
-                        {Object.keys(uploadingFileList).map((key) => {
-                          const file = uploadingFileList[key];
-                          return (
-                            <tr key={file.name}>
-                              <td
-                                style={{
-                                  whiteSpace: 'nowrap',
-                                  overflow: 'hidden',
-                                  textOverflow: 'ellipsis',
-                                }}
-                              >{file.name}
-                              </td>
-                              <td style={{ position: 'relative' }}>
-                                {this.calProgressWidth(file.percent)}
-                                <div
-                                  style={{
-                                    width: this.calProgressWidth(file.percent),
-                                    position: 'absolute',
-                                    height: '100%',
-                                    backgroundColor: '#0e90d2',
-                                    top: 0,
-                                    left: 0,
-                                    opacity: 0.5,
-                                  }}
-                                ></div>
-                              </td>
-                              <td>{this.formatBytes(file.size)}</td>
-                              <td>{this.status[file.status]}</td>
-                              <td>
-                                {
-                                  file.actions.map((action, index) =>
-                                    <i
-                                      key={index}
-                                      className={`fa ${this.actions[action]}`}
-                                      style={{ marginRight: 10 }}
-                                      onClick={
-                                        () => this.handleUploadAction(action, key)
-                                      }
-                                    />
-                                  )
-                                }
-                              </td>
-                            </tr>
-                          );
-                        })}
-                        </tbody>
                       </table>
+                      <div style={{ height: 300, overflowY: 'auto' }}>
+                        <table className="table" style={{ tableLayout: 'fixed' }}>
+                          <tbody>
+                          {Object.keys(uploadingFileList).map((key) => {
+                            const file = uploadingFileList[key];
+                            return (
+                              <tr key={file.name} style={{ width: '40%' }}>
+                                <td
+                                  style={{
+                                    whiteSpace: 'nowrap',
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                  }}
+                                >{file.name}
+                                </td>
+                                <td style={{ position: 'relative', width: '20%' }}>
+                                  {this.calProgressWidth(file.percent)}
+                                  <div
+                                    style={{
+                                      width: this.calProgressWidth(file.percent),
+                                      position: 'absolute',
+                                      height: '100%',
+                                      backgroundColor: '#0e90d2',
+                                      top: 0,
+                                      left: 0,
+                                      opacity: 0.5,
+                                    }}
+                                  ></div>
+                                </td>
+                                <td style={{ width: '12%' }}>{this.formatBytes(file.size)}</td>
+                                <td style={{ width: '14%' }}>{this.status[file.status]}</td>
+                                <td style={{ width: '14%' }}>
+                                  {
+                                    file.actions.map((action, index) =>
+                                      <i
+                                        key={index}
+                                        className={`fa ${this.actions[action]}`}
+                                        style={{ marginRight: 10 }}
+                                        onClick={
+                                          () => this.handleUploadAction(action, key)
+                                        }
+                                      />
+                                    )
+                                  }
+                                </td>
+                              </tr>
+                            );
+                          })}
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
                   </div>
                 </div>

@@ -95,7 +95,7 @@ class ObjectPropertyForm extends React.Component {
           <div className="form-group">
             <label className="control-label" >{t('objectPropertyPage.url')}</label>
             <div className="col-sm-10">
-              <strong style={{ padding: 6, display: 'block', wordBreak: 'break-word' }}>{context.objectUrl || ''}</strong>
+              <strong style={{ padding: 6, display: 'block', wordBreak: 'break-all' }}>{context.objectUrl || ''}</strong>
             </div>
           </div>
 
