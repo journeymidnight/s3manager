@@ -97,7 +97,11 @@ class ObjectManagement extends TablePageStatic {
 
         this.s3.deleteObjects(params, (error) => {
           if (error) {
-            dispatch(notifyAlert(error.message));
+            if (error.code === 'InvalidAccessKeyId') {
+              window.location = '/';
+            } else {
+              dispatch(notifyAlert(error.message));
+            }
           } else {
             dispatch(notify(t('objectDeletedSuccess')));
             this.onRefresh({ searchWord: this.props.global.folderLocation }, false)();
@@ -188,7 +192,9 @@ class ObjectManagement extends TablePageStatic {
   uploadOneObjectCb(index) {
     return (error) => {
       if (error) {
-        if (error.code !== 'RequestAbortedError') {
+        if (error.code === 'InvalidAccessKeyId') {
+          window.location = '/';
+        } else if (error.code !== 'RequestAbortedError') {
           this.s3Uploaders[index] = null;
           const newUploadingFile = Object.assign({}, this.state.uploadingFileList[index], {
             status: 'failed',
@@ -377,7 +383,11 @@ class ObjectManagement extends TablePageStatic {
 
     this.s3.putObject(params, (error) => {
       if (error) {
-        dispatch(notifyAlert(error.message));
+        if (error.code === 'InvalidAccessKeyId') {
+          window.location = '/';
+        } else {
+          dispatch(notifyAlert(error.message));
+        }
       } else {
         dispatch(notify(t('folderCreatedSuccess')));
         this.onRefresh({ searchWord: this.props.global.folderLocation }, false)();

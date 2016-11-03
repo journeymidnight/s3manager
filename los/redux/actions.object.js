@@ -12,7 +12,11 @@ export function setVisibleObjects(s3, bucketName, routerKey, filters) {
 
       s3.listObjectsV2(params, (error, data) => {
         if (error) {
-          dispatch(notifyAlert(error.message));
+          if (error.code === 'InvalidAccessKeyId') {
+            window.location = '/';
+          } else {
+            dispatch(notifyAlert(error.message));
+          }
           reject(error);
         } else {
           const { offset, limit } = filters;
@@ -44,7 +48,11 @@ export function isFolderEmpty(s3, bucketName, folderName) {
 
       s3.listObjectsV2(params, (error, data) => {
         if (error) {
-          dispatch(notifyAlert(error.message));
+          if (error.code === 'InvalidAccessKeyId') {
+            window.location = '/';
+          } else {
+            dispatch(notifyAlert(error.message));
+          }
           reject(error);
         } else if (data.Contents.filter((object) => object.Key !== folderName).length > 0 || data.CommonPrefixes.length > 0) {
           reject(folderName);
@@ -65,7 +73,11 @@ export function requestPutObjectAcl(s3, bucketName, objectName, acl) {
       };
       s3.putObjectAcl(params, (error) => {
         if (error) {
-          dispatch(notifyAlert(i18n.t('objectPropertyPage.aclFail')));
+          if (error.code === 'InvalidAccessKeyId') {
+            window.location = '/';
+          } else {
+            dispatch(notifyAlert(i18n.t('objectPropertyPage.aclFail')));
+          }
           reject();
         } else {
           dispatch(notify(i18n.t('objectPropertyPage.aclSuccess')));
@@ -86,7 +98,11 @@ export function requestGetObjectAcl(s3, bucketName, objectName, routerKey) {
 
       s3.getObjectAcl(params, (error, data) => {
         if (error) {
-          dispatch(notifyAlert(error.message));
+          if (error.code === 'InvalidAccessKeyId') {
+            window.location = '/';
+          } else {
+            dispatch(notifyAlert(error.message));
+          }
           reject();
         } else {
           // Below 3 lines of code may lead to bug in future
