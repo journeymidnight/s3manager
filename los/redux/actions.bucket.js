@@ -85,7 +85,7 @@ export function requestPutBucketAcl(s3, bucketName, acl) {
       };
       s3.putBucketAcl(params, (error) => {
         if (error) {
-          if (error.code === 'InvalidAccessKeyId') {
+          if (error.code === 'InvalidAccessKeyId' || error.code === 'NetworkingError') {
             window.location = '/';
           }
           reject();
@@ -107,7 +107,7 @@ export function requestGetBucketAcl(s3, bucketName, routerKey) {
 
       s3.getBucketAcl(params, (error, data) => {
         if (error) {
-          if (error.code === 'InvalidAccessKeyId') {
+          if (error.code === 'InvalidAccessKeyId' || error.code === 'NetworkingError') {
             window.location = '/';
           } else {
             dispatch(notifyAlert(error.message));
@@ -204,7 +204,7 @@ export function isBucketEmpty(s3, bucketName) {
 
       s3.listObjectsV2(params, (error, data) => {
         if (error) {
-          if (error.code === 'InvalidAccessKeyId') {
+          if (error.code === 'InvalidAccessKeyId' || error.code === 'NetworkingError') {
             window.location = '/';
           } else {
             dispatch(notifyAlert(error.message));

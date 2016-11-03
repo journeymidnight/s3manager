@@ -12,7 +12,7 @@ export function setVisibleObjects(s3, bucketName, routerKey, filters) {
 
       s3.listObjectsV2(params, (error, data) => {
         if (error) {
-          if (error.code === 'InvalidAccessKeyId') {
+          if (error.code === 'InvalidAccessKeyId' || error.code === 'NetworkingError') {
             window.location = '/';
           } else {
             dispatch(notifyAlert(error.message));
@@ -48,7 +48,7 @@ export function isFolderEmpty(s3, bucketName, folderName) {
 
       s3.listObjectsV2(params, (error, data) => {
         if (error) {
-          if (error.code === 'InvalidAccessKeyId') {
+          if (error.code === 'InvalidAccessKeyId' || error.code === 'NetworkingError') {
             window.location = '/';
           } else {
             dispatch(notifyAlert(error.message));
@@ -73,7 +73,7 @@ export function requestPutObjectAcl(s3, bucketName, objectName, acl) {
       };
       s3.putObjectAcl(params, (error) => {
         if (error) {
-          if (error.code === 'InvalidAccessKeyId') {
+          if (error.code === 'InvalidAccessKeyId' || error.code === 'NetworkingError') {
             window.location = '/';
           } else {
             dispatch(notifyAlert(i18n.t('objectPropertyPage.aclFail')));
@@ -98,7 +98,7 @@ export function requestGetObjectAcl(s3, bucketName, objectName, routerKey) {
 
       s3.getObjectAcl(params, (error, data) => {
         if (error) {
-          if (error.code === 'InvalidAccessKeyId') {
+          if (error.code === 'InvalidAccessKeyId' || error.code === 'NetworkingError') {
             window.location = '/';
           } else {
             dispatch(notifyAlert(error.message));

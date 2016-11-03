@@ -97,7 +97,7 @@ class ObjectManagement extends TablePageStatic {
 
         this.s3.deleteObjects(params, (error) => {
           if (error) {
-            if (error.code === 'InvalidAccessKeyId') {
+            if (error.code === 'InvalidAccessKeyId' || error.code === 'NetworkingError') {
               window.location = '/';
             } else {
               dispatch(notifyAlert(error.message));
@@ -191,8 +191,10 @@ class ObjectManagement extends TablePageStatic {
 
   uploadOneObjectCb(index) {
     return (error) => {
+      console.log(JSON.stringify(error));
+      console.dir(error);
       if (error) {
-        if (error.code === 'InvalidAccessKeyId') {
+        if (error.code === 'InvalidAccessKeyId' || error.code === 'NetworkingError') {
           window.location = '/';
         } else if (error.code !== 'RequestAbortedError') {
           this.s3Uploaders[index] = null;
@@ -383,7 +385,7 @@ class ObjectManagement extends TablePageStatic {
 
     this.s3.putObject(params, (error) => {
       if (error) {
-        if (error.code === 'InvalidAccessKeyId') {
+        if (error.code === 'InvalidAccessKeyId' || error.code === 'NetworkingError') {
           window.location = '/';
         } else {
           dispatch(notifyAlert(error.message));
