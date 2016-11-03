@@ -191,8 +191,6 @@ class ObjectManagement extends TablePageStatic {
 
   uploadOneObjectCb(index) {
     return (error) => {
-      console.log(JSON.stringify(error));
-      console.dir(error);
       if (error) {
         if (error.code === 'InvalidAccessKeyId' || error.code === 'NetworkingError') {
           window.location = '/';
