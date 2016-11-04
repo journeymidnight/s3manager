@@ -757,7 +757,7 @@
 
     "pageObjectCreate": {
         "folderName": "文件夹名",
-        "folderNameHint": "文件夹命名规范： \n 1. 只能包含字母，数字，中文，下划线，短横线，和小数点 \n 2. 只能以字母、数字或者中文开头 \n 3. 文件夹的长度限制在1-254之间",
+        "folderNameHint": "文件夹命名规范： \n 1. 只能包含字母，数字，中文，下划线，短横线和小数点 \n 2. 只能以字母、数字或者中文开头 \n 3. 文件夹的长度限制在1-254之间",
         "objectNameNotValid": "文件夹名称不符合要求",
         "objectNameDuplicated": "文件夹名重复"
     },
