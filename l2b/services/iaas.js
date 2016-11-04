@@ -17,7 +17,16 @@ export const ACTION_NAMES = {
   deleteLoadBalancers: 'DeleteLoadBalancers',
   describeNetworks: 'DescribeNetworks',
   createLoadBalancer: 'CreateLoadBalancer',
+  modifyLoadBalancer: 'ModifyLoadBalancerAttributes',
   describeLoadBalancerListeners: 'DescribeLoadBalancerListeners',
   createLoadBalancerListener: 'CreateLoadBalancerListener',
+  deleteLoadBalancerListeners: 'DeleteLoadBalancerListeners',
+  modifyLoadBalancerListener: 'ModifyLoadBalancerListenerAttributes',
+  updateLoadBalancerListener: 'UpdateLoadBalancerListener',
+  describeLoadBalancerBackends: 'DescribeLoadBalancerBackends',
+  createLoadBalancerBackend: 'CreateLoadBalancerBackend',
+  deleteLoadBalancerBackends: 'DeleteLoadBalancerBackends',
+  modifyLoadBalancerBackend: 'ModifyLoadBalancerBackendAttributes',
+  updateLoadBalancerBackend: 'UpdateLoadBalancerBackend',
 };
 export default new IaaS();
