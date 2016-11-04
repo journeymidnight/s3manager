@@ -74,6 +74,7 @@ class ObjectManagement extends TablePageStatic {
         AWS.config.region = region.regionId;
         AWS.config.accessKeyId = region.accessKey;
         AWS.config.secretAccessKey = region.accessSecret;
+        AWS.config.maxRetries = 3;
         this.s3 = new AWS.S3();
         this.initTable(routerKey, { searchWord: this.props.global.folderLocation });
       });

@@ -105,7 +105,7 @@ export function requestGetBucketAcl(s3, bucketName, routerKey) {
         Bucket: bucketName,
       };
 
-      const s3Action = s3.getBucketAcl(params, (error, data) => {
+      const s3Action = () => s3.getBucketAcl(params, (error, data) => {
         if (error) {
           dispatch(notifyAlert(error.message));
           reject();
