@@ -43,7 +43,7 @@ class C extends Page {
         AWS.config.region = region.regionId;
         AWS.config.accessKeyId = region.accessKey;
         AWS.config.secretAccessKey = region.accessSecret;
-        AWS.config.maxRetries = 5;
+        AWS.config.maxRetries = 3;
         this.s3 = new AWS.S3();
         dispatch(BucketActions.requestGetBucketAcl(this.s3, bucketName, routerKey));
       });
