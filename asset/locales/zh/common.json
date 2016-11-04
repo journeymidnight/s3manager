@@ -701,7 +701,7 @@
         "monitor": "监控",
 
         "usageMonitor": "当日存储容量",
-        "usageLegend": "存储占用量",
+        "usageLegend": "存储容量",
 
         "flowMonitor": "当日流量",
         "flowOutPublic": "公网流出",
