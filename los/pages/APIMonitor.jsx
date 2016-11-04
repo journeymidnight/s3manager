@@ -5,19 +5,37 @@ import { generateAreaChartConfig } from '../../shared/utils/chart';
 
 class APIMonitor extends Component {
 
+  constructor() {
+    super();
+
+    this.getTodayOp = this.getTodayOp.bind(this);
+  }
+
   componentWillMount() {
     this.props.changeMonitorType('api');
   }
 
+  getTodayOp(opbyhourArray) {
+    const opGetArray = opbyhourArray.filter(op => op.method === 'GET');
+    const opPutArray = opbyhourArray.filter(op => op.method === 'PUT');
+    const getOps = opGetArray.reduce((previousValue, currentItem) => (previousValue + Number(currentItem.count)), 0);
+    const putOps = opPutArray.reduce((previousValue, currentItem) => (previousValue + Number(currentItem.count)), 0);
+    return {
+      date: moment().format('YYYYMMDD'),
+      getOps,
+      putOps,
+    };
+  }
+
   render() {
-    const { t, period, context } = this.props;
+    const { t, period, date, shouldAddTodayPoint, context } = this.props;
     return (
       <div>
         <div className="row">
           <div className="col-md-12 chart-panel">
-            {period === '1day' && context.opbyhour && !context.loading && <Chart
+            {(period === '1day' || period === 'someDay') && context.opbyhour && !context.loading && <Chart
               className="chart"
-              config={generateAreaChartConfig(this.props.combineYValue(this.props.getCompleteTime(context.opbyhour).map((item) => {
+              config={generateAreaChartConfig(this.props.combineYValue(this.props.getCompleteTime(context.opbyhour, date).map((item) => {
                 const newItem = { time: item.time };
                 if (item.method === 'GET') {
                   newItem.get = item.count;
@@ -36,9 +54,13 @@ class APIMonitor extends Component {
               }, 'count')}
             />}
 
-            {period !== '1day' && context.staticsbyday && !context.loading && <Chart
+            {period !== '1day' && period !== 'someDay' && context.staticsbyday && context.opbyhour && !context.loading && <Chart
               className="chart"
-              config={generateAreaChartConfig(context.staticsbyday.map((item) => ({
+              config={generateAreaChartConfig(context.staticsbyday.concat(
+                shouldAddTodayPoint ?
+                  [this.getTodayOp(context.opbyhour)] :
+                  []
+              ).map((item) => ({
                 timestamp: moment(item.date).utc(),
                 get: item.getOps || 0,
                 put: item.putOps || 0,
@@ -62,6 +84,8 @@ APIMonitor.propTypes = {
   t: PropTypes.func,
   context: PropTypes.object,
   period: PropTypes.string,
+  date: PropTypes.string,
+  shouldAddTodayPoint: PropTypes.bool,
   changeMonitorType: PropTypes.func,
   getCompleteTime: PropTypes.func,
   combineYValue: PropTypes.func,

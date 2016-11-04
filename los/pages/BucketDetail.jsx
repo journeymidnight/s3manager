@@ -22,13 +22,19 @@ class C extends Page {
       'public-read': t('pageBucketCreate.aclPublicR'),
     };
 
+    this.refresh = this.refresh.bind(this);
     this.formatBytes = this.formatBytes.bind(this);
     this.onPutAcl = this.onPutAcl.bind(this);
   }
 
   initialize() {
-    const { t, dispatch, servicePath, region, routerKey, params } = this.props;
+    const { t, dispatch, servicePath } = this.props;
     dispatch(setHeader(t('bucketDetail'), `${servicePath}/buckets`));
+    this.refresh();
+  }
+
+  refresh() {
+    const { dispatch, region, routerKey, params } = this.props;
     const bucketName = params.bucketName;
 
     dispatch(requestGetS3Domain(routerKey, region.regionId))
@@ -67,7 +73,8 @@ class C extends Page {
   }
 
   formatBytes(bytes) {
-    if (bytes < 1024) return `${bytes}B`;
+    if (bytes === 0) return 0;
+    else if (bytes < 1024) return `${bytes}B`;
     else if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)}KB`;
     else if (bytes < 1024 * 1024 * 1024) return `${(bytes / 1024 / 1024).toFixed(1)}MB`;
     else if (bytes < 1024 * 1024 * 1024 * 1024) return `${(bytes / 1024 / 1024 / 1024).toFixed(1)}GB`;
@@ -107,7 +114,7 @@ class C extends Page {
                   <table className="table table-detail">
                     <tbody>
                       <tr>
-                        <td width="100">{t('pageBucket.usage')}</td>
+                        <td style={{ width: 100 }}>{t('pageBucket.usage')}</td>
                         <td>
                           <span>
                             {context.usageByNow ?
@@ -152,7 +159,7 @@ class C extends Page {
                       </tr>
                       <tr>
                         <td>{t('pageBucket.createDate')}</td>
-                        <td><span>{moment.utc(this.props.global.bucketCreationDate).local().format('YYYY-MM-DD HH:mm:ss')}</span></td>
+                        <td><span>{moment(Number(this.props.location.query.date)).local().format('YYYY-MM-DD HH:mm:ss')}</span></td>
                       </tr>
                     </tbody>
                   </table>
@@ -180,7 +187,7 @@ class C extends Page {
                   <table className="table table-detail">
                     <tbody>
                       <tr>
-                        <td width="100">{t('pageBucket.bucketAcl')}</td>
+                        <td style={{ width: 100 }}>{t('pageBucket.bucketAcl')}</td>
                         <td>
                           <span>{this.acl[context.acl]}</span>
                         </td>
@@ -198,13 +205,13 @@ class C extends Page {
               <div className="col-md-8 tabs">
                 <ul className="nav-links clearfix">
                   <li className="pull-left active">
-                    <Link data-placement="left" to={`${servicePath}/buckets/${params.bucketName}`}>
+                    <Link data-placement="left" to={`${servicePath}/buckets/${params.bucketName}/detail?date=${this.props.location.query.date}`}>
                       {t('pageBucket.monitor')}
                     </Link>
                   </li>
                 </ul>
                 <div>
-                  <BucketMonitors {...this.props} />
+                  <BucketMonitors {...this.props} refresh={this.refresh} />
                 </div>
               </div>
             </div>

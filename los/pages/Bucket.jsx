@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router';
 import _ from 'lodash';
 import Page, { attach } from '../../shared/pages/Page';
-import * as BucketActions from '../redux/actions.bucket';
 
 class C extends Page {
 
@@ -12,11 +11,6 @@ class C extends Page {
       shouldUpdate = true;
     }
     return shouldUpdate;
-  }
-
-  componentWillUnmount() {
-    const { dispatch } = this.props;
-    dispatch(BucketActions.removeBucket());
   }
 
   render() {
@@ -35,12 +29,12 @@ class C extends Page {
           <div className="clearfix">
             <ul className="nav-links clearfix">
               <li className={`pull-left ${(active === 'detail') ? 'active' : ''}`}>
-                <Link data-placement="left" to={`${servicePath}/buckets/${params.bucketName}/detail`}>
+                <Link data-placement="left" to={`${servicePath}/buckets/${params.bucketName}/detail?date=${this.props.location.query.date}`}>
                   {t('bucketDetail')}
                 </Link>
               </li>
               <li className={`pull-left ${(active === 'objects') ? 'active' : ''}`}>
-                <Link data-placement="left" to={`${servicePath}/buckets/${params.bucketName}/objects`}>
+                <Link data-placement="left" to={`${servicePath}/buckets/${params.bucketName}/objects?date=${this.props.location.query.date}`}>
                   {t('objectManagement')}
                 </Link>
               </li>

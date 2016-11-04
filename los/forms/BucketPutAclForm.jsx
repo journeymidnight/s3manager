@@ -24,7 +24,7 @@ class BucketPutAclForm extends React.Component {
           <div className="form-group">
             <label className="control-label" >{t('pageBucket.bucketAcl')}</label>
             <div className="col-sm-10">
-              <select className="form-control" onChange={acl.onChange}>
+              <select className="form-control" {...acl}>
                 <option key="private" value="private">
                   {t('pageBucketCreate.aclPrivate')}
                 </option>

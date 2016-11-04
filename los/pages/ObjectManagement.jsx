@@ -7,8 +7,10 @@ import { Link } from 'react-router';
 import { attach } from '../../shared/pages/Page';
 import { buttonForm } from '../../shared/forms/ButtonForm';
 import Modal, { confirmModal } from '../../shared/components/Modal';
+import ObjectCreateForm from '../forms/ObjectCreateForm';
 import ObjectPropertyForm from '../forms/ObjectPropertyForm';
 import TablePageStatic from '../../shared/pages/TablePageStatic';
+import SearchBox from '../../shared/components/SearchBox';
 import { setHeader, notify, notifyAlert, extendContext } from '../../console-common/redux/actions';
 import { requestGetS3Domain } from '../redux/actions.s3Domain';
 import * as ObjectActions from '../redux/actions.object';
@@ -39,18 +41,23 @@ class ObjectManagement extends TablePageStatic {
     this.onDelete = this.onDelete.bind(this);
     this.onSearchKeyPress = this.onSearchKeyPress.bind(this);
     this.formatBytes = this.formatBytes.bind(this);
+    this.checkFileDuplication = this.checkFileDuplication.bind(this);
     this.onFileUpload = this.onFileUpload.bind(this);
+    this.uploadObjects = this.uploadObjects.bind(this);
     this.uploadOneObject = this.uploadOneObject.bind(this);
     this.handleUploadAction = this.handleUploadAction.bind(this);
     this.pauseOneObject = this.pauseOneObject.bind(this);
     this.continueOneObject = this.continueOneObject.bind(this);
     this.retryOneObject = this.retryOneObject.bind(this);
+    this.onClose = this.onClose.bind(this);
+    this.onCancelUploading = this.onCancelUploading.bind(this);
     this.cancelOneObject = this.cancelOneObject.bind(this);
     this.onFileDownload = this.onFileDownload.bind(this);
     this.downloadOneObject = this.downloadOneObject.bind(this);
     this.checkObjectProperty = this.checkObjectProperty.bind(this);
     this.calProgressWidth = this.calProgressWidth.bind(this);
     this.changeFolder = this.changeFolder.bind(this);
+    this.onCreateObject = this.onCreateObject.bind(this);
   }
 
   initialize(routerKey) {
@@ -90,24 +97,47 @@ class ObjectManagement extends TablePageStatic {
 
         this.s3.deleteObjects(params, (error) => {
           if (error) {
-            dispatch(notifyAlert(error.message)); // will there be error.message?
+            if (error.code === 'InvalidAccessKeyId' || error.code === 'NetworkingError') {
+              window.location = '/';
+            } else {
+              dispatch(notifyAlert(error.message));
+            }
           } else {
             dispatch(notify(t('objectDeletedSuccess')));
             this.onRefresh({ searchWord: this.props.global.folderLocation }, false)();
           }
         });
-      }), folderName => dispatch(notifyAlert(folderName.slice(this.props.global.folderLocation.length, -1) + t('cannotDeleteFolder'))));
+      }), folderName => dispatch(notifyAlert(folderName.slice(this.props.global.folderLocation.length, -1) + t('cannotDelete'))));
   }
 
   formatBytes(bytes) {
-    if (bytes < 1024) return `${bytes}B`;
+    if (bytes === 0) return 0;
+    else if (bytes < 1024) return `${bytes}B`;
     else if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)}KB`;
     else if (bytes < 1024 * 1024 * 1024) return `${(bytes / 1024 / 1024).toFixed(1)}MB`;
     else if (bytes < 1024 * 1024 * 1024 * 1024) return `${(bytes / 1024 / 1024 / 1024).toFixed(1)}GB`;
     return `${(bytes / 1024 / 1024 / 1024 / 1024).toFixed(1)}TB`;
   }
 
+  checkFileDuplication() {
+    const files = this.refs.fileUploader.files;
+    for (let i = 0, len = files.length; i < len; i++) {
+      if (this.props.context.fileNames.includes(this.props.global.folderLocation + files[i].name)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   onFileUpload() {
+    if (this.checkFileDuplication()) {
+      confirmModal(this.props.t('有重名文件，确认继续上传会覆盖原有文件。'), this.uploadObjects);
+    } else {
+      this.uploadObjects();
+    }
+  }
+
+  uploadObjects() {
     const files = this.refs.fileUploader.files;
     const uploadingFileList = {};
     this.s3Uploaders = [];
@@ -162,7 +192,9 @@ class ObjectManagement extends TablePageStatic {
   uploadOneObjectCb(index) {
     return (error) => {
       if (error) {
-        if (error.code !== 'RequestAbortedError') {
+        if (error.code === 'InvalidAccessKeyId' || error.code === 'NetworkingError') {
+          window.location = '/';
+        } else if (error.code !== 'RequestAbortedError') {
           this.s3Uploaders[index] = null;
           const newUploadingFile = Object.assign({}, this.state.uploadingFileList[index], {
             status: 'failed',
@@ -236,9 +268,30 @@ class ObjectManagement extends TablePageStatic {
     });
   }
 
+  onClose() {
+    if (Object.keys(this.state.uploadingFileList).find(key => this.state.uploadingFileList[key].status === 'uploading' || this.state.uploadingFileList[key].status === 'paused')) {
+      const hidable = confirm(this.props.t('uploadModal.close'));
+      if (hidable) {
+        this.onCancelUploading();
+        this.refs.uploadModal.hide();
+      }
+    } else {
+      this.refs.uploadModal.hide();
+    }
+  }
+
+  onCancelUploading() {
+    for (let i = 0, len = Object.keys(this.state.uploadingFileList).length; i < len; i++) {
+      this.cancelOneObject(i);
+    }
+  }
+
   cancelOneObject(index) {
     const s3Uploader = this.s3Uploaders[index];
-    if (s3Uploader && s3Uploader.service.config.params.UploadId) {
+    if (s3Uploader &&
+      s3Uploader.service.config.params.UploadId &&
+      (this.state.uploadingFileList[index].status === 'uploading' || this.state.uploadingFileList[index].status === 'paused')
+    ) {
       s3Uploader.service.abortMultipartUpload().send();
     }
     this.s3Uploaders[index] = null;
@@ -304,10 +357,7 @@ class ObjectManagement extends TablePageStatic {
         const { context } = this.props;
 
         if (context.objectAcl === 'public-read') {
-          const url = this.s3.getSignedUrl('getObject', {
-            Bucket: params.bucketName,
-            Key: context.objectName,
-          });
+          const url = `http://${params.bucketName}.${context.s3Domain}/${context.objectName}`;
           dispatch(extendContext({ objectUrl: url }, routerKey));
         }
         setTimeout(() => this.refs.propertyModal.show(), 100);
@@ -324,9 +374,31 @@ class ObjectManagement extends TablePageStatic {
     return '99%';
   }
 
+  onCreateObject(values) {
+    const { dispatch, t } = this.props;
+    const params = {
+      Bucket: this.props.params.bucketName,
+      Key: `${this.props.global.folderLocation}${values.objectName}/`,
+    };
+
+    this.s3.putObject(params, (error) => {
+      if (error) {
+        if (error.code === 'InvalidAccessKeyId' || error.code === 'NetworkingError') {
+          window.location = '/';
+        } else {
+          dispatch(notifyAlert(error.message));
+        }
+      } else {
+        dispatch(notify(t('folderCreatedSuccess')));
+        this.onRefresh({ searchWord: this.props.global.folderLocation }, false)();
+        this.refs.folderModal.hide();
+      }
+    });
+  }
+
   changeFolder(e, folderName) {
     e.preventDefault();
-    this.refs.search.value = null;
+    this.refs.searchBox.refs.search.value = null;
     const { dispatch, routerKey } = this.props;
     dispatch(extendContext({ visibleObjects: [] }, routerKey));
     dispatch(ObjectActions.setFolderLocation(folderName));
@@ -334,20 +406,25 @@ class ObjectManagement extends TablePageStatic {
   }
 
   renderTable() {
-    const { t, params, servicePath, context } = this.props;
+    const { t, context } = this.props;
     const { folderLocation } = this.props.global;
     return (
-      <table className="table">
+      <table className="table" style={{ tableLayout: 'fixed' }}>
         <thead>
           <tr>
-            <th width="40">
-              <input type="checkbox" className="selected" onChange={this.onSelectAll(context.visibleObjects.map((object) => object.Key || object.Prefix))} />
+            <th style={{ width: 40 }}>
+              <input
+                type="checkbox"
+                className="selected"
+                onChange={this.onSelectAll(context.visibleObjects.map((object) => object.Key || object.Prefix))}
+                checked={this.isAllSelected(this.props.context.visibleObjects.map((object) => object.Key || object.Prefix))}
+              />
             </th>
-            <th width="600">{t('objectName')}</th>
-            <th width="200">{t('size')}</th>
-            <th width="200">{t('category')}</th>
-            <th width="300">{t('created')}</th>
-            <th width="100">{t('action')}</th>
+            <th style={{ width: '40%' }}>{t('objectName')}</th>
+            <th>{t('size')}</th>
+            <th>{t('category')}</th>
+            <th style={{ width: '20%' }}>{t('created')}</th>
+            <th>{t('action')}</th>
           </tr>
         </thead>
         <tbody>
@@ -372,31 +449,37 @@ class ObjectManagement extends TablePageStatic {
                 <td>
                   <input type="checkbox" className="selected" onChange={this.onSelect(object.Prefix)} checked={context.selected[object.Prefix] === true} />
                 </td>
-                <td>
+                <td
+                  style={{
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  }}
+                >
                   <Link
                     to="#"
-                    style={{
-                      wordBreak: 'break-word',
-                    }}
                     onClick={e => this.changeFolder(e, object.Prefix)}
                   >
                     {object.Prefix.startsWith(folderLocation) ? object.Prefix.slice(folderLocation.length, -1) : object.Prefix}
                   </Link>
                 </td>
-                <td />
+                <td>-</td>
                 <td><i className="fa fa-folder-o" /></td>
-                <td />
-                <td />
+                <td>-</td>
+                <td>-</td>
               </tr> : <tr key={object.Key}>
                 <td>
                   <input type="checkbox" className="selected" onChange={this.onSelect(object.Key)} checked={context.selected[object.Key] === true} />
                 </td>
-                <td>
+                <td
+                  style={{
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  }}
+                >
                   <Link
-                    to={`${servicePath}/buckets/${params.bucketName}/objects`}
-                    style={{
-                      wordBreak: 'break-word',
-                    }}
+                    to="#"
                     onClick={e => this.downloadOneObject(object.Key, e)}
                   >
                     {object.Key.startsWith(folderLocation) ? object.Key.slice(folderLocation.length) : object.Key}
@@ -424,7 +507,7 @@ class ObjectManagement extends TablePageStatic {
   }
 
   renderHeader() {
-    const { t, servicePath, params } = this.props;
+    const { t, params } = this.props;
     const { folderLocation } = this.props.global;
     const { uploadingFileList } = this.state;
     return (
@@ -439,7 +522,7 @@ class ObjectManagement extends TablePageStatic {
           </span> : <span>
             {t('folder')}
             &nbsp;
-            <i>
+            <i style={{ wordBreak: 'break-all' }}>
               {folderLocation}
             </i>
           </span>}
@@ -467,11 +550,16 @@ class ObjectManagement extends TablePageStatic {
             </label>
           </form>
 
-          <Link className="btn btn-new" to={`${servicePath}/buckets/${params.bucketName}/objects/create`}>
+          <button className="btn btn-new" onClick={() => this.refs.folderModal.show()}>
             <i className="fa fa-plus" />&nbsp;{t('createFolder')}
-          </Link>
+          </button>
         </div>
-        <Modal title={t('uploadModal.uploadingStatus')} ref="uploadModal" >
+        <Modal
+          title={t('uploadModal.uploadingStatus')}
+          ref="uploadModal"
+          postponeClosing
+          closingCb={this.onClose}
+        >
           <div>
             {uploadingFileList && <div className="content-wrapper">
               <div
@@ -483,73 +571,68 @@ class ObjectManagement extends TablePageStatic {
                 <div className="content">
                   <div className="clearfix">
                     <div className="table-holder">
-                      <table className="table">
+                      <table className="table" style={{ tableLayout: 'fixed', marginBottom: 0 }}>
                         <thead>
                           <tr>
-                            <th width="600">{t('fileName')}</th>
-                            <th width="200">{t('size')}</th>
-                            <th width="200">{t('status')}</th>
-                            <th width="200">{t('action')}</th>
+                            <th style={{ width: '40%' }}>{t('fileName')}</th>
+                            <th style={{ width: '20%' }}>{t('uploadModal.progress')}</th>
+                            <th style={{ width: '12%' }}>{t('size')}</th>
+                            <th style={{ width: '14%' }}>{t('status')}</th>
+                            <th style={{ width: '14%' }}>{t('action')}</th>
                           </tr>
                         </thead>
-                        <tbody>
-                        {Object.keys(uploadingFileList).map((key) => {
-                          const file = uploadingFileList[key];
-                          return (
-                            <tr key={file.name}>
-                              <td style={{ position: 'relative' }}>
-                                <div
-                                  style={{
-                                    paddingRight: '50px',
-                                    wordBreak: 'break-word',
-                                  }}
-                                >{file.name}</div>
-                                <div
-                                  style={{
-                                    width: '100%',
-                                    position: 'absolute',
-                                    height: '100%',
-                                    top: 0,
-                                    left: 0,
-                                    textAlign: 'right',
-                                    padding: '10px 16px',
-                                    verticalAlign: 'middle',
-                                  }}
-                                >{this.calProgressWidth(file.percent)}</div>
-                                <div
-                                  style={{
-                                    width: this.calProgressWidth(file.percent),
-                                    position: 'absolute',
-                                    height: '100%',
-                                    backgroundColor: '#0e90d2',
-                                    top: 0,
-                                    left: 0,
-                                    opacity: 0.5,
-                                    textAlign: 'right',
-                                  }}
-                                ></div>
-                              </td>
-                              <td>{this.formatBytes(file.size)}</td>
-                              <td>{this.status[file.status]}</td>
-                              <td>
-                                {
-                                  file.actions.map((action, index) =>
-                                    <i
-                                      key={index}
-                                      className={`fa ${this.actions[action]}`}
-                                      style={{ marginRight: 10 }}
-                                      onClick={
-                                        () => this.handleUploadAction(action, key)
-                                      }
-                                    />
-                                  )
-                                }
-                              </td>
-                            </tr>
-                          );
-                        })}
-                        </tbody>
                       </table>
+                      <div style={{ height: 300, overflowY: 'auto' }}>
+                        <table className="table" style={{ tableLayout: 'fixed' }}>
+                          <tbody>
+                          {Object.keys(uploadingFileList).map((key) => {
+                            const file = uploadingFileList[key];
+                            return (
+                              <tr key={file.name} style={{ width: '40%' }}>
+                                <td
+                                  style={{
+                                    whiteSpace: 'nowrap',
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                  }}
+                                >{file.name}
+                                </td>
+                                <td style={{ position: 'relative', width: '20%' }}>
+                                  {this.calProgressWidth(file.percent)}
+                                  <div
+                                    style={{
+                                      width: this.calProgressWidth(file.percent),
+                                      position: 'absolute',
+                                      height: '100%',
+                                      backgroundColor: '#0e90d2',
+                                      top: 0,
+                                      left: 0,
+                                      opacity: 0.5,
+                                    }}
+                                  ></div>
+                                </td>
+                                <td style={{ width: '12%' }}>{this.formatBytes(file.size)}</td>
+                                <td style={{ width: '14%' }}>{this.status[file.status]}</td>
+                                <td style={{ width: '14%' }}>
+                                  {
+                                    file.actions.map((action, index) =>
+                                      <i
+                                        key={index}
+                                        className={`fa ${this.actions[action]}`}
+                                        style={{ marginRight: 10 }}
+                                        onClick={
+                                          () => this.handleUploadAction(action, key)
+                                        }
+                                      />
+                                    )
+                                  }
+                                </td>
+                              </tr>
+                            );
+                          })}
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -557,10 +640,18 @@ class ObjectManagement extends TablePageStatic {
             </div>}
           </div>
         </Modal>
+
         <Modal title={t('objectPropertyPage.property')} ref="propertyModal">
           <ObjectPropertyForm
             {...this.props}
             s3={this.s3}
+          />
+        </Modal>
+
+        <Modal title={t('createFolder')} ref="folderModal">
+          <ObjectCreateForm
+            onSubmit={this.onCreateObject}
+            folderNames={this.props.context.folderNames}
           />
         </Modal>
       </div>
@@ -573,18 +664,17 @@ class ObjectManagement extends TablePageStatic {
       <div className="gray-content-block second-block">
         <div className={Object.keys(context.selected).length > 0 ? 'hidden' : ''}>
           <div className="filter-item inline">
-            <a className="btn btn-default" onClick={this.onRefresh({}, false)}>
+            <a className="btn btn-default" onClick={e => this.doSearch(e, this.props.global.folderLocation)}>
               <i className={`fa fa-refresh ${context.loading ? 'fa-spin' : ''}`} />
             </a>
           </div>
 
           <div className="filter-item inline">
-            <input
-              type="search"
-              ref="search"
+            <SearchBox
+              ref="searchBox"
               placeholder={t('filterByObjectName')}
-              className="form-control"
-              onKeyPress={e => this.onSearchKeyPress(e, this.props.global.folderLocation)}
+              onEnterPress={e => this.onSearchKeyPress(e, this.props.global.folderLocation)}
+              onButtonClick={e => this.onSearchButtonClick(e, this.props.global.folderLocation)}
             />
           </div>
         </div>

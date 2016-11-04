@@ -15,7 +15,6 @@ export const ACTION_NAMES = {
   deletebucket: 'DeleteBucket',
   putcors: 'PutCors',
   listbuckets: 'ListBuckets',
-  getuserinfo: 'getusageinfo',
   getusagebyhour: 'GetUsageByHour',
   getopbyhour: 'GetOpByHour',
   getflowbyhour: 'GetFlowByHour',

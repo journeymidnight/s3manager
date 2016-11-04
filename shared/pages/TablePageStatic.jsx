@@ -20,8 +20,11 @@ class C extends Page {
     this.refresh = this.refresh.bind(this);
     this.onSelect = this.onSelect.bind(this);
     this.onSelectAll = this.onSelectAll.bind(this);
+    this.isAllSelected = this.isAllSelected.bind(this);
     this.onRefresh = this.onRefresh.bind(this);
+    this.doSearch = this.doSearch.bind(this);
     this.onSearchKeyPress = this.onSearchKeyPress.bind(this);
+    this.onSearchButtonClick = this.onSearchButtonClick.bind(this);
   }
 
   // need inherit
@@ -125,14 +128,28 @@ class C extends Page {
     };
   }
 
-  onSearchKeyPress(e, prefix = '') {
-    if (e.key === 'Enter') {
-      let searchWord = prefix + this.refs.search.value;
-      if (_.isEmpty(searchWord)) {
-        searchWord = null;
-      }
-      this.onRefresh({ searchWord })();
+  isAllSelected(allIds) {
+    return allIds.length && !allIds.filter((id) => {
+      return this.props.context.selected[id] !== true;
+    }).length;
+  }
+
+  doSearch(e, prefix = '') {
+    let searchWord = (prefix + (this.refs.searchBox.refs.search.value ? this.refs.searchBox.refs.search.value.trim() : '')).trim();
+    if (_.isEmpty(searchWord)) {
+      searchWord = null;
     }
+    this.onRefresh({ searchWord })();
+  }
+
+  onSearchKeyPress(e, prefix) {
+    if (e.key === 'Enter') {
+      this.doSearch(e, prefix);
+    }
+  }
+
+  onSearchButtonClick(e, prefix) {
+    this.doSearch(e, prefix);
   }
 
   renderHeader() {

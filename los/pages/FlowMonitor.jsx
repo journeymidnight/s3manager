@@ -5,19 +5,41 @@ import { generateAreaChartConfig } from '../../shared/utils/chart';
 
 class FlowMonitor extends Component {
 
+  constructor() {
+    super();
+
+    this.getTodayFlow = this.getTodayFlow.bind(this);
+  }
+
   componentWillMount() {
     this.props.changeMonitorType('flow');
   }
 
+  getTodayFlow(flowbyhourArray) {
+    const flowPublicArray = flowbyhourArray.filter(flow => flow.iptype === '1');
+    const flowPrivateArray = flowbyhourArray.filter(flow => flow.iptype === '0');
+    const flowOutPublic = flowPublicArray.reduce((previousValue, currentItem) => (previousValue + Number(currentItem.flowout)), 0);
+    const flowInPublic = flowPublicArray.reduce((previousValue, currentItem) => (previousValue + Number(currentItem.flowin)), 0);
+    const flowOutPrivate = flowPrivateArray.reduce((previousValue, currentItem) => (previousValue + Number(currentItem.flowout)), 0);
+    const flowInPrivate = flowPrivateArray.reduce((previousValue, currentItem) => (previousValue + Number(currentItem.flowin)), 0);
+    return {
+      date: moment().format('YYYYMMDD'),
+      flowOutPublic,
+      flowInPublic,
+      flowOutPrivate,
+      flowInPrivate,
+    };
+  }
+
   render() {
-    const { t, period, context } = this.props;
+    const { t, period, date, shouldAddTodayPoint, context } = this.props;
     return (
       <div>
         <div className="row">
           <div className="col-md-12 chart-panel">
-            {period === '1day' && context.flowbyhour && !context.loading && <Chart
+            {(period === '1day' || period === 'someDay') && context.flowbyhour && !context.loading && <Chart
               className="chart"
-              config={generateAreaChartConfig(this.props.combineYValue(this.props.getCompleteTime(context.flowbyhour).map((item) => {
+              config={generateAreaChartConfig(this.props.combineYValue(this.props.getCompleteTime(context.flowbyhour, date).map((item) => {
                 const newItem = { time: item.time };
                 if (item.iptype === '1') {
                   newItem.flowOutPublic = item.flowout;
@@ -42,9 +64,13 @@ class FlowMonitor extends Component {
               }, 'bytes')}
             />}
 
-            {period !== '1day' && context.staticsbyday && !context.loading && <Chart
+            {period !== '1day' && period !== 'someDay' && context.staticsbyday && context.flowbyhour && !context.loading && <Chart
               className="chart"
-              config={generateAreaChartConfig(context.staticsbyday.map((item) => ({
+              config={generateAreaChartConfig(context.staticsbyday.concat(
+                shouldAddTodayPoint ?
+                  [this.getTodayFlow(context.flowbyhour)] :
+                  []
+              ).map((item) => ({
                 timestamp: moment(item.date).utc(),
                 flowOutPublic: item.flowOutPublic || '0',
                 flowInPublic: item.flowInPublic || '0',
@@ -71,7 +97,9 @@ class FlowMonitor extends Component {
 FlowMonitor.propTypes = {
   t: PropTypes.func,
   context: PropTypes.object,
+  shouldAddTodayPoint: PropTypes.bool,
   period: PropTypes.string,
+  date: PropTypes.object,
   changeMonitorType: PropTypes.func,
   getCompleteTime: PropTypes.func,
   combineYValue: PropTypes.func,

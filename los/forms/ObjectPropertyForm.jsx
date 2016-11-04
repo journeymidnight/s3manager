@@ -32,10 +32,7 @@ class ObjectPropertyForm extends React.Component {
       })
       .then(() => {
         if (this.props.context.objectAcl === 'public-read') {
-          const url = s3.getSignedUrl('getObject', {
-            Bucket: params.bucketName,
-            Key: context.objectName,
-          });
+          const url = `http://${params.bucketName}.${context.s3Domain}/${context.objectName}`;
           dispatch(extendContext({ objectUrl: url }, routerKey));
         } else {
           dispatch(extendContext({ objectUrl: null }, routerKey));
@@ -74,7 +71,7 @@ class ObjectPropertyForm extends React.Component {
           <div className="form-group">
             <label className="control-label" />
             <div className="col-sm-8">
-              <select className="form-control" onChange={acl.onChange}>
+              <select className="form-control" {...acl}>
                 <option key="private" value="private">
                   {t('pageBucketCreate.aclPrivate')}
                 </option>
@@ -95,26 +92,27 @@ class ObjectPropertyForm extends React.Component {
             </div>
           </div>
 
-          {!context.objectUrl && <div className="form-group">
+          <div className="form-group">
+            <label className="control-label" >{t('objectPropertyPage.url')}</label>
+            <div className="col-sm-10">
+              <strong style={{ padding: 6, display: 'block', wordBreak: 'break-all' }}>{context.objectUrl || ''}</strong>
+            </div>
+          </div>
+
+          {context.objectAcl === 'private' && <div className="form-group">
             <label className="control-label" >{t('objectPropertyPage.period')}</label>
             <div className="col-sm-8">
-              <input type="number" className="form-control" onChange={period.onChange} placeholder={t('objectPropertyPage.second')} />
+              <input type="number" min="1" className="form-control" {...period} placeholder={t('objectPropertyPage.second')} />
             </div>
             <div className="col-sm-2">
               <button
                 type="button"
                 className="btn btn-success"
                 onClick={() => this.onAuthorize(period.value)}
+                disabled={!period.value || period.value <= 0 || !Number.isInteger(period.value)}
               >
                 {t('objectPropertyPage.authorize')}
               </button>
-            </div>
-          </div>}
-
-          {context.objectUrl && <div className="form-group">
-            <label className="control-label" >{t('objectPropertyPage.url')}</label>
-            <div className="col-sm-10">
-              <strong style={{ padding: 6, display: 'block', wordBreak: 'break-word' }}>{context.objectUrl || ''}</strong>
             </div>
           </div>}
         </div>

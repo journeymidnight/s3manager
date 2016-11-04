@@ -442,3 +442,42 @@ ul.options-vertical {
 .sidebar-subnav > li > a {
   padding-left: 30px;
 }
+
+.has-error.dropdown-menu-toggle {
+  border-color: #a94442;
+}
+
+// Pagination (multiple pages)
+// --------------------------------------------------
+.pagination {
+  > li > a,
+  > li > span {
+    &:hover,
+    &:focus {
+      color: inherit;
+      background-color: inherit;
+      border-color: $pagination-border;
+    }
+  }
+
+  > .active > a,
+  > .active > span {
+    &:hover,
+    &:focus {
+      color: inherit;
+      background-color: inherit;
+      border-color: $pagination-border;
+    }
+  }
+
+  > .disabled {
+    > span:hover,
+    > span:focus,
+    > a:hover,
+    > a:focus {
+      color: inherit;
+      background-color: inherit;
+      border-color: $pagination-border;
+    }
+  }
+}
