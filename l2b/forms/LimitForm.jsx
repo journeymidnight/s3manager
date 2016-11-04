@@ -48,7 +48,7 @@ LimitForm.propTypes = {
 
 LimitForm.validate = values => {
   const errors = {};
-  errors.connectionLimit = Validations.integer(values.connectionLimit);
+  errors.connectionLimit = Validations.connectionLimit(values.connectionLimit);
   return errors;
 };
 

@@ -22,7 +22,7 @@ class C extends TablePage {
 
   initialize(routerKey) {
     this.initTable(routerKey, {
-      status: ['active'],
+      status: ['active', 'pending'],
       isTabPage: true,
     });
   }
@@ -122,10 +122,11 @@ class C extends TablePage {
               />
             </th>
             <th width="150">{t('id')}</th>
-            <th>{t('name')}</th>
             <th>{`${t('protocol')}/${t('port')}`}</th>
+            <th>{t('status')}</th>
             <th>{t('pageLoadBalancer.forward')}</th>
             <th>{t('pageLoadBalancer.session')}</th>
+            <th>{t('pageLoadBalancer.health')}</th>
           </tr>
         </thead>
         <tbody>
@@ -146,19 +147,22 @@ class C extends TablePage {
                 </Link>
               </td>
               <td>
-                <span className="list-item-name">
-                  {listener.name && <strong>{listener.name}</strong>}
-                  {!listener.name && <i className="text-muted">{t('noName')}</i>}
-                </span>
-              </td>
-              <td>
                 {`${listener.protocol}/${listener.port}`}
+              </td>
+              <td className={`i-status i-status-${listener.status}`}>
+                <span>
+                  <i className="icon"></i>
+                  {t(`lblistenerStatus.${listener.status}`)}
+                </span>
               </td>
               <td>
                 {t('pageLoadBalancer.roundRobin')}
               </td>
               <td>
                 {listener.sessionPersistenceMode ? t('pageLoadBalancer.on') : t('pageLoadBalancer.off')}
+              </td>
+              <td>
+                {listener.healthMonitorType ? t('pageLoadBalancer.on') : t('pageLoadBalancer.off')}
               </td>
             </tr>
           );

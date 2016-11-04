@@ -546,6 +546,7 @@
         "ipAddress": "ip地址格式错误",
         "port": "端口号格式错误",
         "weight": "权重格式错误",
+        "connectionLimit": "连接限制格式错误",
         "healthMonitorDelay": "间隔时间格式错误",
         "healthMonitorTimeout": "超时时间格式错误"
     },
@@ -801,19 +802,21 @@
     },
     "lblistenerStatus": {
         "active": "运行中",
-        "deleted": "已删除"
+        "pending": "创建中"
     },
     "pageLoadBalancer": {
         "basic": "基本信息",
         "update": "更新",
+        "modify": "修改",
         "delete": "删除",
+        "changeBandwidth": "修改带宽",
         "listenerList": "监听器列表",
         "listener": "监听器",
         "forward": "转发规则",
         "roundRobin": "轮询",
         "connectionLimit": "连接限制",
         "changeLimit": "修改连接限制",
-        "connectionLimitRange": "默认-1，表示不限制",
+        "connectionLimitRange": "-1（默认，表示不限制次数）或正整数",
         "limitOff": "不限制",
         "session": "会话保持",
         "sessionStatus": "状态",
@@ -828,6 +831,7 @@
         "healthMonitorTimeoutRange": "1-300秒，默认10秒",
         "healthMonitorMaxRetries": "重试次数",
         "healthMonitorMaxRetriesRange": "默认3次",
+        "healthMonitorMaxRetriesHint": "重试次数提示语",
         "second": "秒",
         "count": "次",
         "monitors": "资源监控",

@@ -14,14 +14,13 @@ class ListenerCreateForm extends React.Component {
       { name: 'roundRobin', value: 'ROUND_ROBIN' },
     ];
     this.sessionPersistenceModes = ['SOURCE_IP'];
-    this.healthMonitorTypes = ['PING', 'TCP', 'HTTP', 'HTTPS'];
+    this.healthMonitorTypes = ['TCP', 'UDP'];
   }
 
   componentDidMount() {
     const initialValues = {
       protocol: 'TCP',
       forward: 'ROUND_ROBIN',
-      connectionLimit: -1,
       session: false,
       healthMonitorType: 'TCP',
       healthMonitorMaxRetries: 3,
@@ -75,7 +74,7 @@ class ListenerCreateForm extends React.Component {
           <div className={(submitFailed || port.touched) && port.error ? 'form-group has-error' : 'form-group'}>
             <label className="control-label" >{t('port')}</label>
             <div className="col-sm-10">
-              <input type="number" className="form-control" {...port} />
+              <input type="number" min="1" max="65535" className="form-control" {...port} />
               {(submitFailed || port.touched) && port.error && <div className="text-danger"><small>{port.error}</small></div>}
             </div>
           </div>
@@ -183,6 +182,7 @@ class ListenerCreateForm extends React.Component {
               <div className="col-sm-10">
                 <input type="hidden" className="form-control" value={healthMonitorMaxRetries.value} disabled="disabled" />
                 <Slider min={1} max={10} step={1} value={healthMonitorMaxRetries.value} onChange={param => healthMonitorMaxRetries.onChange(param)} />
+                <p className="help-block">{t('pageLoadBalancer.healthMonitorMaxRetriesHint')}</p>
               </div>
             </div>
           </fieldset>
@@ -213,7 +213,7 @@ ListenerCreateForm.validate = values => {
   const errors = {};
   errors.name = Validations.required(values.name);
   errors.port = Validations.port(values.port);
-  errors.connectionLimit = Validations.integer(values.connectionLimit);
+  errors.connectionLimit = Validations.connectionLimit(values.connectionLimit);
   errors.healthMonitorDelay = Validations.healthMonitorDelay(values.healthMonitorDelay);
   errors.healthMonitorTimeout = Validations.healthMonitorTimeout(values.healthMonitorTimeout);
   return errors;

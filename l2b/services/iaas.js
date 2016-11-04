@@ -18,6 +18,7 @@ export const ACTION_NAMES = {
   describeNetworks: 'DescribeNetworks',
   createLoadBalancer: 'CreateLoadBalancer',
   modifyLoadBalancer: 'ModifyLoadBalancerAttributes',
+  updateLoadBalancerBandwidth: 'UpdateLoadBalancerBandwidth',
   describeLoadBalancerListeners: 'DescribeLoadBalancerListeners',
   createLoadBalancerListener: 'CreateLoadBalancerListener',
   deleteLoadBalancerListeners: 'DeleteLoadBalancerListeners',

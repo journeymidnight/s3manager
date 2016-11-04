@@ -6,6 +6,7 @@ import Modal, { confirmModal } from '../../shared/components/Modal';
 import * as Actions from '../../console-common/redux/actions';
 import * as LoadBalancerActions from '../redux/actions.load_balancer';
 import UpdateForm from '../forms/UpdateForm';
+import BandwidthForm from '../forms/BandwidthForm';
 
 class C extends Page {
 
@@ -13,8 +14,10 @@ class C extends Page {
     super(props);
 
     this.refresh = this.refresh.bind(this);
-    this.updateLoadBalancer = this.updateLoadBalancer.bind(this);
     this.onUpdate = this.onUpdate.bind(this);
+    this.update = this.update.bind(this);
+    this.changeBandwidth = this.changeBandwidth.bind(this);
+    this.onChangeBandwidth = this.onChangeBandwidth.bind(this);
     this.onDelete = this.onDelete.bind(this);
   }
 
@@ -45,11 +48,11 @@ class C extends Page {
     return loadBalancer.status !== 'deleted' && loadBalancer.status !== 'ceased';
   }
 
-  updateLoadBalancer() {
+  onUpdate() {
     this.refs.updateModal.show();
   }
 
-  onUpdate(values) {
+  update(values) {
     const { dispatch, region, routerKey, params } = this.props;
 
     return new Promise((resolve, reject) => {
@@ -60,6 +63,26 @@ class C extends Page {
         .then(() => {
           resolve();
           this.refs.updateModal.hide();
+          this.refresh();
+        })
+        .catch(() => {
+          reject();
+        });
+    });
+  }
+
+  onChangeBandwidth() {
+    this.refs.bandwidthModal.show();
+  }
+
+  changeBandwidth(values) {
+    const { dispatch, region, routerKey, params } = this.props;
+
+    return new Promise((resolve, reject) => {
+      dispatch(LoadBalancerActions.requestUpdateLoadBalancerBandwidth(routerKey, region.regionId, params.loadBalancerId, values.bandwidth))
+        .then(() => {
+          resolve();
+          this.refs.bandwidthModal.hide();
           this.refresh();
         })
         .catch(() => {
@@ -128,11 +151,22 @@ class C extends Page {
                           <button
                             className="btn-page-action"
                             disabled={loadBalancer.status !== 'active'}
-                            onClick={this.updateLoadBalancer}
+                            onClick={this.onUpdate}
                           >
                             {t('pageLoadBalancer.update')}
                           </button>
                         </li>
+
+                        <li>
+                          <button
+                            className="btn-page-action"
+                            disabled={loadBalancer.status !== 'active'}
+                            onClick={this.onChangeBandwidth}
+                          >
+                            {t('pageLoadBalancer.changeBandwidth')}
+                          </button>
+                        </li>
+
                         <li>
                           <button
                             className="btn-page-action"
@@ -228,7 +262,11 @@ class C extends Page {
         </div>
 
         <Modal title={t('pageLoadBalancer.update')} ref="updateModal" >
-          <UpdateForm onSubmit={this.onUpdate} initialValues={loadBalancer} />
+          <UpdateForm onSubmit={this.update} initialValues={loadBalancer} />
+        </Modal>
+
+        <Modal title={t('pageLoadBalancer.changeBandwidth')} ref="bandwidthModal" >
+          <BandwidthForm onSubmit={this.changeBandwidth} initialValues={loadBalancer} />
         </Modal>
       </div>
     );

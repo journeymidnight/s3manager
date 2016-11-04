@@ -64,7 +64,9 @@ export function requestCreateLoadBalancer(routerKey, regionId, loadBalancer) {
         }, 1000);
       })
       .catch((error) => {
-        dispatch(notifyAlert(error.message));
+        setTimeout(() => {
+          dispatch(notifyAlert(error.message));
+        }, 1000);
       });
   };
 }
@@ -87,6 +89,20 @@ export function requestModifyLoadBalancer(routerKey, regionId, loadBalancerId, n
   return dispatch => {
     return IaaS
       .doAction(regionId, ACTION_NAMES.modifyLoadBalancer, { loadBalancerId, name, description })
+      .promise
+      .then(() => {
+        dispatch(notify(i18n.t('updateSuccessed')));
+      })
+      .catch((error) => {
+        dispatch(notifyAlert(error.message));
+      });
+  };
+}
+
+export function requestUpdateLoadBalancerBandwidth(routerKey, regionId, loadBalancerId, bandwidth) {
+  return dispatch => {
+    return IaaS
+      .doAction(regionId, ACTION_NAMES.updateLoadBalancerBandwidth, { loadBalancerIds: [loadBalancerId], bandwidth })
       .promise
       .then(() => {
         dispatch(notify(i18n.t('updateSuccessed')));

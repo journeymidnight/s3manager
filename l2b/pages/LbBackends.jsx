@@ -1,6 +1,4 @@
-import moment from 'moment';
 import React from 'react';
-import { Link } from 'react-router';
 import { attach } from '../../shared/pages/Page';
 import Modal, { confirmModal } from '../../shared/components/Modal';
 import TablePage from '../../shared/pages/TablePage';
@@ -201,8 +199,6 @@ class LbBackends extends TablePage {
             <th>{t('port')}</th>
             <th>{t('weight')}</th>
             <th>{t('action')}</th>
-            {/* <th width="60">{t('status')}</th>
-            <th width="200">{t('created')}</th> */}
           </tr>
         </thead>
         <tbody>
@@ -253,16 +249,9 @@ class LbBackends extends TablePage {
                       this.onChangeWeight(backend.loadBalancerBackendId);
                     }}
                   >
-                    {t('property')}
+                    {t('pageLoadBalancer.modify')}
                   </a>
                 </td>
-                {/* <td className={`i-status i-status-${backend.status}`}>
-                  <span>
-                    <i className="icon"></i>
-                    {t(`lblistenerStatus.${backend.status}`)}
-                  </span>
-                </td>
-                <td>{moment.utc(backend.created).local().format('YYYY-MM-DD HH:mm:ss')}</td> */}
               </tr>
             );
           })}

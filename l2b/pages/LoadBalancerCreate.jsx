@@ -46,7 +46,8 @@ class C extends Page {
         .then(() => {
           resolve();
           dispatch(push(`${servicePath}/load_balancers`));
-        }).catch((error) => {
+        })
+        .catch((error) => {
           dispatch(Actions.notifyAlert(error.displayMsg || error.message));
           reject();
         });
