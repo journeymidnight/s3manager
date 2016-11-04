@@ -1,5 +1,6 @@
 import { notify, notifyAlert, extendContext } from '../../console-common/redux/actions';
 import Wcs, { ACTION_NAMES } from '../services/wcs';
+import { performS3Action } from '../services/s3';
 import i18n from '../../shared/i18n';
 
 export function setVisibleBuckets(routerKey, regionId, filters) {
@@ -83,17 +84,16 @@ export function requestPutBucketAcl(s3, bucketName, acl) {
         Bucket: bucketName,
         ACL: acl,
       };
-      s3.putBucketAcl(params, (error) => {
+      const s3Action = () => s3.putBucketAcl(params, (error) => {
         if (error) {
-          if (error.code === 'InvalidAccessKeyId' || error.code === 'NetworkingError') {
-            window.location = '/';
-          }
           reject();
         } else {
           dispatch(notify(i18n.t('pageBucket.putAclSuccess')));
           resolve();
         }
       });
+
+      performS3Action(s3Action);
     });
   };
 }
@@ -105,13 +105,9 @@ export function requestGetBucketAcl(s3, bucketName, routerKey) {
         Bucket: bucketName,
       };
 
-      s3.getBucketAcl(params, (error, data) => {
+      const s3Action = s3.getBucketAcl(params, (error, data) => {
         if (error) {
-          if (error.code === 'InvalidAccessKeyId' || error.code === 'NetworkingError') {
-            window.location = '/';
-          } else {
-            dispatch(notifyAlert(error.message));
-          }
+          dispatch(notifyAlert(error.message));
           reject();
         } else {
           // Below 3 lines of code may lead to bug in future
@@ -125,6 +121,8 @@ export function requestGetBucketAcl(s3, bucketName, routerKey) {
           resolve();
         }
       });
+
+      performS3Action(s3Action);
     });
   };
 }
@@ -201,20 +199,17 @@ export function isBucketEmpty(s3, bucketName) {
       const params = {
         Bucket: bucketName,
       };
-
-      s3.listObjectsV2(params, (error, data) => {
+      const s3Action = () => s3.listObjectsV2(params, (error, data) => {
         if (error) {
-          if (error.code === 'InvalidAccessKeyId' || error.code === 'NetworkingError') {
-            window.location = '/';
-          } else {
-            dispatch(notifyAlert(error.message));
-          }
+          dispatch(notifyAlert(error.message));
           reject();
         } else if (data.Contents.length > 0 || data.CommonPrefixes.length > 0) {
           reject(bucketName);
         }
         resolve();
       });
+
+      performS3Action(s3Action);
     });
   };
 }

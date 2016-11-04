@@ -1,5 +1,6 @@
 import { notify, notifyAlert, extendContext } from '../../console-common/redux/actions';
 import i18n from '../../shared/i18n';
+import { performS3Action } from '../services/s3';
 
 export function setVisibleObjects(s3, bucketName, routerKey, filters) {
   return dispatch => {
@@ -9,14 +10,9 @@ export function setVisibleObjects(s3, bucketName, routerKey, filters) {
         Prefix: filters.searchWord,
         Delimiter: '/',
       };
-
-      s3.listObjectsV2(params, (error, data) => {
+      const s3Action = () => s3.listObjectsV2(params, (error, data) => {
         if (error) {
-          if (error.code === 'InvalidAccessKeyId' || error.code === 'NetworkingError') {
-            window.location = '/';
-          } else {
-            dispatch(notifyAlert(error.message));
-          }
+          dispatch(notifyAlert(error.message));
           reject(error);
         } else {
           const { offset, limit } = filters;
@@ -34,6 +30,8 @@ export function setVisibleObjects(s3, bucketName, routerKey, filters) {
           resolve();
         }
       });
+
+      performS3Action(s3Action);
     });
   };
 }
@@ -45,20 +43,17 @@ export function isFolderEmpty(s3, bucketName, folderName) {
         Bucket: bucketName,
         Prefix: folderName,
       };
-
-      s3.listObjectsV2(params, (error, data) => {
+      const s3Action = () => s3.listObjectsV2(params, (error, data) => {
         if (error) {
-          if (error.code === 'InvalidAccessKeyId' || error.code === 'NetworkingError') {
-            window.location = '/';
-          } else {
-            dispatch(notifyAlert(error.message));
-          }
+          dispatch(notifyAlert(error.message));
           reject(error);
         } else if (data.Contents.filter((object) => object.Key !== folderName).length > 0 || data.CommonPrefixes.length > 0) {
           reject(folderName);
         }
         resolve();
       });
+
+      performS3Action(s3Action);
     });
   };
 }
@@ -71,19 +66,17 @@ export function requestPutObjectAcl(s3, bucketName, objectName, acl) {
         Key: objectName,
         ACL: acl,
       };
-      s3.putObjectAcl(params, (error) => {
+      const s3Action = () => s3.putObjectAcl(params, (error) => {
         if (error) {
-          if (error.code === 'InvalidAccessKeyId' || error.code === 'NetworkingError') {
-            window.location = '/';
-          } else {
-            dispatch(notifyAlert(i18n.t('objectPropertyPage.aclFail')));
-          }
+          dispatch(notifyAlert(i18n.t('objectPropertyPage.aclFail')));
           reject();
         } else {
           dispatch(notify(i18n.t('objectPropertyPage.aclSuccess')));
           resolve();
         }
       });
+
+      performS3Action(s3Action);
     });
   };
 }
@@ -95,14 +88,9 @@ export function requestGetObjectAcl(s3, bucketName, objectName, routerKey) {
         Bucket: bucketName,
         Key: objectName,
       };
-
-      s3.getObjectAcl(params, (error, data) => {
+      const s3Action = () => s3.getObjectAcl(params, (error, data) => {
         if (error) {
-          if (error.code === 'InvalidAccessKeyId' || error.code === 'NetworkingError') {
-            window.location = '/';
-          } else {
-            dispatch(notifyAlert(error.message));
-          }
+          dispatch(notifyAlert(error.message));
           reject();
         } else {
           // Below 3 lines of code may lead to bug in future
@@ -114,6 +102,8 @@ export function requestGetObjectAcl(s3, bucketName, objectName, routerKey) {
           resolve();
         }
       });
+
+      performS3Action(s3Action);
     });
   };
 }
