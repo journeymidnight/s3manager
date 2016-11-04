@@ -14,6 +14,7 @@ import SearchBox from '../../shared/components/SearchBox';
 import { setHeader, notify, notifyAlert, extendContext } from '../../console-common/redux/actions';
 import { requestGetS3Domain } from '../redux/actions.s3Domain';
 import * as ObjectActions from '../redux/actions.object';
+import { performS3Action } from '../services/s3';
 
 class ObjectManagement extends TablePageStatic {
 
@@ -94,19 +95,16 @@ class ObjectManagement extends TablePageStatic {
             Quiet: true,
           },
         };
-
-        this.s3.deleteObjects(params, (error) => {
+        const s3Action = () => this.s3.deleteObjects(params, (error) => {
           if (error) {
-            if (error.code === 'InvalidAccessKeyId' || error.code === 'NetworkingError') {
-              window.location = '/';
-            } else {
-              dispatch(notifyAlert(error.message));
-            }
+            dispatch(notifyAlert(error.message));
           } else {
             dispatch(notify(t('objectDeletedSuccess')));
             this.onRefresh({ searchWord: this.props.global.folderLocation }, false)();
           }
         });
+
+        performS3Action(s3Action);
       }), folderName => dispatch(notifyAlert(folderName.slice(this.props.global.folderLocation.length, -1) + t('cannotDelete'))));
   }
 
@@ -131,7 +129,7 @@ class ObjectManagement extends TablePageStatic {
 
   onFileUpload() {
     if (this.checkFileDuplication()) {
-      confirmModal(this.props.t('有重名文件，确认继续上传会覆盖原有文件。'), this.uploadObjects);
+      confirmModal(this.props.t('uploadModal.duplication'), this.uploadObjects);
     } else {
       this.uploadObjects();
     }
@@ -176,7 +174,9 @@ class ObjectManagement extends TablePageStatic {
     );
     this.s3Uploaders[index] = s3Uploader;
 
-    s3Uploader.send(this.uploadOneObjectCb(index));
+    const s3Action = () => s3Uploader.send(this.uploadOneObjectCb(index));
+    performS3Action(s3Action);
+
     s3Uploader.on('httpUploadProgress', (progress) => {
       if (!progress.target) { // Sometimes ProgressEvent is passed as the parameter, this statement is to rule it out. TODO: figure out why
         const percent = 100 * progress.loaded / progress.total;
@@ -191,22 +191,18 @@ class ObjectManagement extends TablePageStatic {
 
   uploadOneObjectCb(index) {
     return (error) => {
-      if (error) {
-        if (error.code === 'InvalidAccessKeyId' || error.code === 'NetworkingError') {
-          window.location = '/';
-        } else if (error.code !== 'RequestAbortedError') {
-          this.s3Uploaders[index] = null;
-          const newUploadingFile = Object.assign({}, this.state.uploadingFileList[index], {
-            status: 'failed',
-            percent: 0,
-            actions: ['retry'],
-          });
-          this.setState({
-            uploadingFileList: update(this.state.uploadingFileList, {
-              [index]: { $set: newUploadingFile },
-            }),
-          });
-        }
+      if (error && error.code !== 'RequestAbortedError') {
+        this.s3Uploaders[index] = null;
+        const newUploadingFile = Object.assign({}, this.state.uploadingFileList[index], {
+          status: 'failed',
+          percent: 0,
+          actions: ['retry'],
+        });
+        this.setState({
+          uploadingFileList: update(this.state.uploadingFileList, {
+            [index]: { $set: newUploadingFile },
+          }),
+        });
       } else {
         this.onRefresh({ searchWord: this.props.global.folderLocation }, false)();
         this.s3Uploaders[index] = null;
@@ -380,20 +376,17 @@ class ObjectManagement extends TablePageStatic {
       Bucket: this.props.params.bucketName,
       Key: `${this.props.global.folderLocation}${values.objectName}/`,
     };
-
-    this.s3.putObject(params, (error) => {
+    const s3Action = () => this.s3.putObject(params, (error) => {
       if (error) {
-        if (error.code === 'InvalidAccessKeyId' || error.code === 'NetworkingError') {
-          window.location = '/';
-        } else {
-          dispatch(notifyAlert(error.message));
-        }
+        dispatch(notifyAlert(error.message));
       } else {
         dispatch(notify(t('folderCreatedSuccess')));
         this.onRefresh({ searchWord: this.props.global.folderLocation }, false)();
         this.refs.folderModal.hide();
       }
     });
+
+    performS3Action(s3Action);
   }
 
   changeFolder(e, folderName) {

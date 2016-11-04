@@ -2,46 +2,39 @@ import React from 'react';
 import { translate } from 'react-i18next';
 
 const C = (props) => {
+  const pageArray = [];
+  const { currentPage, totalPage } = props;
+  for (let i = 1; i < totalPage + 1; i++) {
+    pageArray.push(i);
+  }
+
   return (
     <div className="gl-pagination">
       <ul className="pagination clearfix">
-        {props.currentPage > 3 && <li>
-          <a href onClick={props.onRefresh({ currentPage: 1 })}>1</a>
-        </li>}
-        {props.currentPage > 4 && <li>
-          <a>...</a>
-        </li>}
-        {props.currentPage > 2 && <li>
-          <a href onClick={props.onRefresh({ currentPage: props.currentPage - 2 }, false)}>
-            {props.currentPage - 2}
+        {totalPage < 5 && pageArray.map(page => <li key={page} className={(page === currentPage) ? 'active' : ''}>
+          <a href onClick={props.onRefresh({ currentPage: page }, false)}>
+            {page}
           </a>
-        </li>}
-        {props.currentPage > 1 && <li>
-          <a href onClick={props.onRefresh({ currentPage: props.currentPage - 1 }, false)}>
-            {props.currentPage - 1}
+        </li>)}
+
+        {totalPage > 4 && pageArray.map(page => <li
+          key={page}
+          className={(() => {
+            if (page === currentPage) {
+              return 'active';
+            } else if (page !== 1 && page !== totalPage && (page < currentPage - 3 || page > currentPage + 3)) {
+              return 'hidden';
+            }
+            return '';
+          })()}
+        >
+          <a
+            href
+            onClick={(page === currentPage - 3 || page === currentPage + 3) ? e => e.preventDefault() : props.onRefresh({ currentPage: page }, false)}
+          >
+            {(page === currentPage - 3 || page === currentPage + 3) && page !== 1 && page !== totalPage ? '...' : page}
           </a>
-        </li>}
-        <li className="active">
-          <span>{props.currentPage}</span>
-        </li>
-        {props.currentPage < props.totalPage && <li>
-          <a href onClick={props.onRefresh({ currentPage: props.currentPage + 1 }, false)}>
-            {props.currentPage + 1}
-          </a>
-        </li>}
-        {props.currentPage < props.totalPage - 1 && <li>
-          <a href onClick={props.onRefresh({ currentPage: props.currentPage + 2 }, false)}>
-            {props.currentPage + 2}
-          </a>
-        </li>}
-        {props.currentPage < props.totalPage - 3 && <li>
-          <a>...</a>
-        </li>}
-        {props.currentPage < props.totalPage - 2 && <li>
-          <a href onClick={props.onRefresh({ currentPage: props.totalPage }, false)}>
-            {props.totalPage}
-          </a>
-        </li>}
+        </li>)}
         <li>
           <span>
             {props.t('totalItems')}{props.total}
