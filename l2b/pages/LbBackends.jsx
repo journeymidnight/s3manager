@@ -34,7 +34,7 @@ class LbBackends extends TablePage {
 
   refreshAction(routerKey, filters) {
     const { region, params } = this.props;
-    filters.loadBalanceListenerIds = [params.listenerId];
+    filters.loadBalancerListenerIds = [params.listenerId];
     return LoadBalancerActions.requestDescribeLbBackends(routerKey, region.regionId, filters);
   }
 

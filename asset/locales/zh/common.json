@@ -831,7 +831,7 @@
         "healthMonitorTimeoutRange": "1-300秒，默认10秒",
         "healthMonitorMaxRetries": "重试次数",
         "healthMonitorMaxRetriesRange": "默认3次",
-        "healthMonitorMaxRetriesHint": "重试次数提示语",
+        "healthMonitorMaxRetriesHint": "云主机从成功到失败的连续健康检查失败次数",
         "second": "秒",
         "count": "次",
         "monitors": "资源监控",
