@@ -204,7 +204,7 @@ class ObjectManagement extends TablePageStatic {
             [index]: { $set: newUploadingFile },
           }),
         });
-      } else {
+      } else if (!error) {
         this.onRefresh({ searchWord: this.props.global.folderLocation }, false)();
         this.s3Uploaders[index] = null;
         const newUploadingFile = Object.assign({}, this.state.uploadingFileList[index], {
