@@ -204,7 +204,7 @@ class ObjectManagement extends TablePageStatic {
             [index]: { $set: newUploadingFile },
           }),
         });
-      } else {
+      } else if (!error) {
         this.onRefresh({ searchWord: this.props.global.folderLocation }, false)();
         this.s3Uploaders[index] = null;
         const newUploadingFile = Object.assign({}, this.state.uploadingFileList[index], {
@@ -480,7 +480,7 @@ class ObjectManagement extends TablePageStatic {
                   </Link>
                 </td>
                 <td>{this.formatBytes(object.Size)}</td>
-                <td>{object.Key.slice(object.Key.lastIndexOf('.') + 1)}</td>
+                <td>{(object.Key.indexOf('.') > -1) ? object.Key.slice(object.Key.lastIndexOf('.') + 1) : '-'}</td>
                 <td>{moment.utc(object.LastModified).local().format('YYYY-MM-DD HH:mm:ss')}</td>
                 <td>
                   <a
