@@ -119,11 +119,15 @@ export function requestDescribeLbListeners(routerKey, regionId, filters) {
       .doAction(regionId, ACTION_NAMES.describeLoadBalancerListeners, filters)
       .promise
       .then((payload) => {
-        dispatch(extendContext(Object.assign(payload, {
-          currentPage: parseInt(payload.offset / payload.limit, 10) + 1,
-          size: payload.limit,
-          totalPage: parseInt((payload.total - 1) / payload.limit, 10) + 1,
-        })));
+        if (filters.loadBalancerListenerIds) {
+          dispatch(extendContext({ listenerSet: payload.listenerSet }));
+        } else {
+          dispatch(extendContext(Object.assign(payload, {
+            currentPage: parseInt(payload.offset / payload.limit, 10) + 1,
+            size: payload.limit,
+            totalPage: parseInt((payload.total - 1) / payload.limit, 10) + 1,
+          })));
+        }
       })
       .catch((error) => {
         dispatch(notifyAlert(error.message));

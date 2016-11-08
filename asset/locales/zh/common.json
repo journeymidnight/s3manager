@@ -802,7 +802,8 @@
     },
     "lblistenerStatus": {
         "active": "运行中",
-        "pending": "创建中"
+        "pending": "创建中",
+        "building": "构建中"
     },
     "pageLoadBalancer": {
         "basic": "基本信息",

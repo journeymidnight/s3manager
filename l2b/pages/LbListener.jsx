@@ -27,7 +27,7 @@ class LbListener extends Page {
     this.updateSession = this.updateSession.bind(this);
     this.updateHealth = this.updateHealth.bind(this);
     this.onUpdate = this.onUpdate.bind(this);
-    // this.onUpdateParams = this.onUpdateParams.bind(this);
+    this.onUpdateParams = this.onUpdateParams.bind(this);
   }
 
   initialize() {
@@ -85,20 +85,20 @@ class LbListener extends Page {
     });
   }
 
-  /* onUpdateParams(values) {
+  onUpdateParams(values) {
     const { dispatch, region, routerKey, params } = this.props;
 
     let listener = this.listener;
     if (this.props.context.listenerSet) {
       listener = this.props.context.listenerSet[0];
     }
-    const { sessionPersistenceMode } = listener;
+    const sessionPersistenceMode = listener.sessionPersistenceMode || undefined;
 
     return new Promise((resolve, reject) => {
       dispatch(LoadBalancerActions.requestUpdateLoadBalancerListener(routerKey, region.regionId, params.listenerId, Object.assign({}, { sessionPersistenceMode }, values)))
         .then(() => {
           resolve();
-          this.refs.limitModal.hide();
+          // this.refs.limitModal.hide();
           this.refs.sessionModal.hide();
           this.refs.healthModal.hide();
           this.refresh();
@@ -107,7 +107,7 @@ class LbListener extends Page {
           reject();
         });
     });
-  }*/
+  }
 
   render() {
     const { t, params, servicePath } = this.props;
@@ -216,6 +216,15 @@ class LbListener extends Page {
                         <td>
                           <span>
                             {listener.port}
+                          </span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>{t('status')}</td>
+                        <td className={`i-status i-status-${listener.status}`}>
+                          <span>
+                            <i className="icon"></i>
+                            {t(`lblistenerStatus.${listener.status}`)}
                           </span>
                         </td>
                       </tr>

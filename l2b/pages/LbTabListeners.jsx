@@ -22,7 +22,7 @@ class C extends TablePage {
 
   initialize(routerKey) {
     this.initTable(routerKey, {
-      status: ['active', 'pending'],
+      status: ['active', 'pending', 'building'],
       isTabPage: true,
     });
   }
