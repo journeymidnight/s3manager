@@ -396,7 +396,7 @@ class ObjectManagement extends TablePageStatic {
     const { dispatch, routerKey } = this.props;
     dispatch(extendContext({ visibleObjects: [] }, routerKey));
     dispatch(ObjectActions.setFolderLocation(folderName));
-    setTimeout(() => this.onRefresh({ searchWord: this.props.global.folderLocation }, false)(), 100);
+    setTimeout(() => this.onRefresh({ searchWord: this.props.global.folderLocation }, true)(), 100);
   }
 
   renderTable() {
