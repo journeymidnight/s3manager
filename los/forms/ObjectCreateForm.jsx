@@ -10,6 +10,7 @@ class ObjectCreateForm extends React.Component {
     const initialValues = {
       objectName: '',
       folderNames: this.props.folderNames,
+      folderLocation: this.props.folderLocation,
     };
     this.props.initializeForm(initialValues);
   }
@@ -63,6 +64,7 @@ ObjectCreateForm.propTypes = {
   resetForm: React.PropTypes.func.isRequired,
   t: React.PropTypes.any,
   folderNames: React.PropTypes.array,
+  folderLocation: React.PropTypes.string,
 };
 
 ObjectCreateForm.validate = values => {
@@ -71,7 +73,7 @@ ObjectCreateForm.validate = values => {
   if (!Validations.isEmpty(values.objectName) && !/^[0-9a-z\u4E00-\u9FA5]{1}([a-z0-9\u4E00-\u9FA5_]|[-]|[.]){0,253}$/i.test(values.objectName)) {
     errors.objectName = i18n.t('pageObjectCreate.objectNameNotValid');
   }
-  if (!Validations.isEmpty(values.objectName) && values.folderNames.find(folderName => folderName === values.objectName)) {
+  if (!Validations.isEmpty(values.objectName) && values.folderNames.find(folderName => folderName === values.folderLocation + values.objectName)) {
     errors.objectName = i18n.t('pageObjectCreate.objectNameDuplicated');
   }
 
@@ -80,6 +82,6 @@ ObjectCreateForm.validate = values => {
 
 export default reduxForm({
   form: 'ObjectCreateForm',
-  fields: ['objectName', 'folderNames'],
+  fields: ['objectName', 'folderNames', 'folderLocation'],
   validate: ObjectCreateForm.validate,
 })(translate()(ObjectCreateForm));

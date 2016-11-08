@@ -646,6 +646,7 @@ class ObjectManagement extends TablePageStatic {
           <ObjectCreateForm
             onSubmit={this.onCreateObject}
             folderNames={this.props.context.folderNames}
+            folderLocation={this.props.global.folderLocation}
           />
         </Modal>
       </div>
