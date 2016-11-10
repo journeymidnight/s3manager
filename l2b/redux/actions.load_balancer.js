@@ -64,7 +64,9 @@ export function requestCreateLoadBalancer(routerKey, regionId, loadBalancer) {
         }, 1000);
       })
       .catch((error) => {
-        dispatch(notifyAlert(error.message));
+        setTimeout(() => {
+          dispatch(notifyAlert(error.message));
+        }, 1000);
       });
   };
 }
@@ -97,17 +99,35 @@ export function requestModifyLoadBalancer(routerKey, regionId, loadBalancerId, n
   };
 }
 
+export function requestUpdateLoadBalancerBandwidth(routerKey, regionId, loadBalancerId, bandwidth) {
+  return dispatch => {
+    return IaaS
+      .doAction(regionId, ACTION_NAMES.updateLoadBalancerBandwidth, { loadBalancerIds: [loadBalancerId], bandwidth })
+      .promise
+      .then(() => {
+        dispatch(notify(i18n.t('updateSuccessed')));
+      })
+      .catch((error) => {
+        dispatch(notifyAlert(error.message));
+      });
+  };
+}
+
 export function requestDescribeLbListeners(routerKey, regionId, filters) {
   return dispatch => {
     return IaaS
       .doAction(regionId, ACTION_NAMES.describeLoadBalancerListeners, filters)
       .promise
       .then((payload) => {
-        dispatch(extendContext(Object.assign(payload, {
-          currentPage: parseInt(payload.offset / payload.limit, 10) + 1,
-          size: payload.limit,
-          totalPage: parseInt((payload.total - 1) / payload.limit, 10) + 1,
-        })));
+        if (filters.loadBalancerListenerIds) {
+          dispatch(extendContext({ listenerSet: payload.listenerSet }));
+        } else {
+          dispatch(extendContext(Object.assign(payload, {
+            currentPage: parseInt(payload.offset / payload.limit, 10) + 1,
+            size: payload.limit,
+            totalPage: parseInt((payload.total - 1) / payload.limit, 10) + 1,
+          })));
+        }
       })
       .catch((error) => {
         dispatch(notifyAlert(error.message));

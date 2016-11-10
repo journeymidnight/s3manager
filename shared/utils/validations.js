@@ -94,6 +94,13 @@ export function weight(value) {
   return null;
 }
 
+export function connectionLimit(value) {
+  if ((value && (!Number.isInteger(Number(value)) || (Number(value) < -1))) || (Number(value) === 0)) {
+    return i18n.t('validationMessage.connectionLimit');
+  }
+  return null;
+}
+
 export function healthMonitorDelay(value) {
   if (value && !/^([0-9]{1}|[1-4][0-9]|50)$/.test(value)) {
     return i18n.t('validationMessage.healthMonitorDelay');

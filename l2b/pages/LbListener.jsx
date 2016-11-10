@@ -6,7 +6,7 @@ import Modal from '../../shared/components/Modal';
 import * as Actions from '../../console-common/redux/actions';
 import * as LoadBalancerActions from '../redux/actions.load_balancer';
 import UpdateForm from '../forms/UpdateForm';
-import LimitForm from '../forms/LimitForm';
+// import LimitForm from '../forms/LimitForm';
 import SessionForm from '../forms/SessionForm';
 import HealthForm from '../forms/HealthForm';
 import LbBackends from './LbBackends';
@@ -22,7 +22,7 @@ class LbListener extends Page {
     this.forwards = { ROUND_ROBIN: 'roundRobin' };
 
     this.refresh = this.refresh.bind(this);
-    this.updateLimit = this.updateLimit.bind(this);
+    // this.updateLimit = this.updateLimit.bind(this);
     this.updateListener = this.updateListener.bind(this);
     this.updateSession = this.updateSession.bind(this);
     this.updateHealth = this.updateHealth.bind(this);
@@ -55,9 +55,9 @@ class LbListener extends Page {
     this.refs.updateModal.show();
   }
 
-  updateLimit() {
+  /* updateLimit() {
     this.refs.limitModal.show();
-  }
+  }*/
 
   updateSession() {
     this.refs.sessionModal.show();
@@ -92,13 +92,13 @@ class LbListener extends Page {
     if (this.props.context.listenerSet) {
       listener = this.props.context.listenerSet[0];
     }
-    const { sessionPersistenceMode } = listener;
+    const sessionPersistenceMode = listener.sessionPersistenceMode || undefined;
 
     return new Promise((resolve, reject) => {
       dispatch(LoadBalancerActions.requestUpdateLoadBalancerListener(routerKey, region.regionId, params.listenerId, Object.assign({}, { sessionPersistenceMode }, values)))
         .then(() => {
           resolve();
-          this.refs.limitModal.hide();
+          // this.refs.limitModal.hide();
           this.refs.sessionModal.hide();
           this.refs.healthModal.hide();
           this.refresh();
@@ -161,7 +161,7 @@ class LbListener extends Page {
                       <button type="button" className="btn dropdown-toggle" data-toggle="dropdown">
                         <i className="fa fa-bars"></i>
                       </button>
-                      <ul className="dropdown-menu">
+                      <ul className="dropdown-menu" style={{ left: 'auto', right: 0 }}>
                         <li>
                           <button
                             className="btn-page-action"
@@ -171,14 +171,14 @@ class LbListener extends Page {
                           </button>
                         </li>
 
-                        <li>
+                        {/* <li>
                           <button
                             className="btn-page-action"
                             onClick={this.updateLimit}
                           >
                             {t('pageLoadBalancer.changeLimit')}
                           </button>
-                        </li>
+                        </li>*/}
                       </ul>
                     </div>
                   </div>
@@ -220,6 +220,15 @@ class LbListener extends Page {
                         </td>
                       </tr>
                       <tr>
+                        <td>{t('status')}</td>
+                        <td className={`i-status i-status-${listener.status}`}>
+                          <span>
+                            <i className="icon"></i>
+                            {t(`lblistenerStatus.${listener.status}`)}
+                          </span>
+                        </td>
+                      </tr>
+                      <tr>
                         <td>{t('pageLoadBalancer.forward')}</td>
                         <td>
                           <span>
@@ -227,10 +236,10 @@ class LbListener extends Page {
                           </span>
                         </td>
                       </tr>
-                      <tr>
+                      {/* <tr>
                         <td>{t('pageLoadBalancer.connectionLimit')}</td>
                         <td><span>{listener.connectionLimit === -1 ? t('pageLoadBalancer.limitOff') : listener.connectionLimit}</span></td>
-                      </tr>
+                      </tr>*/}
                       {/* <tr>
                         <td>{t('status')}</td>
                         <td className={`i-status i-status-${listener.status}`}>
@@ -260,7 +269,7 @@ class LbListener extends Page {
                       <button type="button" className="btn dropdown-toggle" data-toggle="dropdown">
                         <i className="fa fa-bars"></i>
                       </button>
-                      <ul className="dropdown-menu">
+                      <ul className="dropdown-menu" style={{ left: 'auto', right: 0 }}>
                         <li>
                           <button
                             className="btn-page-action"
@@ -298,7 +307,7 @@ class LbListener extends Page {
                       <button type="button" className="btn dropdown-toggle" data-toggle="dropdown">
                         <i className="fa fa-bars"></i>
                       </button>
-                      <ul className="dropdown-menu">
+                      <ul className="dropdown-menu" style={{ left: 'auto', right: 0 }}>
                         <li>
                           <button
                             className="btn-page-action"
@@ -343,9 +352,9 @@ class LbListener extends Page {
           <UpdateForm onSubmit={this.onUpdate} initialValues={listener} />
         </Modal>
 
-        <Modal title={t('pageLoadBalancer.connectionLimit')} ref="limitModal" >
+        {/* <Modal title={t('pageLoadBalancer.connectionLimit')} ref="limitModal" >
           <LimitForm onSubmit={this.onUpdateParams} initialValues={listener} />
-        </Modal>
+        </Modal>*/}
 
         <Modal title={t('pageLoadBalancer.session')} ref="sessionModal" >
           <SessionForm onSubmit={this.onUpdateParams} initialValues={Object.assign({}, listener, { session: listener.sessionPersistenceMode || false })} />
@@ -355,7 +364,7 @@ class LbListener extends Page {
           <HealthForm onSubmit={this.onUpdateParams} initialValues={listener} />
         </Modal>
 
-        <LbBackends {...this.props} />
+        <LbBackends params={this.props.params} />
       </div>
     );
   }

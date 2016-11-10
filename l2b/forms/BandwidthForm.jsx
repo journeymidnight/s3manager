@@ -1,25 +1,23 @@
 import React from 'react';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';import * as Validations from '../../shared/utils/validations';
+import Slider from '../../shared/components/Slider';
 
-let WeightForm = (props) => {
+let BandwidthForm = (props) => {
   const { fields:
-    { weight },
+    { bandwidth },
     handleSubmit,
     submitting,
-    submitFailed,
     t,
   } = props;
   return (
     <form className="form-horizontal" onSubmit={handleSubmit}>
       <div className="modal-body">
-
-        <div className={(submitFailed || weight.touched) && weight.error ? 'form-group has-error' : 'form-group'}>
-          <label className="control-label" >{t('weight')}</label>
+        <div className="form-group">
+          <label className="control-label" >{t('bandwidth')}</label>
           <div className="col-sm-10">
-            <input type="number" className="form-control" {...weight} />
-            {(submitFailed || weight.touched) && weight.error && <div className="text-danger"><small>{weight.error}</small></div>}
-            <p className="help-block">{t('pageLoadBalancer.weightRange')}</p>
+            <input type="hidden" className="form-control" value={bandwidth.value} disabled="disabled" />
+            <Slider min={1} max={300} step={1} value={bandwidth.value} unit={'Mbps'} onChange={param => bandwidth.onChange(param)} />
           </div>
         </div>
       </div>
@@ -34,7 +32,7 @@ let WeightForm = (props) => {
   );
 };
 
-WeightForm.propTypes = {
+BandwidthForm.propTypes = {
   fields: React.PropTypes.object.isRequired,
   error: React.PropTypes.string,
   handleSubmit: React.PropTypes.func.isRequired,
@@ -43,16 +41,16 @@ WeightForm.propTypes = {
   t: React.PropTypes.any,
 };
 
-WeightForm.validate = values => {
+BandwidthForm.validate = values => {
   const errors = {};
-  errors.weight = Validations.weight(values.weight);
+  errors.bandwidth = Validations.integer(values.bandwidth);
   return errors;
 };
 
-WeightForm = reduxForm({
-  form: 'WeightForm',
-  fields: ['weight'],
-  validate: WeightForm.validate,
-})(translate()(WeightForm));
+BandwidthForm = reduxForm({
+  form: 'BandwidthForm',
+  fields: ['bandwidth'],
+  validate: BandwidthForm.validate,
+})(translate()(BandwidthForm));
 
-export default WeightForm;
+export default BandwidthForm;
