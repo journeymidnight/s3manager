@@ -68,38 +68,40 @@ class C extends TablePage {
             <th>{t('name')}</th>
             <th>{t('bandwidth')}</th>
             <th>{t('status')}</th>
+            <th width="200">{t('address')}</th>
             <th width="200">{t('created')}</th>
           </tr>
         </thead>
         <tbody>
-          {this.props.context.loadBalancerSet.map((loadbalancer) => {
+          {this.props.context.loadBalancerSet.map((loadBalancer) => {
             return (
-              <tr key={loadbalancer.loadBalancerId}>
+              <tr key={loadBalancer.loadBalancerId}>
                 <td>
                   <input
                     type="checkbox"
                     className="selected"
-                    onChange={this.onSelect(loadbalancer.loadBalancerId)}
-                    checked={this.props.context.selected[loadbalancer.loadBalancerId] === true}
+                    onChange={this.onSelect(loadBalancer.loadBalancerId)}
+                    checked={this.props.context.selected[loadBalancer.loadBalancerId] === true}
                   />
                 </td>
                 <td>
-                  <Link to={`${servicePath}/load_balancers/${loadbalancer.loadBalancerId}`}>
-                    {loadbalancer.loadBalancerId}
+                  <Link to={`${servicePath}/load_balancers/${loadBalancer.loadBalancerId}`}>
+                    {loadBalancer.loadBalancerId}
                   </Link>
                 </td>
                 <td>
                   <span className="list-item-name">
-                  {loadbalancer.name && <strong>{loadbalancer.name}</strong>}
-                  {!loadbalancer.name && <i className="text-muted">{t('noName')}</i>}
+                  {loadBalancer.name && <strong>{loadBalancer.name}</strong>}
+                  {!loadBalancer.name && <i className="text-muted">{t('noName')}</i>}
                   </span>
                 </td>
-                <td>{loadbalancer.bandwidth}Mbps</td>
-                <td className={`i-status i-status-${loadbalancer.status}`}>
+                <td>{loadBalancer.bandwidth}Mbps</td>
+                <td className={`i-status i-status-${loadBalancer.status}`}>
                   <i className="icon"></i>
-                  {t(`loadBalancerStatus.${loadbalancer.status}`)}
+                  {t(`loadBalancerStatus.${loadBalancer.status}`)}
                 </td>
-                <td className="light"><Time value={loadbalancer.created} format="YYYY-MM-DD HH:mm:ss" /></td>
+                <td>{loadBalancer.address}</td>
+                <td className="light"><Time value={loadBalancer.created} format="YYYY-MM-DD HH:mm:ss" /></td>
               </tr>
             );
           })}

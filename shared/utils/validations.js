@@ -87,6 +87,34 @@ export function port(value) {
   return null;
 }
 
+export function weight(value) {
+  if (value && !/^([0-9]{1,2}|[1][0-9]{2}|2[0-4][0-9]|25[0-6])$/.test(value)) {
+    return i18n.t('validationMessage.weight');
+  }
+  return null;
+}
+
+export function connectionLimit(value) {
+  if ((value && (!Number.isInteger(Number(value)) || (Number(value) < -1))) || (Number(value) === 0)) {
+    return i18n.t('validationMessage.connectionLimit');
+  }
+  return null;
+}
+
+export function healthMonitorDelay(value) {
+  if (value && !/^([0-9]{1}|[1-4][0-9]|50)$/.test(value)) {
+    return i18n.t('validationMessage.healthMonitorDelay');
+  }
+  return null;
+}
+
+export function healthMonitorTimeout(value) {
+  if (value && !/^([0-9]{1,2}|[1-2][0-9]{2}|300)$/.test(value)) {
+    return i18n.t('validationMessage.healthMonitorTimeout');
+  }
+  return null;
+}
+
 export function createValidator(rules) {
   return (data = {}) => {
     const errors = {};

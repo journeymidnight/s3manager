@@ -1,7 +1,7 @@
 import React from 'react';
 import { push } from 'react-router-redux';
 import Page, { attach } from '../../shared/pages/Page';
-import LoadBalancerForm from '../forms/LoadBalancerForm';
+import LoadBalancerCreateForm from '../forms/LoadBalancerCreateForm';
 import * as Actions from '../../console-common/redux/actions';
 import * as LoadBalancerActions from '../redux/actions.load_balancer';
 
@@ -46,7 +46,8 @@ class C extends Page {
         .then(() => {
           resolve();
           dispatch(push(`${servicePath}/load_balancers`));
-        }).catch((error) => {
+        })
+        .catch((error) => {
           dispatch(Actions.notifyAlert(error.displayMsg || error.message));
           reject();
         });
@@ -63,10 +64,10 @@ class C extends Page {
           <div className="clearfix">
             <div className="top-area append-bottom-20">
               <div className="nav-text">
-                <span>{t('pageVolumeCreate.createVolume')}</span>
+                <span>{t('createLoadBalancers')}</span>
               </div>
             </div>
-            {availableNetworks.length > 0 && <LoadBalancerForm onSubmit={this.onSubmit} availableNetworks={availableNetworks} />}
+            {availableNetworks.length > 0 && <LoadBalancerCreateForm onSubmit={this.onSubmit} availableNetworks={availableNetworks} />}
           </div>
         </div>
       </div>

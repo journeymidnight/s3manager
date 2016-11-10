@@ -1,11 +1,12 @@
 import moment from 'moment';
 import React from 'react';
-import _ from 'lodash';
 import { Link } from 'react-router';
 import Page, { attach } from '../../shared/pages/Page';
+import Modal, { confirmModal } from '../../shared/components/Modal';
 import * as Actions from '../../console-common/redux/actions';
 import * as LoadBalancerActions from '../redux/actions.load_balancer';
-
+import UpdateForm from '../forms/UpdateForm';
+import BandwidthForm from '../forms/BandwidthForm';
 
 class C extends Page {
 
@@ -13,6 +14,11 @@ class C extends Page {
     super(props);
 
     this.refresh = this.refresh.bind(this);
+    this.onUpdate = this.onUpdate.bind(this);
+    this.update = this.update.bind(this);
+    this.changeBandwidth = this.changeBandwidth.bind(this);
+    this.onChangeBandwidth = this.onChangeBandwidth.bind(this);
+    this.onDelete = this.onDelete.bind(this);
   }
 
   initialize() {
@@ -42,6 +48,66 @@ class C extends Page {
     return loadBalancer.status !== 'deleted' && loadBalancer.status !== 'ceased';
   }
 
+  onUpdate() {
+    this.refs.updateModal.show();
+  }
+
+  update(values) {
+    const { dispatch, region, routerKey, params } = this.props;
+
+    return new Promise((resolve, reject) => {
+      const name = values.name;
+      const description = values.description;
+
+      dispatch(LoadBalancerActions.requestModifyLoadBalancer(routerKey, region.regionId, params.loadBalancerId, name, description))
+        .then(() => {
+          resolve();
+          this.refs.updateModal.hide();
+          this.refresh();
+        })
+        .catch(() => {
+          reject();
+        });
+    });
+  }
+
+  onChangeBandwidth() {
+    this.refs.bandwidthModal.show();
+  }
+
+  changeBandwidth(values) {
+    const { dispatch, region, routerKey, params } = this.props;
+
+    return new Promise((resolve, reject) => {
+      dispatch(LoadBalancerActions.requestUpdateLoadBalancerBandwidth(routerKey, region.regionId, params.loadBalancerId, values.bandwidth))
+        .then(() => {
+          resolve();
+          this.refs.bandwidthModal.hide();
+          this.refresh();
+        })
+        .catch(() => {
+          reject();
+        });
+    });
+  }
+
+  onDelete() {
+    const { t, dispatch, routerKey, region, context } = this.props;
+    const loadbalancerIds = [context.loadBalancer.loadBalancerId];
+
+    confirmModal(t('confirmDelete'), () => {
+      return new Promise((resolve, reject) => {
+        dispatch(LoadBalancerActions.requestDeleteLoadBalancers(routerKey, region.regionId, loadbalancerIds))
+          .then(() => {
+            resolve();
+            this.onRefresh({}, false)();
+          })
+          .catch(() => {
+            reject();
+          });
+      });
+    });
+  }
 
   render() {
     const { t, params, servicePath } = this.props;
@@ -54,10 +120,10 @@ class C extends Page {
     }
 
     let active = 'lb_listeners';
-    if (_.endsWith(this.props.location.pathname, 'lb_listeners')) {
-      active = 'lb_listeners';
-    } else if (_.endsWith(this.props.location.pathname, 'lb_backends')) {
-      active = 'lb_backends';
+    if (this.props.location.pathname.endsWith('lb_listeners')) {
+      active = 'lb_listeners'; // TODO:
+    } else if (this.props.location.pathname.endsWith('lb_monitors')) {
+      active = 'lb_monitors';
     }
 
     return (
@@ -84,25 +150,37 @@ class C extends Page {
                         <li>
                           <button
                             className="btn-page-action"
-                            onClick={this.updateLoadBalancer}
+                            disabled={loadBalancer.status !== 'active'}
+                            onClick={this.onUpdate}
                           >
-                            {t('pageLoadBalancer.updateLoadBalancer')}
+                            {t('pageLoadBalancer.update')}
                           </button>
                         </li>
+
                         <li>
                           <button
                             className="btn-page-action"
                             disabled={loadBalancer.status !== 'active'}
-                            onClick={this.deleteLoadBalancer}
+                            onClick={this.onChangeBandwidth}
                           >
-                            {t('pageLoadBalancer.deleteLoadBalancer')}
+                            {t('pageLoadBalancer.changeBandwidth')}
+                          </button>
+                        </li>
+
+                        <li>
+                          <button
+                            className="btn-page-action"
+                            disabled={loadBalancer.status !== 'active'}
+                            onClick={this.onDelete}
+                          >
+                            {t('pageLoadBalancer.delete')}
                           </button>
                         </li>
                       </ul>
                     </div>}
                     {!this.isEnabled(loadBalancer) && this.isDeletable(loadBalancer) && <div className="btn-group pull-right">
-                      <button type="button" className="btn" onClick={this.deleteLoadBalancer}>
-                        {t('pageLoadBalancer.deleteLoadBalancer')}
+                      <button type="button" className="btn" onClick={this.onDelete}>
+                        {t('pageLoadBalancer.delete')}
                       </button>
                     </div>}
                   </div>
@@ -146,6 +224,14 @@ class C extends Page {
                         </td>
                       </tr>
                       <tr>
+                        <td>{t('address')}</td>
+                        <td>
+                          <span>
+                            {loadBalancer.address}
+                          </span>
+                        </td>
+                      </tr>
+                      <tr>
                         <td>{t('created')}</td>
                         <td><span>{moment.utc(loadBalancer.created).local().format('YYYY-MM-DD HH:mm:ss')}</span></td>
                       </tr>
@@ -160,9 +246,9 @@ class C extends Page {
                       {t('pageLoadBalancer.listener')}
                     </Link>
                   </li>
-                  <li className={`pull-left ${(active === 'lb_backends') ? 'active' : ''}`}>
-                    <Link data-placement="left" to={`${servicePath}/load_balancers/${loadBalancer.loadBalancerId}/lb_backends`}>
-                      {t('pageLoadBalancer.backend')}
+                  <li className={`pull-left ${(active === 'lb_monitors') ? 'active' : ''}`}>
+                    <Link data-placement="left" to={`${servicePath}/load_balancers/${loadBalancer.loadBalancerId}/lb_monitors`}>
+                      {t('pageLoadBalancer.monitors')}
                     </Link>
                   </li>
                 </ul>
@@ -174,6 +260,14 @@ class C extends Page {
 
           </div>
         </div>
+
+        <Modal title={t('pageLoadBalancer.update')} ref="updateModal" >
+          <UpdateForm onSubmit={this.update} initialValues={loadBalancer} />
+        </Modal>
+
+        <Modal title={t('pageLoadBalancer.changeBandwidth')} ref="bandwidthModal" >
+          <BandwidthForm onSubmit={this.changeBandwidth} initialValues={loadBalancer} />
+        </Modal>
       </div>
     );
   }

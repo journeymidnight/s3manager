@@ -60,6 +60,8 @@
     "mountpoint": "挂载点",
     "size": "大小",
     "port": "端口",
+    "protocol": "端口协议",
+    "weight": "权重",
     "category": "类型",
     "download": "下载",
     "key_pair": "SSH 密钥",
@@ -158,7 +160,8 @@
     "services": {
         "g": "帐号信息",
         "lcs": "云主机",
-        "los": "对象存储"
+        "los": "对象存储",
+        "l2b": "负载均衡"
     },
     "restartTypes": {
         "SOFT": "软重启",
@@ -541,7 +544,11 @@
     },
     "validationMessage": {
         "ipAddress": "ip地址格式错误",
-        "port": "端口号格式错误"
+        "port": "端口号格式错误",
+        "weight": "权重格式错误",
+        "connectionLimit": "连接限制格式错误",
+        "healthMonitorDelay": "间隔时间格式错误",
+        "healthMonitorTimeout": "超时时间格式错误"
     },
     "actionTranslation": {
         "CreateInstances": "创建云主机",
@@ -786,6 +793,7 @@
     "sidebarLoadBalancers": "负载均衡",
     "loadbalancerManage": "负载均衡",
     "loadBalancersManageDescription": "负载均衡管理",
+    "createLoadBalancers": "添加负载均衡",
     "loadBalancerStatus": {
         "pending": "创建中",
         "active": "运行中",
@@ -793,12 +801,54 @@
         "error": "状态异常",
         "deleted": "已删除"
     },
+    "lblistenerStatus": {
+        "active": "运行中",
+        "pending": "创建中",
+        "building": "构建中"
+    },
     "pageLoadBalancer": {
         "basic": "基本信息",
-        "updateLoadBalancer": "更新",
-        "deleteLoadBalancer": "删除",
+        "update": "更新",
+        "modify": "修改",
+        "delete": "删除",
+        "changeBandwidth": "修改带宽",
+        "listenerList": "监听器列表",
         "listener": "监听器",
-        "backend": "后端服务"
+        "forward": "转发规则",
+        "roundRobin": "轮询",
+        "connectionLimit": "连接限制",
+        "changeLimit": "修改连接限制",
+        "connectionLimitRange": "-1（默认，表示不限制次数）或正整数",
+        "limitOff": "不限制",
+        "session": "会话保持",
+        "sessionStatus": "状态",
+        "on": "开启",
+        "off": "关闭",
+        "sessionPersistenceMode": "模式",
+        "health": "健康检查",
+        "healthMonitorType": "类型",
+        "healthMonitorDelay": "间隔时间",
+        "healthMonitorDelayRange": "1-50秒，默认10秒",
+        "healthMonitorTimeout": "超时时间",
+        "healthMonitorTimeoutRange": "1-300秒，默认10秒",
+        "healthMonitorMaxRetries": "重试次数",
+        "healthMonitorMaxRetriesRange": "默认3次",
+        "healthMonitorMaxRetriesHint": "云主机从成功到失败的连续健康检查失败次数",
+        "second": "秒",
+        "count": "次",
+        "monitors": "资源监控",
+        "createListener": "添加监听器",
+        "backendList": "后端服务列表",
+        "backend": "后端服务",
+        "createBackend": "添加后端服务",
+        "weightRange": "1-256，默认为1",
+        "back": "返回",
+        "unfold": "详情",
+        "fold": "收起",
+        "disablePrompt": "负载均衡非运行中，无法进行相关操作"
+    },
+    "pageListenerCreate": {
+
     },
     "___comment_end_l2b": "end l2b",
 
