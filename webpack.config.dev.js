@@ -38,7 +38,8 @@ module.exports = {
       'redux-logger',
       'redux-thunk',
       'store',
-      'superagent'
+      'superagent',
+      'webpack-hot-middleware/client'
     ]
   },
 
@@ -83,6 +84,8 @@ module.exports = {
 
   plugins: [
     new ExtractTextPlugin('[name].css'),
+    new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.NoErrorsPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.ProvidePlugin({
       $: 'jquery',
