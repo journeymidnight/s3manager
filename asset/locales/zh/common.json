@@ -681,7 +681,7 @@
     "pageBucketCreate": {
         "createBucket": "添加空间",
         "bucketName": "空间名称",
-        "bucketNameHint": "空间名称命名规范: \n 1. 只能包含小写字母，数字和短横线 \n 2. 必须以小写字母和数字开头和结尾 \n 3. 长度限制在3-63之间",
+        "bucketNameHint": "空间名称命名规范: \n 1. 只能包含小写字母，数字和短横线 \n 2. 必须以小写字母和数字开头和结尾 \n 3. 长度限制在3-63之间 \n 4. 不可使用仅供内部使用的保留名称，如：admin",
         "acl": "权限控制",
         "aclPrivate": "私有",
         "aclPublicR": "公共",
