@@ -816,6 +816,8 @@
         "listener": "监听器",
         "forward": "转发规则",
         "roundRobin": "轮询",
+        "weightedRoundRobin": "加权轮询",
+        "sourceIp": "IP Hash",
         "connectionLimit": "连接限制",
         "changeLimit": "修改连接限制",
         "connectionLimitRange": "-1（默认，表示不限制次数）或正整数",

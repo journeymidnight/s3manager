@@ -12,6 +12,8 @@ class ListenerCreateForm extends React.Component {
     this.protocols = ['TCP'];
     this.forwards = [
       { name: 'roundRobin', value: 'ROUND_ROBIN' },
+      { name: 'weightedRoundRobin', value: 'WEIGHTED_ROUND_ROBIN' },
+      { name: 'sourceIp', value: 'SOURCE_IP' },
     ];
     this.sessionPersistenceModes = ['SOURCE_IP'];
     this.healthMonitorTypes = ['TCP'];
@@ -33,6 +35,7 @@ class ListenerCreateForm extends React.Component {
     const { fields:
       {
         name,
+        description,
         protocol,
         port,
         forward,
@@ -58,6 +61,14 @@ class ListenerCreateForm extends React.Component {
             <div className="col-sm-10">
               <input type="text" className="form-control" {...name} maxLength="50" />
               {(submitFailed || name.touched) && name.error && <div className="text-danger"><small>{name.error}</small></div>}
+            </div>
+          </div>
+
+          <div className={(submitFailed || description.touched) && description.error ? 'form-group has-error' : 'form-group'}>
+            <label className="control-label" >{t('description')}</label>
+            <div className="col-sm-10">
+              <input type="text" className="form-control" {...description} maxLength="250" />
+              {(submitFailed || description.touched) && description.error && <div className="text-danger"><small>{description.error}</small></div>}
             </div>
           </div>
 
@@ -211,7 +222,6 @@ ListenerCreateForm.propTypes = {
 
 ListenerCreateForm.validate = values => {
   const errors = {};
-  errors.name = Validations.required(values.name);
   errors.port = Validations.port(values.port);
   // errors.connectionLimit = Validations.connectionLimit(values.connectionLimit);
   errors.healthMonitorDelay = Validations.healthMonitorDelay(values.healthMonitorDelay);
@@ -223,6 +233,7 @@ export default reduxForm({
   form: 'ListenerCreateForm',
   fields: [
     'name',
+    'description',
     'protocol',
     'port',
     'forward',

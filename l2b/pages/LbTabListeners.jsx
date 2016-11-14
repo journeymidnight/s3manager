@@ -121,7 +121,8 @@ class C extends TablePage {
                 checked={this.isAllSelected(this.props.context.listenerSet.map((u) => { return u.loadBalancerListenerId; }))}
               />
             </th>
-            <th width="150">{t('id')}</th>
+            <th>{t('id')}</th>
+            <th>{t('name')}</th>
             <th>{`${t('protocol')}/${t('port')}`}</th>
             <th>{t('status')}</th>
             <th>{t('pageLoadBalancer.forward')}</th>
@@ -145,6 +146,12 @@ class C extends TablePage {
                 <Link to={`${servicePath}/load_balancers/${loadBalancer.loadBalancerId}/${listener.loadBalancerListenerId}`}>
                   {listener.loadBalancerListenerId}
                 </Link>
+              </td>
+              <td>
+                <span className="list-item-name">
+                {listener.name && <strong>{listener.name}</strong>}
+                  {!listener.name && <i className="text-muted">{t('noName')}</i>}
+                </span>
               </td>
               <td>
                 {`${listener.protocol}/${listener.port}`}

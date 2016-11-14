@@ -76,7 +76,6 @@ BackendCreateForm.propTypes = {
 
 BackendCreateForm.validate = values => {
   const errors = {};
-  errors.name = Validations.required(values.name);
   errors.address = Validations.ipAddress(values.address);
   errors.port = Validations.port(values.port);
   errors.weight = Validations.weight(values.weight);
