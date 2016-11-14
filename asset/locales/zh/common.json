@@ -858,5 +858,10 @@
         "k": "千",
         "w": "万",
         "y": "亿"
+    },
+
+    "test": {
+        "helpName": "TestName",
+        "helpText": "This is help text"
     }
 }

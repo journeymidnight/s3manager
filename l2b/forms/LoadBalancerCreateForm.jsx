@@ -1,6 +1,7 @@
 import React from 'react';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
+import TextInput from '../../shared/components/FormInputs/TextInput';
 import Slider from '../../shared/components/Slider';
 import * as Validations from '../../shared/utils/validations';
 
@@ -47,13 +48,7 @@ class F extends React.Component {
     return (
       <form className="form-horizontal" onSubmit={handleSubmit}>
 
-        <div className={(submitFailed || name.touched) && name.error ? 'form-group has-error' : 'form-group'}>
-          <label className="control-label" >{t('name')}</label>
-          <div className="col-sm-10">
-            <input type="text" className="form-control" {...name} maxLength="50" />
-            {(submitFailed || name.touched) && name.error && <div className="text-danger"><small>{name.error}</small></div>}
-          </div>
-        </div>
+        <TextInput item={name} itemName="name" submitFailed={submitFailed} inputParams={{ maxLength: '50' }} t={t} />
 
         <div className={(submitFailed || subnetId.touched) && subnetId.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('subnet')}</label>
