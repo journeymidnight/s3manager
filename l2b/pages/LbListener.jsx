@@ -19,7 +19,11 @@ class LbListener extends Page {
     this.state = {
       listenerList: false,
     };
-    this.forwards = { ROUND_ROBIN: 'roundRobin' };
+    this.forwards = {
+      ROUND_ROBIN: 'roundRobin',
+      WEIGHTED_ROUND_ROBIN: 'weightedRoundRobin',
+      SOURCE_IP: 'sourceIp',
+    };
 
     this.refresh = this.refresh.bind(this);
     // this.updateLimit = this.updateLimit.bind(this);
