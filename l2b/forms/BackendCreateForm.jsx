@@ -41,7 +41,7 @@ const BackendCreateForm = (props) => {
         <div className={(submitFailed || port.touched) && port.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('port')}</label>
           <div className="col-sm-10">
-            <input type="number" className="form-control" {...port} />
+            <input type="number" className="form-control" {...port} min="1" max="65535" />
             {(submitFailed || port.touched) && port.error && <div className="text-danger"><small>{port.error}</small></div>}
           </div>
         </div>
@@ -49,7 +49,7 @@ const BackendCreateForm = (props) => {
         <div className={(submitFailed || weight.touched) && weight.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('weight')}</label>
           <div className="col-sm-10">
-            <input type="number" className="form-control" placeholder={t('pageLoadBalancer.weightRange')} {...weight} />
+            <input type="number" className="form-control" placeholder={t('pageLoadBalancer.weightRange')} {...weight} min="1" max="256" />
             {(submitFailed || weight.touched) && weight.error && <div className="text-danger"><small>{weight.error}</small></div>}
           </div>
         </div>
