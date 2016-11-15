@@ -38,8 +38,7 @@ module.exports = {
       'redux-logger',
       'redux-thunk',
       'store',
-      'superagent',
-      'webpack-hot-middleware/client'
+      'superagent'
     ]
   },
 
