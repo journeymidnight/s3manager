@@ -10,7 +10,7 @@ class ListenerCreateForm extends React.Component {
     super();
 
     this.protocols = ['TCP'];
-    this.forwards = [
+    this.balanceModes = [
       { name: 'roundRobin', value: 'ROUND_ROBIN' },
       { name: 'weightedRoundRobin', value: 'WEIGHTED_ROUND_ROBIN' },
       { name: 'sourceIp', value: 'SOURCE_IP' },
@@ -22,7 +22,7 @@ class ListenerCreateForm extends React.Component {
   componentDidMount() {
     const initialValues = {
       protocol: 'TCP',
-      forward: 'ROUND_ROBIN',
+      balanceMode: 'ROUND_ROBIN',
       session: false,
       healthMonitorType: 'TCP',
       healthMonitorMaxRetries: 3,
@@ -38,7 +38,7 @@ class ListenerCreateForm extends React.Component {
         description,
         protocol,
         port,
-        forward,
+        balanceMode,
         // connectionLimit,
         session,
         sessionPersistenceMode,
@@ -91,10 +91,10 @@ class ListenerCreateForm extends React.Component {
           </div>
 
           <div className="form-group">
-            <label className="control-label" >{t('pageLoadBalancer.forward')}</label>
+            <label className="control-label" >{t('pageLoadBalancer.balanceMode')}</label>
             <div className="col-sm-10">
-              <select className="form-control" {...forward}>
-                {this.forwards.map((item) =>
+              <select className="form-control" {...balanceMode}>
+                {this.balanceModes.map((item) =>
                   <option key={item.name} value={item.value}>{t(`pageLoadBalancer.${item.name}`)}</option>)}
               </select>
             </div>
@@ -220,9 +220,13 @@ ListenerCreateForm.propTypes = {
   t: React.PropTypes.any,
 };
 
-ListenerCreateForm.validate = values => {
+ListenerCreateForm.validate = (values, props) => {
+  console.log(props)
   const errors = {};
   errors.port = Validations.port(values.port);
+  if (props.ports.includes(values.port)) {
+    errors.port = props.t('validationMessage.port');
+  }
   // errors.connectionLimit = Validations.connectionLimit(values.connectionLimit);
   errors.healthMonitorDelay = Validations.healthMonitorDelay(values.healthMonitorDelay);
   errors.healthMonitorTimeout = Validations.healthMonitorTimeout(values.healthMonitorTimeout);
@@ -236,7 +240,7 @@ export default reduxForm({
     'description',
     'protocol',
     'port',
-    'forward',
+    'balanceMode',
     // 'connectionLimit',
     'session',
     'sessionPersistenceMode',

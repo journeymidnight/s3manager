@@ -19,7 +19,7 @@ class LbListener extends Page {
     this.state = {
       listenerList: false,
     };
-    this.forwards = {
+    this.balanceModes = {
       ROUND_ROBIN: 'roundRobin',
       WEIGHTED_ROUND_ROBIN: 'weightedRoundRobin',
       SOURCE_IP: 'sourceIp',
@@ -233,10 +233,10 @@ class LbListener extends Page {
                         </td>
                       </tr>
                       <tr>
-                        <td>{t('pageLoadBalancer.forward')}</td>
+                        <td>{t('pageLoadBalancer.balanceMode')}</td>
                         <td>
                           <span>
-                            {t(`pageLoadBalancer.${this.forwards[listener.balanceMode]}`)}
+                            {t(`pageLoadBalancer.${this.balanceModes[listener.balanceMode]}`)}
                           </span>
                         </td>
                       </tr>
