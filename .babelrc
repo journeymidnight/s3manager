@@ -1,18 +1,33 @@
 {
-  "presets": [
-    "es2015",
-    "react"
-  ],
-  "plugins": [
-    "transform-class-properties",
-    "transform-export-extensions",
-    "transform-object-rest-spread",
-    ["react-transform", {
-      "transforms": [{
-        "transform": "react-transform-hmr",
-        "imports": ["react"],
-        "locals": ["module"]
-      }]
-    }]
-  ]
+  "env": {
+    "development": {
+      "presets": [
+        "es2015",
+        "react"
+      ],
+      "plugins": [
+        "transform-class-properties",
+        "transform-export-extensions",
+        "transform-object-rest-spread",
+        ["react-transform", {
+          "transforms": [{
+            "transform": "react-transform-hmr",
+            "imports": ["react"],
+            "locals": ["module"]
+          }]
+        }]
+      ]
+    },
+    "production": {
+      "presets": [
+        "es2015",
+        "react"
+      ],
+      "plugins": [
+        "transform-class-properties",
+        "transform-export-extensions",
+        "transform-object-rest-spread"
+      ]
+    }
+  }
 }
