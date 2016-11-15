@@ -545,6 +545,7 @@
     "validationMessage": {
         "ipAddress": "ip地址格式错误",
         "port": "端口号格式错误",
+        "portDuplicated": "端口号重复",
         "weight": "权重格式错误",
         "connectionLimit": "连接限制格式错误",
         "healthMonitorDelay": "间隔时间格式错误",

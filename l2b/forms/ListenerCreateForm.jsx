@@ -3,6 +3,7 @@ import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
 import Slider from '../../shared/components/Slider';
 import * as Validations from '../../shared/utils/validations';
+import i18n from '../../shared/i18n';
 
 class ListenerCreateForm extends React.Component {
 
@@ -221,11 +222,10 @@ ListenerCreateForm.propTypes = {
 };
 
 ListenerCreateForm.validate = (values, props) => {
-  console.log(props)
   const errors = {};
   errors.port = Validations.port(values.port);
   if (props.ports.includes(values.port)) {
-    errors.port = props.t('validationMessage.port');
+    errors.port = i18n.t('validationMessage.portDuplicated');
   }
   // errors.connectionLimit = Validations.connectionLimit(values.connectionLimit);
   errors.healthMonitorDelay = Validations.healthMonitorDelay(values.healthMonitorDelay);

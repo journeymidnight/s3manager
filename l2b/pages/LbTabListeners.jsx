@@ -85,7 +85,11 @@ class C extends TablePage {
   }
 
   renderHeader() {
-    const { t } = this.props;
+    const { t, context} = this.props;
+    let ports = [];
+    if (context) {
+      ports = context.ports || [];
+    }
     return (
       <div>
         <div className="top-area">
@@ -101,7 +105,7 @@ class C extends TablePage {
           </div>
         </div>
         <Modal title={t('pageLoadBalancer.createListener')} ref="listenerCreateModal" >
-          <ListenerCreateForm onSubmit={this.onCreateListener} />
+          <ListenerCreateForm onSubmit={this.onCreateListener} ports={ports} />
         </Modal>
       </div>
     );
