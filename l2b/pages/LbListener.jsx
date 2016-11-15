@@ -279,7 +279,7 @@ class LbListener extends Page {
                             className="btn-page-action"
                             onClick={this.updateSession}
                           >
-                            {t('pageLoadBalancer.update')}
+                            {t('pageLoadBalancer.modify')}
                           </button>
                         </li>
                       </ul>
@@ -317,7 +317,7 @@ class LbListener extends Page {
                             className="btn-page-action"
                             onClick={this.updateHealth}
                           >
-                            {t('pageLoadBalancer.update')}
+                            {t('pageLoadBalancer.modify')}
                           </button>
                         </li>
                       </ul>

@@ -34,12 +34,14 @@ class C extends Page {
     const { dispatch, region, routerKey, servicePath } = this.props;
 
     const name = values.name;
+    const description = values.description;
     const subnetId = values.subnetId;
     const bandwidth = Number(values.bandwidth);
 
     return new Promise((resolve, reject) => {
       dispatch(LoadBalancerActions.requestCreateLoadBalancer(routerKey, region.regionId, {
         name,
+        description,
         subnetId,
         bandwidth,
       }))
