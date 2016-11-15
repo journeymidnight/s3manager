@@ -15,6 +15,12 @@ class C extends TablePage {
   constructor(props) {
     super(props);
 
+    this.balanceModes = {
+      ROUND_ROBIN: 'roundRobin',
+      WEIGHTED_ROUND_ROBIN: 'weightedRoundRobin',
+      SOURCE_IP: 'sourceIp',
+    };
+
     this.onCreateListener = this.onCreateListener.bind(this);
     this.showCreatePanel = this.showCreatePanel.bind(this);
     this.onDelete = this.onDelete.bind(this);
@@ -129,7 +135,7 @@ class C extends TablePage {
             <th>{t('name')}</th>
             <th>{`${t('protocol')}/${t('port')}`}</th>
             <th>{t('status')}</th>
-            <th>{t('pageLoadBalancer.forward')}</th>
+            <th>{t('pageLoadBalancer.balanceMode')}</th>
             <th>{t('pageLoadBalancer.session')}</th>
             <th>{t('pageLoadBalancer.health')}</th>
           </tr>
@@ -167,7 +173,9 @@ class C extends TablePage {
                 </span>
               </td>
               <td>
-                {t('pageLoadBalancer.roundRobin')}
+                <span>
+                  {t(`pageLoadBalancer.${this.balanceModes[listener.balanceMode]}`)}
+                </span>
               </td>
               <td>
                 {listener.sessionPersistenceMode ? t('pageLoadBalancer.on') : t('pageLoadBalancer.off')}
