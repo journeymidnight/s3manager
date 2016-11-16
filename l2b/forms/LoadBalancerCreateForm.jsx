@@ -2,7 +2,7 @@ import React from 'react';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
 import TextInput from '../../shared/components/FormInputs/TextInput';
-import Slider from '../../shared/components/Slider';
+import SliderInput from '../../shared/components/FormInputs/SliderInput';
 import * as Validations from '../../shared/utils/validations';
 
 class F extends React.Component {
@@ -75,13 +75,7 @@ class F extends React.Component {
           </div>
         </div>
 
-        <div className="form-group">
-          <label className="control-label" >{t('bandwidth')}</label>
-          <div className="col-sm-10">
-            <input type="hidden" className="form-control" value={bandwidth.value} disabled="disabled" />
-            <Slider min={1} max={300} step={1} value={bandwidth.value} unit={'Mbps'} onChange={param => bandwidth.onChange(param)} />
-          </div>
-        </div>
+        <SliderInput item={bandwidth} itemName="bandwidth" max={300} min={1} step={1} unit="Mbps" t={t} />
 
         <div className="form-actions">
           <button type="submit" className="btn btn-save" disabled={submitting}>
