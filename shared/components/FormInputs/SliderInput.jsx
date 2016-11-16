@@ -39,7 +39,7 @@ SliderInput.propTypes = {
   unit: React.PropTypes.string,
   inputParams: React.PropTypes.object,
   helpText: React.PropTypes.string,
-  t: React.PropTypes.any,
+  t: React.PropTypes.any.isRequired,
 };
 
 export default SliderInput;

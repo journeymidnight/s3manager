@@ -34,7 +34,7 @@ TextInput.propTypes = {
   inputParams: React.PropTypes.object,
   helpText: React.PropTypes.string,
   submitFailed: React.PropTypes.bool.isRequired,
-  t: React.PropTypes.any,
+  t: React.PropTypes.any.isRequired,
 };
 
 export default TextInput;
