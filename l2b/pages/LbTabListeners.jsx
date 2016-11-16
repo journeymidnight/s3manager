@@ -15,6 +15,12 @@ class C extends TablePage {
   constructor(props) {
     super(props);
 
+    this.balanceModes = {
+      ROUND_ROBIN: 'roundRobin',
+      WEIGHTED_ROUND_ROBIN: 'weightedRoundRobin',
+      SOURCE_IP: 'sourceIp',
+    };
+
     this.onCreateListener = this.onCreateListener.bind(this);
     this.showCreatePanel = this.showCreatePanel.bind(this);
     this.onDelete = this.onDelete.bind(this);
@@ -85,7 +91,11 @@ class C extends TablePage {
   }
 
   renderHeader() {
-    const { t } = this.props;
+    const { t, context} = this.props;
+    let ports = [];
+    if (context) {
+      ports = context.ports || [];
+    }
     return (
       <div>
         <div className="top-area">
@@ -101,7 +111,7 @@ class C extends TablePage {
           </div>
         </div>
         <Modal title={t('pageLoadBalancer.createListener')} ref="listenerCreateModal" >
-          <ListenerCreateForm onSubmit={this.onCreateListener} />
+          <ListenerCreateForm onSubmit={this.onCreateListener} ports={ports} />
         </Modal>
       </div>
     );
@@ -125,7 +135,7 @@ class C extends TablePage {
             <th>{t('name')}</th>
             <th>{`${t('protocol')}/${t('port')}`}</th>
             <th>{t('status')}</th>
-            <th>{t('pageLoadBalancer.forward')}</th>
+            <th>{t('pageLoadBalancer.balanceMode')}</th>
             <th>{t('pageLoadBalancer.session')}</th>
             <th>{t('pageLoadBalancer.health')}</th>
           </tr>
@@ -163,7 +173,9 @@ class C extends TablePage {
                 </span>
               </td>
               <td>
-                {t('pageLoadBalancer.roundRobin')}
+                <span>
+                  {t(`pageLoadBalancer.${this.balanceModes[listener.balanceMode]}`)}
+                </span>
               </td>
               <td>
                 {listener.sessionPersistenceMode ? t('pageLoadBalancer.on') : t('pageLoadBalancer.off')}

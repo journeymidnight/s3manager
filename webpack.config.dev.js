@@ -83,8 +83,6 @@ module.exports = {
 
   plugins: [
     new ExtractTextPlugin('[name].css'),
-    new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.NoErrorsPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.ProvidePlugin({
       $: 'jquery',
