@@ -19,7 +19,11 @@ class LbListener extends Page {
     this.state = {
       listenerList: false,
     };
-    this.forwards = { ROUND_ROBIN: 'roundRobin' };
+    this.balanceModes = {
+      ROUND_ROBIN: 'roundRobin',
+      WEIGHTED_ROUND_ROBIN: 'weightedRoundRobin',
+      SOURCE_IP: 'sourceIp',
+    };
 
     this.refresh = this.refresh.bind(this);
     // this.updateLimit = this.updateLimit.bind(this);
@@ -229,10 +233,10 @@ class LbListener extends Page {
                         </td>
                       </tr>
                       <tr>
-                        <td>{t('pageLoadBalancer.forward')}</td>
+                        <td>{t('pageLoadBalancer.balanceMode')}</td>
                         <td>
                           <span>
-                            {t(`pageLoadBalancer.${this.forwards[listener.balanceMode]}`)}
+                            {t(`pageLoadBalancer.${this.balanceModes[listener.balanceMode]}`)}
                           </span>
                         </td>
                       </tr>
@@ -275,7 +279,7 @@ class LbListener extends Page {
                             className="btn-page-action"
                             onClick={this.updateSession}
                           >
-                            {t('pageLoadBalancer.update')}
+                            {t('pageLoadBalancer.modify')}
                           </button>
                         </li>
                       </ul>
@@ -313,7 +317,7 @@ class LbListener extends Page {
                             className="btn-page-action"
                             onClick={this.updateHealth}
                           >
-                            {t('pageLoadBalancer.update')}
+                            {t('pageLoadBalancer.modify')}
                           </button>
                         </li>
                       </ul>

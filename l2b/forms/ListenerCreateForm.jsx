@@ -3,6 +3,7 @@ import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
 import Slider from '../../shared/components/Slider';
 import * as Validations from '../../shared/utils/validations';
+import i18n from '../../shared/i18n';
 
 class ListenerCreateForm extends React.Component {
 
@@ -10,8 +11,10 @@ class ListenerCreateForm extends React.Component {
     super();
 
     this.protocols = ['TCP'];
-    this.forwards = [
+    this.balanceModes = [
       { name: 'roundRobin', value: 'ROUND_ROBIN' },
+      { name: 'weightedRoundRobin', value: 'WEIGHTED_ROUND_ROBIN' },
+      { name: 'sourceIp', value: 'SOURCE_IP' },
     ];
     this.sessionPersistenceModes = ['SOURCE_IP'];
     this.healthMonitorTypes = ['TCP'];
@@ -20,7 +23,7 @@ class ListenerCreateForm extends React.Component {
   componentDidMount() {
     const initialValues = {
       protocol: 'TCP',
-      forward: 'ROUND_ROBIN',
+      balanceMode: 'ROUND_ROBIN',
       session: false,
       healthMonitorType: 'TCP',
       healthMonitorMaxRetries: 3,
@@ -33,9 +36,10 @@ class ListenerCreateForm extends React.Component {
     const { fields:
       {
         name,
+        description,
         protocol,
         port,
-        forward,
+        balanceMode,
         // connectionLimit,
         session,
         sessionPersistenceMode,
@@ -61,6 +65,14 @@ class ListenerCreateForm extends React.Component {
             </div>
           </div>
 
+          <div className={(submitFailed || description.touched) && description.error ? 'form-group has-error' : 'form-group'}>
+            <label className="control-label" >{t('description')}</label>
+            <div className="col-sm-10">
+              <input type="text" className="form-control" {...description} maxLength="250" />
+              {(submitFailed || description.touched) && description.error && <div className="text-danger"><small>{description.error}</small></div>}
+            </div>
+          </div>
+
           <div className="form-group">
             <label className="control-label" >{t('protocol')}</label>
             <div className="col-sm-10">
@@ -80,10 +92,10 @@ class ListenerCreateForm extends React.Component {
           </div>
 
           <div className="form-group">
-            <label className="control-label" >{t('pageLoadBalancer.forward')}</label>
+            <label className="control-label" >{t('pageLoadBalancer.balanceMode')}</label>
             <div className="col-sm-10">
-              <select className="form-control" {...forward}>
-                {this.forwards.map((item) =>
+              <select className="form-control" {...balanceMode}>
+                {this.balanceModes.map((item) =>
                   <option key={item.name} value={item.value}>{t(`pageLoadBalancer.${item.name}`)}</option>)}
               </select>
             </div>
@@ -209,10 +221,12 @@ ListenerCreateForm.propTypes = {
   t: React.PropTypes.any,
 };
 
-ListenerCreateForm.validate = values => {
+ListenerCreateForm.validate = (values, props) => {
   const errors = {};
-  errors.name = Validations.required(values.name);
   errors.port = Validations.port(values.port);
+  if (props.ports.includes(values.port)) {
+    errors.port = i18n.t('validationMessage.portDuplicated');
+  }
   // errors.connectionLimit = Validations.connectionLimit(values.connectionLimit);
   errors.healthMonitorDelay = Validations.healthMonitorDelay(values.healthMonitorDelay);
   errors.healthMonitorTimeout = Validations.healthMonitorTimeout(values.healthMonitorTimeout);
@@ -223,9 +237,10 @@ export default reduxForm({
   form: 'ListenerCreateForm',
   fields: [
     'name',
+    'description',
     'protocol',
     'port',
-    'forward',
+    'balanceMode',
     // 'connectionLimit',
     'session',
     'sessionPersistenceMode',

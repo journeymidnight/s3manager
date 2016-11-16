@@ -206,6 +206,14 @@ class C extends Page {
                         </td>
                       </tr>
                       <tr>
+                        <td>{t('subnet')}</td>
+                        <td>
+                          <span>
+                            {loadBalancer.subnet_id}
+                          </span>
+                        </td>
+                      </tr>
+                      <tr>
                         <td>{t('bandwidth')}</td>
                         <td>
                           <span>
@@ -246,11 +254,11 @@ class C extends Page {
                       {t('pageLoadBalancer.listener')}
                     </Link>
                   </li>
-                  <li className={`pull-left ${(active === 'lb_monitors') ? 'active' : ''}`}>
+                  {/* <li className={`pull-left ${(active === 'lb_monitors') ? 'active' : ''}`}>
                     <Link data-placement="left" to={`${servicePath}/load_balancers/${loadBalancer.loadBalancerId}/lb_monitors`}>
                       {t('pageLoadBalancer.monitors')}
                     </Link>
-                  </li>
+                  </li>*/}
                 </ul>
                 <div>
                   {React.cloneElement(this.props.children, { loadBalancer })}

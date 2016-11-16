@@ -1,6 +1,7 @@
 import React from 'react';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
+import TextInput from '../../shared/components/FormInputs/TextInput';
 import Slider from '../../shared/components/Slider';
 import * as Validations from '../../shared/utils/validations';
 
@@ -16,7 +17,6 @@ class F extends React.Component {
 
   componentDidMount() {
     const initialValues = {
-      name: '',
       networkId: this.props.availableNetworks[0].networkId,
       subnetId: this.props.availableNetworks[0].subnets[0].subnetId,
       bandwidth: 10,
@@ -37,7 +37,7 @@ class F extends React.Component {
 
   render() {
     const { fields:
-      { name, networkId, subnetId, bandwidth },
+      { name, description, networkId, subnetId, bandwidth },
       handleSubmit,
       submitting,
       submitFailed,
@@ -47,11 +47,13 @@ class F extends React.Component {
     return (
       <form className="form-horizontal" onSubmit={handleSubmit}>
 
-        <div className={(submitFailed || name.touched) && name.error ? 'form-group has-error' : 'form-group'}>
-          <label className="control-label" >{t('name')}</label>
+        <TextInput item={name} itemName="name" submitFailed={submitFailed} inputParams={{ maxLength: '50' }} t={t} />
+
+        <div className={(submitFailed || description.touched) && description.error ? 'form-group has-error' : 'form-group'}>
+          <label className="control-label" >{t('description')}</label>
           <div className="col-sm-10">
-            <input type="text" className="form-control" {...name} maxLength="50" />
-            {(submitFailed || name.touched) && name.error && <div className="text-danger"><small>{name.error}</small></div>}
+            <input type="text" className="form-control" {...description} maxLength="250" />
+            {(submitFailed || description.touched) && description.error && <div className="text-danger"><small>{description.error}</small></div>}
           </div>
         </div>
 
@@ -116,13 +118,12 @@ F.propTypes = {
 
 F.validate = values => {
   const errors = {};
-  errors.name = Validations.required(values.name);
   errors.bandwidth = Validations.integer(values.bandwidth);
   return errors;
 };
 
 export default reduxForm({
   form: 'LoadBalancerCreateForm',
-  fields: ['name', 'subnetId', 'bandwidth', 'networkId'],
+  fields: ['name', 'description', 'subnetId', 'bandwidth', 'networkId'],
   validate: F.validate,
 })(translate()(F));

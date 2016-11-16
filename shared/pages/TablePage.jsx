@@ -144,7 +144,7 @@ class C extends Page {
   }
 
   doSearch() {
-    let searchWord = this.refs.searchBox.refs.search.value;
+    let searchWord = this.refs.searchBox.refs.search.value.trim();
     if (_.isEmpty(searchWord)) {
       searchWord = null;
     }

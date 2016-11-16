@@ -126,6 +126,7 @@ export function requestDescribeLbListeners(routerKey, regionId, filters) {
             currentPage: parseInt(payload.offset / payload.limit, 10) + 1,
             size: payload.limit,
             totalPage: parseInt((payload.total - 1) / payload.limit, 10) + 1,
+            ports: payload.listenerSet.map(listener => listener.port),
           })));
         }
       })
