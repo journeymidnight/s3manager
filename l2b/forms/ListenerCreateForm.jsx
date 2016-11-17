@@ -12,8 +12,8 @@ class ListenerCreateForm extends React.Component {
 
     this.protocols = ['TCP'];
     this.balanceModes = [
-      { name: 'roundRobin', value: 'ROUND_ROBIN' },
-      { name: 'weightedRoundRobin', value: 'WEIGHTED_ROUND_ROBIN' },
+      { name: 'roundRobin', value: 'WEIGHTED_ROUND_ROBIN' },
+      { name: 'minConnection', value: 'WEIGHTED_LEAST_CONNECTIONS' },
       { name: 'sourceIp', value: 'SOURCE_IP' },
     ];
     this.sessionPersistenceModes = ['SOURCE_IP'];

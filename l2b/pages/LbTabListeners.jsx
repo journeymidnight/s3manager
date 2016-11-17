@@ -16,8 +16,8 @@ class C extends TablePage {
     super(props);
 
     this.balanceModes = {
-      ROUND_ROBIN: 'roundRobin',
-      WEIGHTED_ROUND_ROBIN: 'weightedRoundRobin',
+      WEIGHTED_ROUND_ROBIN: 'roundRobin',
+      WEIGHTED_LEAST_CONNECTIONS: 'minConnection',
       SOURCE_IP: 'sourceIp',
     };
 
@@ -91,7 +91,7 @@ class C extends TablePage {
   }
 
   renderHeader() {
-    const { t, context} = this.props;
+    const { t, context } = this.props;
     let ports = [];
     if (context) {
       ports = context.ports || [];
