@@ -64,6 +64,14 @@ class F extends React.Component {
           t={t}
         />
 
+        <div className={(submitFailed || description.touched) && description.error ? 'form-group has-error' : 'form-group'}>
+          <label className="control-label" >{t('description')}</label>
+          <div className="col-sm-10">
+            <input type="text" className="form-control" {...description} maxLength="250" />
+            {(submitFailed || description.touched) && description.error && <div className="text-danger"><small>{description.error}</small></div>}
+          </div>
+        </div>
+
         <div className={(submitFailed || subnetId.touched) && subnetId.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('subnet')}</label>
           <div className="col-sm-10">

@@ -7,18 +7,5 @@
     "transform-class-properties",
     "transform-export-extensions",
     "transform-object-rest-spread"
-  ],
-  "env": {
-    "development": {
-      "plugins": [
-        ["react-transform", {
-          "transforms": [{
-            "transform": "react-transform-hmr",
-            "imports": ["react"],
-            "locals": ["module"]
-          }]
-        }]
-      ]
-    }
-  }
+  ]
 }

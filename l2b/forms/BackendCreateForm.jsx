@@ -56,7 +56,6 @@ const BackendCreateForm = (props) => {
           inputParams={{ min: '1', max: '256', placeholder: t('pageLoadBalancer.weightRange') }}
           t={t}
         />
-
       </div>
       <div className="modal-footer">
         <FooterButtons

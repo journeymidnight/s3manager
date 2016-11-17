@@ -7,6 +7,7 @@ import SliderInput from '../../shared/components/FormInputs/SliderInput';
 import SelectInput from '../../shared/components/FormInputs/SelectInput';
 import FooterButtons from '../../shared/components/FormInputs/FooterButtons';
 import * as Validations from '../../shared/utils/validations';
+import i18n from '../../shared/i18n';
 
 class ListenerCreateForm extends React.Component {
 
@@ -17,10 +18,9 @@ class ListenerCreateForm extends React.Component {
       { value: 'TCP' },
     ];
     this.balanceModes = [
-      { name: 'pageLoadBalancer.roundRobin', value: 'ROUND_ROBIN' },
-      { name: 'pageLoadBalancer.weightedRoundRobin', value: 'WEIGHTED_ROUND_ROBIN' },
-      { name: 'pageLoadBalancer.sourceIp', value: 'SOURCE_IP' },
-
+      { name: 'roundRobin', value: 'WEIGHTED_ROUND_ROBIN' },
+      { name: 'minConnection', value: 'WEIGHTED_LEAST_CONNECTIONS' },
+      { name: 'sourceIp', value: 'SOURCE_IP' },
     ];
     this.sessionPersistenceModes = [
       { value: 'SOURCE_IP' },
@@ -220,9 +220,12 @@ ListenerCreateForm.propTypes = {
   t: React.PropTypes.any,
 };
 
-ListenerCreateForm.validate = values => {
+ListenerCreateForm.validate = (values, props) => {
   const errors = {};
   errors.port = Validations.port(values.port);
+  if (props.ports.includes(values.port)) {
+    errors.port = i18n.t('validationMessage.portDuplicated');
+  }
   // errors.connectionLimit = Validations.connectionLimit(values.connectionLimit);
   errors.healthMonitorDelay = Validations.healthMonitorDelay(values.healthMonitorDelay);
   errors.healthMonitorTimeout = Validations.healthMonitorTimeout(values.healthMonitorTimeout);
