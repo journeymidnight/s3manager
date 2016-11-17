@@ -9,7 +9,8 @@ export function setVisibleBuckets(routerKey, regionId, filters) {
       .doAction(regionId, ACTION_NAMES.listbuckets, {})
       .promise
       .then((payload) => {
-        const { offset, limit, searchWord } = filters;
+        const { limit, searchWord } = filters;
+        let { offset } = filters;
         if (payload) {
           const matchedBuckets = payload.filter(
             (bucket) => {
@@ -17,11 +18,16 @@ export function setVisibleBuckets(routerKey, regionId, filters) {
               return true;
             }
           );
+          const total = matchedBuckets.length;
+          if (offset >= total && offset !== 0) {
+            offset -= limit;
+          }
           const visibleBuckets = matchedBuckets.slice(offset, offset + limit);
 
           dispatch(extendContext({
             visibleBuckets,
-            total: matchedBuckets.length,
+            total,
+            currentPage: parseInt(offset / limit, 10) + 1,
           }, routerKey));
         }
       })
