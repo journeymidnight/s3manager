@@ -3,6 +3,7 @@ import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
 import TextInput from '../../shared/components/FormInputs/TextInput';
 import SliderInput from '../../shared/components/FormInputs/SliderInput';
+import FooterButtons from '../../shared/components/FormInputs/FooterButtons';
 import * as Validations from '../../shared/utils/validations';
 
 class F extends React.Component {
@@ -17,7 +18,6 @@ class F extends React.Component {
 
   componentDidMount() {
     const initialValues = {
-      name: '',
       networkId: this.props.availableNetworks[0].networkId,
       subnetId: this.props.availableNetworks[0].subnets[0].subnetId,
       bandwidth: 10,
@@ -38,7 +38,7 @@ class F extends React.Component {
 
   render() {
     const { fields:
-      { name, networkId, subnetId, bandwidth },
+      { name, description, networkId, subnetId, bandwidth },
       handleSubmit,
       submitting,
       submitFailed,
@@ -48,7 +48,21 @@ class F extends React.Component {
     return (
       <form className="form-horizontal" onSubmit={handleSubmit}>
 
-        <TextInput item={name} itemName="name" submitFailed={submitFailed} inputParams={{ maxLength: '50' }} t={t} />
+        <TextInput
+          item={name}
+          itemName="name"
+          submitFailed={submitFailed}
+          inputParams={{ maxLength: '50' }}
+          t={t}
+        />
+
+        <TextInput
+          item={description}
+          itemName="description"
+          submitFailed={submitFailed}
+          inputParams={{ maxLength: '250' }}
+          t={t}
+        />
 
         <div className={(submitFailed || subnetId.touched) && subnetId.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('subnet')}</label>
@@ -75,16 +89,22 @@ class F extends React.Component {
           </div>
         </div>
 
-        <SliderInput item={bandwidth} itemName="bandwidth" max={300} min={1} step={1} unit="Mbps" t={t} />
+        <SliderInput
+          item={bandwidth}
+          itemName="bandwidth"
+          max={300}
+          min={1}
+          step={1}
+          unit="Mbps"
+          t={t}
+        />
 
         <div className="form-actions">
-          <button type="submit" className="btn btn-save" disabled={submitting}>
-            {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('update')}
-          </button>
-          &nbsp;
-          <button type="button" className="btn btn-cancel" disabled={submitting} onClick={resetForm}>
-            {t('reset')}
-          </button>
+          <FooterButtons
+            resetForm={resetForm}
+            submitting={submitting}
+            t={t}
+          />
         </div>
       </form>
     );
@@ -105,13 +125,12 @@ F.propTypes = {
 
 F.validate = values => {
   const errors = {};
-  errors.name = Validations.required(values.name);
   errors.bandwidth = Validations.integer(values.bandwidth);
   return errors;
 };
 
 export default reduxForm({
   form: 'LoadBalancerCreateForm',
-  fields: ['name', 'subnetId', 'bandwidth', 'networkId'],
+  fields: ['name', 'description', 'subnetId', 'bandwidth', 'networkId'],
   validate: F.validate,
 })(translate()(F));
