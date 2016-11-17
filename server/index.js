@@ -64,6 +64,7 @@ function createConsole() {
   const allPaths = [
     { path: '/lcs/', packageName: 'lcs' },
     { path: '/los/', packageName: 'los' },
+    { path: '/l2b/', packageName: 'l2b' },
     { path: '/g/', packageName: 'global', isDefault: true },
   ];
 

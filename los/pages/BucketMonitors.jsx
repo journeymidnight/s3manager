@@ -13,24 +13,24 @@ class C extends Component {
   }
 
   getCompleteTime(dataArray) {
-    const nowHour = Number(moment.utc(this.context.monitorTimestamp).local().format('HH'));
-    const todayDate = moment.utc(this.context.monitorTimestamp).local().format('YYYY/MM/DD');
-    const todayBeginTimestamp = new Date(todayDate).getTime();
+    const nowLocal = this.props.context.monitorMomentLocal;
+    const nowHourLocal = Number(moment(nowLocal).format('HH'));
+    const startOfDayTimestampLocal = moment(nowLocal).startOf('day').valueOf();
 
-    const idealTimeArray = [];
+    const idealHourArray = [];
     let hour = 0;
-    while (hour <= nowHour) {
-      idealTimeArray.push(hour);
+    while (hour <= nowHourLocal) {
+      idealHourArray.push(hour);
       hour++;
     }
 
-    const realTimeArray = dataArray.map((data) => Number(moment.utc(Number(data.time)).local().format('HH')));
-    const supplementaryTimeArray = idealTimeArray.filter((time) => {
-      return !realTimeArray.includes(time);
+    const realHourArray = dataArray.map((data) => Number(moment.utc(Number(data.time)).local().format('HH')));
+    const missingHourArray = idealHourArray.filter((time) => {
+      return !realHourArray.includes(time);
     });
 
-    return dataArray.concat(supplementaryTimeArray.map((time) => ({
-      time: todayBeginTimestamp + time * 60 * 60 * 1000,
+    return dataArray.concat(missingHourArray.map((time) => ({
+      time: startOfDayTimestampLocal + time * 60 * 60 * 1000,
     })));
   }
 
@@ -60,7 +60,13 @@ class C extends Component {
       <div>
         <div className="gray-content-block second-block">
           <div className="filter-item inline">
-            <a className="btn btn-default">
+            <a
+              className="btn btn-default"
+              onClick={e => {
+                e.preventDefault();
+                this.props.refresh();
+              }}
+            >
               <i className={`fa fa-refresh ${context.loading ? 'fa-spin' : ''}`} />
             </a>
           </div>
@@ -71,8 +77,8 @@ class C extends Component {
             <span className="pull-right text-muted">{t('pageBucket.monitorIntervalOneHour')}</span>
             {context.usagebyhour && <Chart
               className="chart"
-              config={generateLineChartConfig(this.getCompleteTime(context.usagebyhour).map((item) => ({
-                timestamp: moment.utc(Number(item.time)).format('YYYY-MM-DDTHH:mm:ss'),
+              config={generateLineChartConfig(context.usagebyhour.map((item) => ({
+                timestamp: Number(item.time),
                 usage: item.usage || 0,
               })), {
                 usage: { name: t('pageBucket.usageLegend') },
@@ -100,7 +106,7 @@ class C extends Component {
                 }
                 return newItem;
               }).map((item) => ({
-                timestamp: moment.utc(Number(item.time)).format('YYYY-MM-DDTHH:mm:ss'),
+                timestamp: Number(item.time),
                 flowOutPublic: item.flowOutPublic || '0',
                 flowInPublic: item.flowInPublic || '0',
                 flowOutPrivate: item.flowOutPrivate || '0',
@@ -132,7 +138,7 @@ class C extends Component {
                 }
                 return newItem;
               }).map((item) => ({
-                timestamp: moment.utc(Number(item.time)).format('YYYY-MM-DDTHH:mm:ss'),
+                timestamp: Number(item.time),
                 get: item.get || 0,
                 put: item.put || 0,
               }))), {
@@ -153,6 +159,7 @@ class C extends Component {
 C.propTypes = {
   t: PropTypes.func.isRequired,
   context: PropTypes.object.isRequired,
+  refresh: PropTypes.func.isRequired,
 };
 
 export default C;

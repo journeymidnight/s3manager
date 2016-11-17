@@ -433,3 +433,22 @@ ul.options-vertical {
     margin: 100px auto; 
     }
 }
+
+.form-control-md {
+  display: inline-block;
+  width: 300px;
+}
+
+.sidebar-subnav > li > a {
+  padding-left: 30px;
+}
+
+.has-error.dropdown-menu-toggle {
+  border-color: #a94442;
+}
+
+.pagination {
+  > .hidden {
+    display: none;
+  }
+}

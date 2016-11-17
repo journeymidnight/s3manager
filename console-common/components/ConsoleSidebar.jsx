@@ -1,9 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
+import update from 'react-addons-update';
 import NavLink from '../../shared/components/NavLink';
 
 class C extends React.Component {
+
+  constructor() {
+    super();
+    this.state = {
+      navStates: {},
+    };
+
+    this.showSubNavs = this.showSubNavs.bind(this);
+    this.toggleSubNavs = this.toggleSubNavs.bind(this);
+  }
 
   componentWillMount() {
     const { t } = this.props;
@@ -64,11 +75,43 @@ class C extends React.Component {
         title: t('bucketList'),
         icon: 'fa-sticky-note',
       }, {
-        path: 'monitor',
-        title: t('resourceMonitor'),
+        path: 'monitors',
+        title: t('resourceMonitors'),
+        icon: 'fa-sticky-note',
+        subNavs: [{
+          path: 'monitors/usage',
+          title: t('usageMonitor'),
+          icon: 'fa-sticky-note',
+        }, {
+          path: 'monitors/flow',
+          title: t('flowMonitor'),
+          icon: 'fa-sticky-note',
+        }, {
+          path: 'monitors/api',
+          title: t('apiMonitor'),
+          icon: 'fa-sticky-note',
+        }],
+      }],
+      l2b: [{
+        path: 'load_balancers',
+        title: t('sidebarLoadBalancers'),
         icon: 'fa-sticky-note',
       }],
     };
+
+    const navStates = {};
+    Object.keys(this.services).map((service) => {
+      const navState = {};
+      this.services[service].forEach((nav) => {
+        if (nav.subNavs) navState[nav.title] = false;
+      });
+      navStates[service] = navState;
+      return null;
+    });
+
+    this.setState({
+      navStates,
+    });
   }
 
   componentDidMount() {
@@ -80,6 +123,26 @@ class C extends React.Component {
       cursorcolor: '#fff',
       cursorborder: '1px solid #fff',
     });
+  }
+
+  showSubNavs(navTitle) {
+    if (this.state.navStates[this.props.service.serviceKey].hasOwnProperty([navTitle])) {
+      this.setState({
+        navStates: update(this.state.navStates, {
+          [this.props.service.serviceKey]: { [navTitle]: { $set: true } },
+        }),
+      });
+    }
+  }
+
+  toggleSubNavs(navTitle) {
+    if (this.state.navStates[this.props.service.serviceKey].hasOwnProperty([navTitle])) {
+      this.setState({
+        navStates: update(this.state.navStates, {
+          [this.props.service.serviceKey]: { [navTitle]: { $apply: (state) => !state } },
+        }),
+      });
+    }
   }
 
   render() {
@@ -103,10 +166,41 @@ class C extends React.Component {
         <ul className="nav nav-sidebar">
           {navs.map((_nav) => {
             return (
-              <NavLink to={`${service.servicePath}/${_nav.path}`} key={_nav.path}>
-                <i className={`fa ${_nav.icon} fa-fw`} />
-                <span>{_nav.title}</span>
-              </NavLink>
+              <div key={_nav.path} style={{ position: 'relative' }}>
+                <NavLink
+                  to={`${service.servicePath}/${_nav.path}`}
+                  onClick={() => this.showSubNavs(_nav.title)}
+                >
+                  <i className={`fa ${_nav.icon} fa-fw`} />
+                  <span>{_nav.title}</span>
+                </NavLink>
+
+                {_nav.subNavs && <i
+                  className={`fa ${this.state.navStates[this.props.service.serviceKey][_nav.title] ? 'fa-angle-down' : 'fa-angle-right'}`}
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 162,
+                    color: '#c5d0de',
+                    padding: 10,
+                  }}
+                  onClick={() => this.toggleSubNavs(_nav.title)}
+                />}
+
+                {_nav.subNavs && this.state.navStates[service.serviceKey][_nav.title] && <ul className="nav sidebar-subnav">
+                  {_nav.subNavs.map((_subNav) => {
+                    return (
+                      <NavLink
+                        to={`${service.servicePath}/${_subNav.path}`}
+                        key={_subNav.path}
+                      >
+                        <i className={`fa ${_subNav.icon} fa-fw`} />
+                        <span>{_subNav.title}</span>
+                      </NavLink>
+                    );
+                  })}
+                </ul>}
+              </div>
             );
           })}
         </ul>

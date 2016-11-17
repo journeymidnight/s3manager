@@ -2,6 +2,8 @@
  * 1. No setInterval of onRefresh in initTable
  * 2. No status in filters
  * 3. Pagination
+ * 4. searchWord in initTable
+ * 5. Parameter prefix in onSearchKeyPress
  */
 
 import React from 'react';
@@ -18,8 +20,11 @@ class C extends Page {
     this.refresh = this.refresh.bind(this);
     this.onSelect = this.onSelect.bind(this);
     this.onSelectAll = this.onSelectAll.bind(this);
+    this.isAllSelected = this.isAllSelected.bind(this);
     this.onRefresh = this.onRefresh.bind(this);
+    this.doSearch = this.doSearch.bind(this);
     this.onSearchKeyPress = this.onSearchKeyPress.bind(this);
+    this.onSearchButtonClick = this.onSearchButtonClick.bind(this);
   }
 
   // need inherit
@@ -32,7 +37,6 @@ class C extends Page {
 
   initTable(routerKey, options) {
     const { dispatch } = this.props;
-
     const context = {
       selected: {},
       currentPage: 1,
@@ -43,7 +47,8 @@ class C extends Page {
     };
     dispatch(Actions.extendContext(Object.assign(context, options), routerKey));
 
-    setTimeout(this.onRefresh(), 100);
+    const searchWord = options.searchWord || null;
+    setTimeout(this.onRefresh({ searchWord }), 100);
   }
 
   refresh(silent = true) {
@@ -123,14 +128,28 @@ class C extends Page {
     };
   }
 
-  onSearchKeyPress(e) {
-    if (e.key === 'Enter') {
-      let searchWord = this.refs.search.value;
-      if (_.isEmpty(searchWord)) {
-        searchWord = null;
-      }
-      this.onRefresh({ searchWord })();
+  isAllSelected(allIds) {
+    return allIds.length && !allIds.filter((id) => {
+      return this.props.context.selected[id] !== true;
+    }).length;
+  }
+
+  doSearch(e, prefix = '') {
+    let searchWord = (prefix + (this.refs.searchBox.refs.search.value ? this.refs.searchBox.refs.search.value.trim() : '')).trim();
+    if (_.isEmpty(searchWord)) {
+      searchWord = null;
     }
+    this.onRefresh({ searchWord })();
+  }
+
+  onSearchKeyPress(e, prefix) {
+    if (e.key === 'Enter') {
+      this.doSearch(e, prefix);
+    }
+  }
+
+  onSearchButtonClick(e, prefix) {
+    this.doSearch(e, prefix);
   }
 
   renderHeader() {

@@ -1,26 +1,44 @@
 import { notify, notifyAlert, extendContext } from '../../console-common/redux/actions';
 import Wcs, { ACTION_NAMES } from '../services/wcs';
+import { performS3Action } from '../services/s3';
 import i18n from '../../shared/i18n';
 
-export function setVisibleBuckets(routerKey, regionId, filters = {}) {
+export function setVisibleBuckets(routerKey, regionId, filters) {
   return dispatch => {
     return Wcs
-      .doAction(regionId, ACTION_NAMES.listbuckets, filters)
+      .doAction(regionId, ACTION_NAMES.listbuckets, {})
       .promise
       .then((payload) => {
         const { offset, limit, searchWord } = filters;
-        const matchedBuckets = payload.filter(
-          (bucket) => {
-            if (searchWord) return bucket.name.indexOf(searchWord) > -1;
-            return true;
-          }
-        );
-        const visibleBuckets = matchedBuckets.slice(offset, offset + limit);
+        if (payload) {
+          const matchedBuckets = payload.filter(
+            (bucket) => {
+              if (searchWord) return bucket.name.indexOf(searchWord) > -1;
+              return true;
+            }
+          );
+          const visibleBuckets = matchedBuckets.slice(offset, offset + limit);
 
+          dispatch(extendContext({
+            visibleBuckets,
+            total: matchedBuckets.length,
+          }, routerKey));
+        }
+      })
+      .catch((error) => {
+        dispatch(notifyAlert(error.message));
+      });
+  };
+}
+
+export function listBuckets(routerKey, regionId) {
+  return dispatch => {
+    return Wcs
+      .doAction(regionId, ACTION_NAMES.listbuckets, {})
+      .promise
+      .then((payload) => {
         dispatch(extendContext({
           buckets: payload,
-          visibleBuckets,
-          total: matchedBuckets.length,
         }, routerKey));
       })
       .catch((error) => {
@@ -60,20 +78,22 @@ export function requestPutCors(routerKey, regionId, bucketName) {
 }
 
 export function requestPutBucketAcl(s3, bucketName, acl) {
-  return () => {
+  return dispatch => {
     return new Promise((resolve, reject) => {
       const params = {
         Bucket: bucketName,
         ACL: acl,
       };
-
-      s3.putBucketAcl(params, (error, data) => {
+      const s3Action = () => s3.putBucketAcl(params, (error) => {
         if (error) {
-          reject(error);
+          reject();
         } else {
-          resolve(data);
+          dispatch(notify(i18n.t('pageBucket.putAclSuccess')));
+          resolve();
         }
       });
+
+      performS3Action(s3Action);
     });
   };
 }
@@ -85,17 +105,24 @@ export function requestGetBucketAcl(s3, bucketName, routerKey) {
         Bucket: bucketName,
       };
 
-      s3.getBucketAcl(params, (error, data) => {
+      const s3Action = () => s3.getBucketAcl(params, (error, data) => {
         if (error) {
           dispatch(notifyAlert(error.message));
           reject();
         } else {
+          // Below 3 lines of code may lead to bug in future
+          const acls = data.Grants.map((Grant) => Grant.Permission);
+          let acl = 'private';
+          if (acls.includes('READ')) acl = 'public-read';
+
           dispatch(extendContext({
-            acl: data.Grants[0].Permission,
+            acl,
           }, routerKey));
-          resolve(data);
+          resolve();
         }
       });
+
+      performS3Action(s3Action);
     });
   };
 }
@@ -152,17 +179,37 @@ export function requestGetStaticsByDay(routerKey, regionId, bucketName, startDat
   };
 }
 
-// Pass bucket creation date to bucket detail page. The action will be handled by rootReducer and put date into this.props.global.currentBucketCreationDate
-export function setBucket(data) {
-  return {
-    type: 'SET_BUCKET',
-    data,
+export function requestGetUsageByNow(routerKey, regionId, bucketName, projectId) {
+  return dispatch => {
+    return Wcs
+      .doAction(regionId, ACTION_NAMES.getbucketstats, { bucket: bucketName, projectId })
+      .promise
+      .then((payload) => {
+        const usageByNow = JSON.parse(payload).usage.hasOwnProperty('rgw.main') ? JSON.parse(payload).usage['rgw.main'].size_kb_actual : 0;
+        dispatch(extendContext({ usageByNow }, routerKey));
+      }).catch((error) => {
+        dispatch(notifyAlert(error.message));
+      });
   };
 }
 
-// Remove this.props.global.currentBucketCreationDate. Clean up of above action
-export function removeBucket() {
-  return {
-    type: 'REMOVE_BUCKET',
+export function isBucketEmpty(s3, bucketName) {
+  return dispatch => {
+    return new Promise((resolve, reject) => {
+      const params = {
+        Bucket: bucketName,
+      };
+      const s3Action = () => s3.listObjectsV2(params, (error, data) => {
+        if (error) {
+          dispatch(notifyAlert(error.message));
+          reject();
+        } else if (data.Contents.length > 0 || data.CommonPrefixes.length > 0) {
+          reject(bucketName);
+        }
+        resolve();
+      });
+
+      performS3Action(s3Action);
+    });
   };
 }

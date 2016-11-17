@@ -37,6 +37,7 @@
     "admin": "管理员",
     "cidr": "网段地址",
     "status": "状态",
+    "property": "属性",
     "volume": "云硬盘",
     "image": "映像",
     "instance": "云主机",
@@ -58,6 +59,9 @@
     "publicIP": "公网 IP",
     "mountpoint": "挂载点",
     "size": "大小",
+    "port": "端口",
+    "protocol": "端口协议",
+    "weight": "权重",
     "category": "类型",
     "download": "下载",
     "key_pair": "SSH 密钥",
@@ -156,7 +160,8 @@
     "services": {
         "g": "帐号信息",
         "lcs": "云主机",
-        "los": "对象存储"
+        "los": "对象存储",
+        "l2b": "负载均衡"
     },
     "restartTypes": {
         "SOFT": "软重启",
@@ -539,7 +544,12 @@
     },
     "validationMessage": {
         "ipAddress": "ip地址格式错误",
-        "port": "端口号格式错误"
+        "port": "端口号格式错误",
+        "portDuplicated": "端口号重复",
+        "weight": "权重格式错误",
+        "connectionLimit": "连接限制格式错误",
+        "healthMonitorDelay": "间隔时间格式错误",
+        "healthMonitorTimeout": "超时时间格式错误"
     },
     "actionTranslation": {
         "CreateInstances": "创建云主机",
@@ -661,21 +671,21 @@
         }
     },
     "smallScreen": "低宽度的屏幕中可能会影响组件的正常布局。",
+
+    "___comment_begin_los": "begin los",
     "bucketList": "空间管理",
     "bucketListDescription": "存储空间管理",
-    "filterByBucketName": "按存储空间名称过滤",
-    "resourceMonitor": "资源监控",
-    "resourceMonitorDescription": "资源监控描述",
+    "filterByBucketName": "按空间名称过滤",
+    "bucketName": "空间名称",
     "bucketDeletedSuccess": "空间删除成功",
     "bucketCreatedSuccess": "空间添加成功",
     "pageBucketCreate": {
         "createBucket": "添加空间",
         "bucketName": "空间名称",
-        "bucketNameHint": "Bucket命名规范: \n 1. 只能包含小写字母，数字和短横线 \n 2. 必须以小写字母和数字开头和结尾 \n 3. bucketName的长度限制在3-63之间",
+        "bucketNameHint": "空间名称命名规范: \n 1. 只能包含小写字母，数字和短横线 \n 2. 必须以小写字母和数字开头和结尾 \n 3. 长度限制在3-63之间",
         "acl": "权限控制",
         "aclPrivate": "私有",
-        "aclPublicR": "公共可读",
-        "aclPublicRW": "公共读写",
+        "aclPublicR": "公共",
         "bucketNameNotValid": "空间名称不符合要求"
     },
     "bucketManage": "空间管理",
@@ -683,7 +693,7 @@
     "bucketDetail": "空间概览",
     "pageBucket": {
         "basicInfo": "基本信息",
-        "usage": "容量",
+        "usage": "存储容量",
         "monthlyFlow": "当月流量",
         "monthlyAPI": "当月API请求次数",
         "createDate": "创建时间",
@@ -693,31 +703,52 @@
         "loggingService": "日志服务",
         "publicDomain": "外网域名",
         "privateDomain": "内网域名",
+        "putAcl": "更改空间权限",
+        "putAclSuccess": "更改空间权限成功",
 
         "monitor": "监控",
 
-        "usageMonitor": "存储空间",
-        "usageLegend": "存储占用量",
+        "usageMonitor": "当日存储容量",
+        "usageLegend": "存储容量",
 
-        "flowMonitor": "使用流量",
+        "flowMonitor": "当日流量",
         "flowOutPublic": "公网流出",
         "flowInPublic": "公网流入",
         "flowOutPrivate": "内网流出",
         "flowInPrivate": "内网流入",
 
-        "apiMonitor": "请求次数",
+        "apiMonitor": "当日API请求次数",
         "apiGet": "API访问次数（GET）",
         "apiPut": "API访问次数（PUT）",
 
         "monitorIntervalOneHour": "间隔: 1小时"
     },
-
     "objectManagement": "对象管理",
-    "filterByObjectName": "按对象名称过滤",
+    "objectName": "文件夹名/文件名",
+    "folder": "文件夹",
+    "returnUpFolder": "返回上一级",
+    "filterByObjectName": "按文件夹名/文件名过滤",
     "uploadFile": "上传文件",
+    "objectDeletedSuccess": "删除成功",
+    "folderCreatedSuccess": "文件夹创建成功",
+    "cannotDelete": "不为空，无法删除",
     "createFolder": "新建文件夹",
+    "objectPropertyPage": {
+        "property": "文件属性",
+        "acl": "文件权限",
+        "period": "授权时长",
+        "second": "秒",
+        "url": "文件地址",
+        "update": "更改",
+        "authorize": "授权",
+        "aclPrivate": "私有",
+        "aclPublicR": "公共",
+        "aclFail": "更改文件权限失败",
+        "aclSuccess": "更改文件权限成功"
+    },
     "uploadModal": {
-        "uploadingStatus": "文件上传状态",
+        "close": "关闭窗口会停止文件上传，确认关闭？",
+        "uploadingStatus": "上传文件",
         "waiting": "等待上传",
         "uploading": "上传中",
         "uploaded": "成功",
@@ -727,7 +758,113 @@
         "pause": "暂停",
         "continue": "继续",
         "cancel": "取消",
-        "retry": "重试"
+        "retry": "重试",
+        "progress": "进度",
+        "duplication": "有重名文件，确认继续上传会覆盖原有文件"
     },
-    "objectDeletedSuccess": "对象删除成功"
+
+    "pageObjectCreate": {
+        "folderName": "文件夹名",
+        "folderNameHint": "文件夹命名规范： \n 1. 只能包含字母，数字，中文，下划线，短横线和小数点 \n 2. 只能以字母、数字或者中文开头 \n 3. 文件夹的长度限制在1-254之间",
+        "objectNameNotValid": "文件夹名称不符合要求",
+        "objectNameDuplicated": "文件夹名重复"
+    },
+
+    "resourceMonitors": "资源监控",
+    "usageMonitor": "存储容量监控",
+    "flowMonitor": "流量监控",
+    "apiMonitor": "请求次数监控",
+
+    "pageResourceMonitors": {
+        "chooseBucket": "选择空间",
+        "from": "时间范围从",
+        "to": "至",
+        "periods": {
+            "1day": "今天",
+            "7days": "最近7天",
+            "30days": "本月"
+        },
+        "startDateError": "只能查看30天内的数据，请重新选择开始时间。",
+        "endDateError": "只能查看30天内的数据，请重新选择结束时间。"
+    },
+    "___comment_end_los": "end los",
+
+    "___comment_begin_l2b": "begin l2b",
+    "load_balancer": "负载均衡",
+    "sidebarLoadBalancers": "负载均衡",
+    "loadbalancerManage": "负载均衡",
+    "loadBalancersManageDescription": "负载均衡管理",
+    "createLoadBalancers": "添加负载均衡",
+    "loadBalancerStatus": {
+        "pending": "创建中",
+        "active": "运行中",
+        "building": "构建中",
+        "error": "状态异常",
+        "deleted": "已删除"
+    },
+    "lblistenerStatus": {
+        "active": "运行中",
+        "pending": "创建中",
+        "building": "构建中"
+    },
+    "pageLoadBalancer": {
+        "basic": "基本信息",
+        "update": "更新",
+        "modify": "修改",
+        "delete": "删除",
+        "changeBandwidth": "修改带宽",
+        "listenerList": "监听器列表",
+        "listener": "监听器",
+        "balanceMode": "转发规则",
+        "roundRobin": "轮询",
+        "weightedRoundRobin": "加权轮询",
+        "sourceIp": "IP Hash",
+        "connectionLimit": "连接限制",
+        "changeLimit": "修改连接限制",
+        "connectionLimitRange": "-1（默认，表示不限制次数）或正整数",
+        "limitOff": "不限制",
+        "session": "会话保持",
+        "sessionStatus": "状态",
+        "on": "开启",
+        "off": "关闭",
+        "sessionPersistenceMode": "模式",
+        "health": "健康检查",
+        "healthMonitorType": "类型",
+        "healthMonitorDelay": "间隔时间",
+        "healthMonitorDelayRange": "1-50秒，默认10秒",
+        "healthMonitorTimeout": "超时时间",
+        "healthMonitorTimeoutRange": "1-300秒，默认10秒",
+        "healthMonitorMaxRetries": "重试次数",
+        "healthMonitorMaxRetriesRange": "默认3次",
+        "healthMonitorMaxRetriesHint": "云主机从成功到失败的连续健康检查失败次数",
+        "second": "秒",
+        "count": "次",
+        "monitors": "资源监控",
+        "createListener": "添加监听器",
+        "backendList": "后端服务列表",
+        "backend": "后端服务",
+        "createBackend": "添加后端服务",
+        "weightRange": "1-256，默认为1",
+        "back": "返回",
+        "unfold": "详情",
+        "fold": "收起",
+        "disablePrompt": "负载均衡非运行中，无法进行相关操作"
+    },
+    "pageListenerCreate": {
+
+    },
+    "___comment_end_l2b": "end l2b",
+
+    "units": {
+        "yuan": "元",
+        "count": "次",
+        "k": "千",
+        "w": "万",
+        "y": "亿"
+    },
+
+    "test": {
+        "helpName": "TestName",
+        "helpText": "This is help text"
+    }
 }

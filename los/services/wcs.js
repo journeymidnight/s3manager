@@ -15,12 +15,12 @@ export const ACTION_NAMES = {
   deletebucket: 'DeleteBucket',
   putcors: 'PutCors',
   listbuckets: 'ListBuckets',
-  getuserinfo: 'getusageinfo',
   getusagebyhour: 'GetUsageByHour',
   getopbyhour: 'GetOpByHour',
   getflowbyhour: 'GetFlowByHour',
   getstaticsbyday: 'GetStaticsByDay',
   gets3domain: 'GetS3Domain',
+  getbucketstats: 'GetBucketStats',
 };
 
 export default new Wcs();

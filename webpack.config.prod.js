@@ -89,5 +89,6 @@ module.exports = [
   generateConfig('boss'),
   generateConfig('lcs'),
   generateConfig('los'),
+  generateConfig('l2b'),
   generateConfig('global'),
 ];

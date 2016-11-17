@@ -9,6 +9,10 @@ import BucketCreate from './pages/BucketCreate.jsx';
 import Bucket from './pages/Bucket.jsx';
 import BucketDetail from './pages/BucketDetail.jsx';
 import ObjectManagement from './pages/ObjectManagement.jsx';
+import ResourceMonitorConsole from './pages/ResourceMonitorConsole.jsx';
+import UsageMonitor from './pages/UsageMonitor.jsx';
+import FlowMonitor from './pages/FlowMonitor.jsx';
+import APIMonitor from './pages/APIMonitor.jsx';
 
 export default function configureRoutes(store) {
   function requireAuth() {
@@ -31,6 +35,12 @@ export default function configureRoutes(store) {
             <Route path="detail" component={BucketDetail} />
             <Route path="objects" component={ObjectManagement} />
           </Route>
+        </Route>
+        <Route path="monitors" component={ResourceMonitorConsole}>
+          <IndexRedirect to="usage" />
+          <Route path="usage" component={UsageMonitor} />
+          <Route path="flow" component={FlowMonitor} />
+          <Route path="api" component={APIMonitor} />
         </Route>
       </Route>
       <Route path="*" component={NotFound} />
