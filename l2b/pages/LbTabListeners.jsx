@@ -16,8 +16,8 @@ class C extends TablePage {
     super(props);
 
     this.balanceModes = {
-      ROUND_ROBIN: 'roundRobin',
-      WEIGHTED_ROUND_ROBIN: 'weightedRoundRobin',
+      WEIGHTED_ROUND_ROBIN: 'roundRobin',
+      WEIGHTED_LEAST_CONNECTIONS: 'minConnection',
       SOURCE_IP: 'sourceIp',
     };
 
@@ -44,7 +44,16 @@ class C extends TablePage {
     return new Promise((resolve, reject) => {
       dispatch(LoadBalancerActions.requestCreateLbListener(routerKey, region.regionId, {
         loadBalancerId: loadBalancer.loadBalancerId,
-        ...values,
+        name: values.name,
+        description: values.description,
+        protocol: values.protocol,
+        port: values.port,
+        balanceMode: values.balanceMode,
+        sessionPersistenceMode: values.sessionPersistenceMode,
+        healthMonitorType: values.healthMonitorType,
+        healthMonitorTimeout: values.healthMonitorTimeout || undefined,
+        healthMonitorDelay: values.healthMonitorDelay || undefined,
+        healthMonitorMaxRetries: values.healthMonitorMaxRetries,
       }))
         .then(() => {
           resolve();
@@ -91,7 +100,7 @@ class C extends TablePage {
   }
 
   renderHeader() {
-    const { t, context} = this.props;
+    const { t, context } = this.props;
     let ports = [];
     if (context) {
       ports = context.ports || [];
