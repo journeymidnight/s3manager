@@ -23,7 +23,7 @@ class ListenerCreateForm extends React.Component {
   componentDidMount() {
     const initialValues = {
       protocol: 'TCP',
-      balanceMode: 'ROUND_ROBIN',
+      balanceMode: 'WEIGHTED_ROUND_ROBIN',
       session: false,
       healthMonitorType: 'TCP',
       healthMonitorMaxRetries: 3,

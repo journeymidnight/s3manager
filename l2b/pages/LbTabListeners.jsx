@@ -44,7 +44,16 @@ class C extends TablePage {
     return new Promise((resolve, reject) => {
       dispatch(LoadBalancerActions.requestCreateLbListener(routerKey, region.regionId, {
         loadBalancerId: loadBalancer.loadBalancerId,
-        ...values,
+        name: values.name,
+        description: values.description,
+        protocol: values.protocol,
+        port: values.port,
+        balanceMode: values.balanceMode,
+        sessionPersistenceMode: values.sessionPersistenceMode,
+        healthMonitorType: values.healthMonitorType,
+        healthMonitorTimeout: values.healthMonitorTimeout || undefined,
+        healthMonitorDelay: values.healthMonitorDelay || undefined,
+        healthMonitorMaxRetries: values.healthMonitorMaxRetries,
       }))
         .then(() => {
           resolve();
