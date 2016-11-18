@@ -1,32 +1,38 @@
 import React from 'react';
 import { translate } from 'react-i18next';
-import { reduxForm } from 'redux-form';import * as Validations from '../../shared/utils/validations';
-import Slider from '../../shared/components/Slider';
+import { reduxForm } from 'redux-form';
+import * as Validations from '../../shared/utils/validations';
+import SliderInput from '../../shared/components/FormInputs/SliderInput';
+import FooterButtons from '../../shared/components/FormInputs/FooterButtons';
 
 let BandwidthForm = (props) => {
   const { fields:
     { bandwidth },
     handleSubmit,
     submitting,
+    resetForm,
     t,
   } = props;
   return (
     <form className="form-horizontal" onSubmit={handleSubmit}>
       <div className="modal-body">
-        <div className="form-group">
-          <label className="control-label" >{t('bandwidth')}</label>
-          <div className="col-sm-10">
-            <input type="hidden" className="form-control" value={bandwidth.value} disabled="disabled" />
-            <Slider min={1} max={300} step={1} value={bandwidth.value} unit={'Mbps'} onChange={param => bandwidth.onChange(param)} />
-          </div>
-        </div>
+        <SliderInput
+          item={bandwidth}
+          itemName="bandwidth"
+          max={300}
+          min={1}
+          step={1}
+          unit="Mbps"
+          t={t}
+        />
       </div>
 
       <div className="modal-footer">
-        <button type="button" className="btn btn-default" data-dismiss="modal">{t('closeModal')}</button>
-        <button type="submit" className="btn btn-save" disabled={submitting}>
-          {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('update')}
-        </button>
+        <FooterButtons
+          resetForm={resetForm}
+          submitting={submitting}
+          t={t}
+        />
       </div>
     </form>
   );
@@ -38,6 +44,7 @@ BandwidthForm.propTypes = {
   handleSubmit: React.PropTypes.func.isRequired,
   submitting: React.PropTypes.bool.isRequired,
   submitFailed: React.PropTypes.bool.isRequired,
+  resetForm: React.PropTypes.func.isRequired,
   t: React.PropTypes.any,
 };
 

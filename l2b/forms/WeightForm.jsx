@@ -1,6 +1,8 @@
 import React from 'react';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';import * as Validations from '../../shared/utils/validations';
+import NumberInput from '../../shared/components/FormInputs/NumberInput';
+import FooterButtons from '../../shared/components/FormInputs/FooterButtons';
 
 let WeightForm = (props) => {
   const { fields:
@@ -8,27 +10,28 @@ let WeightForm = (props) => {
     handleSubmit,
     submitting,
     submitFailed,
+    resetForm,
     t,
   } = props;
   return (
     <form className="form-horizontal" onSubmit={handleSubmit}>
       <div className="modal-body">
-
-        <div className={(submitFailed || weight.touched) && weight.error ? 'form-group has-error' : 'form-group'}>
-          <label className="control-label" >{t('weight')}</label>
-          <div className="col-sm-10">
-            <input type="number" className="form-control" {...weight} />
-            {(submitFailed || weight.touched) && weight.error && <div className="text-danger"><small>{weight.error}</small></div>}
-            <p className="help-block">{t('pageLoadBalancer.weightRange')}</p>
-          </div>
-        </div>
+        <NumberInput
+          item={weight}
+          itemName="weight"
+          submitFailed={submitFailed}
+          inputParams={{ min: '1', max: '256' }}
+          helpText={t('pageLoadBalancer.weightRange')}
+          t={t}
+        />
       </div>
 
       <div className="modal-footer">
-        <button type="button" className="btn btn-default" data-dismiss="modal">{t('closeModal')}</button>
-        <button type="submit" className="btn btn-save" disabled={submitting}>
-          {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('update')}
-        </button>
+        <FooterButtons
+          resetForm={resetForm}
+          submitting={submitting}
+          t={t}
+        />
       </div>
     </form>
   );
@@ -40,6 +43,7 @@ WeightForm.propTypes = {
   handleSubmit: React.PropTypes.func.isRequired,
   submitting: React.PropTypes.bool.isRequired,
   submitFailed: React.PropTypes.bool.isRequired,
+  resetForm: React.PropTypes.func.isRequired,
   t: React.PropTypes.any,
 };
 
