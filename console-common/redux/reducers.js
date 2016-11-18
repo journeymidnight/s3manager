@@ -76,18 +76,6 @@ export function rootReducer(state = {}, action) {
       newState.context = Object.assign(newState.context, action.payload);
       return newState;
 
-    case ActionTypes.SET_BUCKET:
-      newState = Object.assign({}, state);
-      newState.global.bucketName = action.data.bucketName;
-      newState.global.bucketCreationDate = action.data.bucketCreationDate;
-      return newState;
-
-    case ActionTypes.REMOVE_BUCKET:
-      newState = Object.assign({}, state);
-      delete newState.global.bucketName;
-      delete newState.global.bucketCreationDate;
-      return newState;
-
     case ActionTypes.SET_FOLDER_LOCATION:
       newState = Object.assign({}, state);
       newState.global.folderLocation = action.folderLocation;
