@@ -20,8 +20,8 @@ class LbListener extends Page {
       listenerList: false,
     };
     this.balanceModes = {
-      ROUND_ROBIN: 'roundRobin',
-      WEIGHTED_ROUND_ROBIN: 'weightedRoundRobin',
+      WEIGHTED_ROUND_ROBIN: 'roundRobin',
+      WEIGHTED_LEAST_CONNECTIONS: 'minConnection',
       SOURCE_IP: 'sourceIp',
     };
 
