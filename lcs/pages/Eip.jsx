@@ -360,7 +360,6 @@ class C extends Page {
                         <li>
                           <button
                             className="btn-page-action"
-                            disabled={eip.status !== 'active'}
                             onClick={this.updateBandwidth}
                           >
                             {t('pageEip.updateBandwidth')}

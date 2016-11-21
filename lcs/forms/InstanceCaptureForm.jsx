@@ -1,6 +1,7 @@
 import React from 'react';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
+import * as Validations from '../../shared/utils/validations';
 
 
 let InstanceCaptureForm = (props) => {
@@ -43,8 +44,9 @@ InstanceCaptureForm.propTypes = {
   t: React.PropTypes.any,
 };
 
-InstanceCaptureForm.validate = () => {
+InstanceCaptureForm.validate = (values) => {
   const errors = {};
+  errors.name = Validations.required(values.name);
   return errors;
 };
 
