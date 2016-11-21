@@ -65,7 +65,7 @@ class F extends React.Component {
     const { imageType, imageId } = this.props.fields;
 
     imageType.onChange(value);
-    const imageSet = value === 'public' ? this.props.publicImageSet : this.props.privateImageSet;
+    const imageSet = this.getCurrentImageSet();
     imageId.onChange(imageSet[0] && imageSet[0].imageId);
   }
 
@@ -97,6 +97,17 @@ class F extends React.Component {
     }
   }
 
+  getCurrentImageSet() {
+    return this.props.fields.imageType.value === 'public' ? this.props.publicImageSet : this.props.privateImageSet;
+  }
+
+  isSelectedWindowsImage(imageSet) {
+    const selectedImage = Array.isArray(imageSet) && imageSet.filter((image) => {
+      return image.imageId === this.props.fields.imageId.value;
+    })[0];
+    return selectedImage && selectedImage.platform === 'windows';
+  }
+
   render() {
     const { fields:
       { hostname, imageType, imageId, vcpus, memory, disk, instanceTypeId, subnetId, count, keyPairId, loginPassword, loginMode },
@@ -108,15 +119,14 @@ class F extends React.Component {
       service,
     } = this.props;
 
-    const imageSet = imageType.value === 'public' ? this.props.publicImageSet : this.props.privateImageSet;
-    const selectedImage = Array.isArray(imageSet) && imageSet.filter((image) => {
-      return image.imageId === imageId;
-    })[0];
-    const isSelectedWindowsImage = selectedImage && selectedImage.platform === 'windows';
-    if (isSelectedWindowsImage) {
+    const imageSet = this.getCurrentImageSet();
+    const isSelectedWindowsImage = this.isSelectedWindowsImage(imageSet);
+
+    if (isSelectedWindowsImage && loginMode.value !== 'password') {
       loginMode.onChange('password');
     }
-    const defaultUser = isSelectedWindowsImage ? 'leuser' : 'leuser';
+
+    const defaultUser = 'leuser';
 
     if (!vcpus.value) {
       // not initialized

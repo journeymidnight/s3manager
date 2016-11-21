@@ -166,7 +166,7 @@ class C extends TablePage {
               onSubmit={this.onDelete}
               text={t('delete')}
               type="btn-danger"
-              disabled={this.isBatchActionDisabled(['active'], this.props.context.imageSet, 'imageId')}
+              disabled={this.isBatchActionDisabled(['active', 'error'], this.props.context.imageSet, 'imageId')}
             />
           </div>
         </div>}
