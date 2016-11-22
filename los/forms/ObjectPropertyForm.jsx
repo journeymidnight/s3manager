@@ -32,7 +32,7 @@ class ObjectPropertyForm extends React.Component {
       })
       .then(() => {
         if (this.props.context.objectAcl === 'public-read') {
-          const url = `http://${params.bucketName}.${context.s3Domain}/${context.objectName}`;
+          const url = `http://${params.bucketName}.${context.s3Domain}/${encodeURIComponent(context.objectName)}`;
           dispatch(extendContext({ objectUrl: url }, routerKey));
         } else {
           dispatch(extendContext({ objectUrl: null }, routerKey));

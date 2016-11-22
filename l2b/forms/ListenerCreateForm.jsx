@@ -1,23 +1,32 @@
 import React from 'react';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
-import Slider from '../../shared/components/Slider';
+import TextInput from '../../shared/components/FormInputs/TextInput';
+import NumberInput from '../../shared/components/FormInputs/NumberInput';
+import SliderInput from '../../shared/components/FormInputs/SliderInput';
+import SelectInput from '../../shared/components/FormInputs/SelectInput';
+import FooterButtons from '../../shared/components/FormInputs/FooterButtons';
 import * as Validations from '../../shared/utils/validations';
-import i18n from '../../shared/i18n';
 
 class ListenerCreateForm extends React.Component {
 
   constructor() {
     super();
 
-    this.protocols = ['TCP'];
+    this.protocols = [
+      { value: 'TCP' },
+    ];
     this.balanceModes = [
       { name: 'roundRobin', value: 'WEIGHTED_ROUND_ROBIN' },
       { name: 'minConnection', value: 'WEIGHTED_LEAST_CONNECTIONS' },
       { name: 'sourceIp', value: 'SOURCE_IP' },
     ];
-    this.sessionPersistenceModes = ['SOURCE_IP'];
-    this.healthMonitorTypes = ['TCP'];
+    this.sessionPersistenceModes = [
+      { value: 'SOURCE_IP' },
+    ];
+    this.healthMonitorTypes = [
+      { value: 'TCP' },
+    ];
   }
 
   componentDidMount() {
@@ -51,65 +60,53 @@ class ListenerCreateForm extends React.Component {
       handleSubmit,
       submitting,
       submitFailed,
+      resetForm,
       t,
     } = this.props;
 
     return (
       <form className="form-horizontal" onSubmit={handleSubmit}>
         <div className="modal-body">
-          <div className={(submitFailed || name.touched) && name.error ? 'form-group has-error' : 'form-group'}>
-            <label className="control-label" >{t('name')}</label>
-            <div className="col-sm-10">
-              <input type="text" className="form-control" {...name} maxLength="50" />
-              {(submitFailed || name.touched) && name.error && <div className="text-danger"><small>{name.error}</small></div>}
-            </div>
-          </div>
+          <TextInput
+            item={name}
+            itemName="name"
+            submitFailed={submitFailed}
+            inputParams={{ maxLength: '50' }}
+            t={t}
+          />
 
-          <div className={(submitFailed || description.touched) && description.error ? 'form-group has-error' : 'form-group'}>
-            <label className="control-label" >{t('description')}</label>
-            <div className="col-sm-10">
-              <input type="text" className="form-control" {...description} maxLength="250" />
-              {(submitFailed || description.touched) && description.error && <div className="text-danger"><small>{description.error}</small></div>}
-            </div>
-          </div>
+          <TextInput
+            item={description}
+            itemName="description"
+            submitFailed={submitFailed}
+            inputParams={{ maxLength: '250' }}
+            t={t}
+          />
 
-          <div className="form-group">
-            <label className="control-label" >{t('protocol')}</label>
-            <div className="col-sm-10">
-              <select className="form-control" {...protocol}>
-                {this.protocols.map((item) =>
-                  <option key={item} value={item}>{item}</option>)}
-              </select>
-            </div>
-          </div>
+          <SelectInput
+            item={protocol}
+            itemName="protocol"
+            optionList={this.protocols}
+            optionValue="value"
+            t={t}
+          />
 
-          <div className={(submitFailed || port.touched) && port.error ? 'form-group has-error' : 'form-group'}>
-            <label className="control-label" >{t('port')}</label>
-            <div className="col-sm-10">
-              <input type="number" min="1" max="65535" className="form-control" {...port} />
-              {(submitFailed || port.touched) && port.error && <div className="text-danger"><small>{port.error}</small></div>}
-            </div>
-          </div>
+          <NumberInput
+            item={port}
+            itemName="port"
+            submitFailed={submitFailed}
+            inputParams={{ min: '1', max: '65535' }}
+            t={t}
+          />
 
-          <div className="form-group">
-            <label className="control-label" >{t('pageLoadBalancer.balanceMode')}</label>
-            <div className="col-sm-10">
-              <select className="form-control" {...balanceMode}>
-                {this.balanceModes.map((item) =>
-                  <option key={item.name} value={item.value}>{t(`pageLoadBalancer.${item.name}`)}</option>)}
-              </select>
-            </div>
-          </div>
-
-          {/* <div className={(submitFailed || connectionLimit.touched) && connectionLimit.error ? 'form-group has-error' : 'form-group'}>
-            <label className="control-label" >{t('pageLoadBalancer.connectionLimit')}</label>
-            <div className="col-sm-10">
-              <input type="number" className="form-control" min="-1" placeholder={t('pageLoadBalancer.connectionLimitRange')} {...connectionLimit} />
-              {(submitFailed || connectionLimit.touched) && connectionLimit.error &&
-                <div className="text-danger"><small>{connectionLimit.error}</small></div>
-              }
-            </div>
-          </div>*/}
+          <SelectInput
+            item={balanceMode}
+            itemName="pageLoadBalancer.balanceMode"
+            optionList={this.balanceModes}
+            optionValue="value"
+            optionText="name"
+            t={t}
+          />
 
           <fieldset className="features">
             <legend><strong>{t('pageLoadBalancer.session')}</strong></legend>
@@ -149,62 +146,62 @@ class ListenerCreateForm extends React.Component {
               </div>
             </div>
 
-            {session.value && <div className="form-group">
-              <label className="control-label" >{t('pageLoadBalancer.sessionPersistenceMode')}</label>
-              <div className="col-sm-10">
-                <select className="form-control" {...sessionPersistenceMode}>
-                  {this.sessionPersistenceModes.map((mode) =>
-                    <option key={mode} value={mode}>{mode}</option>)}
-                </select>
-              </div>
-            </div>}
+            {session.value &&
+              <SelectInput
+                item={sessionPersistenceMode}
+                itemName="pageLoadBalancer.sessionPersistenceMode"
+                optionList={this.sessionPersistenceModes}
+                optionValue="value"
+                t={t}
+              />
+            }
           </fieldset>
 
           <fieldset className="features">
             <legend><strong>{t('pageLoadBalancer.health')}</strong></legend>
 
-            <div className="form-group">
-              <label className="control-label" >{t('pageLoadBalancer.healthMonitorType')}</label>
-              <div className="col-sm-10">
-                <select className="form-control" {...healthMonitorType}>
-                  {this.healthMonitorTypes.map((type) =>
-                    <option key={type} value={type}>{type}</option>)}
-                </select>
-              </div>
-            </div>
+            <SelectInput
+              item={healthMonitorType}
+              itemName="pageLoadBalancer.healthMonitorType"
+              optionList={this.healthMonitorTypes}
+              optionValue="value"
+              t={t}
+            />
 
-            <div className={(submitFailed || healthMonitorDelay.touched) && healthMonitorDelay.error ? 'form-group has-error' : 'form-group'}>
-              <label className="control-label" >{t('pageLoadBalancer.healthMonitorDelay')}</label>
-              <div className="col-sm-10">
-                <input type="number" className="form-control" placeholder={t('pageLoadBalancer.healthMonitorDelayRange')} min="1" max="50" {...healthMonitorDelay} />
-                {(submitFailed || healthMonitorDelay.touched) && healthMonitorDelay.error && <div className="text-danger"><small>{healthMonitorDelay.error}</small></div>}
-              </div>
-            </div>
+            <NumberInput
+              item={healthMonitorDelay}
+              itemName="pageLoadBalancer.healthMonitorDelay"
+              submitFailed={submitFailed}
+              inputParams={{ min: '1', max: '50', placeHolder: t('pageLoadBalancer.healthMonitorDelayRange') }}
+              t={t}
+            />
 
-            <div className={(submitFailed || healthMonitorTimeout.touched) && healthMonitorTimeout.error ? 'form-group has-error' : 'form-group'}>
-              <label className="control-label" >{t('pageLoadBalancer.healthMonitorTimeout')}</label>
-              <div className="col-sm-10">
-                <input type="number" className="form-control" placeholder={t('pageLoadBalancer.healthMonitorTimeoutRange')} min="1" max="300" {...healthMonitorTimeout} />
-                {(submitFailed || healthMonitorTimeout.touched) && healthMonitorTimeout.error && <div className="text-danger"><small>{healthMonitorTimeout.error}</small></div>}
-              </div>
-            </div>
+            <NumberInput
+              item={healthMonitorTimeout}
+              itemName="pageLoadBalancer.healthMonitorTimeout"
+              submitFailed={submitFailed}
+              inputParams={{ min: '1', max: '300', placeHolder: t('pageLoadBalancer.healthMonitorTimeoutRange') }}
+              t={t}
+            />
 
-            <div className="form-group">
-              <label className="control-label" >{t('pageLoadBalancer.healthMonitorMaxRetries')}</label>
-              <div className="col-sm-10">
-                <input type="hidden" className="form-control" value={healthMonitorMaxRetries.value} disabled="disabled" />
-                <Slider min={1} max={10} step={1} value={healthMonitorMaxRetries.value} onChange={param => healthMonitorMaxRetries.onChange(param)} />
-                <p className="help-block">{t('pageLoadBalancer.healthMonitorMaxRetriesHint')}</p>
-              </div>
-            </div>
+            <SliderInput
+              item={healthMonitorMaxRetries}
+              itemName="pageLoadBalancer.healthMonitorMaxRetries"
+              max={10}
+              min={1}
+              step={1}
+              helpText="pageLoadBalancer.healthMonitorMaxRetriesHint"
+              t={t}
+            />
           </fieldset>
         </div>
 
         <div className="modal-footer">
-          <button type="button" className="btn btn-default" data-dismiss="modal">{t('closeModal')}</button>
-          <button type="submit" className="btn btn-save" disabled={submitting}>
-            {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('create')}
-          </button>
+          <FooterButtons
+            resetForm={resetForm}
+            submitting={submitting}
+            t={t}
+          />
         </div>
       </form>
     );
@@ -218,15 +215,13 @@ ListenerCreateForm.propTypes = {
   initializeForm: React.PropTypes.func.isRequired,
   submitting: React.PropTypes.bool.isRequired,
   submitFailed: React.PropTypes.bool.isRequired,
+  resetForm: React.PropTypes.func.isRequired,
   t: React.PropTypes.any,
 };
 
-ListenerCreateForm.validate = (values, props) => {
+ListenerCreateForm.validate = (values) => {
   const errors = {};
   errors.port = Validations.port(values.port);
-  if (props.ports.includes(values.port)) {
-    errors.port = i18n.t('validationMessage.portDuplicated');
-  }
   // errors.connectionLimit = Validations.connectionLimit(values.connectionLimit);
   errors.healthMonitorDelay = Validations.healthMonitorDelay(values.healthMonitorDelay);
   errors.healthMonitorTimeout = Validations.healthMonitorTimeout(values.healthMonitorTimeout);

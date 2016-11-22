@@ -1,7 +1,9 @@
 import React from 'react';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
-import Slider from '../../shared/components/Slider';
+import NumberInput from '../../shared/components/FormInputs/NumberInput';
+import SliderInput from '../../shared/components/FormInputs/SliderInput';
+import FooterButtons from '../../shared/components/FormInputs/FooterButtons';
 import * as Validations from '../../shared/utils/validations';
 
 const HealthForm = (props) => {
@@ -14,42 +16,46 @@ const HealthForm = (props) => {
     handleSubmit,
     submitting,
     submitFailed,
+    resetForm,
     t,
   } = props;
 
   return (
     <form className="form-horizontal" onSubmit={handleSubmit}>
       <div className="modal-body">
-        <div className={(submitFailed || healthMonitorDelay.touched) && healthMonitorDelay.error ? 'form-group has-error' : 'form-group'}>
-          <label className="control-label" >{t('pageLoadBalancer.healthMonitorDelay')}</label>
-          <div className="col-sm-10">
-            <input type="number" className="form-control" placeholder={t('pageLoadBalancer.healthMonitorDelayRange')} min="1" max="50" {...healthMonitorDelay} />
-            {(submitFailed || healthMonitorDelay.touched) && healthMonitorDelay.error && <div className="text-danger"><small>{healthMonitorDelay.error}</small></div>}
-          </div>
-        </div>
+        <NumberInput
+          item={healthMonitorDelay}
+          itemName="pageLoadBalancer.healthMonitorDelay"
+          submitFailed={submitFailed}
+          inputParams={{ min: '1', max: '50', placeHolder: t('pageLoadBalancer.healthMonitorDelayRange') }}
+          t={t}
+        />
 
-        <div className={(submitFailed || healthMonitorTimeout.touched) && healthMonitorTimeout.error ? 'form-group has-error' : 'form-group'}>
-          <label className="control-label" >{t('pageLoadBalancer.healthMonitorTimeout')}</label>
-          <div className="col-sm-10">
-            <input type="number" className="form-control" placeholder={t('pageLoadBalancer.healthMonitorTimeoutRange')} min="1" max="300" {...healthMonitorTimeout} />
-            {(submitFailed || healthMonitorTimeout.touched) && healthMonitorTimeout.error && <div className="text-danger"><small>{healthMonitorTimeout.error}</small></div>}
-          </div>
-        </div>
+        <NumberInput
+          item={healthMonitorTimeout}
+          itemName="pageLoadBalancer.healthMonitorTimeout"
+          submitFailed={submitFailed}
+          inputParams={{ min: '1', max: '300', placeHolder: t('pageLoadBalancer.healthMonitorTimeoutRange') }}
+          t={t}
+        />
 
-        <div className="form-group">
-          <label className="control-label" >{t('pageLoadBalancer.healthMonitorMaxRetries')}</label>
-          <div className="col-sm-10">
-            <input type="hidden" className="form-control" value={healthMonitorMaxRetries.value} disabled="disabled" />
-            <Slider min={1} max={10} step={1} value={healthMonitorMaxRetries.value} onChange={param => healthMonitorMaxRetries.onChange(param)} />
-          </div>
-        </div>
+        <SliderInput
+          item={healthMonitorMaxRetries}
+          itemName="pageLoadBalancer.healthMonitorMaxRetries"
+          max={10}
+          min={1}
+          step={1}
+          helpText="pageLoadBalancer.healthMonitorMaxRetriesHint"
+          t={t}
+        />
       </div>
 
       <div className="modal-footer">
-        <button type="button" className="btn btn-default" data-dismiss="modal">{t('closeModal')}</button>
-        <button type="submit" className="btn btn-save" disabled={submitting}>
-          {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('update')}
-        </button>
+        <FooterButtons
+          resetForm={resetForm}
+          submitting={submitting}
+          t={t}
+        />
       </div>
     </form>
   );
@@ -59,9 +65,9 @@ HealthForm.propTypes = {
   fields: React.PropTypes.object.isRequired,
   error: React.PropTypes.string,
   handleSubmit: React.PropTypes.func.isRequired,
-  initializeForm: React.PropTypes.func.isRequired,
   submitting: React.PropTypes.bool.isRequired,
   submitFailed: React.PropTypes.bool.isRequired,
+  resetForm: React.PropTypes.func.isRequired,
   t: React.PropTypes.any,
 };
 

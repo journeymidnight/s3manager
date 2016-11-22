@@ -1,6 +1,9 @@
 import React from 'react';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
+import TextInput from '../../shared/components/FormInputs/TextInput';
+import NumberInput from '../../shared/components/FormInputs/NumberInput';
+import FooterButtons from '../../shared/components/FormInputs/FooterButtons';
 import * as Validations from '../../shared/utils/validations';
 
 const BackendCreateForm = (props) => {
@@ -9,56 +12,57 @@ const BackendCreateForm = (props) => {
     handleSubmit,
     submitting,
     submitFailed,
+    resetForm,
     t,
   } = props;
   return (
     <form className="form-horizontal" onSubmit={handleSubmit}>
       <div className="modal-body">
-        <div className={(submitFailed || name.touched) && name.error ? 'form-group has-error' : 'form-group'}>
-          <label className="control-label" >{t('name')}</label>
-          <div className="col-sm-10">
-            <input type="text" className="form-control" {...name} maxLength="50" />
-            {(submitFailed || name.touched) && name.error && <div className="text-danger"><small>{name.error}</small></div>}
-          </div>
-        </div>
+        <TextInput
+          item={name}
+          itemName="name"
+          submitFailed={submitFailed}
+          inputParams={{ maxLength: '50' }}
+          t={t}
+        />
 
-        <div className={(submitFailed || description.touched) && description.error ? 'form-group has-error' : 'form-group'}>
-          <label className="control-label" >{t('description')}</label>
-          <div className="col-sm-10">
-            <input type="text" className="form-control" {...description} maxLength="250" />
-            {(submitFailed || description.touched) && description.error && <div className="text-danger"><small>{description.error}</small></div>}
-          </div>
-        </div>
+        <TextInput
+          item={description}
+          itemName="description"
+          submitFailed={submitFailed}
+          inputParams={{ maxLength: '250' }}
+          t={t}
+        />
 
-        <div className={(submitFailed || address.touched) && address.error ? 'form-group has-error' : 'form-group'}>
-          <label className="control-label" >{t('address')}</label>
-          <div className="col-sm-10">
-            <input type="text" className="form-control" {...address} />
-            {(submitFailed || address.touched) && address.error && <div className="text-danger"><small>{address.error}</small></div>}
-          </div>
-        </div>
+        <TextInput
+          item={address}
+          itemName="address"
+          submitFailed={submitFailed}
+          t={t}
+        />
 
-        <div className={(submitFailed || port.touched) && port.error ? 'form-group has-error' : 'form-group'}>
-          <label className="control-label" >{t('port')}</label>
-          <div className="col-sm-10">
-            <input type="number" className="form-control" {...port} min="1" max="65535" />
-            {(submitFailed || port.touched) && port.error && <div className="text-danger"><small>{port.error}</small></div>}
-          </div>
-        </div>
+        <NumberInput
+          item={port}
+          itemName="port"
+          submitFailed={submitFailed}
+          inputParams={{ min: '1', max: '65535' }}
+          t={t}
+        />
 
-        <div className={(submitFailed || weight.touched) && weight.error ? 'form-group has-error' : 'form-group'}>
-          <label className="control-label" >{t('weight')}</label>
-          <div className="col-sm-10">
-            <input type="number" className="form-control" placeholder={t('pageLoadBalancer.weightRange')} {...weight} min="1" max="256" />
-            {(submitFailed || weight.touched) && weight.error && <div className="text-danger"><small>{weight.error}</small></div>}
-          </div>
-        </div>
+        <NumberInput
+          item={weight}
+          itemName="weight"
+          submitFailed={submitFailed}
+          inputParams={{ min: '1', max: '256', placeholder: t('pageLoadBalancer.weightRange') }}
+          t={t}
+        />
       </div>
       <div className="modal-footer">
-        <button type="button" className="btn btn-default" data-dismiss="modal">{t('closeModal')}</button>
-        <button type="submit" className="btn btn-save" disabled={submitting}>
-          {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('create')}
-        </button>
+        <FooterButtons
+          resetForm={resetForm}
+          submitting={submitting}
+          t={t}
+        />
       </div>
     </form>
   );
@@ -71,6 +75,7 @@ BackendCreateForm.propTypes = {
   initializeForm: React.PropTypes.func.isRequired,
   submitting: React.PropTypes.bool.isRequired,
   submitFailed: React.PropTypes.bool.isRequired,
+  resetForm: React.PropTypes.func.isRequired,
   t: React.PropTypes.any,
 };
 

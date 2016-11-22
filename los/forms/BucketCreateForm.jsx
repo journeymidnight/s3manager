@@ -80,7 +80,7 @@ F.propTypes = {
 F.validate = values => {
   const errors = {};
   errors.bucketName = Validations.required(values.bucketName);
-  if (!Validations.isEmpty(values.bucketName) && !/^[0-9a-z]{1}([a-z0-9]|[-]){1,61}[0-9a-z]{1}$/.test(values.bucketName)) {
+  if (!Validations.isEmpty(values.bucketName) && (!/^[0-9a-z]{1}([a-z0-9]|[-]){1,61}[0-9a-z]{1}$/.test(values.bucketName) || values.bucketName === 'admin')) {
     errors.bucketName = i18n.t('pageBucketCreate.bucketNameNotValid');
   }
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const TextInput = (props) => {
+const NumberInput = (props) => {
   const {
     item,
     item: {
@@ -18,7 +18,7 @@ const TextInput = (props) => {
     <div className={(submitFailed || touched) && error ? 'form-group has-error' : 'form-group'}>
       <label className="control-label" >{t(itemName)}</label>
       <div className="col-sm-10">
-        <input type="text" className="form-control" {...item} {...inputParams} />
+        <input type="number" className="form-control" {...item} {...inputParams} />
         {(submitFailed || touched) && error && <div className="text-danger"><small>{error}</small></div>}
         {helpText && <p className="help-block">{t(helpText).split('\n').map((line) =>
           <span key={Math.random()}>{line}<br /></span>
@@ -28,7 +28,7 @@ const TextInput = (props) => {
   );
 };
 
-TextInput.propTypes = {
+NumberInput.propTypes = {
   item: React.PropTypes.object.isRequired,
   itemName: React.PropTypes.string.isRequired,
   inputParams: React.PropTypes.object,
@@ -37,4 +37,4 @@ TextInput.propTypes = {
   t: React.PropTypes.any.isRequired,
 };
 
-export default TextInput;
+export default NumberInput;
