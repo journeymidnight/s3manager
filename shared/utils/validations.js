@@ -102,14 +102,14 @@ export function connectionLimit(value) {
 }
 
 export function healthMonitorDelay(value) {
-  if (value && !/^([0-9]{1}|[1-4][0-9]|50)$/.test(value)) {
+  if (value && !/^([3-9]|[1-9][0-9]|100)$/.test(value)) {
     return i18n.t('validationMessage.healthMonitorDelay');
   }
   return null;
 }
 
 export function healthMonitorTimeout(value) {
-  if (value && !/^([0-9]{1,2}|[1-2][0-9]{2}|300)$/.test(value)) {
+  if (value && !/^([3-9]|10)$/.test(value)) {
     return i18n.t('validationMessage.healthMonitorTimeout');
   }
   return null;

@@ -53,7 +53,7 @@ const BackendCreateForm = (props) => {
           item={weight}
           itemName="weight"
           submitFailed={submitFailed}
-          inputParams={{ min: '1', max: '256', placeholder: t('pageLoadBalancer.weightRange') }}
+          inputParams={{ min: '0', max: '256', placeholder: t('pageLoadBalancer.weightRange') }}
           t={t}
         />
       </div>
