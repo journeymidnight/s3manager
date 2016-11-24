@@ -26,11 +26,20 @@ export function requestDescribeLoadBalancers(routerKey, regionId, filters) {
       .doAction(regionId, ACTION_NAMES.describeLoadBalancers, filters)
       .promise
       .then((payload) => {
-        dispatch(extendContext(Object.assign(payload, {
-          currentPage: parseInt(payload.offset / payload.limit, 10) + 1,
-          size: payload.limit,
-          totalPage: parseInt((payload.total - 1) / payload.limit, 10) + 1,
-        })));
+        if (payload.loadBalancerSet.length === 0 && filters.offset !== 0) {
+          dispatch(extendContext(Object.assign(payload, {
+            currentPage: parseInt(payload.offset / payload.limit, 10),
+            size: payload.limit,
+            totalPage: parseInt((payload.total - 1) / payload.limit, 10),
+          })));
+          requestDescribeLoadBalancers(routerKey, regionId, Object.assign(filters, { offset: filters.offset - filters.limit }));
+        } else {
+          dispatch(extendContext(Object.assign(payload, {
+            currentPage: parseInt(payload.offset / payload.limit, 10) + 1,
+            size: payload.limit,
+            totalPage: parseInt((payload.total - 1) / payload.limit, 10) + 1,
+          })));
+        }
       })
       .catch((error) => {
         dispatch(notifyAlert(error.message));
@@ -122,12 +131,20 @@ export function requestDescribeLbListeners(routerKey, regionId, filters) {
         if (filters.loadBalancerListenerIds) {
           dispatch(extendContext({ listenerSet: payload.listenerSet }));
         } else {
-          dispatch(extendContext(Object.assign(payload, {
-            currentPage: parseInt(payload.offset / payload.limit, 10) + 1,
-            size: payload.limit,
-            totalPage: parseInt((payload.total - 1) / payload.limit, 10) + 1,
-            ports: payload.listenerSet.map(listener => listener.port),
-          })));
+          if (payload.listenerSet.length === 0 && filters.offset !== 0) {
+            dispatch(extendContext(Object.assign(payload, {
+              currentPage: parseInt(payload.offset / payload.limit, 10),
+              size: payload.limit,
+              totalPage: parseInt((payload.total - 1) / payload.limit, 10),
+            })));
+            requestDescribeLbListeners(routerKey, regionId, Object.assign(filters, { offset: filters.offset - filters.limit }));
+          } else {
+            dispatch(extendContext(Object.assign(payload, {
+              currentPage: parseInt(payload.offset / payload.limit, 10) + 1,
+              size: payload.limit,
+              totalPage: parseInt((payload.total - 1) / payload.limit, 10) + 1,
+            })));
+          }
         }
       })
       .catch((error) => {
@@ -201,11 +218,20 @@ export function requestDescribeLbBackends(routerKey, regionId, filters) {
       .doAction(regionId, ACTION_NAMES.describeLoadBalancerBackends, filters)
       .promise
       .then((payload) => {
-        dispatch(extendContext(Object.assign(payload, {
-          currentPage: parseInt(payload.offset / payload.limit, 10) + 1,
-          size: payload.limit,
-          totalPage: parseInt((payload.total - 1) / payload.limit, 10) + 1,
-        })));
+        if (payload.backendSet.length === 0 && filters.offset !== 0) {
+          dispatch(extendContext(Object.assign(payload, {
+            currentPage: parseInt(payload.offset / payload.limit, 10),
+            size: payload.limit,
+            totalPage: parseInt((payload.total - 1) / payload.limit, 10),
+          })));
+          requestDescribeLbBackends(routerKey, regionId, Object.assign(filters, { offset: filters.offset - filters.limit }));
+        } else {
+          dispatch(extendContext(Object.assign(payload, {
+            currentPage: parseInt(payload.offset / payload.limit, 10) + 1,
+            size: payload.limit,
+            totalPage: parseInt((payload.total - 1) / payload.limit, 10) + 1,
+          })));
+        }
       })
       .catch((error) => {
         dispatch(notifyAlert(error.message));
