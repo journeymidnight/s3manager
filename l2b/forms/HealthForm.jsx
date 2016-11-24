@@ -27,7 +27,8 @@ const HealthForm = (props) => {
           item={healthMonitorDelay}
           itemName="pageLoadBalancer.healthMonitorDelay"
           submitFailed={submitFailed}
-          inputParams={{ min: '1', max: '50', placeHolder: t('pageLoadBalancer.healthMonitorDelayRange') }}
+          inputParams={{ min: '1', max: '50' }}
+          helpText={t('pageLoadBalancer.healthMonitorDelayRange')}
           t={t}
         />
 
@@ -35,7 +36,8 @@ const HealthForm = (props) => {
           item={healthMonitorTimeout}
           itemName="pageLoadBalancer.healthMonitorTimeout"
           submitFailed={submitFailed}
-          inputParams={{ min: '1', max: '300', placeHolder: t('pageLoadBalancer.healthMonitorTimeoutRange') }}
+          inputParams={{ min: '1', max: '300' }}
+          helpText={t('pageLoadBalancer.healthMonitorTimeoutRange')}
           t={t}
         />
 
@@ -45,6 +47,7 @@ const HealthForm = (props) => {
           max={10}
           min={1}
           step={1}
+          unit={t('units.count')}
           helpText="pageLoadBalancer.healthMonitorMaxRetriesHint"
           t={t}
         />

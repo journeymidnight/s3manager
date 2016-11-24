@@ -24,7 +24,7 @@ const LimitForm = (props) => {
           item={connectionLimit}
           itemName="pageLoadBalancer.connectionLimit"
           submitFailed={submitFailed}
-          inputParams={{ min: "-1",placeHolder: t('pageLoadBalancer.connectionLimitRange') }}
+          inputParams={{ min: "-1",placeholder: t('pageLoadBalancer.connectionLimitRange') }}
           t={t}
         />
       </div>

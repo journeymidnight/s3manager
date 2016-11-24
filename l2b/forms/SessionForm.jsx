@@ -67,7 +67,7 @@ class SessionForm extends React.Component {
               item={sessionPersistenceMode}
               itemName="pageLoadBalancer.sessionPersistenceMode"
               optionList={this.sessionPersistenceModes}
-              optionValue="mode"
+              optionValue="value"
               t={t}
             />
           }
