@@ -18,7 +18,7 @@ class ListenerCreateForm extends React.Component {
     ];
     this.balanceModes = [
       { name: 'pageLoadBalancer.roundRobin', value: 'WEIGHTED_ROUND_ROBIN' },
-      { name: 'pageLoadBalancer.minConnection', value: 'WEIGHTED_LEAST_CONNECTIONS' },
+      // { name: 'pageLoadBalancer.minConnection', value: 'WEIGHTED_LEAST_CONNECTIONS' },
       { name: 'pageLoadBalancer.sourceIp', value: 'SOURCE_IP' },
     ];
     this.sessionPersistenceModes = [
