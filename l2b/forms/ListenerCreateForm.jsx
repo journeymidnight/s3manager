@@ -17,9 +17,9 @@ class ListenerCreateForm extends React.Component {
       { value: 'TCP' },
     ];
     this.balanceModes = [
-      { name: 'roundRobin', value: 'WEIGHTED_ROUND_ROBIN' },
-      { name: 'minConnection', value: 'WEIGHTED_LEAST_CONNECTIONS' },
-      { name: 'sourceIp', value: 'SOURCE_IP' },
+      { name: 'pageLoadBalancer.roundRobin', value: 'WEIGHTED_ROUND_ROBIN' },
+      // { name: 'pageLoadBalancer.minConnection', value: 'WEIGHTED_LEAST_CONNECTIONS' },
+      { name: 'pageLoadBalancer.sourceIp', value: 'SOURCE_IP' },
     ];
     this.sessionPersistenceModes = [
       { value: 'SOURCE_IP' },
@@ -172,7 +172,8 @@ class ListenerCreateForm extends React.Component {
               item={healthMonitorDelay}
               itemName="pageLoadBalancer.healthMonitorDelay"
               submitFailed={submitFailed}
-              inputParams={{ min: '1', max: '50', placeHolder: t('pageLoadBalancer.healthMonitorDelayRange') }}
+              inputParams={{ min: '1', max: '50' }}
+              helpText={t('pageLoadBalancer.healthMonitorDelayRange')}
               t={t}
             />
 
@@ -180,7 +181,8 @@ class ListenerCreateForm extends React.Component {
               item={healthMonitorTimeout}
               itemName="pageLoadBalancer.healthMonitorTimeout"
               submitFailed={submitFailed}
-              inputParams={{ min: '1', max: '300', placeHolder: t('pageLoadBalancer.healthMonitorTimeoutRange') }}
+              inputParams={{ min: '1', max: '300' }}
+              helpText={t('pageLoadBalancer.healthMonitorTimeoutRange')}
               t={t}
             />
 
@@ -190,6 +192,7 @@ class ListenerCreateForm extends React.Component {
               max={10}
               min={1}
               step={1}
+              unit={t('units.count')}
               helpText="pageLoadBalancer.healthMonitorMaxRetriesHint"
               t={t}
             />

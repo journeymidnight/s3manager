@@ -21,7 +21,7 @@ class LbListener extends Page {
     };
     this.balanceModes = {
       WEIGHTED_ROUND_ROBIN: 'roundRobin',
-      WEIGHTED_LEAST_CONNECTIONS: 'minConnection',
+      // WEIGHTED_LEAST_CONNECTIONS: 'minConnection',
       SOURCE_IP: 'sourceIp',
     };
 

@@ -19,7 +19,7 @@ const SelectInput = (props) => {
           {optionList && optionList.map((option) => {
             return (
               <option key={option[optionValue]} value={option[optionValue]}>
-                {option[optionText] || option[optionValue]}
+                {t(option[optionText]) || option[optionValue]}
               </option>
             );
           })}
