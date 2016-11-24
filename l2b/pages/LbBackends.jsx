@@ -48,7 +48,7 @@ class LbBackends extends TablePage {
         description: values.description,
         address: values.address,
         port: Number(values.port),
-        weight: Number(values.weight) || undefined,
+        weight: !isNaN(Number(values.weight)) ? Number(values.weight) : undefined,
       }))
         .then(() => {
           resolve();

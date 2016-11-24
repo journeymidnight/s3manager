@@ -844,7 +844,7 @@
         "backendList": "后端服务列表",
         "backend": "后端服务",
         "createBackend": "添加后端服务",
-        "weightRange": "1-256，默认为1",
+        "weightRange": "0-256，默认为1",
         "back": "返回",
         "unfold": "详情",
         "fold": "收起",
