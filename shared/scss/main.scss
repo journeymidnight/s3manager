@@ -6,6 +6,10 @@
 @import "./chart";
 @import "./search-box";
 
+html {
+  height: 100%;
+}
+
 body {
   font-family: Arial, "Hiragino Sans GB", "Microsoft YaHei", STHeiti, "WenQuanYi Micro Hei", SimSun, sans-serif;
   margin: 0;
@@ -451,4 +455,8 @@ ul.options-vertical {
   > .hidden {
     display: none;
   }
+}
+
+.modal-open {
+  overflow: hidden;
 }
