@@ -65,7 +65,7 @@ class F extends React.Component {
     const { imageType, imageId } = this.props.fields;
 
     imageType.onChange(value);
-    const imageSet = this.getCurrentImageSet();
+    const imageSet = this.getCurrentImageSet(value);
     imageId.onChange(imageSet[0] && imageSet[0].imageId);
   }
 
@@ -97,13 +97,13 @@ class F extends React.Component {
     }
   }
 
-  getCurrentImageSet() {
-    return this.props.fields.imageType.value === 'public' ? this.props.publicImageSet : this.props.privateImageSet;
+  getCurrentImageSet(imageType) {
+    return imageType === 'public' ? this.props.publicImageSet : this.props.privateImageSet;
   }
 
-  isSelectedWindowsImage(imageSet) {
+  isSelectedWindowsImage(imageSet, imageId) {
     const selectedImage = Array.isArray(imageSet) && imageSet.filter((image) => {
-      return image.imageId === this.props.fields.imageId.value;
+      return image.imageId === imageId;
     })[0];
     return selectedImage && selectedImage.platform === 'windows';
   }
@@ -119,8 +119,8 @@ class F extends React.Component {
       service,
     } = this.props;
 
-    const imageSet = this.getCurrentImageSet();
-    const isSelectedWindowsImage = this.isSelectedWindowsImage(imageSet);
+    const imageSet = this.getCurrentImageSet(imageType.value);
+    const isSelectedWindowsImage = this.isSelectedWindowsImage(imageSet, imageId.value);
 
     if (isSelectedWindowsImage && loginMode.value !== 'password') {
       loginMode.onChange('password');

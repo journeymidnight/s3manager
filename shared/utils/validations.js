@@ -67,7 +67,7 @@ export function hostname(value) {
 }
 
 export function loginPassword(value) {
-  if (isEmpty(value) || !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/i.test(value)) {
+  if (isEmpty(value) || !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/.test(value)) {
     return i18n.t('pageInstanceCreate.passwordNotValid');
   }
   return null;

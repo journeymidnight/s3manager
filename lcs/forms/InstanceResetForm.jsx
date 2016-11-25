@@ -49,6 +49,7 @@ class InstanceResetForm extends React.Component {
       submitFailed,
       t,
       onNoKeypairHandler,
+      instance,
     } = this.props;
     return (
       <form className="form-horizontal" onSubmit={handleSubmit}>
@@ -62,10 +63,10 @@ class InstanceResetForm extends React.Component {
                   <input type="radio" checked={loginMode.value === 'password'} name="input_login_mode" onChange={() => {}} onClick={() => { loginMode.onChange('password'); }} />
                   {t('pageInstanceCreate.loginPassword')}
                 </label>
-                <label className="radio inline">
+                {instance.image.platform !== 'windows' && <label className="radio inline">
                   <input type="radio" checked={loginMode.value === 'keyPair'} name="input_login_mode" onChange={() => {}} onClick={() => { loginMode.onChange('keyPair'); }} />
                   {t('pageInstanceCreate.keyPair')}&nbsp;
-                </label>
+                </label>}
               </div>
             </div>
           </div>
