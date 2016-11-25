@@ -20,7 +20,6 @@ let WeightForm = (props) => {
           item={weight}
           itemName="weight"
           submitFailed={submitFailed}
-          inputParams={{ min: '0', max: '256' }}
           helpText={t('pageLoadBalancer.weightRange')}
           t={t}
         />

@@ -95,7 +95,6 @@ class ListenerCreateForm extends React.Component {
             item={port}
             itemName="port"
             submitFailed={submitFailed}
-            inputParams={{ min: '1', max: '65535' }}
             t={t}
           />
 
@@ -172,7 +171,6 @@ class ListenerCreateForm extends React.Component {
               item={healthMonitorDelay}
               itemName="pageLoadBalancer.healthMonitorDelay"
               submitFailed={submitFailed}
-              inputParams={{ min: '1', max: '50' }}
               helpText={t('pageLoadBalancer.healthMonitorDelayRange')}
               t={t}
             />
@@ -181,7 +179,6 @@ class ListenerCreateForm extends React.Component {
               item={healthMonitorTimeout}
               itemName="pageLoadBalancer.healthMonitorTimeout"
               submitFailed={submitFailed}
-              inputParams={{ min: '1', max: '300' }}
               helpText={t('pageLoadBalancer.healthMonitorTimeoutRange')}
               t={t}
             />
