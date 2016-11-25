@@ -15,17 +15,23 @@ export function setVisibleObjects(s3, bucketName, routerKey, filters) {
           dispatch(notifyAlert(error.message));
           reject(error);
         } else {
-          const { offset, limit } = filters;
+          let { offset } = filters;
+          const { limit } = filters;
           const matchedFolders = data.CommonPrefixes;
           const matchedFiles = data.Contents.filter((object) => object.Key !== filters.searchWord || !object.Key.endsWith('/'));
           const matchedObjects = matchedFolders.concat(matchedFiles);
+          const total = matchedObjects.length;
+          if (offset >= total && offset !== 0) {
+            offset -= limit;
+          }
           const visibleObjects = matchedObjects.slice(offset, offset + limit);
 
           dispatch(extendContext({
             folderNames: matchedFolders.map(prefix => prefix.Prefix.slice(0, -1)),
             fileNames: matchedFiles.map(file => file.Key),
             visibleObjects,
-            total: matchedObjects.length,
+            total,
+            currentPage: parseInt(offset / limit, 10) + 1,
           }, routerKey));
           resolve();
         }

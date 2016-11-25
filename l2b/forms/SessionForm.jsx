@@ -1,13 +1,15 @@
 import React from 'react';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
+import SelectInput from '../../shared/components/FormInputs/SelectInput';
+import FooterButtons from '../../shared/components/FormInputs/FooterButtons';
 
 class SessionForm extends React.Component {
 
   constructor() {
     super();
 
-    this.sessionPersistenceModes = ['SOURCE_IP'];
+    this.sessionPersistenceModes = [{ value: 'SOURCE_IP' }];
   }
 
   render() {
@@ -18,6 +20,7 @@ class SessionForm extends React.Component {
       },
       handleSubmit,
       submitting,
+      resetForm,
       t,
     } = this.props;
 
@@ -59,22 +62,23 @@ class SessionForm extends React.Component {
             </div>
           </div>
 
-          {session.value && <div className="form-group">
-            <label className="control-label" >{t('pageLoadBalancer.sessionPersistenceMode')}</label>
-            <div className="col-sm-10">
-              <select className="form-control" {...sessionPersistenceMode}>
-                {this.sessionPersistenceModes.map((mode) =>
-                  <option key={mode} value={mode}>{mode}</option>)}
-              </select>
-            </div>
-          </div>}
+          {session.value &&
+            <SelectInput
+              item={sessionPersistenceMode}
+              itemName="pageLoadBalancer.sessionPersistenceMode"
+              optionList={this.sessionPersistenceModes}
+              optionValue="value"
+              t={t}
+            />
+          }
         </div>
 
         <div className="modal-footer">
-          <button type="button" className="btn btn-default" data-dismiss="modal">{t('closeModal')}</button>
-          <button type="submit" className="btn btn-save" disabled={submitting}>
-            {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('update')}
-          </button>
+          <FooterButtons
+            resetForm={resetForm}
+            submitting={submitting}
+            t={t}
+          />
         </div>
       </form>
     );
@@ -88,6 +92,7 @@ SessionForm.propTypes = {
   initializeForm: React.PropTypes.func.isRequired,
   submitting: React.PropTypes.bool.isRequired,
   submitFailed: React.PropTypes.bool.isRequired,
+  resetForm: React.PropTypes.func.isRequired,
   t: React.PropTypes.any,
 };
 

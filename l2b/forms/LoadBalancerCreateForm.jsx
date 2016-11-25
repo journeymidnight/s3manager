@@ -2,7 +2,8 @@ import React from 'react';
 import { translate } from 'react-i18next';
 import { reduxForm } from 'redux-form';
 import TextInput from '../../shared/components/FormInputs/TextInput';
-import Slider from '../../shared/components/Slider';
+import SliderInput from '../../shared/components/FormInputs/SliderInput';
+import FooterButtons from '../../shared/components/FormInputs/FooterButtons';
 import * as Validations from '../../shared/utils/validations';
 
 class F extends React.Component {
@@ -47,15 +48,21 @@ class F extends React.Component {
     return (
       <form className="form-horizontal" onSubmit={handleSubmit}>
 
-        <TextInput item={name} itemName="name" submitFailed={submitFailed} inputParams={{ maxLength: '50' }} t={t} />
+        <TextInput
+          item={name}
+          itemName="name"
+          submitFailed={submitFailed}
+          inputParams={{ maxLength: '50' }}
+          t={t}
+        />
 
-        <div className={(submitFailed || description.touched) && description.error ? 'form-group has-error' : 'form-group'}>
-          <label className="control-label" >{t('description')}</label>
-          <div className="col-sm-10">
-            <input type="text" className="form-control" {...description} maxLength="250" />
-            {(submitFailed || description.touched) && description.error && <div className="text-danger"><small>{description.error}</small></div>}
-          </div>
-        </div>
+        <TextInput
+          item={description}
+          itemName="description"
+          submitFailed={submitFailed}
+          inputParams={{ maxLength: '250' }}
+          t={t}
+        />
 
         <div className={(submitFailed || subnetId.touched) && subnetId.error ? 'form-group has-error' : 'form-group'}>
           <label className="control-label" >{t('subnet')}</label>
@@ -82,22 +89,22 @@ class F extends React.Component {
           </div>
         </div>
 
-        <div className="form-group">
-          <label className="control-label" >{t('bandwidth')}</label>
-          <div className="col-sm-10">
-            <input type="hidden" className="form-control" value={bandwidth.value} disabled="disabled" />
-            <Slider min={1} max={300} step={1} value={bandwidth.value} unit={'Mbps'} onChange={param => bandwidth.onChange(param)} />
-          </div>
-        </div>
+        <SliderInput
+          item={bandwidth}
+          itemName="bandwidth"
+          max={300}
+          min={1}
+          step={1}
+          unit="Mbps"
+          t={t}
+        />
 
         <div className="form-actions">
-          <button type="submit" className="btn btn-save" disabled={submitting}>
-            {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('update')}
-          </button>
-          &nbsp;
-          <button type="button" className="btn btn-cancel" disabled={submitting} onClick={resetForm}>
-            {t('reset')}
-          </button>
+          <FooterButtons
+            resetForm={resetForm}
+            submitting={submitting}
+            t={t}
+          />
         </div>
       </form>
     );

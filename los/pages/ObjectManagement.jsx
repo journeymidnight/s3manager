@@ -354,7 +354,7 @@ class ObjectManagement extends TablePageStatic {
         const { context } = this.props;
 
         if (context.objectAcl === 'public-read') {
-          const url = `http://${params.bucketName}.${context.s3Domain}/${context.objectName}`;
+          const url = `http://${params.bucketName}.${context.s3Domain}/${encodeURIComponent(context.objectName)}`;
           dispatch(extendContext({ objectUrl: url }, routerKey));
         }
         setTimeout(() => this.refs.propertyModal.show(), 100);
