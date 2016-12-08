@@ -5,12 +5,7 @@ module.exports = {
   devtool: 'eval-cheap-module-source-map',
 
   entry: {
-    lcs: './lcs/index.js',
-    los: './los/index.js',
-    l2b: './l2b/index.js',
-    global: './global/index.js',
     boss: './boss/index.js',
-    'browser-detection': './browser-detection.js',
     vendor: [
       'axios',
       'bootstrap',
@@ -65,12 +60,7 @@ module.exports = {
       { test: /\.scss$/, loader: ExtractTextPlugin.extract('style', 'css!sass') },
       { test: /\.jsx*$/, loader: 'babel!eslint',
         includes: [
-          /lcs/,
-          /los/,
-          /l2b/,          
-          /global/,
           /boss/,
-          /console-common/,
           /shared/,
         ],
         exclude: [

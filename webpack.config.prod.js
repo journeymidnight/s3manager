@@ -9,7 +9,6 @@ function generateConfig(module) {
   config.devtool = undefined;
   config.entry = {
     main: './' + module + '/index.js',
-    'browser-detection': './browser-detection.js',
     vendor: [
       'axios',
       'bootstrap',
@@ -73,22 +72,9 @@ function generateConfig(module) {
     })
   ];
 
-  // hard coded
-  if (module !== 'boss') {
-    if (module === 'global') {
-      module = 'g';
-    }
-    config.output.path = __dirname + '/dist/console/' + module;
-    config.output.publicPath = '/' + module + '/';
-  }
-
   return config;
 }
 
 module.exports = [
-  generateConfig('boss'),
-  generateConfig('lcs'),
-  generateConfig('los'),
-  generateConfig('l2b'),
-  generateConfig('global'),
+  generateConfig('boss')
 ];
