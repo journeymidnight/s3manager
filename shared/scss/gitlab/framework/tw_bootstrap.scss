@@ -1,0 +1,194 @@
+/*
+ * Twitter bootstrap with GitLab customizations/additions
+ *
+ */
+
+// Core variables and mixins
+@import "../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/variables";
+@import "../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins";
+
+// Reset
+@import "../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/normalize";
+@import "../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/print";
+
+// Core CSS
+@import "../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/scaffolding";
+@import "../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/type";
+@import "../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/code";
+@import "../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/grid";
+@import "../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/tables";
+@import "../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/forms";
+@import "../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/buttons";
+
+// Components
+@import "../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/component-animations";
+// @import "boo../tstrap/dropdowns";
+@import "../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/button-groups";
+@import "../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/input-groups";
+@import "../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/navs";
+@import "../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/navbar";
+@import "../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/breadcrumbs";
+@import "../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/pagination";
+@import "../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/pager";
+@import "../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/labels";
+@import "../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/badges";
+@import "../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/alerts";
+@import "../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/progress-bars";
+@import "../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/list-group";
+@import "../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/wells";
+@import "../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/close";
+@import "../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/panels";
+
+// Components w/ JavaScript
+@import "../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/modals";
+@import "../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/tooltip";
+@import "../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/popovers";
+
+// Utility classes
+.clearfix {
+  @include clearfix();
+}
+.center-block {
+  @include center-block();
+}
+.pull-right {
+  float: right !important;
+}
+.pull-left {
+  float: left !important;
+}
+.hide {
+  display: none;
+}
+.show {
+  display: block !important;
+}
+.invisible {
+  visibility: hidden;
+}
+.text-hide {
+  @include text-hide();
+}
+.hidden {
+  display: none !important;
+  visibility: hidden !important;
+}
+.affix {
+  position: fixed;
+}
+
+@import "../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/responsive-utilities";
+
+// Labels
+.label {
+  padding: 2px 4px;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: normal;
+  display: inline-block;
+
+  &.label-gray {
+    background-color: #f8fafc;
+    color: $gl-gray;
+    text-shadow: none;
+  }
+
+  &.label-inverse {
+    background-color: #333;
+  }
+}
+
+
+/**
+ * fix to keep tooltips position in top navigation bar
+ *
+ */
+.navbar .nav > li {
+  position: relative;
+  white-space: nowrap;
+}
+
+/**
+ * Add some extra stuff to panels
+ *
+ */
+
+.panel {
+  box-shadow: none;
+
+  .panel-body {
+    form, pre {
+      margin: 0;
+    }
+
+    .form-actions {
+      margin: -15px;
+      margin-top: 18px;
+    }
+  }
+
+  .panel-footer {
+    .pagination {
+      margin: 0;
+    }
+
+    .btn {
+      min-width: 124px;
+    }
+
+    .btn-clipboard {
+      min-width: 0;
+    }
+  }
+
+  &.panel-small {
+    .panel-heading {
+      padding: 6px 15px;
+      font-size: 13px;
+      font-weight: normal;
+      a {
+        color: #777;
+      }
+    }
+  }
+}
+
+.panel-succes .panel-heading,
+.panel-info .panel-heading,
+.panel-danger .panel-heading,
+.panel-warning .panel-heading,
+.panel-primary .panel-heading,
+.alert {
+  a:not(.btn) {
+    @extend .alert-link;
+    color: #fff;
+    text-decoration: underline;
+  }
+}
+
+// Typography =================================================================
+
+.text-primary,
+.text-primary:hover {
+  color: $brand-primary;
+}
+
+.text-success,
+.text-success:hover {
+  color: $brand-success;
+}
+
+.text-danger,
+.text-danger:hover {
+  color: $brand-danger;
+}
+
+.text-warning,
+.text-warning:hover {
+  color: $brand-warning;
+}
+
+.text-info,
+.text-info:hover {
+  color: $brand-info;
+}
