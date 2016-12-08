@@ -1,0 +1,35 @@
+header.navbar-gitlab .container-fluid {
+  .header-content {
+    h1 {
+      font-size: 16px;
+
+      a:active,
+      a:hover,
+      a:focus {
+        text-decoration: none;
+      }
+    }
+
+    .navbar-left {
+      @media (min-width: $screen-sm-min) {
+        margin-left: -20px;
+      }
+
+      > li > a {
+        width: auto;
+        height: $header-height;
+        line-height: $header-height;
+        padding: 0px 16px;
+        margin: 0;
+
+        &:focus,
+        &:hover,
+        &:active {
+          background: #fafafa;
+          border-right: 1px solid #eee;
+          border-left: 1px solid #eee;
+        }
+      }
+    }
+  }
+}
