@@ -20,7 +20,7 @@ tar -zcvf ../contrib/SOURCES/plato-boss-ui.tar.gz .
 cd ../
 
 yum-builddep -y contrib/SPECS/$spec
-rpmbuild -ba contrib/SPECS/$spec
+rpmbuild -ba contrib/SPECS/$spec --define "dist .el7"
 
 echo 'uploading...'
 wget http://10.11.144.11:8080/upload.py
