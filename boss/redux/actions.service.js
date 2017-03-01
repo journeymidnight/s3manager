@@ -18,13 +18,10 @@ export function requestDescribeServices(routerKey, filters) {
   };
 }
 
-export function requestDescribeAssignedQuotas(serviceKey, regionId) {
+export function requestDescribeAssignedQuotas(filters) {
   return dispatch => {
     return IAM
-    .describeQuotas({
-      serviceKeys: [serviceKey],
-      regionIds: [regionId],
-    })
+    .describeQuotas(filters)
     .promise
     .then((payload) => {
       dispatch(extendContext(payload));
