@@ -1,13 +1,14 @@
-
+clone:
+  tags: true
+  depth: 50
 build:
-  image: node:5.10
+  image: plato/build
   commands:
-    - npm install cnpm -g --registry=https://registry.npm.taobao.org
-    - cnpm install
+    - npm i
     - npm run lint
     - npm run test
     - npm run clean
-    - npm run build
+    - contrib/build.sh
 notify:
   slack:
     webhook_url: https://hooks.slack.com/services/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
