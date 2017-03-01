@@ -42,13 +42,16 @@ class C extends TablePage {
     });
   }
 
-  refreshAction() {
+  refreshAction(routerKey, filters) {
     const { service2 } = this.props;
-    return ServiceActions.requestDescribeAssignedQuotas(service2.serviceKey, service2.regionId);
+    filters.serviceKeys = [service2.serviceKey];
+    filters.regionIds = [service2.regionId];
+    return ServiceActions.requestDescribeAssignedQuotas(filters);
   }
 
   renderTable() {
     const { t } = this.props;
+
     return this.props.context.total > 0 && this.props.context.quotaSet.length > 0 && (
       <table className="table">
         <thead>
