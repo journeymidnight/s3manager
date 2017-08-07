@@ -19,6 +19,7 @@ const hotMiddleware = webpackHotMiddleware(compiler);
 
 function createApp(module) {
   const endpoint = process.env[`${module}_endpoint`.toUpperCase()] || 'http://localhost:9003';
+  const yigiam_endpoint = 'http://localhost:8888';
 
   const app = new Express();
   app.use(logger('dev'));
@@ -26,8 +27,45 @@ function createApp(module) {
   app.use('/p', proxy(endpoint, {
     forwardPath: (req) => {
       return `/p${url.parse(req.url).path}`;
+    }}));
+  app.use('/iamapi/ConnectService', proxy(yigiam_endpoint, {
+    forwardPath: (req) => {
+      return `${url.parse(req.url).path}`;
     },
   }));
+
+  const iamapis = [ "ConnectService", "CreateAccount",
+    "DeleteAccount", 
+    "DescribeAccount", 
+    "ListAccounts",
+    "ListUsers", 
+    "DescribeUser",
+    "CreateUser",
+    "DeleteUser",
+    "DescribeProject",
+    "CreateProject",
+    "DeleteProject",
+    "ListProjects",
+    "LinkUserWithProject",
+    "UnLinkUserWithProject",
+    "ListProjectByUser",
+    "ListUserByProject",
+    "AddProjectService",
+    "DelProjectService",
+    "ListServiceByProject",
+    "DescribeAccessKeys", //priviate api for internal system such as yig
+    "ListAccessKeysByProject",
+    "CreateAccessKey",
+    "DeleteAccessKey",
+  ]
+  
+  for (var i = 0; i < iamapis.length; i++) {
+    app.use('/iamapi/'+iamapis[i], proxy(yigiam_endpoint, {
+      forwardPath: (req) => {
+        return `${url.parse(req.url).path}`;
+      },
+    }));
+  }
 
   app.use(devMiddleware);
   app.use(hotMiddleware);
