@@ -18,7 +18,7 @@ const devMiddleware = webpackDevMiddleware(compiler, {
 const hotMiddleware = webpackHotMiddleware(compiler);
 
 function createApp(module) {
-  const endpoint = process.env[`${module}_endpoint`.toUpperCase()] || 'http://localhost:8080';
+  const endpoint = process.env[`${module}_endpoint`.toUpperCase()] || 'http://localhost:9003';
 
   const app = new Express();
   app.use(logger('dev'));
