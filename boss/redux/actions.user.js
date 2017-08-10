@@ -8,7 +8,8 @@ export function requestDeleteUsers(routerKey, userIds) {
     .deleteUsers(userIds)
     .promise
     .then((payload) => {
-      dispatch(notify(i18n.t('deleteSuccess')));
+      console.log(payload)
+      dispatch(notify(i18n.t('deleteSuccessed')));
       dispatch(extendContext(payload, routerKey));
     })
     .catch((error) => {

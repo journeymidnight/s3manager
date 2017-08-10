@@ -36,10 +36,10 @@ class C extends React.Component {
             <div className="row">
               <div className="col-sm-7 brand-holder">
                 <h1>
-                  业务运营支撑系统
+                  对象存储管理系统
                 </h1>
                 <p>
-                  乐视云商业化基础设施云服务，提供计算、存储、网络等资源的企业级 IaaS 解决方案, 让企业按需使用高效稳定的云资源，加速产品迭代。
+                  提供高速、海量的存储服务，助力企业发展
                 </p>
               </div>
               <div className="col-sm-5">

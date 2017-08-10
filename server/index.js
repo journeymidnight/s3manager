@@ -28,44 +28,11 @@ function createApp(module) {
     forwardPath: (req) => {
       return `/p${url.parse(req.url).path}`;
     }}));
-  app.use('/iamapi/ConnectService', proxy(yigiam_endpoint, {
+  app.use('/iamapi', proxy(yigiam_endpoint, {
     forwardPath: (req) => {
-      return `${url.parse(req.url).path}`;
+      return "/iamapi";
     },
   }));
-
-  const iamapis = [ "ConnectService", "CreateAccount",
-    "DeleteAccount", 
-    "DescribeAccount", 
-    "ListAccounts",
-    "ListUsers", 
-    "DescribeUser",
-    "CreateUser",
-    "DeleteUser",
-    "DescribeProject",
-    "CreateProject",
-    "DeleteProject",
-    "ListProjects",
-    "LinkUserWithProject",
-    "UnLinkUserWithProject",
-    "ListProjectByUser",
-    "ListUserByProject",
-    "AddProjectService",
-    "DelProjectService",
-    "ListServiceByProject",
-    "DescribeAccessKeys", //priviate api for internal system such as yig
-    "ListAccessKeysByProject",
-    "CreateAccessKey",
-    "DeleteAccessKey",
-  ]
-  
-  for (var i = 0; i < iamapis.length; i++) {
-    app.use('/iamapi/'+iamapis[i], proxy(yigiam_endpoint, {
-      forwardPath: (req) => {
-        return `${url.parse(req.url).path}`;
-      },
-    }));
-  }
 
   app.use(devMiddleware);
   app.use(hotMiddleware);

@@ -4,7 +4,7 @@ import Promise from 'promise';
 import cookie from 'js-cookie';
 import i18n from '../../shared/i18n';
 
-export const call = (method, url, payload, hook) => {
+export const call = (method, url, payload, hook, yigapi) => {
   const headers = {
     'Content-Type': 'application/json',
     Accept: 'application/json',
@@ -12,7 +12,7 @@ export const call = (method, url, payload, hook) => {
 
   const token = cookie.get('plato_token') || store.get('plato_token');
   if (token) {
-    headers['X-Le-Token'] = token.token;
+    headers['X-IAM-Token'] = token.token;
   }
 
   const region = store.get('region');
@@ -22,8 +22,57 @@ export const call = (method, url, payload, hook) => {
     headers['X-Le-Secret'] = region.accessSecret;
   }
 
+  var newpayload = {}
+  if (url === "/iamapi/ListAccounts") {
+    url = "/iamapi";
+    newpayload.token = "f7c9643d-58b6-409d-86d2-5bf49ef128ec";
+    newpayload.action = "ListAccounts";
+    payload = newpayload;
+  } else if (url === "/iamapi/DeleteAccount") {
+    debugger
+    url = "/iamapi";
+    newpayload.action = "DeleteAccount";
+
+    //only support delete one account now
+    newpayload.accountid = payload.userIds[0];
+    newpayload.token = "f7c9643d-58b6-409d-86d2-5bf49ef128ec";
+    payload = newpayload;
+  } else if (url === "/iamapi/CreateAccount") {
+    url = "/iamapi";
+    newpayload.action = "CreateAccount";
+
+    newpayload.user = payload.username;
+    newpayload.password = payload.password;
+    newpayload.email = payload.email;
+    newpayload.token = "f7c9643d-58b6-409d-86d2-5bf49ef128ec";
+    payload = newpayload;
+  } else if (url === "/iamapi/DescribeAccount") {
+    url = "/iamapi";
+    newpayload.action = "DescribeAccount";
+    newpayload.accountid = payload.userIds[0];
+    newpayload.token = "f7c9643d-58b6-409d-86d2-5bf49ef128ec";
+    payload = newpayload;
+  } else if (url === "/iamapi/ActivateAccount") {
+    url = "/iamapi";
+    newpayload.action = "ActivateAccount";
+    newpayload.accountid = payload.userIds[0];
+    newpayload.token = "f7c9643d-58b6-409d-86d2-5bf49ef128ec";
+    payload = newpayload;
+  } else if (url === "/iamapi/DeactivateAccount") {
+    debugger
+    url = "/iamapi";
+    newpayload.action = "DeactivateAccount";
+    newpayload.accountid = payload.userIds[0];
+    newpayload.token = "f7c9643d-58b6-409d-86d2-5bf49ef128ec";
+    payload = newpayload;
+  }
+
+  if (!yigapi) {
+    url = `/p${url}`;
+  }
+
   const options = {
-    url: `/p${url}`,
+    url,
     method,
     data: payload,
     headers,

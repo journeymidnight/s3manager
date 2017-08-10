@@ -75,7 +75,7 @@ class C extends Page {
               </div>
             </div>
             <div className="row">
-              <div className="col-md-4 side">
+              <div className="col-md-6 side">
                 <div className="panel panel-default">
                   <div className="panel-heading">
                     {t('pageUser.basic')}

@@ -70,16 +70,21 @@ export function requestLogin(email, password) {
     return Auth.authorize(email, password)
     .promise
     .then((token) => {
-      return Auth.describeToken(token.token)
-      .promise
-      .then((context) => {
-        dispatch(authLogin(context, token));
-        dispatch(push('/'));
+        let auth
+        if (token.accountId === "") {
+          auth = {username: "root"};
+        } else {
+          auth = {username: token.accountId};
+        }
+        var context = {};
+        context.auth = auth
+        dispatch(authLogin(context, token.token));
+        if (token.type === 'ROOT') {
+          dispatch(push('/users')) 
+        } else {
+          dispatch(push('/resources')) 
+        }
       })
-      .catch((error) => {
-        dispatch(notifyAlert(error.message));
-      });
-    })
     .catch((error) => {
       if (error.retCode === 1200) {
         dispatch(notifyAlert(i18n.t('authorizeFailed')));
@@ -119,7 +124,31 @@ export function requestDescribeUsers(filters = {}) {
     .describeUsers(filters)
     .promise
     .then((payload) => {
-      dispatch(extendContext(payload));
+      if (payload) {
+        console.log(payload.length)
+        var userSet = payload.map((entry) => {
+          return {
+          username: entry.UserName,
+          status: entry.Status,
+          email:  entry.Email,
+          updated: entry.Updated,
+          userId: entry.AccountId,
+          created: entry.Created,
+        }})
+
+        var todispatch = {
+          limit: 10000,
+          total: payload.length,
+          userSet
+        }
+      } else {
+          var todispatch = {
+          limit: 10000,
+          total: 0,
+          userSet:null
+        } 
+      }
+      dispatch(extendContext(todispatch));
     })
     .catch((error) => {
       dispatch(notifyAlert(error.message));
@@ -130,13 +159,24 @@ export function requestDescribeUsers(filters = {}) {
 export function requestDescribeUser(userId) {
   return dispatch => {
     return IAM
-    .describeUsers({
+    .describeUser({
       userIds: [userId],
     })
     .promise
     .then((data) => {
+      var entry = data
+      var user = {
+          username: entry.UserName,
+          status: entry.Status,
+          email:  entry.Email,
+          updated: entry.Updated,
+          userId: entry.AccountId,
+          created: entry.Created,
+      }
+
+      //iamapi returns a object, not an array
       dispatch(extendContext({
-        user: data.userSet[0],
+        user
       }));
     })
     .catch((error) => {

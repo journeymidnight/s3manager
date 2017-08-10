@@ -21,7 +21,7 @@ export const cnTest2 = 'cn-test-2';
 class IAM {
   call(action, params) {
     const payload = Object.assign({}, params);
-    return rawCall('post', `/api/iam/${action}`, payload);
+    return rawCall('post', action, payload, undefined, true);
   }
   describeProjects(filters = {}) {
     return this.call('DescribeProjects', filters);
@@ -60,24 +60,34 @@ class IAM {
       userIds,
     });
   }
+  //describeUsers(filters = {}) {
+  //  return this.call('DescribeUsers', filters);
+  //}
+
+
   describeUsers(filters = {}) {
-    return this.call('DescribeUsers', filters);
+    return this.call('/iamapi/ListAccounts', filters);
   }
+  describeUser(filters = {}) {
+    return this.call('/iamapi/DescribeAccount', filters);
+  }
+
   deleteUsers(userIds) {
-    return this.call('DeleteUsers', {
+    return this.call('/iamapi/DeleteAccount', {
       userIds,
     });
   }
   createUser(user) {
-    return this.call('CreateUser', user);
+    return this.call('/iamapi/CreateAccount', user);
   }
   activeUsers(userIds) {
-    return this.call('ActivateUsers', {
+    return this.call('/iamapi/ActivateAccount', {
       userIds,
     });
   }
   deactiveUsers(userIds) {
-    return this.call('DeactivateUsers', {
+    debugger
+    return this.call('/iamapi/DeactivateAccount', {
       userIds,
     });
   }
