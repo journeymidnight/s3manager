@@ -31,8 +31,11 @@ function createApp(module) {
   app.use('/iamapi', proxy(yigiam_endpoint, {
     forwardPath: (req) => {
       return "/iamapi";
-    },
-  }));
+    }}));
+  app.use('/env', proxy(yigiam_endpoint, {
+    forwardPath: (req) => {
+      return "/env";
+    }}));
 
   app.use(devMiddleware);
   app.use(hotMiddleware);

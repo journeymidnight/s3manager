@@ -66,16 +66,21 @@ export const call = (method, url, payload, hook, yigapi) => {
     payload = newpayload;
   }
 
+  debugger
   if (!yigapi) {
     url = `/p${url}`;
   }
 
   const options = {
     url,
-    method,
-    data: payload,
-    headers,
+    method
   };
+
+  if (method === 'post') {
+    options.data = payload;
+    options.headers = headers;
+  }
+
 
   if (hook) {
     hook(options);
@@ -95,6 +100,7 @@ export const call = (method, url, payload, hook, yigapi) => {
           data: null,
         });
       } else {
+        debugger
         const data = val.data;
         const dt = data.data;
         if (data.retCode === 0) {
@@ -150,7 +156,7 @@ export const call = (method, url, payload, hook, yigapi) => {
 
 class API {
   fetchEnv() {
-    return call('get', '/env');
+    return call('get', '/env', undefined, undefined, true);
   }
 }
 

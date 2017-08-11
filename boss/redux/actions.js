@@ -71,6 +71,7 @@ export function requestLogin(email, password) {
     .promise
     .then((token) => {
         let auth
+        debugger
         if (token.accountId === "") {
           auth = {username: "root"};
         } else {

@@ -114,26 +114,6 @@ export default function configureRoutes(store) {
           <IndexRoute component={Tickets} />
           <Route path=":ticketId" component={Ticket} />
         </Route>
-        <Route path="devops" >
-          <Route path="nodes" component={RegionTab}>
-            <Route path=":regionId" component={DevOpsNodes} />
-          </Route>
-          <Route path="ceph" component={RegionTab}>
-            <Route path=":regionId" component={DevOpsCeph} />
-          </Route>
-          <Route path="openstack" component={RegionTab}>
-            <Route path=":regionId" component={DevOpsOpenStack} />
-          </Route>
-          <Route path="instances" component={RegionTab} >
-            <Route path=":regionId" component={DevOpsInstances} />
-          </Route>
-          <Route path="eips" component={RegionTab} >
-            <Route path=":regionId" component={DevOpsEips} />
-          </Route>
-          <Route path="alerts" component={RegionTab} >
-            <Route path=":regionId" component={DevOpsAlerts} />
-          </Route>
-        </Route>
       </Route>
       <Route path="*" component={NotFound} />
     </Route>
