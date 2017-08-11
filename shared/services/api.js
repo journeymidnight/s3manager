@@ -25,17 +25,16 @@ export const call = (method, url, payload, hook, yigapi) => {
   var newpayload = {}
   if (url === "/iamapi/ListAccounts") {
     url = "/iamapi";
-    newpayload.token = "f7c9643d-58b6-409d-86d2-5bf49ef128ec";
+    newpayload.token = token;
     newpayload.action = "ListAccounts";
     payload = newpayload;
   } else if (url === "/iamapi/DeleteAccount") {
-    debugger
     url = "/iamapi";
     newpayload.action = "DeleteAccount";
 
     //only support delete one account now
     newpayload.accountid = payload.userIds[0];
-    newpayload.token = "f7c9643d-58b6-409d-86d2-5bf49ef128ec";
+    newpayload.token = token;
     payload = newpayload;
   } else if (url === "/iamapi/CreateAccount") {
     url = "/iamapi";
@@ -44,26 +43,26 @@ export const call = (method, url, payload, hook, yigapi) => {
     newpayload.user = payload.username;
     newpayload.password = payload.password;
     newpayload.email = payload.email;
-    newpayload.token = "f7c9643d-58b6-409d-86d2-5bf49ef128ec";
+    newpayload.token = token;
     payload = newpayload;
   } else if (url === "/iamapi/DescribeAccount") {
     url = "/iamapi";
     newpayload.action = "DescribeAccount";
     newpayload.accountid = payload.userIds[0];
-    newpayload.token = "f7c9643d-58b6-409d-86d2-5bf49ef128ec";
+    newpayload.token = token;
     payload = newpayload;
   } else if (url === "/iamapi/ActivateAccount") {
     url = "/iamapi";
     newpayload.action = "ActivateAccount";
     newpayload.accountid = payload.userIds[0];
-    newpayload.token = "f7c9643d-58b6-409d-86d2-5bf49ef128ec";
+    newpayload.token = token;
     payload = newpayload;
   } else if (url === "/iamapi/DeactivateAccount") {
     debugger
     url = "/iamapi";
     newpayload.action = "DeactivateAccount";
     newpayload.accountid = payload.userIds[0];
-    newpayload.token = "f7c9643d-58b6-409d-86d2-5bf49ef128ec";
+    newpayload.token = token;
     payload = newpayload;
   }
 

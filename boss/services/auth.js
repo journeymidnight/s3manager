@@ -4,8 +4,8 @@ class Auth {
   authorize(email, password) {
     return call('post', '/iamapi', {
       action: 'ConnectService',
-      user: 'root',
-      password: 'admin',
+      email,
+      password
     },undefined, true);
   }
   describeToken(token) {
