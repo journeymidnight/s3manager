@@ -42,7 +42,7 @@ class C extends Page {
 
     setTimeout(this.onRefresh(), 100);
 
-    this.setInterval(this.onRefresh({}, false, true), 2000);
+    this.setInterval(this.onRefresh({}, false, true), 20000);
   }
 
   refresh(silent = true) {
@@ -99,9 +99,9 @@ class C extends Page {
   }
 
   onSelect(id) {
-    return (e) => {
+    return (isChecked) => {
       const selected = Object.assign({}, this.props.context.selected);
-      if (e.target.checked) {
+      if (isChecked) {
         selected[id] = true;
       } else {
         delete selected[id];
@@ -111,6 +111,7 @@ class C extends Page {
       dispatch(Actions.extendContext({ selected }, routerKey));
     };
   }
+
 
   onSelectAll(ids) {
     return (e) => {

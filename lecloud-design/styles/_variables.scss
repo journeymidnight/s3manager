@@ -1,0 +1,57 @@
+/* colors */
+
+$blue: #208ac3;
+$green: #00a38a;
+$red: #ff3555;
+$grey: #ededf1;
+$black: #33333c;
+$translucent: rgba(0, 0, 0, 0.6);
+$background-white: #fff;
+$background-lightgrey: #f9fafc;
+$background-grey: #aaacb8;
+$background-menu: #24344b;
+$background-blue: #e8f3f9;
+
+/* border */
+
+$bc: $grey;
+$bc-blue: $blue;
+$bc-grey: $background-grey;
+$bc-red: $red;
+$border-width: 1px;
+$border-style: solid;
+$border-lightgrey: $border-width $border-style $grey;
+$border-blue: $border-width $border-style $bc-blue;
+$border-grey: $border-width $border-style $bc-grey;
+
+/* font */
+
+$font: MicrosoftYaHei, Arial, sans-serif;
+$font-black: $black;
+$font-white: #fff;
+$font-dark-grey: #73737c;
+$font-dim: #aaacb8;
+$font-highlight: $blue;
+$font-danger: $red;
+$font-size: 14px;
+$font-size-title: 16px;
+$font-size-small: 12px;
+$line-height: 24px;
+$line-height-small: 22px;
+
+/* icon font */
+
+$iconfont-prefix: iconfont;
+$iconfont-url: "https://at.alicdn.com/t/font_tya8pulxsqgxpqfr";
+
+/* shape and direction */
+
+$height: 36px;
+$height-short: 30px;
+$height-mid: 50px;
+$margin: 10px;
+$text-margin: 10px 0;
+$padding: 5px 10px;
+$button-padding: 3px 20px;
+$radius: 2px;
+$button-radius: 20px;

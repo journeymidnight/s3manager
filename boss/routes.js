@@ -16,6 +16,8 @@ import UserCreate from './pages/UserCreate.jsx';
 import User from './pages/User.jsx';
 import Admins from './pages/Admins.jsx';
 import AdminCreate from './pages/AdminCreate.jsx';
+import AccessKeys from './pages/AccessKeys.jsx';
+import AccessKeyCreate from './pages/AccessKeyCreate.jsx';
 import Admin from './pages/Admin.jsx';
 import Services from './pages/Services.jsx';
 import Service from './pages/Service.jsx';
@@ -64,6 +66,10 @@ export default function configureRoutes(store) {
           <IndexRoute component={Admins} />
           <Route path="create" component={AdminCreate} />
           <Route path=":adminId" component={Admin} />
+        </Route>
+        <Route path="access_keys">
+          <IndexRoute component={AccessKeys} />
+          <Route path="create" component={AccessKeyCreate} />
         </Route>
         <Route path="services" >
           <IndexRoute component={Services} />

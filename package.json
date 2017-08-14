@@ -39,6 +39,8 @@
     "mixpanel-browser": "^2.8.1",
     "moment": "^2.13.0",
     "morgan": "^1.7.0",
+    "normalize": "^0.3.1",
+    "normalize.css": "^7.0.0",
     "okay": "^1.0.0",
     "promise": "^7.1.1",
     "react": "^15.0.1",

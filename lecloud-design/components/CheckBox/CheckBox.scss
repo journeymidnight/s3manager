@@ -1,0 +1,23 @@
+@import '../../styles/_variables';
+
+.checkbox {
+  display: inline-block;
+  vertical-align: middle;
+  width: 14px;
+  height: 20px;
+  margin: 5px 20px; //
+}
+
+.icon-checkbox {
+  font-size: 14px !important;
+  color: $grey;
+
+  &:hover {
+    color: $font-highlight;
+  }
+}
+
+.icon-checkbox_selected {
+  font-size: 14px !important;
+  color: $font-highlight;
+}

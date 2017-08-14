@@ -1,0 +1,41 @@
+.numeric-text-box {
+  position: relative;
+  display: inline-block;
+
+  .numeric-text-actions {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+
+    @mixin action {
+      width: 0;
+      height: 0;
+      border: 5px solid rgb(85, 85, 85);
+      border-left-color: transparent;
+      border-right-color: transparent;
+      cursor: pointer;
+      position: absolute;
+      right: 4px;
+
+      &:focus {
+        outline: none;
+      }
+    }
+
+    .action-puls {
+      @include action;
+
+      top: 15%;
+      border-top-color: transparent;
+    }
+
+    .action-subtract {
+      @include action;
+
+      bottom: 15%;
+      border-bottom-color: transparent;
+    }
+  }
+}
+

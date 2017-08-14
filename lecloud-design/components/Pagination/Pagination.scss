@@ -1,0 +1,65 @@
+@import '../../styles/_variables';
+
+.pagination {
+  display: inline-block;
+  margin-bottom: $height-short;
+  color: $font-black;
+  font-size: 12px;
+  text-align: center;
+  line-height: $height-short;
+
+  ul {
+    display: inline-block;
+  }
+
+  li {
+    display: inline-block;
+    width: $height-short;
+    height: $height-short;
+    margin: 0 3px;
+    background-color: $background-lightgrey;
+  }
+
+  .pagination-active {
+    background-color: $blue;
+    a {
+      color: $font-white;
+    }
+
+    a:hover,
+    a:active {
+      color: $font-white;
+    }
+  }
+
+  .pagination-ellipsis {
+    background-color: transparent;
+  }
+
+  .pagination-disabled {
+    color: $font-dim;
+
+    &:hover,
+    &:active {
+      color: $font-dim;
+    }
+  }
+
+  a {
+    color: $font-black;
+  }
+
+  a:hover,
+  a:active {
+    color: $font-highlight;
+  }
+
+  span {
+    display: inline-block;
+    margin: 0 15px;
+  }
+
+  .pagination-hidden {
+    display: none;
+  }
+}

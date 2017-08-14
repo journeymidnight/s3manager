@@ -86,7 +86,6 @@ class IAM {
     });
   }
   deactiveUsers(userIds) {
-    debugger
     return this.call('/iamapi/DeactivateAccount', {
       userIds,
     });

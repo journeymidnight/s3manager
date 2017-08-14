@@ -58,15 +58,32 @@ export const call = (method, url, payload, hook, yigapi) => {
     newpayload.token = token;
     payload = newpayload;
   } else if (url === "/iamapi/DeactivateAccount") {
-    debugger
     url = "/iamapi";
     newpayload.action = "DeactivateAccount";
     newpayload.accountid = payload.userIds[0];
     newpayload.token = token;
     payload = newpayload;
+  } else if (url === "/iamapi/DescribeAccessKeysWithToken") {
+    url = "/iamapi";
+    newpayload.action = "DescribeAccessKeysWithToken";
+    newpayload.token = token;
+    payload = newpayload;
+  } else if (url === "/iamapi/CreateAccessKey") {
+    url = "/iamapi";
+    newpayload.action = "CreateAccessKey";
+    newpayload.token = token;
+    newpayload.keyname = payload.name;
+    newpayload.description = payload.description;
+    payload = newpayload;
+  } else if (url === "/iamapi/DeleteAccessKey") {
+    debugger
+    url = "/iamapi";
+    newpayload.action = "DeleteAccessKey";
+    newpayload.token = token;
+    newpayload.AccessKey = payload.accessKeys[0];
+    payload = newpayload;
   }
 
-  debugger
   if (!yigapi) {
     url = `/p${url}`;
   }
@@ -100,7 +117,6 @@ export const call = (method, url, payload, hook, yigapi) => {
           data: null,
         });
       } else {
-        debugger
         const data = val.data;
         const dt = data.data;
         if (data.retCode === 0) {
@@ -111,7 +127,7 @@ export const call = (method, url, payload, hook, yigapi) => {
             store.remove('plato_token');
             cookie.remove('plato_token', {
               path: '/',
-              domain: !window.DEBUG ? 'console.lecloud.com' : undefined,
+              domain: !window.DEBUG ? 'console.s3manager.com' : undefined,
             });
             window.location = '/';
             return;

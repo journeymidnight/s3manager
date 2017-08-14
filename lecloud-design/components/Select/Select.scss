@@ -1,0 +1,115 @@
+@import '../../styles/_variables';
+
+.select {
+  display: block;
+  width: 245px;
+  position: relative;
+  font-size: $font-size-small;
+
+  .bar & {
+    display: inline-block;
+    vertical-align: middle;
+    width: 180px;
+    margin: 15px 10px;
+  }
+
+  .bar &:first-child {
+    margin-left: 0;
+  }
+
+  .bar &:last-child {
+    margin-right: 0;
+  }
+}
+
+.select-button {
+  display: block;
+  width: 100%;
+  height: $height;
+  border: $border-lightgrey;
+  border-bottom-color: transparent;
+  border-radius: $radius $radius 0 0;
+  padding: $padding;
+  background: $background-white;
+  text-align: left;
+  line-height: $line-height-small;
+  color: $font-dark-grey;
+
+  .bar & {
+    height: $height-short;
+    padding: 2px 10px;
+  }
+
+  .select-closed > & {
+    border-bottom: $border-lightgrey;
+    border-radius: $radius;
+  }
+}
+
+.select-options {
+  display: block;
+  position: absolute;
+  top: $height;
+  left: 0;
+  overflow: hidden;
+  width: 100%;
+  border: $border-lightgrey;
+  border-top: none;
+  border-radius: 0 0 $radius $radius;
+  background-color: $background-white;
+  z-index: 100;
+
+  .bar & {
+    top: $height-short;
+  }
+
+  .select-closed > & {
+    height: 0;
+    border: none;
+  }
+}
+
+.select-icon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 8px 10px;
+  font-size: 10px !important;
+  color: $font-black;
+
+  .bar & {
+    margin: 5px 10px;
+  }
+}
+
+.select-option {
+  display: block;
+  width: 100%;
+  height: $height;
+
+  .bar & {
+    height: $height-short;
+  }
+
+  a {
+    display: block;
+    width: 100%;
+    line-height: $height-short;
+    padding: 0 10px;
+    color: $font-dark-grey;
+  }
+
+  .bar a {
+    line-height: $height-short;
+  }
+
+  a:hover,
+  a:active {
+    color: $font-highlight;
+    background-color: #e8f3f9;
+  }
+
+  a.select-highlight {
+    color: $font-highlight;
+  }
+}

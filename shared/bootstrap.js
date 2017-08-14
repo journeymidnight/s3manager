@@ -11,7 +11,7 @@ import i18n from './i18n';
 
 const dest = document.getElementById('root');
 
-window.DEBUG = process.env.NODE_ENV === 'development' || window.location.origin.indexOf('console.lecloud.com') === -1;
+window.DEBUG = process.env.NODE_ENV === 'development' || window.location.origin.indexOf('console.s3manager.com') === -1;
 window.$ = window.jQuery = require('jquery');
 window._ = require('lodash');
 require('bootstrap');

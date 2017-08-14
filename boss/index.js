@@ -9,7 +9,7 @@ import configureRoutes from './routes';
 import bootstrap from '../shared/bootstrap';
 
 bootstrap((token, state, callback) => {
-  document.title = `${state.env.appName} | Boss`;
+  document.title = `${state.env.AppName} | Boss`;
   window.$('body').toggleClass('ui_charcoal ui_boss');
 
   let store = configureStore(rootReducer, state, hashHistory);

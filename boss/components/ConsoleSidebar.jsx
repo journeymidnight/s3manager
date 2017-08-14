@@ -27,7 +27,7 @@ class C extends React.Component {
             </Link>
             <Link className="gitlab-text-container-link" to="/">
               <div className="gitlab-text-container">
-                <h3>{this.props.env.appName}</h3>
+                <h3>{this.props.env.AppName}</h3>
               </div>
             </Link>
           </div>
@@ -74,22 +74,14 @@ class C extends React.Component {
             </Link>
             <Link className="gitlab-text-container-link" to="/">
               <div className="gitlab-text-container">
-                <h3>{this.props.env.appName}</h3>
+                <h5 style={{"marginLeft":"40px"}}>{'对象存储管理系统'}</h5>
               </div>
             </Link>
           </div>
           <ul className="nav nav-sidebar">
-            <li>
-              <h5>{t('boss.iam.title')}</h5>
-            </li>
             <NavLink to="/users">
               <i className="fa fa-user fa-fw" />
               <span>{t('sidebarUser')}</span>
-            </NavLink>
-            <li className="separate-item" />
-            <NavLink to="/admins">
-              <i className="fa fa-meh-o fa-fw" />
-              <span>{t('sidebarAdmin')}</span>
             </NavLink>
           </ul>
           <div className="collapse-nav">

@@ -1,0 +1,114 @@
+@import '../../styles/_variables';
+
+.menu {
+  display: block;
+  height: 100%;
+  position: relative;
+  background-color: $background-menu;
+}
+
+.menuitem {
+  display: block;
+  width: 100%;
+  font-size: $font-size;
+
+  a,
+  button {
+    display: block;
+    width: 100%;
+    height: $height-mid;
+    padding: 14px 20px;
+    color: $font-dim;
+    border: none;
+  }
+
+  a:hover,
+  a:active,
+  a.menuitem-active:hover,
+  a.menuitem-active:active {
+    background-color: #253952;
+    color: $font-white;
+  }
+
+  a.menuitem-active {
+    background-color: #243E59;
+    color: $font-white;
+  }
+}
+
+.submenu {
+  display: block;
+  position: relative;
+  width: 100%;
+  font-size: $font-size;
+
+  a,
+  button {
+    display: block;
+    width: 100%;
+    height: $height-mid;
+    padding: 14px 20px;
+    color: $font-dim;
+    border: none;
+  }
+
+  a:hover,
+  a:active,
+  a.menuitem-active:hover,
+  a.menuitem-active:active {
+    background-color: #253952;
+    color: $font-white;
+  }
+
+  a.menuitem-active {
+    background-color: #243E59;
+    color: $font-white;
+  }
+
+  .submenu-icon {
+    position: absolute;
+    top: 0;
+    right: 10px;
+    margin: 15px 10px;
+    font-size: 10px !important;
+    color: $font-dim;
+
+    &:hover,
+    &:active {
+      color: $font-white;
+    }
+  }
+
+  .menuitem-active + .submenu-icon {
+    color: $font-white;
+  }
+
+  .submenu-items {
+    display: block;
+    overflow: hidden;
+  }
+
+  .submenu-closed {
+    height: 0;
+  }
+
+  .menuitem {
+    font-size: $font-size-small;
+
+    a,
+    button {
+      height: $height-mid;
+      padding: 14px 20px 14px 55px;
+      color: $font-dim;
+    }
+
+    a:hover,
+    a:active {
+      color: $font-white;
+    }
+
+    a.menuitem-active {
+      color: $font-white;
+    }
+  }
+}

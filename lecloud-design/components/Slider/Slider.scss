@@ -1,0 +1,79 @@
+@import '../../styles/_variables';
+
+.slider-container {
+  width: 354px;
+  .slider {
+    display: inline-block;
+    position: relative;
+    top: 8px;
+
+    &.slider-horizontal {
+      width: 225px;
+      height: 20px;
+
+      .slider-track {
+        height: 3px;
+        width: 100%;
+        margin-top: -3px;
+        top: 50%;
+        left: 0;
+        position: absolute;
+        cursor: pointer;
+        background-color: $grey;
+        background-repeat: repeat-x;
+        border-radius: 2px;
+      }
+
+      .slider-selection {
+        height: 100%;
+        top: 0;
+        bottom: 0;
+        position: absolute;
+        background-color: $blue;
+        box-sizing: border-box;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+      }
+
+      .slider-handle {
+        margin-left: -4px;
+        margin-top: -4px;
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background-color: $background-white;
+        border: 1px solid $blue;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        border-radius: 50%;
+
+        &.triangle {
+          border-width: 0 10px 10px;
+          width: 0;
+          height: 0;
+          border-bottom-color: #0480be;
+          margin-top: 0;
+        }
+      }
+    }
+  }
+
+  .slider-text {
+    float: right;
+  }
+
+  input {
+    display: inline-block;
+    margin: 0 15px;
+    padding: 0 0 0 8px;
+    width: 56px;
+    height: 36px;
+    border: 1px solid $grey;
+    border-radius: 4px;
+  }
+
+  .help.inline {
+    display: inline-block;
+  }
+}

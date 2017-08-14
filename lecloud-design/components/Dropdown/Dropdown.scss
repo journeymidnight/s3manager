@@ -1,0 +1,117 @@
+@import '../../styles/_variables';
+
+.dropdown {
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+  margin: 0 $margin;
+
+  &:first-child {
+    margin-left: 0;
+  }
+
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+.dropdown-button {
+  height: $height;
+  padding: $padding;
+  padding-right: 35px;
+}
+
+.dropdown-buttontype {
+  height: $height-short;
+  margin: 7px 0;
+  padding-right: 0;
+}
+
+.dropdown-empty {
+  padding-left: 0;
+}
+
+.dropdown-menu {
+  display: block;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  overflow: hidden;
+  min-width: 180px;
+  border: $border-lightgrey;
+  border-radius: $radius;
+  background-color: $background-white;
+  z-index: 100;
+
+  .dropdown-closed > & {
+    height: 0;
+    border: none;
+  }
+
+  .dropdown-hovertrigger:hover > & {
+    height: auto;
+    border: $border-lightgrey;
+  }
+
+  .menu {
+    padding: 0;
+    background-color: $background-white;
+    text-align: left;
+  }
+
+  .menuitem {
+    height: $height;
+    font-size: $font-size-small;
+
+    a,
+    button {
+      height: $height;
+      padding: 0 10px;
+      color: $font-dark-grey;
+      text-align: inherit;
+      line-height: $height;
+    }
+
+    a:hover,
+    button:hover {
+      color: $font-highlight;
+      background-color: #e8f3f9;
+    }
+
+    a:active,
+    button:active {
+      color: $font-highlight;
+    }
+
+    .menuitem-active {
+      color: $font-highlight;
+    }
+
+    a[disabled],
+    button[disabled] {
+      background-color: $background-white;
+    }
+  }
+}
+
+.dropdown-right {
+  left: auto;
+  right: 0;
+  text-align: right;
+}
+
+.dropdown-icon.iconfont {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 7px 10px;
+  font-size: 10px;
+}
+
+.icon-option.iconfont {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 12px -2px;
+  font-size: 20px;
+}

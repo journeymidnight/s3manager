@@ -1,0 +1,59 @@
+@import '../../styles/_variables';
+
+.panel {
+  display: block;
+  border-bottom: $border-lightgrey;
+  background-color: $background-white;
+}
+
+.panel-header {
+  display: block;
+  width: 100%;
+  height: 46px;
+  padding: 0 20px;
+  border-bottom: $border-lightgrey;
+  background: $background-white;
+
+  h2 {
+    display: inline-block;
+    font-size: $font-size;
+    font-weight: normal;
+    line-height: 46px;
+  }
+}
+
+.panel-content {
+  width: 100%;
+  min-height: $height-mid;
+  font-size: $font-size-small;
+  line-height: $line-height-small;
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+
+  tr {
+    min-height: 40px;
+  }
+
+  td {
+    vertical-align: middle;
+    border-bottom: $border-lightgrey;
+    padding: 8px 20px;
+
+    &:first-child {
+      width: 40%;
+      color: $font-dark-grey;
+    }
+  }
+
+  tr:last-child > td {
+    border-bottom: none;
+  }
+}
+
+.panel-right {
+  float: right;
+}

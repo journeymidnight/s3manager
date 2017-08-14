@@ -71,8 +71,7 @@ export function requestLogin(email, password) {
     .promise
     .then((token) => {
         let auth
-        debugger
-        if (token.accountId === "") {
+        if (token.accountId === "ROOT") {
           auth = {username: "root"};
         } else {
           auth = {username: token.accountId};
@@ -83,7 +82,7 @@ export function requestLogin(email, password) {
         if (token.type === 'ROOT') {
           dispatch(push('/users')) 
         } else {
-          dispatch(push('/resources')) 
+          dispatch(push('/access_keys')) 
         }
       })
     .catch((error) => {

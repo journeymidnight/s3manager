@@ -1,0 +1,13 @@
+@import '../../styles/_variables';
+
+.bar {
+  display: block;
+  min-height: 46px;
+  border-bottom: $border-lightgrey;
+  background-color: $background-lightgrey;
+  padding: 8px 20px;
+}
+
+.bar.secondary {
+  background-color: $background-white;
+}

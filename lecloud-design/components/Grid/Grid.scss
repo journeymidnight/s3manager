@@ -1,0 +1,33 @@
+@import '../../styles/_variables';
+
+.row {
+  display: block;
+  position: relative;
+}
+
+.col {
+  display: inline-block;
+  position: relative;
+}
+
+.col-top {
+  vertical-align: top;
+}
+
+.col-middle {
+  vertical-align: middle;
+}
+
+.col-bottom {
+  vertical-align: bottom;
+}
+
+@for $i from 1 through 12 {
+  .col-#{$i} {
+    width: $i / 12 * 100%;
+  }
+
+  .col-offset-#{$i} {
+    margin-left: $i / 12 * 100%;
+  }
+}
