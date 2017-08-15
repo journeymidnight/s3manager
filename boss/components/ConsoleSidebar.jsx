@@ -83,6 +83,10 @@ class C extends React.Component {
               <i className="fa fa-user fa-fw" />
               <span>{t('sidebarUser')}</span>
             </NavLink>
+            <NavLink to="/projects">
+              <i className="fa fa-cube fa-fw" />
+              <span>{t('sidebarProject')}</span>
+            </NavLink>
           </ul>
           <div className="collapse-nav">
             <a className="toggle-nav-collapse" href="#">

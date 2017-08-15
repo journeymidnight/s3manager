@@ -76,11 +76,28 @@ export const call = (method, url, payload, hook, yigapi) => {
     newpayload.description = payload.description;
     payload = newpayload;
   } else if (url === "/iamapi/DeleteAccessKey") {
-    debugger
     url = "/iamapi";
     newpayload.action = "DeleteAccessKey";
     newpayload.token = token;
     newpayload.AccessKey = payload.accessKeys[0];
+    payload = newpayload;
+  } else if (url === "/iamapi/ListProjects") {
+    url = "/iamapi";
+    newpayload.action = "ListProjects";
+    newpayload.token = token;
+    payload = newpayload;
+  } else if (url === "/iamapi/CreateProject") {
+    url = "/iamapi";
+    newpayload.action = "CreateProject";
+    newpayload.token = token;
+    newpayload.projectname = payload.name;
+    newpayload.description = payload.description;
+    payload = newpayload;
+  } else if (url === "/iamapi/DeleteProjects") {
+    url = "/iamapi";
+    newpayload.action = "DeleteProject";
+    newpayload.token = token;
+    newpayload.projectId = payload.projectIds[0];
     payload = newpayload;
   }
 

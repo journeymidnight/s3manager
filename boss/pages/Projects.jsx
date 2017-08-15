@@ -72,7 +72,7 @@ class C extends TablePage {
                   {project.projectId}
                 </Link>
               </td>
-              <td><strong>{project.name}</strong></td>
+              <td><strong>{project.projectName}</strong></td>
               <td>{moment.utc(project.created).local().format('YYYY-MM-DD HH:mm:ss')}</td>
             </tr>
           );
