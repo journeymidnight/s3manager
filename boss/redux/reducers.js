@@ -23,16 +23,34 @@ export const authReducer = (state = null, action) => {
   }
 };
 
+
+export const serviceReducer = (state = null, action) => {
+  switch (action.type) {
+    case ActionTypes.SELECT_SERVICE:
+      if (action.service) {
+        store.set('region', action.service.region);
+        action.service.servicePath = '';
+      }
+
+      return action.service;
+
+    default:
+      return state;
+  }
+};
+
 const reducers = combineReducers({
   env: constReducer,
+  global: constReducer,
   auth: authReducer,
   routing: routerReducer,
   form: formReducer,
   context: constReducer,
+  service: serviceReducer,
 });
 
 export function rootReducer(state = {}, action) {
-  const newState = Object.assign({}, state);
+  let newState = Object.assign({}, state);
 
   switch (action.type) {
     case '@@router/LOCATION_CHANGE':
@@ -48,6 +66,14 @@ export function rootReducer(state = {}, action) {
       }
       newState.context = Object.assign({}, newState.context);
       newState.context = Object.assign(newState.context, action.payload);
+      return newState;
+    
+    case ActionTypes.SET_FOLDER_LOCATION:
+      newState.global.folderLocation = action.folderLocation;
+      return newState;
+
+    case ActionTypes.REMOVE_FOLDER_LOCATION:
+      delete newState.global.folderLocation;
       return newState;
 
     default:

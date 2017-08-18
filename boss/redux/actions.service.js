@@ -72,7 +72,7 @@ export function requestDeleteQuotas(routerKey, serviceKey, regionId, projectIds)
     .deleteQuotas(serviceKey, regionId, projectIds)
     .promise
     .then((payload) => {
-      dispatch(notify(i18n.t('deleteSuccess')));
+      dispatch(notify(i18n.t('deleteSuccessed')));
       dispatch(extendContext(payload, routerKey));
     })
     .catch((error) => {
@@ -252,7 +252,7 @@ export function requestDeleteServices(routerKey, serviceIds) {
     .deleteServices(serviceIds)
     .promise
     .then((payload) => {
-      dispatch(notify(i18n.t('deleteSuccess')));
+      dispatch(notify(i18n.t('deleteSuccessed')));
       dispatch(extendContext(payload, routerKey));
     })
     .catch((error) => {

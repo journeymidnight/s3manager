@@ -1,5 +1,6 @@
 import React from 'react';
 import { IndexRoute, Route } from 'react-router';
+import { IndexRedirect } from 'react-router';
 
 import NotFound from '../shared/pages/NotFound.jsx';
 import App from './pages/App.jsx';
@@ -45,6 +46,18 @@ import QuotaCreate from './pages/QuotaCreate.jsx';
 import Quota from './pages/Quota.jsx';
 import Profile from './pages/Profile.jsx';
 
+import BucketList from './los/pages/BucketList.jsx';
+import BucketCreate from './los/pages/BucketCreate.jsx';
+import Bucket from './los/pages/Bucket.jsx';
+import BucketDetail from './los/pages/BucketDetail.jsx';
+import ObjectManagement from './los/pages/ObjectManagement.jsx';
+import ResourceMonitorConsole from './los/pages/ResourceMonitorConsole.jsx';
+import UsageMonitor from './los/pages/UsageMonitor.jsx';
+import FlowMonitor from './los/pages/FlowMonitor.jsx';
+import APIMonitor from './los/pages/APIMonitor.jsx';
+
+import Paragraph from './components/Paragraph';
+
 export default function configureRoutes(store) {
   function requireAuth(nextState, replace) {
     if (!store.getState().auth) {
@@ -60,7 +73,15 @@ export default function configureRoutes(store) {
       <Route path="/login" component={Login} />
       <Route path="/logout" component={Logout} />
       <Route path="/" component={App} onEnter={requireAuth} >
-        <IndexRoute component={Index} />
+        <Route path="buckets">
+          <IndexRoute component={BucketList} />
+          <Route path="create" component={BucketCreate} />
+          <Route path=":bucketName" component={Bucket}>
+            <IndexRedirect to="detail" />
+            <Route path="detail" component={BucketDetail} />
+            <Route path="objects" component={ObjectManagement} />
+          </Route>
+        </Route>
         <Route path="profile" component={Profile} />
         <Route path="admins" >
           <IndexRoute component={Admins} />
@@ -79,9 +100,6 @@ export default function configureRoutes(store) {
             <Route path="basic" component={ServiceTabBasic} />
             <Route path="projects" component={ServiceTabProjects} />
           </Route>
-        </Route>
-        <Route path="los" >
-          <Route path=":serviceId" component={LOS} />
         </Route>
         <Route path="lcs" >
           <Route path=":serviceId" component={LCS} >

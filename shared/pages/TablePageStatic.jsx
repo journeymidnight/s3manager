@@ -99,9 +99,9 @@ class C extends Page {
   }
 
   onSelect(id) {
-    return (e) => {
+    return (isChecked) => {
       const selected = Object.assign({}, this.props.context.selected);
-      if (e.target.checked) {
+      if (isChecked) {
         selected[id] = true;
       } else {
         delete selected[id];

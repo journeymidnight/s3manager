@@ -21,7 +21,6 @@ export function requestDescribeAccessKeys(filters) {
 }
 
 export function requestCreateAccessKey(name, description) {
-  debugger
   return dispatch => {
     return Auth
       .createAccessKey(name, description)

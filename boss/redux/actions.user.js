@@ -9,7 +9,7 @@ export function requestDeleteUsers(routerKey, userIds) {
     .promise
     .then((payload) => {
       console.log(payload)
-      dispatch(notify(i18n.t('deleteSuccessed')));
+      dispatch(notify(i18n.t('deleteSuccessed'), 'notice', 1000));
       dispatch(extendContext(payload, routerKey));
     })
     .catch((error) => {
@@ -24,7 +24,7 @@ export function requestActiveUsers(routerKey, userIds) {
     .activeUsers(userIds)
     .promise
     .then(() => {
-      dispatch(notify(i18n.t('updateSuccessed')));
+      dispatch(notify(i18n.t('updateSuccessed'), 'notice', 1000));
     })
     .catch((error) => {
       dispatch(notifyAlert(error.message));
@@ -38,7 +38,7 @@ export function requestDeactiveUsers(routerKey, userIds) {
     .deactiveUsers(userIds)
     .promise
     .then(() => {
-      dispatch(notify(i18n.t('updateSuccessed')));
+      dispatch(notify(i18n.t('updateSuccessed'), 'notice', 1000));
     })
     .catch((error) => {
       dispatch(notifyAlert(error.message));

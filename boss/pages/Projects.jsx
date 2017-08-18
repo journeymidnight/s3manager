@@ -55,9 +55,9 @@ class C extends TablePage {
             <th width="40">
               <input type="checkbox" className="selected" onChange={this.onSelectAll(this.props.context.projectSet.map((u) => { return u.projectId; }))} />
             </th>
-            <th width="150">{t('id')}</th>
+            <th width="30%">{t('id')}</th>
             <th>{t('name')}</th>
-            <th width="200">{t('created')}</th>
+            <th width="30%">{t('created')}</th>
           </tr>
         </thead>
         <tbody>

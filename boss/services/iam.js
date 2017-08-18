@@ -24,16 +24,16 @@ class IAM {
     return rawCall('post', action, payload, undefined, true);
   }
   describeProjects(filters = {}) {
-    return this.call('DescribeProjects', filters);
+    return this.call('/iamapi/ListProjects', filters); //turn to ListProjects for iamapi
   }
   createProject(project) {
-    return this.call('CreateProject', project);
+    return this.call('/iamapi/CreateProject', project);
   }
   modifyProject(project) {
     return this.call('ModifyProjectAttributes', project);
   }
   deleteProjects(projectIds) {
-    return this.call('DeleteProjects', {
+    return this.call('/iamapi/DeleteProjects', { //only support delete single project for now
       projectIds,
     });
   }

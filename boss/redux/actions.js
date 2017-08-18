@@ -82,7 +82,20 @@ export function requestLogin(email, password) {
         if (token.type === 'ROOT') {
           dispatch(push('/users')) 
         } else {
-          dispatch(push('/access_keys')) 
+          var region = { //fixme: this is ugly
+            accessKey:  "tjhKTEkZ6wzteqYNPvas",
+            accessSecret: "VLZsBahNvgsC9x5mfsRgUhwgn4HPyPV4JaAaSzNZ",
+            endpoint: "http://127.0.0.1:8888",
+            name: "华北一区",
+            regionId: "cn-north-1"
+          };
+          dispatch(selectService({
+            serviceKey: '',
+            servicePath: '',
+            region
+          }));
+
+          dispatch(push('/buckets')) 
         }
       })
     .catch((error) => {
@@ -92,6 +105,14 @@ export function requestLogin(email, password) {
         dispatch(notifyAlert(error.message));
       }
     });
+  };
+}
+
+
+export function selectService(service) {
+  return {
+    type: ActionTypes.SELECT_SERVICE,
+    service,
   };
 }
 
@@ -218,7 +239,7 @@ export function requestCreateUser(user) {
     .promise
     .then(() => {
       dispatch(push('/users'));
-      dispatch(notify(i18n.t('createSuccessed')));
+      dispatch(notify(i18n.t('createSuccessed'), 'notice', 1000));
     })
     .catch((error) => {
       dispatch(notifyAlert(error.message));

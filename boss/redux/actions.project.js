@@ -47,7 +47,7 @@ export function requestCreateProject(project) {
         },
       }));
       dispatch(push('/projects'));
-      dispatch(notify(i18n.t('createSuccessed')));
+      dispatch(notify(i18n.t('createSuccessed'), 'notice', 1000));
     })
     .catch((error) => {
       dispatch(notifyAlert(error.message));
@@ -118,7 +118,7 @@ export function requestDeleteProjects(routerKey, projectIds) {
     .deleteProjects(projectIds)
     .promise
     .then((payload) => {
-      dispatch(notify(i18n.t('deleteSuccessed')));
+      dispatch(notify(i18n.t('deleteSuccessed'), 'notice', 1000));
       dispatch(extendContext(payload, routerKey));
     })
     .catch((error) => {
