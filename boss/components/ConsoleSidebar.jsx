@@ -59,7 +59,7 @@ class C extends React.Component {
           </ul>
           <div className="collapse-nav">
             <a className="toggle-nav-collapse" href="#">
-              <i className="fa fa-angle-right">
+              <i className="fa fa-angle-left">
               </i>
             </a>
           </div>
@@ -90,7 +90,7 @@ class C extends React.Component {
           </ul>
           <div className="collapse-nav">
             <a className="toggle-nav-collapse" href="#">
-              <i className="fa fa-angle-right">
+              <i className="fa fa-angle-left">
               </i>
             </a>
           </div>

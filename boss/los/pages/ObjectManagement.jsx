@@ -389,7 +389,7 @@ class ObjectManagement extends TablePageStatic {
       if (error) {
         dispatch(notifyAlert(error.message));
       } else {
-        dispatch(notify(t('folderCreatedSuccess')));
+        dispatch(notify(t('folderCreatedSuccess'), 'notice', 1000));
         this.onRefresh({ searchWord: this.props.global.folderLocation }, false)();
         this.refs.folderModal.close();
       }
