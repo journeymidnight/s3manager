@@ -486,7 +486,10 @@ class ObjectManagement extends TablePageStatic {
                   </Link>
                 </td>
                 <td>{this.formatBytes(object.Size)}</td>
-                <td>{(object.Key.indexOf('.') > -1) ? object.Key.slice(object.Key.lastIndexOf('.') + 1) : '-'}</td>
+                <td>{object.Key.lastIndexOf('/') > -1 ? 
+                     (object.Key.slice(object.Key.lastIndexOf('/') +  1).slice(object.Key.slice(object.Key.lastIndexOf('/') +  1).lastIndexOf('.') + 1)) :
+                    '-'}
+                </td>
                 <td>{moment.utc(object.LastModified).local().format('YYYY-MM-DD HH:mm:ss')}</td>
                 <td>
                   <a
@@ -723,3 +726,5 @@ class ObjectManagement extends TablePageStatic {
 }
 
 export default attach(ObjectManagement);
+
+//<td>{(object.Key.indexOf('.') > -1) ? object.Key.slice(object.Key.lastIndexOf('.') + 1) : '-'}</td>
