@@ -115,7 +115,6 @@ export const call = (method, url, payload, hook, yigapi) => {
     newpayload.token = token;
     payload = newpayload;
   } else if (url === "/losapi/DeleteBucket") {
-    debugger
     url = "/losapi";
     newpayload.action = "DeleteBucket";
     newpayload.token = token;

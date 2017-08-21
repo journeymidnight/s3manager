@@ -60,7 +60,6 @@ export function listBuckets(routerKey, regionId) {
 }
 
 export function requestDeleteBucket(routerKey, regionId, bucketName) {
-  debugger
   return dispatch => {
     return Wcs
       .doAction(regionId, ACTION_NAMES.deletebucket, { bucket: bucketName })
