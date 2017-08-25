@@ -2,3 +2,42 @@
   color: #00a38a;
   background: rgba(0, 163, 138, 0.1);
 }
+
+.bar-title {
+  display: inline-block;
+  font-size: 14px;
+  line-height: 30px;
+  font-weight: normal;
+}
+
+.content {
+  vertical-align: top;
+  height: 100%;
+}
+
+.modal .form-footer {
+  padding: 20px 0;
+  text-align: center;
+}
+
+.form-horizontal{
+  padding: 20px 0 0 0
+}
+
+.form-page{
+  padding: 10px 96px;
+  overflow:hidden;
+}
+
+.form-page .form-footer {
+  background-color: #FFF;
+}
+
+.form-footer {
+  border-top: 1px solid #dfe3e9;
+  padding: 28px 25%;
+  .button{
+    height: auto;
+    padding: 6px 58px;
+  }
+}

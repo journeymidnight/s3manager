@@ -68,7 +68,7 @@ class Dropdown extends React.Component {
 
         <div
           className={cx({
-            'dropdown-menu': true,
+            'dropdown-menu-own': true,
             'dropdown-right': align === 'right',
           })}
         >

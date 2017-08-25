@@ -6,7 +6,7 @@ import * as Validations from '../../shared/utils/validations';
 
 const F = (props) => {
   const { fields:
-    { regionId, name, devopsEndpoint, consoleEndpoint },
+    { regionId, name},
     handleSubmit,
     resetForm,
     submitting,
@@ -44,28 +44,9 @@ const F = (props) => {
         </div>
       </div>
 
-      <div className={submitFailed && devopsEndpoint.error ? 'form-group has-error' : 'form-group'}>
-        <label className="control-label" >{t('formRegionForm.devopsEndpoint')}</label>
-        <div className="col-sm-10">
-          <input type="text" className="form-control" {...devopsEndpoint} />
-          {submitFailed && devopsEndpoint.error && <div className="text-danger"><small>{devopsEndpoint.error}</small></div>}
-        </div>
-      </div>
-
-      <div className={submitFailed && consoleEndpoint.error ? 'form-group has-error' : 'form-group'}>
-        <label className="control-label" >{t('pageRegion.consoleEndpoint')}</label>
-        <div className="col-sm-10">
-          <input type="text" className="form-control" {...consoleEndpoint} />
-          {submitFailed && consoleEndpoint.error && <div className="text-danger"><small>{consoleEndpoint.error}</small></div>}
-        </div>
-      </div>
-
       <div className="form-actions">
-        <button type="submit" className="btn btn-save" disabled={submitting}>
+        <button type="submit" className="btn btn-save pull-right" disabled={submitting}>
           {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('update')}
-        </button>
-        <button type="button" className="btn pull-right" disabled={submitting} onClick={resetForm}>
-          {t('reset')}
         </button>
       </div>
     </form>
@@ -87,12 +68,11 @@ F.validate = values => {
   const errors = {};
   errors.regionId = Validations.required(values.regionId);
   errors.name = Validations.required(values.name);
-  errors.devopsEndpoint = Validations.required(values.devopsEndpoint);
   return errors;
 };
 
 export default reduxForm({
   form: 'RegionForm',
-  fields: ['regionId', 'name', 'devopsEndpoint', 'consoleEndpoint'],
+  fields: ['regionId', 'name'],
   validate: F.validate,
 })(translate()(F));

@@ -146,26 +146,39 @@ export function requestDescribeUsers(filters = {}) {
     .promise
     .then((payload) => {
       if (payload) {
-        console.log(payload.length)
-        var userSet = payload.map((entry) => {
-          return {
-          username: entry.UserName,
-          status: entry.Status,
-          email:  entry.Email,
-          updated: entry.Updated,
-          userId: entry.AccountId,
-          created: entry.Created,
-        }})
+        // filter users according to the offset
+        let alreadyGet = 0;
+        let i = filters.offset;
+        let userSet = [];
+
+        for (; i<payload.length; i++) {
+          if (alreadyGet < filters.limit) {
+            alreadyGet++
+            var entry = payload[i];
+            userSet.push({
+              username: entry.UserName,
+              status: entry.Status,
+              email:  entry.Email,
+              updated: entry.Updated,
+              userId: entry.AccountId,
+              created: entry.Created,
+            })
+          } else {
+            break;
+          }
+        }
 
         var todispatch = {
-          limit: 10000,
+          limit: 20,
+          offset: filters.offset, 
           total: payload.length,
           userSet
         }
       } else {
           var todispatch = {
-          limit: 10000,
+          limit: 20,
           total: 0,
+          offset: 0, 
           userSet:null
         } 
       }
@@ -215,10 +228,11 @@ export function requestUserByEmail(email) {
     })
     .promise
     .then((res) => {
-      if (res.total > 0) {
+      debugger
+      if (res.length> 0) {
         let user;
-        res.userSet.forEach((u) => {
-          if (u.email === email) {
+        res.forEach((u) => {
+          if (u.Email === email) {
             user = u;
           }
         });

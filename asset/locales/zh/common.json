@@ -71,7 +71,7 @@
     "public_images": "公共映像",
     "private_images": "自有映像",
     "volume_snapshots": "硬盘备份",
-    "accessKey": "密钥 Key",
+    "accessKey": "密钥对",
     "accessSecret": "密钥 Secret",
     "address": "地址",
     "resource": "资源",
@@ -133,7 +133,7 @@
     "projectManage": "项目管理",
     "projectManageDescription": "可根据不同的企业或团队划分独立的项目, 分配相应的资源配额。",
     "serviceManage": "服务管理",
-    "serviceManageDescription": "管理云主机（LCS），云存储（LOS）等服务的配置，配额等信息。",
+    "serviceManageDescription": "管理云存储（LOS）服务的配置",
     "regionManage": "区域管理",
     "regionManageDescription": "一个区域即独立完整的IaaS集群，包含OpenStack，Ceph及所有服务组建。可为项目分配不同区域不同配额的云资源，并统一管理。",
     "activityManage": "操作日志",
@@ -434,7 +434,9 @@
         "volumeSize": "云硬盘容量(GB)"
     },
     "pageAccessKeyCreate": {
-        "createAccessKey": "添加API密钥"
+        "createAccessKey": "添加API密钥",
+        "createSuccessed": "添加API秘钥成功",
+        "deleteSuccessed": "删除API秘钥成功"
     },
     "pageTicketCreate": {
         "createTicket": "添加工单",
@@ -741,6 +743,7 @@
         "url": "文件地址",
         "update": "更改",
         "authorize": "授权",
+        "needAuthorize": "授权后显示",
         "aclPrivate": "私有",
         "aclPublicR": "公共",
         "aclFail": "更改文件权限失败",

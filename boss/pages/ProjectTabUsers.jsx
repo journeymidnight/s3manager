@@ -31,11 +31,12 @@ class F extends React.Component {
     })
     .promise
     .then((payload) => {
+      debugger
       callback(null, {
-        options: payload.userSet.map((user) => {
+        options: payload.map((user) => {
           return {
-            value: user.email,
-            label: user.email,
+            value: user.Email,
+            label: user.Email,
           };
         }),
       });
@@ -123,8 +124,9 @@ class C extends TablePage {
 
       dispatch(Actions.requestUserByEmail(email))
       .then((user) => {
+        debugger
         if (user) {
-          dispatch(ProjectActions.requestCreateProjectRole(project.projectId, user.userId, role))
+          dispatch(ProjectActions.requestCreateProjectRole(project.projectId, user.AccountId, role))
           .then(() => {
             resolve();
             this.onRefresh({}, false)();
@@ -171,7 +173,7 @@ class C extends TablePage {
             <th width="40">
               <input type="checkbox" className="selected" onChange={this.onSelectAll(this.props.context.roleSet.map((u) => { return u.userId; }))} />
             </th>
-            <th width="150">{t('id')}</th>
+            <th width="200">{t('id')}</th>
             <th>{t('username')}</th>
             <th>{t('email')}</th>
             <th width="200">{t('created')}</th>
@@ -192,8 +194,7 @@ class C extends TablePage {
               <td><strong>{role.username}</strong></td>
               <td>{role.email}</td>
               <td>
-              {role.role === projectRoleAdmin && t('projectRoleAdmin')}
-              {role.role === projectRoleUser && t('projectRoleUser')}
+              {role.created}
               </td>
             </tr>
           );

@@ -55,7 +55,7 @@ class C extends TablePage {
             <th width="40">
               <input type="checkbox" className="selected" onChange={this.onSelectAll(this.props.context.userSet.map((u) => { return u.userId; }))} />
             </th>
-            <th width="150">{t('id')}</th>
+            <th width="200">{t('id')}</th>
             <th>{t('username')}</th>
             <th>{t('email')}</th>
             <th>{t('status')}</th>

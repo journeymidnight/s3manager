@@ -75,19 +75,19 @@ class ObjectPropertyForm extends React.Component {
         <div className="form-body">
 
           <Row gutter={20} className="form-group">
-            <Col span={3} align="top" className="control-label">
+            <Col span={3} align="top" className="control-label-own">
               {t('objectPropertyPage.acl')}
             </Col>
-            <Col span={9} align="top" className="form-control" style={{ padding: '4px 10px', height: 36 }}>
+            <Col span={9} align="top" className="form-control-own" style={{ padding: '4px 10px', height: 36 }}>
               <strong style={{ fontSize: 12 }}>{this.acl[context.objectAcl] || ''}</strong>
             </Col>
           </Row>
 
           <Row gutter={20} className="form-group">
-            <Col span={3} align="top" className="control-label">
+            <Col span={3} align="top" className="control-label-own">
               {t('pageBucketCreate.acl')}
             </Col>
-            <Col span={6} className="form-control">
+            <Col span={6} className="form-control-own">
               <Select
                 options={selectOptions}
                 defaultWord={context.objectAcl}
@@ -101,7 +101,7 @@ class ObjectPropertyForm extends React.Component {
                 type="button"
                 className="button"
                 onClick={() => this.onPutAcl(acl.value)}
-                style={{ marginTop: 3 }}
+                style={{ marginTop: 3}}
               >
                 {t('objectPropertyPage.update')}
               </button>
@@ -109,19 +109,19 @@ class ObjectPropertyForm extends React.Component {
           </Row>
 
           <Row gutter={20} className="form-group">
-            <Col span={3} align="top" className="control-label">
+            <Col span={3} align="top" className="control-label-own">
               {t('objectPropertyPage.url')}
             </Col>
-            <Col span={9} className="form-control" style={{ padding: '4px 10px', minHeight: 36, width: 370 }}>
+            <Col span={9} className="form-control-own" style={{ padding: '4px 10px', minHeight: 36, width: 370 }}>
               <strong style={{ fontSize: 12, wordBreak: 'break-word' }}>{context.objectUrl || t('objectPropertyPage.needAuthorize')}</strong>
             </Col>
           </Row>
 
           {context.objectAcl === 'private' && <Row gutter={20} className="form-group">
-            <Col span={3} align="top" className="control-label">
+            <Col span={3} align="top" className="control-label-own">
               {t('objectPropertyPage.period')}
             </Col>
-            <Col span={6} align="top" className="form-control">
+            <Col span={6} align="top" className="form-control-own">
               <input
                 className="input"
                 type="number"

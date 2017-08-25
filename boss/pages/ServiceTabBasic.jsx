@@ -19,19 +19,11 @@ class C extends Page {
 
   onSave(values, dispatch) {
     return new Promise((resolve, reject) => {
-      const name = values.name;
       const publicEndpoint = values.publicEndpoint;
-      const manageEndpoint = values.manageEndpoint;
-      const manageKey = values.manageKey;
-      const manageSecret = values.manageSecret;
 
       dispatch(ServiceActions.requestModifyService({
         serviceId: this.props.service2.serviceId,
-        name,
         publicEndpoint,
-        manageEndpoint,
-        manageKey,
-        manageSecret,
       }))
       .then(() => {
         resolve();

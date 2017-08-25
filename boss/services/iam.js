@@ -30,7 +30,7 @@ class IAM {
     return this.call('/iamapi/CreateProject', project);
   }
   modifyProject(project) {
-    return this.call('ModifyProjectAttributes', project);
+    return this.call('/iamapi/ModifyProjectAttributes', project);
   }
   deleteProjects(projectIds) {
     return this.call('/iamapi/DeleteProjects', { //only support delete single project for now
@@ -38,34 +38,32 @@ class IAM {
     });
   }
   describeProjectRoles(projectId) {
-    return this.call('DescribeProjectRoles', {
+    return this.call('/iamapi/DescribeProjectRoles', {
       projectId,
     });
   }
   describeUserRoles(userId) {
-    return this.call('DescribeUserRoles', {
+    return this.call('/iamapi/DescribeUserRoles', {
       userId,
     });
   }
   createProjectRole(projectId, userId, role) {
-    return this.call('CreateProjectRole', {
+    debugger
+    return this.call('/iamapi/CreateProjectRole', {
       projectId,
       userId,
       role,
     });
   }
   deleteProjectRole(projectId, userIds) {
-    return this.call('DeleteProjectRoles', {
+    return this.call('/iamapi/DeleteProjectRoles', {
       projectId,
       userIds,
     });
   }
-  //describeUsers(filters = {}) {
-  //  return this.call('DescribeUsers', filters);
-  //}
-
 
   describeUsers(filters = {}) {
+    debugger
     return this.call('/iamapi/ListAccounts', filters);
   }
   describeUser(filters = {}) {
@@ -94,30 +92,30 @@ class IAM {
     return this.call('ModifyUserAttributes', user);
   }
   describeServices(filters = {}) {
-    return this.call('DescribeServices', filters);
+    return this.call('/iamapi/DescribeServices', filters);
   }
   createService(service) {
-    return this.call('CreateService', service);
+    return this.call('/iamapi/CreateService', service);
   }
   modifyService(service) {
-    return this.call('ModifyServiceAttributes', service);
+    return this.call('/iamapi/ModifyServiceAttributes', service);
   }
   deleteServices(serviceIds) {
-    return this.call('DeleteServices', {
+    return this.call('/iamapi/DeleteServices', {
       serviceIds,
     });
   }
   describeRegions(filters = {}) {
-    return this.call('DescribeRegions', filters);
+    return this.call('/iamapi/DescribeRegions', filters);
   }
   createRegion(region) {
-    return this.call('CreateRegion', region);
+    return this.call('/iamapi/CreateRegion', region);
   }
   modifyRegion(region) {
-    return this.call('ModifyRegionAttributes', region);
+    return this.call('/iamapi/ModifyRegionAttributes', region);
   }
   deleteRegions(regionIds) {
-    return this.call('DeleteRegions', {
+    return this.call('/iamapi/DeleteRegions', {
       regionIds,
     });
   }

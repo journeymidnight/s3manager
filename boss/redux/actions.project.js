@@ -25,9 +25,10 @@ export function requestDescribeProject(projectId) {
     })
     .promise
     .then((payload) => {
-      dispatch(extendContext({
-        project: payload.projectSet[0],
-      }));
+      let entry = payload.projectSet.filter(id => id.projectId === projectId)[0];
+      let newpayload = {};
+      newpayload.project = entry;
+      dispatch(extendContext(newpayload))
     })
     .catch((error) => {
       dispatch(notifyAlert(error.message));
@@ -61,7 +62,7 @@ export function requestModifyProject(project) {
     .modifyProject(project)
     .promise
     .then(() => {
-      dispatch(notify(i18n.t('updateSuccessed')));
+      dispatch(notify(i18n.t('updateSuccessed') , 'notice', 1000));
       return dispatch(requestDescribeProject(project.projectId));
     })
     .catch((error) => {
@@ -76,7 +77,7 @@ export function requestCreateProjectRole(projectId, userId, role) {
     .createProjectRole(projectId, userId, role)
     .promise
     .then(() => {
-      dispatch(notify(i18n.t('createSuccessed')));
+      dispatch(notify(i18n.t('createSuccessed'), 'notice', 1000));
     })
     .catch((error) => {
       dispatch(notifyAlert(error.message));
@@ -90,7 +91,7 @@ export function requestDeleteProjectRole(projectId, userIds) {
     .deleteProjectRole(projectId, userIds)
     .promise
     .then(() => {
-      dispatch(notify(i18n.t('deleteSuccessed')));
+      dispatch(notify(i18n.t('deleteSuccessed'), 'notice', 1000));
     })
     .catch((error) => {
       dispatch(notifyAlert(error.message));

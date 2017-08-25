@@ -28,6 +28,9 @@ class C extends Page {
       <div className="full-height">
         <Bar type="secondary">
           <div className="tab">
+            <Link activeClassName={active === 'detail' ? 'tab-active' : ''} to={`/buckets/${params.bucketName}/detail?date=${this.props.location.query.date}`}>
+              {t('bucketDetail')}
+            </Link>
             <Link activeClassName={active === 'objects' ? 'tab-active' : ''} to={`/buckets/${params.bucketName}/objects?date=${this.props.location.query.date}`}>
               {t('objectManagement')}
             </Link>

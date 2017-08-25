@@ -22,113 +22,205 @@ export const call = (method, url, payload, hook, yigapi) => {
     headers['X-Le-Secret'] = region.accessSecret;
   }
 
-  var newpayload = {}
-  if (url === "/iamapi/ListAccounts") {
-    url = "/iamapi";
+  let newpayload = {};
+  if (url === '/iamapi/ListAccounts') {
+    url = '/iamapi';
     newpayload.token = token;
-    newpayload.action = "ListAccounts";
+    newpayload.action = 'ListAccounts';
     payload = newpayload;
-  } else if (url === "/iamapi/DeleteAccount") {
-    url = "/iamapi";
-    newpayload.action = "DeleteAccount";
+  } else if (url === '/iamapi/DeleteAccount') {
+    url = '/iamapi';
+    newpayload.action = 'DeleteAccount';
 
-    //only support delete one account now
+    // only support delete one account now
     newpayload.accountid = payload.userIds[0];
     newpayload.token = token;
     payload = newpayload;
-  } else if (url === "/iamapi/CreateAccount") {
-    url = "/iamapi";
-    newpayload.action = "CreateAccount";
-
+  } else if (url === '/iamapi/CreateAccount') {
+    url = '/iamapi';
+    newpayload.action = 'CreateAccount';
     newpayload.user = payload.username;
     newpayload.password = payload.password;
     newpayload.email = payload.email;
     newpayload.token = token;
     payload = newpayload;
-  } else if (url === "/iamapi/DescribeAccount") {
-    url = "/iamapi";
-    newpayload.action = "DescribeAccount";
+  } else if (url === '/iamapi/DescribeAccount') {
+    url = '/iamapi';
+    newpayload.action = 'DescribeAccount';
     newpayload.accountid = payload.userIds[0];
     newpayload.token = token;
     payload = newpayload;
-  } else if (url === "/iamapi/ActivateAccount") {
-    url = "/iamapi";
-    newpayload.action = "ActivateAccount";
+  } else if (url === '/iamapi/ActivateAccount') {
+    url = '/iamapi';
+    newpayload.action = 'ActivateAccount';
     newpayload.accountid = payload.userIds[0];
     newpayload.token = token;
     payload = newpayload;
-  } else if (url === "/iamapi/DeactivateAccount") {
-    url = "/iamapi";
-    newpayload.action = "DeactivateAccount";
+  } else if (url === '/iamapi/DeactivateAccount') {
+    url = '/iamapi';
+    newpayload.action = 'DeactivateAccount';
     newpayload.accountid = payload.userIds[0];
     newpayload.token = token;
     payload = newpayload;
-  } else if (url === "/iamapi/DescribeAccessKeysWithToken") {
-    url = "/iamapi";
-    newpayload.action = "DescribeAccessKeysWithToken";
+  }else if (url === '/iamapi/DescribeServices') {
+    url = '/iamapi';
+    newpayload.action = 'DescribeServices';
     newpayload.token = token;
     payload = newpayload;
-  } else if (url === "/iamapi/CreateAccessKey") {
-    url = "/iamapi";
-    newpayload.action = "CreateAccessKey";
+  }else if (url === '/iamapi/CreateService') {
+    debugger
+    url = '/iamapi';
+    newpayload.action = 'CreateService';
+    newpayload.token = token;
+    newpayload.regionId= payload.regionId;
+    newpayload.regionName = payload.name;
+    newpayload.endpoint= payload.publicEndpoint;
+    payload = newpayload;
+  }else if (url === '/iamapi/DeleteServices') {
+    debugger
+    url = '/iamapi';
+    newpayload.action = 'DeleteService';
+    newpayload.token = token;
+    newpayload.serviceId= payload.serviceIds[0];
+    payload = newpayload;
+  }else if (url === '/iamapi/ModifyServiceAttributes') {
+    url = '/iamapi';
+    newpayload.action = 'ModifyServiceAttributes';
+    newpayload.token = token;
+    newpayload.serviceId= payload.serviceId;
+    newpayload.endpoint = payload.publicEndpoint;
+    payload = newpayload;
+  }else if (url === '/iamapi/DeleteRegions') {
+    debugger
+    url = '/iamapi';
+    newpayload.action = 'DeleteRegion';
+    newpayload.token = token;
+    newpayload.regionId= payload.regionIds[0];
+    payload = newpayload;
+
+    }else if (url === '/iamapi/DescribeRegions') {
+    url = '/iamapi';
+    newpayload.action = 'DescribeRegions';
+    newpayload.token = token;
+    payload = newpayload;
+  }else if (url === '/iamapi/CreateRegion') {
+    url = '/iamapi';
+    newpayload.action = 'CreateRegion';
+    newpayload.token = token;
+    newpayload.regionId= payload.regionId;
+    newpayload.regionName = payload.name;
+    payload = newpayload;
+  }else if (url === '/iamapi/ModifyRegionAttributes') {
+    url = '/iamapi';
+    newpayload.action = 'ModifyRegionAttributes';
+    newpayload.token = token;
+    newpayload.regionId= payload.regionId;
+    newpayload.regionName = payload.name;
+    payload = newpayload;
+  }else if (url === '/iamapi/DeleteRegions') {
+    debugger
+    url = '/iamapi';
+    newpayload.action = 'DeleteRegion';
+    newpayload.token = token;
+    newpayload.regionId= payload.regionIds[0];
+    payload = newpayload;
+
+  } else if (url === '/iamapi/DescribeAccessKeysWithToken') {
+    url = '/iamapi';
+    newpayload.action = 'DescribeAccessKeysWithToken';
+    newpayload.token = token;
+    payload = newpayload;
+  } else if (url === '/iamapi/CreateAccessKey') {
+    url = '/iamapi';
+    newpayload.action = 'CreateAccessKey';
     newpayload.token = token;
     newpayload.keyname = payload.name;
     newpayload.description = payload.description;
     payload = newpayload;
-  } else if (url === "/iamapi/DeleteAccessKey") {
-    url = "/iamapi";
-    newpayload.action = "DeleteAccessKey";
+  } else if (url === '/iamapi/DeleteAccessKey') {
+    url = '/iamapi';
+    newpayload.action = 'DeleteAccessKey';
     newpayload.token = token;
     newpayload.AccessKey = payload.accessKeys[0];
     payload = newpayload;
-  } else if (url === "/iamapi/ListProjects") {
-    url = "/iamapi";
-    newpayload.action = "ListProjects";
+  } else if (url === '/iamapi/CreateProjectRole') {
+    url = '/iamapi';
+    newpayload.action = 'CreateProjectRole';
+    newpayload.token = token;
+    newpayload.projectId = payload.projectId;
+    newpayload.accountId = payload.userId;
+    payload = newpayload;
+  } else if (url === '/iamapi/DeleteProjectRoles') {
+    url = '/iamapi';
+    newpayload.action = 'DeleteProjectRole';
+    newpayload.token = token;
+    newpayload.projectId = payload.projectId;
+    newpayload.accountId = payload.userIds[0];
+    payload = newpayload;
+  } else if (url === '/iamapi/DescribeProjectRoles') {
+    url = '/iamapi';
+    newpayload.action = 'DescribeProjectRoles';
+    newpayload.token = token;
+    newpayload.projectId = payload.projectId;
+    payload = newpayload;
+  } else if (url === '/iamapi/ListProjects') {
+    url = '/iamapi';
+    newpayload.action = 'ListProjects';
     newpayload.token = token;
     payload = newpayload;
-  } else if (url === "/iamapi/CreateProject") {
-    url = "/iamapi";
-    newpayload.action = "CreateProject";
+  } else if (url === '/iamapi/CreateProject') {
+    url = '/iamapi';
+    newpayload.action = 'CreateProject';
     newpayload.token = token;
-    newpayload.projectname = payload.name;
+    newpayload.projectname = payload.projectName;
     newpayload.description = payload.description;
     payload = newpayload;
-  } else if (url === "/iamapi/DeleteProjects") {
-    url = "/iamapi";
-    newpayload.action = "DeleteProject";
+  } else if (url === '/iamapi/DeleteProjects') {
+    url = '/iamapi';
+    newpayload.action = 'DeleteProject';
     newpayload.token = token;
     newpayload.projectId = payload.projectIds[0];
     payload = newpayload;
-  } else if (url === "/losapi/GetS3Domain") {
-    url = "/losapi";
-    newpayload.action = "GetS3Domain";
+  } else if (url === '/iamapi/ModifyProjectAttributes') {
+    url = '/iamapi';
+    debugger
+    newpayload.action = 'ModifyProjectAttributes';
+    newpayload.token = token;
+    newpayload.projectId = payload.projectId;
+    newpayload.projectName = payload.projectName;
+    newpayload.description = payload.description;
+    payload = newpayload;
+  } else if (url === '/losapi/GetS3Domain') {
+    url = '/losapi';
+    newpayload.action = 'GetS3Domain';
     newpayload.token = token;
     payload = newpayload;
-  } else if (url === "/losapi/ListBuckets") {
-    url = "/losapi";
-    newpayload.action = "ListBuckets";
+  } else if (url === '/losapi/ListBuckets') {
+    url = '/losapi';
+    newpayload.action = 'ListBuckets';
     newpayload.token = token;
     payload = newpayload;
-  } else if (url === "/losapi/GetBucketStats") {
-    url = "/losapi";
-    newpayload.action = "GetBucketStats";
-    newpayload.token = token;
-    payload = newpayload;
-  } else if (url === "/losapi/DeleteBucket") {
-    url = "/losapi";
-    newpayload.action = "DeleteBucket";
-    newpayload.token = token;
-    newpayload.bucket = payload.bucket;
-    payload = newpayload;
-  } else if (url === "/losapi/CreateBucket") {
-    url = "/losapi";
-    newpayload.action = "CreateBucket";
+  } else if (url === '/losapi/GetBucketStats') {
+    url = '/losapi';
+    newpayload.action = 'GetBucketStats';
     newpayload.token = token;
     newpayload.bucket = payload.bucket;
     payload = newpayload;
-  } else if (url === "/losapi/PutCors") {
-    url = "/losapi";
-    newpayload.action = "PutCors";
+  } else if (url === '/losapi/DeleteBucket') {
+    url = '/losapi';
+    newpayload.action = 'DeleteBucket';
+    newpayload.token = token;
+    newpayload.bucket = payload.bucket;
+    payload = newpayload;
+  } else if (url === '/losapi/CreateBucket') {
+    url = '/losapi';
+    newpayload.action = 'CreateBucket';
+    newpayload.token = token;
+    newpayload.bucket = payload.bucket;
+    payload = newpayload;
+  } else if (url === '/losapi/PutCors') {
+    url = '/losapi';
+    newpayload.action = 'PutCors';
     newpayload.token = token;
     newpayload.bucket = payload.bucket;
     payload = newpayload;
@@ -140,7 +232,7 @@ export const call = (method, url, payload, hook, yigapi) => {
 
   const options = {
     url,
-    method
+    method,
   };
 
   if (method === 'post') {

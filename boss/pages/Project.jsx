@@ -24,13 +24,13 @@ class C extends Page {
   render() {
     const { t, params } = this.props;
 
-    const project = this.props.context.project || this.project;
-    if (!project || project.projectId !== params.projectId) {
+    if (!this.props.context.project || this.props.context.project.projectId !== params.projectId) {
       this.refresh();
 
       return <div />;
     }
 
+    const project = this.props.context.project;
     let active = 'basic';
     if (_.endsWith(this.props.location.pathname, 'users')) {
       active = 'users';
@@ -45,17 +45,17 @@ class C extends Page {
 
             <div className="top-area">
               <div className="nav-text">
-                <i>{project.projectId}</i>
+                <i>{this.props.context.project.projectId}</i>
               </div>
 
               <ul className="nav-links pull-right">
                 <li className={`pull-right ${(active === 'users') ? 'active' : ''}`}>
-                  <Link data-placement="left" to={`/projects/${project.projectId}/users`}>
+                  <Link data-placement="left" to={`/projects/${this.props.context.project.projectId}/users`}>
                     {t('pageProject.authorizedUsers')}
                   </Link>
                 </li>
                 <li className={`pull-right ${(active === 'basic') ? 'active' : ''}`}>
-                  <Link data-placement="left" to={`/projects/${project.projectId}/basic`}>
+                  <Link data-placement="left" to={`/projects/${this.props.context.project.projectId}/basic`}>
                     {t('pageProject.basic')}
                   </Link>
                 </li>

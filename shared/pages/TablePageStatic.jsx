@@ -113,10 +113,10 @@ class C extends Page {
   }
 
   onSelectAll(ids) {
-    return (e) => {
+    return (isChecked) => {
       const selected = Object.assign({}, this.props.context.selected);
       ids.forEach((id) => {
-        if (e.target.checked) {
+        if (isChecked) {
           selected[id] = true;
         } else {
           delete selected[id];
@@ -134,7 +134,7 @@ class C extends Page {
     }).length;
   }
 
-  doSearch(e, prefix = '') {
+  doSearch(prefix = '') {
     let searchWord = (prefix + (this.refs.searchBox.refs.search.value ? this.refs.searchBox.refs.search.value.trim() : '')).trim();
     if (_.isEmpty(searchWord)) {
       searchWord = null;
@@ -144,12 +144,20 @@ class C extends Page {
 
   onSearchKeyPress(e, prefix) {
     if (e.key === 'Enter') {
-      this.doSearch(e, prefix);
+      if (typeof(prefix) !== 'string') {
+        this.doSearch('');
+      } else {
+        this.doSearch(prefix);
+      }
     }
   }
 
-  onSearchButtonClick(e, prefix) {
-    this.doSearch(e, prefix);
+  onSearchButtonClick(prefix) {
+    if (typeof(prefix) !== 'string') {
+      this.doSearch('');
+    } else {
+      this.doSearch(prefix);
+    }
   }
 
   renderHeader() {

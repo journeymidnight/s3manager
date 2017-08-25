@@ -98,7 +98,6 @@ export default function configureRoutes(store) {
           <Route path=":serviceId" component={Service} >
             <IndexRoute component={ServiceTabBasic} />
             <Route path="basic" component={ServiceTabBasic} />
-            <Route path="projects" component={ServiceTabProjects} />
           </Route>
         </Route>
         <Route path="lcs" >
@@ -133,10 +132,6 @@ export default function configureRoutes(store) {
           <IndexRoute component={Users} />
           <Route path="create" component={UserCreate} />
           <Route path=":userId" component={User} />
-        </Route>
-        <Route path="tickets" >
-          <IndexRoute component={Tickets} />
-          <Route path=":ticketId" component={Ticket} />
         </Route>
       </Route>
       <Route path="*" component={NotFound} />

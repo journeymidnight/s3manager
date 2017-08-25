@@ -5,7 +5,7 @@ import * as Validations from '../../shared/utils/validations';
 
 const F = (props) => {
   const { fields:
-    { name, description },
+    { projectName, description },
     handleSubmit,
     resetForm,
     submitting,
@@ -14,11 +14,11 @@ const F = (props) => {
   } = props;
   return (
     <form className="form-horizontal" onSubmit={handleSubmit}>
-      <div className={submitFailed && name.error ? 'form-group has-error' : 'form-group'}>
+      <div className={submitFailed && projectName.error ? 'form-group has-error' : 'form-group'}>
         <label className="control-label" >{t('name')}</label>
         <div className="col-sm-10">
-          <input type="text" className="form-control" {...name} />
-          {submitFailed && name.error && <div className="text-danger"><small>{name.error}</small></div>}
+          <input type="text" className="form-control" {...projectName} />
+          {submitFailed && projectName.error && <div className="text-danger"><small>{projectName.error}</small></div>}
         </div>
       </div>
       <div className={submitFailed && description.error ? 'form-group has-error' : 'form-group'}>
@@ -29,11 +29,8 @@ const F = (props) => {
         </div>
       </div>
       <div className="form-actions">
-        <button type="submit" className="btn btn-save" disabled={submitting}>
+        <button type="submit" className="btn btn-save pull-right" disabled={submitting}>
           {submitting ? <i className="fa fa-spin fa-spinner" /> : <i />} {t('update')}
-        </button>
-        <button type="button" className="btn pull-right" disabled={submitting} onClick={resetForm}>
-          {t('reset')}
         </button>
       </div>
     </form>
@@ -52,12 +49,12 @@ F.propTypes = {
 
 F.validate = values => {
   const errors = {};
-  errors.name = Validations.required(values.name);
+  errors.projectName = Validations.required(values.projectName);
   return errors;
 };
 
 export default reduxForm({
   form: 'ProjectForm',
-  fields: ['name', 'description'],
+  fields: ['projectName', 'description'],
   validate: F.validate,
 })(translate()(F));

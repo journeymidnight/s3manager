@@ -55,28 +55,28 @@ class C extends TablePage {
             <th width="40">
               <input type="checkbox" className="selected" onChange={this.onSelectAll(this.props.context.serviceSet.map((u) => { return u.serviceId; }))} />
             </th>
-            <th width="150">{t('name')}</th>
+            <th width="250">{t('name')}</th>
             <th>{t('region')}</th>
-            <th>{t('service')}</th>
             <th>{t('formServiceForm.publicEndpoint')}</th>
             <th width="250">{t('created')}</th>
+            <th width="250">{'配置'}</th>
           </tr>
         </thead>
         <tbody>
         {this.props.context.serviceSet.map((service) => {
+          debugger
           return (
             <tr key={service.serviceId}>
               <td>
                 <input type="checkbox" className="selected" onChange={this.onSelect(service.serviceId)} checked={this.props.context.selected[service.serviceId] === true} />
               </td>
+              <td>{service.serviceId}</td>
               <td>{service.regionId}</td>
-              <td>{t(`services.${service.serviceKey}`)}</td>
-              <td>{service.publicEndpoint}</td>
+              <td>{service.endpoint}</td>
               <td>{moment.utc(service.created).local().format('YYYY-MM-DD HH:mm:ss')}</td>
               <td>
                 <div className="btn-group">
                   <Link className="btn btn-sm btn-info" to={`/services/${service.serviceId}`}>基本配置</Link>
-                  <Link className="btn btn-sm btn-success" to={`/${service.serviceKey}/${service.serviceId}`}>服务配置</Link>
                 </div>
               </td>
             </tr>

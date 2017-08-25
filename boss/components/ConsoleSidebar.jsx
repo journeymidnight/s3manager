@@ -18,7 +18,7 @@ class C extends React.Component {
 
   render() {
     const { t, auth } = this.props;
-    if (auth.username !== 'root') {
+    if (auth.username !== 'u-root') {
       return ( 
         <div className="nicescroll sidebar-wrapper" tabIndex="0">
           <div className="header-logo">
@@ -35,6 +35,10 @@ class C extends React.Component {
             <li>
               <h5>{t('boss.iam.title')}</h5>
             </li>
+            <NavLink to="/access_keys">
+              <i className="fa fa-key fa-fw" />
+              <span>{'API秘钥'}</span>
+            </NavLink>
             <NavLink to="/regions">
               <i className="fa fa-codepen fa-fw" />
               <span>{t('sidebarRegion')}</span>
@@ -79,6 +83,14 @@ class C extends React.Component {
             </Link>
           </div>
           <ul className="nav nav-sidebar">
+          <NavLink to="/regions">
+            <i className="fa fa-codepen fa-fw" />
+            <span>{t('sidebarRegion')}</span>
+          </NavLink>
+          <NavLink to="/services">
+            <i className="fa fa-star fa-fw" />
+            <span>{t('sidebarService')}</span>
+          </NavLink>
             <NavLink to="/users">
               <i className="fa fa-user fa-fw" />
               <span>{t('sidebarUser')}</span>

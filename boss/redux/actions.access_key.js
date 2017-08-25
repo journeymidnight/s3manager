@@ -28,7 +28,7 @@ export function requestCreateAccessKey(name, description) {
       .then((payload) => {
         dispatch(extendContext({ accessKey: payload }));
         setTimeout(() => {
-          dispatch(notify(i18n.t('createSuccessed')));
+          dispatch(notify(i18n.t('pageAccessKeyCreate.createSuccessed'), 'notice', 1000));
         }, 1000);
       });
   };
@@ -40,7 +40,7 @@ export function requestDeleteAccessKeys(accessKeys) {
     .deleteAccessKeys(accessKeys)
     .promise
     .then(() => {
-      dispatch(notify(i18n.t('deleteSuccessed')));
+      dispatch(notify(i18n.t('pageAccessKeyCreate.deleteSuccessed'), 'notice', 1000));
     })
     .catch((error) => {
       dispatch(notifyAlert(error.message));

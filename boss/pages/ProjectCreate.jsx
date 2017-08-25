@@ -19,11 +19,11 @@ class C extends Page {
 
   onSubmit(values, dispatch) {
     return new Promise((resolve, reject) => {
-      const name = values.name;
+      const projectName = values.projectName;
       const description = values.description;
 
       dispatch(ProjectActions.requestCreateProject({
-        name,
+        projectName,
         description,
       }))
       .then(() => {

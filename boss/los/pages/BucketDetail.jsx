@@ -58,18 +58,18 @@ class C extends Page {
     const todayLocalFormat = moment(nowLocal).format('YYYYMMDD');
     const startOfMonthLocalFormat = moment(nowLocal).startOf('month').format('YYYYMMDD');
 
-    //Promise.all([
+    Promise.all([
     //  dispatch(BucketActions.requestGetUsageByHour(routerKey, 'cn-north-1', bucketName, startOfDayLocalFormat, nowLocalFormat)),
     //  dispatch(BucketActions.requestGetStaticsByDay(routerKey, region.regionId, bucketName, startOfMonthLocalFormat, todayLocalFormat)),
     //  dispatch(BucketActions.requestGetOpByHour(routerKey, 'cn-north-1', bucketName, startOfDayLocalFormat, nowLocalFormat)),
     //  dispatch(BucketActions.requestGetFlowByHour(routerKey, 'cn-north-1', bucketName, startOfDayLocalFormat, nowLocalFormat)),
-    //  dispatch(BucketActions.requestGetUsageByNow(routerKey, region.regionId, bucketName, this.props.global.project.projectId)), // TODO: change regionId
-    //])
-    //  .then(() => {
-    //    dispatch(extendContext({ loading: false }, routerKey));
-    //  });
+    dispatch(BucketActions.requestGetUsageByNow(routerKey, undefined, bucketName, undefined)), // TODO: change regionId
+    ])
+    .then(() => {
+      dispatch(extendContext({ loading: false }, routerKey));
+    });
 
-    //dispatch(extendContext({ loading: true }, routerKey));
+    dispatch(extendContext({ loading: true }, routerKey));
     //if (this.props.global.folderLocation) {
     //  dispatch(removeFolderLocation());
     //}

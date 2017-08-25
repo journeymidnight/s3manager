@@ -19,12 +19,12 @@ class C extends Page {
 
   onSave(values, dispatch) {
     return new Promise((resolve, reject) => {
-      const name = values.name;
+      const projectName = values.projectName;
       const description = values.description;
 
       dispatch(ProjectActions.requestModifyProject({
         projectId: this.props.project.projectId,
-        name,
+        projectName,
         description,
       }))
       .then(() => {

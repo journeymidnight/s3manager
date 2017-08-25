@@ -22,17 +22,11 @@ class C extends Page {
       const regionId = values.regionId;
       const serviceKey = values.serviceKey;
       const publicEndpoint = values.publicEndpoint;
-      const manageEndpoint = values.manageEndpoint;
-      const manageKey = values.manageKey;
-      const manageSecret = values.manageSecret;
 
       dispatch(ServiceActions.requestCreateService({
         regionId,
         serviceKey,
         publicEndpoint,
-        manageEndpoint,
-        manageKey,
-        manageSecret,
       }))
       .then(() => {
         resolve();

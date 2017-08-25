@@ -49,11 +49,6 @@ class C extends Page {
               </div>
 
               <ul className="nav-links pull-right">
-                <li className={`pull-right ${(active === 'projects') ? 'active' : ''}`}>
-                  <Link data-placement="left" to={`/services/${service.serviceId}/projects`}>
-                    {t('pageService.assignedProjects')}
-                  </Link>
-                </li>
                 <li className={`pull-right ${(active === 'basic') ? 'active' : ''}`}>
                   <Link data-placement="left" to={`/services/${service.serviceId}/basic`}>
                     {t('pageService.basic')}

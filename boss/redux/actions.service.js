@@ -72,7 +72,7 @@ export function requestDeleteQuotas(routerKey, serviceKey, regionId, projectIds)
     .deleteQuotas(serviceKey, regionId, projectIds)
     .promise
     .then((payload) => {
-      dispatch(notify(i18n.t('deleteSuccessed')));
+      dispatch(notify(i18n.t('deleteSuccessed'), 'notice', 1000));
       dispatch(extendContext(payload, routerKey));
     })
     .catch((error) => {
@@ -106,7 +106,7 @@ export function requestCreateService(service) {
     .promise
     .then(() => {
       dispatch(push('/services'));
-      dispatch(notify(i18n.t('createSuccessed')));
+      dispatch(notify(i18n.t('createSuccessed'), 'notice', 1000));
     })
     .catch((error) => {
       dispatch(notifyAlert(error.message));
@@ -120,7 +120,7 @@ export function requestModifyService(service) {
     .modifyService(service)
     .promise
     .then(() => {
-      dispatch(notify(i18n.t('updateSuccessed')));
+      dispatch(notify(i18n.t('updateSuccessed'), 'notice', 1000));
       return dispatch(requestDescribeService(service.serviceId));
     })
     .catch((error) => {

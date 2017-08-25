@@ -70,7 +70,7 @@ class Modal extends React.Component {
             </a>
           </div>
 
-          <div className="modal-content">
+          <div className="modal-content-own">
             {children}
           </div>
 

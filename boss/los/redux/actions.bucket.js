@@ -100,7 +100,7 @@ export function requestPutBucketAcl(s3, bucketName, acl) {
         if (error) {
           reject();
         } else {
-          dispatch(notify(i18n.t('pageBucket.putAclSuccess')));
+          dispatch(notify(i18n.t('pageBucket.putAclSuccess'), 'notice', 1000));
           resolve();
         }
       });
@@ -194,7 +194,7 @@ export function requestGetStaticsByDay(routerKey, regionId, bucketName, startDat
 export function requestGetUsageByNow(routerKey, regionId, bucketName, projectId) {
   return dispatch => {
     return Wcs
-      .doAction(regionId, ACTION_NAMES.getbucketstats, { bucket: bucketName, projectId })
+      .doAction(undefined, ACTION_NAMES.getbucketstats, { bucket: bucketName})
       .promise
       .then((payload) => {
         const usageByNow = JSON.parse(payload).usage.hasOwnProperty('rgw.main') ? JSON.parse(payload).usage['rgw.main'].size_kb : 0;

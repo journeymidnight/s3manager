@@ -47,6 +47,7 @@ class C extends TablePage {
   }
 
   renderTable() {
+    debugger
     const { t } = this.props;
     return this.props.context.total > 0 && this.props.context.regionSet.length > 0 && (
       <table className="table">
@@ -55,10 +56,9 @@ class C extends TablePage {
             <th width="40">
               <input type="checkbox" className="selected" onChange={this.onSelectAll(this.props.context.regionSet.map((u) => { return u.regionId; }))} />
             </th>
-            <th width="150">{t('id')}</th>
-            <th>{t('name')}</th>
-            <th>{t('pageRegion.consoleEndpoint')}</th>
-            <th width="200">{t('created')}</th>
+            <th width="30%">{t('id')}</th>
+            <th width="30%">{t('name')}</th>
+            <th width="40%">{t('created')}</th>
           </tr>
         </thead>
         <tbody>
@@ -69,8 +69,7 @@ class C extends TablePage {
                 <input type="checkbox" className="selected" onChange={this.onSelect(region.regionId)} checked={this.props.context.selected[region.regionId] === true} />
               </td>
               <td><Link to={`/regions/${region.regionId}`}>{region.regionId}</Link></td>
-              <td><strong>{region.name}</strong></td>
-              <td>{region.consoleEndpoint}</td>
+              <td><strong>{region.regionName}</strong></td>
               <td>{moment.utc(region.created).local().format('YYYY-MM-DD HH:mm:ss')}</td>
             </tr>
           );

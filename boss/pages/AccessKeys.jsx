@@ -62,10 +62,9 @@ class C extends TablePage {
                 isChecked={this.isAllSelected(this.props.context.accessKeySet.map((u) => { return u.accessKey; }))}
               />
             </th>
-            <th width="150">{t('name')}</th>
-            <th>{t('accessKey')}</th>
-            <th>{t('status')}</th>
-            <th width="200">{t('created')}</th>
+            <th width="30%">{t('name')}</th>
+            <th width="30%">{t('accessKey')}</th>
+            <th width="30%">{t('created')}</th>
           </tr>
         </thead>
         <tbody>
@@ -89,11 +88,6 @@ class C extends TablePage {
                     {accessKey.accessKey}
                     <br />
                     {accessKey.accessSecret}
-                  </div>
-                </td>
-                <td>
-                  <div className={`label i-status-${accessKey.status}`}>
-                    {t(`accessKeyStatus.${accessKey.status}`)}
                   </div>
                 </td>
                 <td className="light"><Time value={accessKey.created} format="YYYY-MM-DD HH:mm:ss" /></td>
@@ -154,22 +148,7 @@ class C extends TablePage {
           >
             <Loading loading={context.loading} />
           </button>
-          <Select
-            options={statusOption}
-            onChange={(value) => {
-              this.onRefresh({ status: value })();
-            }}
-          />
           <SearchBox ref="searchBox" placeholder={t('filterByIdorName')} onEnterPress={this.onSearchKeyPress} onButtonClick={this.onSearchButtonClick} />
-          <div className="pull-right">
-            <Select
-              options={createTimeOption}
-              defaultWord={context.reverse}
-              onChange={(value) => {
-                this.onRefresh({ reverse: value })();
-              }}
-            />
-          </div>
         </div>}
         {Object.keys(this.props.context.selected).length > 0 && <button
           disabled={this.isBatchActionDisabled(['active'], context.accessKeySet, 'accessKey')}
