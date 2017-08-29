@@ -17,7 +17,7 @@ const F = (props) => {
       <div className={submitFailed && projectName.error ? 'form-group has-error' : 'form-group'}>
         <label className="control-label" >{t('name')}</label>
         <div className="col-sm-10">
-          <input type="text" className="form-control" {...projectName} />
+          <input type="text" className="form-control" {...projectName}/>
           {submitFailed && projectName.error && <div className="text-danger"><small>{projectName.error}</small></div>}
         </div>
       </div>

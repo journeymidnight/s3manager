@@ -50,7 +50,7 @@ const F = (props) => {
         <label className="control-label" >{t('project')}</label>
         <select className="form-control" {...projectId}>
           {projects.map((project) => {
-            return <option value={project.projectId} key={project.projectId}>{project.name}</option>;
+            return <option value={project.projectId} key={project.projectId}>{project.projectName}</option>;
           })}
         </select>
         {submitFailed && projectId.error && <div className="text-danger"><small>{projectId.error}</small></div>}

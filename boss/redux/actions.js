@@ -71,17 +71,21 @@ export function requestLogin(email, password) {
     .promise
     .then((token) => {
         let auth
-        if (token.accountId === "ROOT") {
-          auth = {username: "root"};
+        //actually there is only one root
+        if (token.type === "ROOT") {
+          auth = {username: "u-root"};
         } else {
           auth = {username: token.accountId};
         }
+
         var context = {};
         context.auth = auth
         dispatch(authLogin(context, token.token));
         if (token.type === 'ROOT') {
           dispatch(push('/users')) 
         } else {
+          //for accounts, we should let them select a project right now
+          //if 
           var region = { //fixme: this is ugly
             accessKey:  "tjhKTEkZ6wzteqYNPvas",
             accessSecret: "VLZsBahNvgsC9x5mfsRgUhwgn4HPyPV4JaAaSzNZ",
@@ -101,6 +105,10 @@ export function requestLogin(email, password) {
     .catch((error) => {
       if (error.retCode === 1200) {
         dispatch(notifyAlert(i18n.t('authorizeFailed')));
+      } else if (error.retCode === 4102) {
+        debugger
+        dispatch(Actions.extendContext({ projectSet: error.data.projectSet}))
+        dispatch(push('/login')) 
       } else {
         dispatch(notifyAlert(error.message));
       }

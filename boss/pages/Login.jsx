@@ -3,30 +3,82 @@ import { connect } from 'react-redux';
 import * as Actions from '../redux/actions';
 import Header from '../../shared/components/Header';
 import Notify from '../../shared/components/Notify.jsx';
+import Auth from '../../boss/services/auth';
 import LoginForm from '../../shared/forms/LoginForm';
+import { push } from 'react-router-redux';
+
 
 class C extends React.Component {
 
-  componentDidMount() {
+  constructor(props) {
+    super(props);
+
     this.onSubmit = this.onSubmit.bind(this);
+    this.initialValues = {};
   }
 
   onSubmit(values, dispatch) {
+    this.initialValues = values;
     return new Promise((resolve, reject) => {
       const email = values.email;
       const password = values.password;
+      const projectId = values.projectId;
 
-      dispatch(Actions.requestLogin(email, password))
-      .then(() => {
-        resolve();
+      Auth.authorize(email, password, projectId)
+      .promise
+      .then((token) => {
+        let auth
+        //actually there is only one root
+        if (token.type === "ROOT") {
+          auth = {username: "u-root"};
+        } else {
+          auth = {username: token.accountId};
+        }
+
+        var context = {};
+        context.auth = auth
+        dispatch(Actions.authLogin(context, token.token));
+        if (token.type === 'ROOT') {
+          dispatch(push('/users')) 
+        } else {
+          //for accounts, we should let them select a project right now
+          //if 
+          var region = { //fixme: this is ugly
+            accessKey:  "tjhKTEkZ6wzteqYNPvas",
+            accessSecret: "VLZsBahNvgsC9x5mfsRgUhwgn4HPyPV4JaAaSzNZ",
+            endpoint: "http://127.0.0.1:8888",
+            name: "华北一区",
+            regionId: "cn-north-1"
+          };
+          dispatch(Actions.selectService({
+            serviceKey: '',
+            servicePath: '',
+            region
+          }));
+
+          dispatch(push('/buckets')) 
+        }
       })
-      .catch(() => {
+      .catch((error) => {
         reject();
+        if (error.retCode === 1200) {
+          dispatch(Actions.notifyAlert(i18n.t('authorizeFailed')));
+        } else if (error.retCode === 4102) {
+          dispatch(Actions.extendContext({ projectSet: error.data.projectSet}))
+          dispatch(push('/login')) 
+        } else {
+          dispatch(Actions.notifyAlert(error.message));
+        }
       });
     });
   }
 
   render() {
+    debugger
+    if (this.props.context.projectSet && this.props.context.projectSet.length > 0 && !this.initialValues.projectId) {
+      this.initialValues.projectId = this.props.context.projectSet[0].projectId;
+    }
+
     return (
       <div className="login-page">
         <Header />
@@ -52,7 +104,7 @@ class C extends React.Component {
                         </h3>
                       </div>
                       <div className="login-body">
-                        <LoginForm onSubmit={this.onSubmit} />
+                        <LoginForm onSubmit={this.onSubmit} projects={this.props.context.projectSet} initialValues={this.initialValues}/>
                       </div>
                     </div>
                   </div>
@@ -68,11 +120,13 @@ class C extends React.Component {
 
 C.propTypes = {
   auth: React.PropTypes.object,
+  context: React.PropTypes.object,
 };
 
 function mapStateToProps(state) {
   return {
     auth: state.auth,
+    context: state.context,
   };
 }
 

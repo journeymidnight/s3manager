@@ -23,6 +23,15 @@ class IAM {
     const payload = Object.assign({}, params);
     return rawCall('post', action, payload, undefined, true);
   }
+
+  authorize(email, password) {
+    return call('post', '/iamapi', {
+      action: 'ConnectService',
+      email,
+      password
+    }, undefined, true);
+  }
+
   describeProjects(filters = {}) {
     return this.call('/iamapi/ListProjects', filters); //turn to ListProjects for iamapi
   }

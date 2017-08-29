@@ -1,12 +1,13 @@
 import { call } from '../../shared/services/api';
 
 class Auth {
-  authorize(email, password) {
+  authorize(email, password, projectId) {
     return call('post', '/iamapi', {
       action: 'ConnectService',
       email,
-      password
-    },undefined, true);
+      password,
+      projectId,
+    }, undefined, true);
   }
   describeToken(token) {
     return call('post', '/api/DescribeToken', {}, (options) => {
