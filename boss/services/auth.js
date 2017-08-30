@@ -15,15 +15,21 @@ class Auth {
     });
   }
 
-  createAccessKey(name, description) {
+  createAccessKey(projectId, name, description) {
     return call('post', '/iamapi/CreateAccessKey', {
+      projectId,
       name,
       description,
     }, undefined, true);
   }
-  describeAccessKeys(filter = {}) {
-    return call('post', '/iamapi/DescribeAccessKeysWithToken', filter, undefined, true);
+  describeAccessKeys(filter = {}, projectId) {
+    return call('post', '/iamapi/ListAccessKeysByProject', filter, undefined, true, projectId);
   }
+
+  describeAutogenAccessKeys(filter = {}, projectId) {
+    return call('post', '/iamapi/GetAutogenkeysByProjectId', filter, undefined, true, projectId);
+  }
+
   deleteAccessKeys(accessKeys) {
     return call('post', '/iamapi/DeleteAccessKey', {
       accessKeys,

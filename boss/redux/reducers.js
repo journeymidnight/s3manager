@@ -8,6 +8,22 @@ export const constReducer = (state = {}) => {
   return state;
 };
 
+export const consoleheadeReducer = (state = {}, action) => {
+  let newState = Object.assign({}, state);
+  switch (action.type) {
+    case ActionTypes.REGIONSET:
+      newState.regionSet = action.regionSet
+      return newState
+
+    case ActionTypes.CURRENT_PROJECT:
+      newState.projectId= action.projectId
+      return newState
+
+    default:
+      return state;
+  }
+};
+
 export const authReducer = (state = null, action) => {
   switch (action.type) {
     case ActionTypes.AUTH_LOGIN:
@@ -47,6 +63,7 @@ const reducers = combineReducers({
   form: formReducer,
   context: constReducer,
   service: serviceReducer,
+  consoleheader: consoleheadeReducer
 });
 
 export function rootReducer(state = {}, action) {

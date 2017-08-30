@@ -97,6 +97,7 @@ function mapStateToProps(state) {
     global: state.global,
     routerKey: state.routing.locationBeforeTransitions.key,
     path: state.routing.locationBeforeTransitions.pathname,
+    consoleheader : state.consoleheader
   };
 }
 

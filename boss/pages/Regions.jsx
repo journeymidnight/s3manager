@@ -47,7 +47,6 @@ class C extends TablePage {
   }
 
   renderTable() {
-    debugger
     const { t } = this.props;
     return this.props.context.total > 0 && this.props.context.regionSet.length > 0 && (
       <table className="table">

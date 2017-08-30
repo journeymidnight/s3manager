@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { translate } from 'react-i18next';
 import { push } from 'react-router-redux';
 import Page, { attach } from '../../shared/pages/Page';
 import AccessKeyForm from '../forms/AccessKeyForm';
@@ -26,12 +28,14 @@ class C extends Page {
 
   onSubmit(values) {
     const { dispatch } = this.props;
+    const { projectId } = this.props.consoleheader;
 
     return new Promise((resolve, reject) => {
       const name = values.name;
       const description = values.description;
 
       dispatch(AccessKeyActions.requestCreateAccessKey(
+        projectId,
         name,
         description
       ))
@@ -63,4 +67,5 @@ class C extends Page {
   }
 }
 
-export default attach(C);
+
+export default attach(C)

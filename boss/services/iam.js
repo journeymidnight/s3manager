@@ -25,7 +25,7 @@ class IAM {
   }
 
   authorize(email, password) {
-    return call('post', '/iamapi', {
+    return rawCall('post', '/iamapi', {
       action: 'ConnectService',
       email,
       password
@@ -57,7 +57,6 @@ class IAM {
     });
   }
   createProjectRole(projectId, userId, role) {
-    debugger
     return this.call('/iamapi/CreateProjectRole', {
       projectId,
       userId,
@@ -72,7 +71,6 @@ class IAM {
   }
 
   describeUsers(filters = {}) {
-    debugger
     return this.call('/iamapi/ListAccounts', filters);
   }
   describeUser(filters = {}) {

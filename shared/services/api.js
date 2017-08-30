@@ -4,7 +4,7 @@ import Promise from 'promise';
 import cookie from 'js-cookie';
 import i18n from '../../shared/i18n';
 
-export const call = (method, url, payload, hook, yigapi) => {
+export const call = (method, url, payload, hook, yigapi, projectId) => {
   const headers = {
     'Content-Type': 'application/json',
     Accept: 'application/json',
@@ -68,7 +68,6 @@ export const call = (method, url, payload, hook, yigapi) => {
     newpayload.token = token;
     payload = newpayload;
   }else if (url === '/iamapi/CreateService') {
-    debugger
     url = '/iamapi';
     newpayload.action = 'CreateService';
     newpayload.token = token;
@@ -77,7 +76,6 @@ export const call = (method, url, payload, hook, yigapi) => {
     newpayload.endpoint= payload.publicEndpoint;
     payload = newpayload;
   }else if (url === '/iamapi/DeleteServices') {
-    debugger
     url = '/iamapi';
     newpayload.action = 'DeleteService';
     newpayload.token = token;
@@ -91,7 +89,6 @@ export const call = (method, url, payload, hook, yigapi) => {
     newpayload.endpoint = payload.publicEndpoint;
     payload = newpayload;
   }else if (url === '/iamapi/DeleteRegions') {
-    debugger
     url = '/iamapi';
     newpayload.action = 'DeleteRegion';
     newpayload.token = token;
@@ -118,17 +115,23 @@ export const call = (method, url, payload, hook, yigapi) => {
     newpayload.regionName = payload.name;
     payload = newpayload;
   }else if (url === '/iamapi/DeleteRegions') {
-    debugger
     url = '/iamapi';
     newpayload.action = 'DeleteRegion';
     newpayload.token = token;
     newpayload.regionId= payload.regionIds[0];
     payload = newpayload;
 
-  } else if (url === '/iamapi/DescribeAccessKeysWithToken') {
+  } else if (url === '/iamapi/ListAccessKeysByProject') {
     url = '/iamapi';
-    newpayload.action = 'DescribeAccessKeysWithToken';
+    newpayload.action = 'ListAccessKeysByProject';
     newpayload.token = token;
+    newpayload.projectId = projectId
+    payload = newpayload;
+  } else if (url === '/iamapi/GetAutogenkeysByProjectId') {
+    url = '/iamapi';
+    newpayload.action = 'GetAutogenkeysByProjectId';
+    newpayload.token = token;
+    newpayload.projectId = projectId
     payload = newpayload;
   } else if (url === '/iamapi/CreateAccessKey') {
     url = '/iamapi';
@@ -136,6 +139,7 @@ export const call = (method, url, payload, hook, yigapi) => {
     newpayload.token = token;
     newpayload.keyname = payload.name;
     newpayload.description = payload.description;
+    newpayload.projectId = payload.projectId;
     payload = newpayload;
   } else if (url === '/iamapi/DeleteAccessKey') {
     url = '/iamapi';
@@ -183,7 +187,6 @@ export const call = (method, url, payload, hook, yigapi) => {
     payload = newpayload;
   } else if (url === '/iamapi/ModifyProjectAttributes') {
     url = '/iamapi';
-    debugger
     newpayload.action = 'ModifyProjectAttributes';
     newpayload.token = token;
     newpayload.projectId = payload.projectId;

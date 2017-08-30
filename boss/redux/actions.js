@@ -59,6 +59,20 @@ export function authLogin(context, token) {
   };
 }
 
+export function setRegionSet(regionSet) {
+  return {
+    type: ActionTypes.REGIONSET,
+    regionSet,
+  };
+}
+
+export function setCurrentProject(projectId) {
+  return {
+    type: ActionTypes.CURRENT_PROJECT,
+    projectId,
+  };
+}
+
 export function authLogout() {
   return {
     type: ActionTypes.AUTH_LOGOUT,
@@ -84,29 +98,32 @@ export function requestLogin(email, password) {
         if (token.type === 'ROOT') {
           dispatch(push('/users')) 
         } else {
-          //for accounts, we should let them select a project right now
-          //if 
-          var region = { //fixme: this is ugly
-            accessKey:  "tjhKTEkZ6wzteqYNPvas",
-            accessSecret: "VLZsBahNvgsC9x5mfsRgUhwgn4HPyPV4JaAaSzNZ",
-            endpoint: "http://127.0.0.1:8888",
-            name: "华北一区",
-            regionId: "cn-north-1"
-          };
-          dispatch(selectService({
-            serviceKey: '',
-            servicePath: '',
-            region
-          }));
+          // for accounts, we should let them select a project right now
+          IAM.describeRegions()
+          .promise
+          .then((rgs) => 
+          {
+              var region = { //fixme: this is ugly
+              accessKey:  "tjhKTEkZ6wzteqYNPvas",
+              accessSecret: "VLZsBahNvgsC9x5mfsRgUhwgn4HPyPV4JaAaSzNZ",
+              endpoint: "http://127.0.0.1:8888",
+              name: "华北一区",
+              regionId: "cn-north-1"
+            };
+            dispatch(selectService({
+              serviceKey: '',
+              servicePath: '',
+              region
+            }));
 
-          dispatch(push('/buckets')) 
+            dispatch(push('/buckets')) 
+          })
         }
       })
     .catch((error) => {
       if (error.retCode === 1200) {
         dispatch(notifyAlert(i18n.t('authorizeFailed')));
       } else if (error.retCode === 4102) {
-        debugger
         dispatch(Actions.extendContext({ projectSet: error.data.projectSet}))
         dispatch(push('/login')) 
       } else {
@@ -236,7 +253,6 @@ export function requestUserByEmail(email) {
     })
     .promise
     .then((res) => {
-      debugger
       if (res.length> 0) {
         let user;
         res.forEach((u) => {

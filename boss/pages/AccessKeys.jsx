@@ -29,7 +29,8 @@ class C extends TablePage {
   }
 
   refreshAction(routerKey, filters) {
-    return AccessKeyActions.requestDescribeAccessKeys(filters);
+    const {projectId } = this.props.consoleheader;
+    return AccessKeyActions.requestDescribeAccessKeys(filters, projectId);
   }
 
   onDelete() {

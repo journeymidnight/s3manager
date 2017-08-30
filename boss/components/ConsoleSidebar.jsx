@@ -32,33 +32,13 @@ class C extends React.Component {
             </Link>
           </div>
           <ul className="nav nav-sidebar">
-            <li>
-              <h5>{t('boss.iam.title')}</h5>
-            </li>
             <NavLink to="/access_keys">
               <i className="fa fa-key fa-fw" />
               <span>{'API秘钥'}</span>
             </NavLink>
-            <NavLink to="/regions">
+            <NavLink to="/buckets">
               <i className="fa fa-codepen fa-fw" />
-              <span>{t('sidebarRegion')}</span>
-            </NavLink>
-            <NavLink to="/services">
-              <i className="fa fa-star fa-fw" />
-              <span>{t('sidebarService')}</span>
-            </NavLink>
-            <NavLink to="/projects">
-              <i className="fa fa-cube fa-fw" />
-              <span>{t('sidebarProject')}</span>
-            </NavLink>
-            <NavLink to="/users">
-              <i className="fa fa-user fa-fw" />
-              <span>{t('sidebarUser')}</span>
-            </NavLink>
-            <li className="separate-item" />
-            <NavLink to="/admins">
-              <i className="fa fa-meh-o fa-fw" />
-              <span>{t('sidebarAdmin')}</span>
+              <span>{"存储空间"}</span>
             </NavLink>
           </ul>
           <div className="collapse-nav">

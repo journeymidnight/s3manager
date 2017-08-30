@@ -2,10 +2,10 @@ import { notify, notifyAlert, extendContext } from './actions';
 import Auth from '../services/auth';
 import i18n from '../../shared/i18n';
 
-export function requestDescribeAccessKeys(filters) {
+export function requestDescribeAccessKeys(filters, projectId) {
   return dispatch => {
     return Auth
-      .describeAccessKeys(filters)
+      .describeAccessKeys(filters, projectId)
       .promise
       .then((payload) => {
         dispatch(extendContext(Object.assign(payload, {
@@ -20,10 +20,10 @@ export function requestDescribeAccessKeys(filters) {
   };
 }
 
-export function requestCreateAccessKey(name, description) {
+export function requestCreateAccessKey(projectId, name, description) {
   return dispatch => {
     return Auth
-      .createAccessKey(name, description)
+      .createAccessKey(projectId, name, description)
       .promise
       .then((payload) => {
         dispatch(extendContext({ accessKey: payload }));

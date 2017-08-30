@@ -4,6 +4,7 @@ import * as Actions from '../redux/actions';
 import Header from '../../shared/components/Header';
 import Notify from '../../shared/components/Notify.jsx';
 import Auth from '../../boss/services/auth';
+import IAM from '../../boss/services/iam';
 import LoginForm from '../../shared/forms/LoginForm';
 import { push } from 'react-router-redux';
 
@@ -42,22 +43,40 @@ class C extends React.Component {
           dispatch(push('/users')) 
         } else {
           //for accounts, we should let them select a project right now
-          //if 
-          var region = { //fixme: this is ugly
-            accessKey:  "tjhKTEkZ6wzteqYNPvas",
-            accessSecret: "VLZsBahNvgsC9x5mfsRgUhwgn4HPyPV4JaAaSzNZ",
-            endpoint: "http://127.0.0.1:8888",
-            name: "华北一区",
-            regionId: "cn-north-1"
-          };
-          dispatch(Actions.selectService({
-            serviceKey: '',
-            servicePath: '',
-            region
-          }));
+          //dispatch a action to get region info
+          // for accounts, we should let them select a project right now
+          IAM.describeRegions()
+          .promise
+          .then((rgs) => 
+          {
+              dispatch(Actions.setCurrentProject(projectId));
+              //set regionset for consoleheader
+              dispatch(Actions.setRegionSet(rgs.regionSet));
 
-          dispatch(push('/buckets')) 
-        }
+              //get keys for this project
+              Auth.describeAutogenAccessKeys(undefined, projectId)
+              .promise
+              .then((keyset) => {
+                //fixme: this is ugly
+                var region = { 
+                  accessKey:  keyset.accessKey,
+                  accessSecret: keyset.accessSecret,
+                  endpoint: "http://127.0.0.1:8888",
+                  name: "华北一区",
+                  regionId: "cn-north-1"
+                };
+                dispatch(Actions.selectService({
+                  serviceKey: '',
+                  servicePath: '',
+                  region
+                }));
+
+                dispatch(push('/buckets')) 
+              })
+
+
+        })
+      }
       })
       .catch((error) => {
         reject();
@@ -74,7 +93,6 @@ class C extends React.Component {
   }
 
   render() {
-    debugger
     if (this.props.context.projectSet && this.props.context.projectSet.length > 0 && !this.initialValues.projectId) {
       this.initialValues.projectId = this.props.context.projectSet[0].projectId;
     }

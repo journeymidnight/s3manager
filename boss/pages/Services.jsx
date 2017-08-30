@@ -64,7 +64,6 @@ class C extends TablePage {
         </thead>
         <tbody>
         {this.props.context.serviceSet.map((service) => {
-          debugger
           return (
             <tr key={service.serviceId}>
               <td>

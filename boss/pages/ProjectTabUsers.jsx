@@ -31,7 +31,6 @@ class F extends React.Component {
     })
     .promise
     .then((payload) => {
-      debugger
       callback(null, {
         options: payload.map((user) => {
           return {
@@ -124,7 +123,6 @@ class C extends TablePage {
 
       dispatch(Actions.requestUserByEmail(email))
       .then((user) => {
-        debugger
         if (user) {
           dispatch(ProjectActions.requestCreateProjectRole(project.projectId, user.AccountId, role))
           .then(() => {
