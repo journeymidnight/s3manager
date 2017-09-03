@@ -43,6 +43,7 @@ class C extends Page {
     AWS.config.accessKeyId = region.accessKey;
     AWS.config.secretAccessKey = region.accessSecret;
     AWS.config.maxRetries = 3;
+    AWS.config.s3ForcePathStyle = true;
     const s3 = new AWS.S3();
 
     dispatch(BucketActions.requestCreateBucket(routerKey, region.regionId, bucketName))

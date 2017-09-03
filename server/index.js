@@ -19,7 +19,7 @@ const hotMiddleware = webpackHotMiddleware(compiler);
 
 function createApp(module) {
   const endpoint = process.env[`${module}_endpoint`.toUpperCase()] || 'http://localhost:9003';
-  const yigiam_endpoint = 'http://localhost:8888';
+  const yigiam_endpoint = 'http://123.59.229.3:8888';
 
   const app = new Express();
   app.use(logger('dev'));

@@ -34,6 +34,8 @@ class C extends TablePageStatic {
         AWS.config.accessKeyId = region.accessKey;
         AWS.config.secretAccessKey = region.accessSecret;
         AWS.config.maxRetries = 3;
+        AWS.config.s3ForcePathStyle = true;
+        console.log(AWS.config)
         this.s3 = new AWS.S3();
       });
   }

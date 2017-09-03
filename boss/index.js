@@ -14,21 +14,23 @@ bootstrap((token, state, callback) => {
 
   let store = configureStore(rootReducer, state, hashHistory);
   let routes = configureRoutes(store);
+  callback(store, routes, hashHistory);
 
-  if (token) {
-    Auth.describeToken(token.token)
-    .promise
-    .then((context) => {
-      state.auth = context.auth;
+  //if (token) {
+  //  debugger
+  //  Auth.describeToken(token.token)
+  //  .promise
+  //  .then((context) => {
+  //    state.auth = context.auth;
 
-      store = configureStore(rootReducer, state, hashHistory);
-      routes = configureRoutes(store);
-      callback(store, routes, hashHistory);
-    })
-    .catch(() => {
-      callback(store, routes, hashHistory);
-    });
-  } else {
-    callback(store, routes, hashHistory);
-  }
+  //    store = configureStore(rootReducer, state, hashHistory);
+  //    routes = configureRoutes(store);
+  //    callback(store, routes, hashHistory);
+  //  })
+  //  .catch(() => {
+  //    callback(store, routes, hashHistory);
+  //  });
+  //} else {
+  //  callback(store, routes, hashHistory);
+  //}
 });

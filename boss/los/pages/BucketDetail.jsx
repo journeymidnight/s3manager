@@ -46,6 +46,7 @@ class C extends Page {
         AWS.config.accessKeyId = region.accessKey;
         AWS.config.secretAccessKey = region.accessSecret;
         AWS.config.maxRetries = 3;
+        AWS.config.s3ForcePathStyle = true;
         this.s3 = new AWS.S3();
         dispatch(BucketActions.requestGetBucketAcl(this.s3, bucketName, routerKey));
       });
@@ -58,18 +59,20 @@ class C extends Page {
     const todayLocalFormat = moment(nowLocal).format('YYYYMMDD');
     const startOfMonthLocalFormat = moment(nowLocal).startOf('month').format('YYYYMMDD');
 
-    Promise.all([
-    //  dispatch(BucketActions.requestGetUsageByHour(routerKey, 'cn-north-1', bucketName, startOfDayLocalFormat, nowLocalFormat)),
-    //  dispatch(BucketActions.requestGetStaticsByDay(routerKey, region.regionId, bucketName, startOfMonthLocalFormat, todayLocalFormat)),
-    //  dispatch(BucketActions.requestGetOpByHour(routerKey, 'cn-north-1', bucketName, startOfDayLocalFormat, nowLocalFormat)),
-    //  dispatch(BucketActions.requestGetFlowByHour(routerKey, 'cn-north-1', bucketName, startOfDayLocalFormat, nowLocalFormat)),
-    dispatch(BucketActions.requestGetUsageByNow(routerKey, undefined, bucketName, undefined)), // TODO: change regionId
-    ])
-    .then(() => {
-      dispatch(extendContext({ loading: false }, routerKey));
-    });
+    //Promise.all([
+    ////  dispatch(BucketActions.requestGetUsageByHour(routerKey, 'cn-north-1', bucketName, startOfDayLocalFormat, nowLocalFormat)),
+    ////  dispatch(BucketActions.requestGetStaticsByDay(routerKey, region.regionId, bucketName, startOfMonthLocalFormat, todayLocalFormat)),
+    ////  dispatch(BucketActions.requestGetOpByHour(routerKey, 'cn-north-1', bucketName, startOfDayLocalFormat, nowLocalFormat)),
+    ////  dispatch(BucketActions.requestGetFlowByHour(routerKey, 'cn-north-1', bucketName, startOfDayLocalFormat, nowLocalFormat)),
 
-    dispatch(extendContext({ loading: true }, routerKey));
+    // because requestGetUsageByNow cann't return correctly now, we don't make such request
+    ////dispatch(BucketActions.requestGetUsageByNow(routerKey, undefined, bucketName, undefined)), // TODO: change regionId
+    //])
+    //.then(() => {
+    //  dispatch(extendContext({ loading: false }, routerKey));
+    //});
+
+    //dispatch(extendContext({ loading: true }, routerKey));
     //if (this.props.global.folderLocation) {
     //  dispatch(removeFolderLocation());
     //}
@@ -164,7 +167,7 @@ class C extends Page {
                   <tr>
                     <td>{t('pageBucket.publicDomain')}</td>
                     <td>
-                      <span>{params.bucketName}.{context.s3Domain}</span>
+                      <span>{context.s3Domain}/{params.bucketName}</span>
                     </td>
                   </tr>
                 </tbody>
