@@ -19,8 +19,10 @@ class C extends Page {
 
   initialize(routerKey) {
     const { t, dispatch, servicePath, region } = this.props;
+    const  {currentService } = this.props.consoleheader
+
     dispatch(setHeader(t('bucketList'), `${servicePath}/buckets`));
-    dispatch(requestGetS3Domain(routerKey, region.regionId)).
+    dispatch(requestGetS3Domain(routerKey, currentService)).
       then(() => {
         dispatch(extendContext({ initialized: true }, routerKey));
       });
@@ -33,6 +35,7 @@ class C extends Page {
 
   onSubmit(values) {
     const { dispatch, region, routerKey, servicePath, service, t } = this.props;
+    const { currentService } = this.props.consoleheader
     const { serviceKey } = service;
     
     const bucketName = values.bucketName;
@@ -46,9 +49,9 @@ class C extends Page {
     AWS.config.s3ForcePathStyle = true;
     const s3 = new AWS.S3();
 
-    dispatch(BucketActions.requestCreateBucket(routerKey, region.regionId, bucketName))
+    dispatch(BucketActions.requestCreateBucket(routerKey, currentService, bucketName))
       .then(() => {
-        return dispatch(BucketActions.requestPutCors(routerKey, region.regionId, bucketName));
+        return dispatch(BucketActions.requestPutCors(routerKey, currentService, bucketName));
       })
       .then(() => {
         return dispatch(BucketActions.requestPutBucketAcl(s3, bucketName, acl));

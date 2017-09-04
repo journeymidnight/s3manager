@@ -38,8 +38,9 @@ class C extends Page {
   refresh() {
     const { dispatch, region, routerKey, params } = this.props;
     const bucketName = params.bucketName;
+    const { currentService } = this.props.consoleheader
 
-    dispatch(requestGetS3Domain(routerKey, region.regionId))
+    dispatch(requestGetS3Domain(routerKey, currentService))
       .then(() => {
         AWS.config.endpoint = this.props.context.s3Domain;
         AWS.config.region = region.regionId;
@@ -48,6 +49,7 @@ class C extends Page {
         AWS.config.maxRetries = 3;
         AWS.config.s3ForcePathStyle = true;
         this.s3 = new AWS.S3();
+        debugger
         dispatch(BucketActions.requestGetBucketAcl(this.s3, bucketName, routerKey));
       });
 

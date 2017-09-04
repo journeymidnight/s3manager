@@ -3,6 +3,9 @@ import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { Link } from 'react-router';
 import { Dropdown, Menu} from '../../lecloud-design';
+import * as Actions from '../redux/actions';
+import { requestGetS3Domain } from '../los/redux/actions.s3Domain';
+import * as BucketActions from '../los/redux/actions.bucket';
 
 class C extends React.Component {
   componentDidMount() {
@@ -15,34 +18,43 @@ class C extends React.Component {
     });
   }
 
-  clickme(){
-    alert("hehe")
+  changeService(service){
+    const { dispatch, routerKey } = this.props;
+    dispatch(Actions.setCurrentService(service));
+    dispatch(requestGetS3Domain(routerKey, service));
+    const filters = {
+      offset: (this.props.context.currentPage - 1) * this.props.context.size,
+      limit: this.props.context.size,
+      reverse: this.props.context.reverse,
+      searchWord: this.props.context.searchWord,
+    };
+    dispatch(BucketActions.setVisibleBuckets(routerKey, service, filters));
   }
 
   constructor(props) {
     super(props)
 
-    this.clickme = this.clickme.bind(this)
+    this.changeService= this.changeService.bind(this)
   }
   render() {
     const { t } = this.props;
     const { header } = this.props.context;
-    const { regionSet } = this.props.consoleheader;
-    let regionswitcher = null
+    const { serviceSet } = this.props.consoleheader.serviceSet;
+    let switcher = null
     if (this.props.auth.username !== 'u-root') {
-      regionswitcher = (
+      switcher = (
         <div className="dropdown inline prepend-left-10">
                 <button className="dropdown-toggle btn" data-toggle="dropdown" type="button" style={{marginTop: 16, padding: 2}}>
                   {"切换区域"}
                   <b className="caret"></b></button>
                 <ul className="dropdown-menu dropdown-menu-align-right dropdown-select dropdown-menu-selectable">
-                  {regionSet.map((_region) => {
+                  {serviceSet.map((_service) => {
                     return (
                       <li
-                        key={_region.regionId}
+                        key={_service.endpoint}
                       >
-                        <a href={_region.endpoint} onClick={this.clickme}>
-                          {_region.regionName}
+                        <a onClick={() => this.changeService(_service.endpoint)}>
+                          {_service.endpoint}
                         </a>
                       </li>
                     );
@@ -62,7 +74,7 @@ class C extends React.Component {
             <div className="navbar-collapse collapse">
               <ul className="nav navbar-nav pull-right">
                 <li>
-                  {regionswitcher}
+                  {switcher}
                 </li>
                 <li>
                   <Link className="logout" to="/logout">

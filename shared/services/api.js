@@ -197,35 +197,41 @@ export const call = (method, url, payload, hook, yigapi, projectId) => {
     url = '/losapi';
     newpayload.action = 'GetS3Domain';
     newpayload.token = token;
+    newpayload.endpoint = payload.regionId
     payload = newpayload;
   } else if (url === '/losapi/ListBuckets') {
     url = '/losapi';
     newpayload.action = 'ListBuckets';
     newpayload.token = token;
+    newpayload.endpoint = payload.regionId
     payload = newpayload;
   } else if (url === '/losapi/GetBucketStats') {
     url = '/losapi';
     newpayload.action = 'GetBucketStats';
     newpayload.token = token;
     newpayload.bucket = payload.bucket;
+    newpayload.endpoint = payload.regionId
     payload = newpayload;
   } else if (url === '/losapi/DeleteBucket') {
     url = '/losapi';
     newpayload.action = 'DeleteBucket';
     newpayload.token = token;
     newpayload.bucket = payload.bucket;
+    newpayload.endpoint = payload.regionId
     payload = newpayload;
   } else if (url === '/losapi/CreateBucket') {
     url = '/losapi';
     newpayload.action = 'CreateBucket';
     newpayload.token = token;
     newpayload.bucket = payload.bucket;
+    newpayload.endpoint = payload.regionId
     payload = newpayload;
   } else if (url === '/losapi/PutCors') {
     url = '/losapi';
     newpayload.action = 'PutCors';
     newpayload.token = token;
     newpayload.bucket = payload.bucket;
+    newpayload.endpoint = payload.regionId
     payload = newpayload;
   }
 

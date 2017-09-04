@@ -73,6 +73,13 @@ export function setCurrentProject(projectId) {
   };
 }
 
+export function setCurrentService(currentService) {
+  return {
+    type: ActionTypes.CURRENT_SERVICE,
+    currentService,
+  };
+}
+
 export function authLogout() {
   return {
     type: ActionTypes.AUTH_LOGOUT,
@@ -138,6 +145,13 @@ export function selectService(service) {
   return {
     type: ActionTypes.SELECT_SERVICE,
     service,
+  };
+}
+
+export function storeServices(serviceSet) {
+  return {
+    type: ActionTypes.STORE_SERVICES,
+    serviceSet,
   };
 }
 

@@ -90,6 +90,7 @@ export function requestPutCors(routerKey, regionId, bucketName) {
 }
 
 export function requestPutBucketAcl(s3, bucketName, acl) {
+  debugger
   return dispatch => {
     return new Promise((resolve, reject) => {
       const params = {

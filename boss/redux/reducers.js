@@ -18,6 +18,13 @@ export const consoleheadeReducer = (state = {}, action) => {
     case ActionTypes.CURRENT_PROJECT:
       newState.projectId= action.projectId
       return newState
+    case ActionTypes.CURRENT_SERVICE:
+      newState.currentService = action.currentService
+      return newState
+
+    case ActionTypes.STORE_SERVICES:
+      newState.serviceSet = action.serviceSet
+      return newState
 
     default:
       return state;

@@ -25,9 +25,11 @@ class C extends TablePageStatic {
 
   initialize(routerKey) {
     const { t, dispatch, servicePath, region } = this.props;
+    const { currentService } = this.props.consoleheader
+
     dispatch(setHeader(t('bucketList'), "buckets"));
     this.initTable(routerKey, {});
-    dispatch(requestGetS3Domain(routerKey, region.regionId))
+    dispatch(requestGetS3Domain(routerKey, currentService))
       .then(() => {
         AWS.config.endpoint = this.props.context.s3Domain;
         AWS.config.region = region.regionId;
@@ -35,14 +37,14 @@ class C extends TablePageStatic {
         AWS.config.secretAccessKey = region.accessSecret;
         AWS.config.maxRetries = 3;
         AWS.config.s3ForcePathStyle = true;
-        console.log(AWS.config)
         this.s3 = new AWS.S3();
       });
   }
 
   refreshAction(routerKey, filters) {
     const { region } = this.props;
-    return BucketActions.setVisibleBuckets(routerKey, region.regionId, filters);
+    const { currentService } = this.props.consoleheader;
+    return BucketActions.setVisibleBuckets(routerKey, currentService, filters);
   }
 
   onDelete() {

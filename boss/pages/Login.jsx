@@ -57,24 +57,37 @@ class C extends React.Component {
               Auth.describeAutogenAccessKeys(undefined, projectId)
               .promise
               .then((keyset) => {
-                //fixme: this is ugly
-                var region = { 
-                  accessKey:  keyset.accessKey,
-                  accessSecret: keyset.accessSecret,
-                  endpoint: "http://127.0.0.1:8888",
-                  name: "华北一区",
-                  regionId: "cn-north-1"
-                };
-                dispatch(Actions.selectService({
-                  serviceKey: '',
-                  servicePath: '',
-                  region
-                }));
+                IAM.describeServices()
+                .promise
+                .then((services) => {
+                  var endpoints = services.serviceSet
+                  
+                  var region = { 
+                    accessKey:  keyset.accessKey,
+                    accessSecret: keyset.accessSecret,
+                    endpoint: "http://127.0.0.1:8888",
+                    name: "华北一区",
+                    regionId: "cn-north-1"
+                  };
+                  dispatch(Actions.storeServices({
+                    serviceSet: endpoints 
+                  }));
+                  dispatch(Actions.selectService({
+                    serviceKey: '',
+                    servicePath: '',
+                    region
+                  }));
 
-                dispatch(push('/buckets')) 
+                  dispatch(Actions.setCurrentService(
+                    services.serviceSet[0].endpoint
+                  ));
+
+                  dispatch(push('/buckets')) 
+                })
               })
-
-
+              .catch((error) => {
+                dispatch(notifyAlert(error.message));
+              });
         })
       }
       })

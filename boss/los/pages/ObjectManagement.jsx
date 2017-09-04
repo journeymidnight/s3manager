@@ -64,12 +64,13 @@ class ObjectManagement extends TablePageStatic {
 
   initialize(routerKey) {
     const { t, dispatch, servicePath, region } = this.props;
+    const { currentService } = this.props.consoleheader
     dispatch(setHeader(t('objectManagement'), `${servicePath}/buckets`));
     if (!this.props.global.folderLocation) {
       dispatch(ObjectActions.setFolderLocation(''));
     }
 
-    dispatch(requestGetS3Domain(routerKey, region.regionId))
+    dispatch(requestGetS3Domain(routerKey, currentService))
       .then(() => {
         AWS.config.endpoint = this.props.context.s3Domain;
         AWS.config.region = region.regionId;

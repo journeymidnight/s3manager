@@ -3,6 +3,7 @@ import { call as rawCall } from '../../../shared/services/api';
 class Wcs {
   call(regionId, action, params) {
     const payload = Object.assign({}, params);
+    payload.regionId = regionId;
     return rawCall('post', `/losapi/${action}`, payload, undefined, true);
   }
   doAction(regionId, actionName, data) {
