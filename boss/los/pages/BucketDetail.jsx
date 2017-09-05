@@ -49,7 +49,6 @@ class C extends Page {
         AWS.config.maxRetries = 3;
         AWS.config.s3ForcePathStyle = true;
         this.s3 = new AWS.S3();
-        debugger
         dispatch(BucketActions.requestGetBucketAcl(this.s3, bucketName, routerKey));
       });
 
@@ -61,20 +60,21 @@ class C extends Page {
     const todayLocalFormat = moment(nowLocal).format('YYYYMMDD');
     const startOfMonthLocalFormat = moment(nowLocal).startOf('month').format('YYYYMMDD');
 
-    //Promise.all([
+
+    Promise.all([
     ////  dispatch(BucketActions.requestGetUsageByHour(routerKey, 'cn-north-1', bucketName, startOfDayLocalFormat, nowLocalFormat)),
     ////  dispatch(BucketActions.requestGetStaticsByDay(routerKey, region.regionId, bucketName, startOfMonthLocalFormat, todayLocalFormat)),
     ////  dispatch(BucketActions.requestGetOpByHour(routerKey, 'cn-north-1', bucketName, startOfDayLocalFormat, nowLocalFormat)),
     ////  dispatch(BucketActions.requestGetFlowByHour(routerKey, 'cn-north-1', bucketName, startOfDayLocalFormat, nowLocalFormat)),
 
-    // because requestGetUsageByNow cann't return correctly now, we don't make such request
-    ////dispatch(BucketActions.requestGetUsageByNow(routerKey, undefined, bucketName, undefined)), // TODO: change regionId
-    //])
-    //.then(() => {
-    //  dispatch(extendContext({ loading: false }, routerKey));
-    //});
+    dispatch(BucketActions.requestGetUsageByNow(routerKey, currentService, bucketName, undefined)), // TODO: change regionId
+    ])
+    .then(() => {
+      dispatch(extendContext({ loading: false }, routerKey));
+    });
 
-    //dispatch(extendContext({ loading: true }, routerKey));
+    dispatch(extendContext({ loading: true }, routerKey));
+
     //if (this.props.global.folderLocation) {
     //  dispatch(removeFolderLocation());
     //}

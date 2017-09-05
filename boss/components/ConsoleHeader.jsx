@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { replace } from 'react-router-redux';
 import { translate } from 'react-i18next';
 import { Link } from 'react-router';
 import { Dropdown, Menu} from '../../lecloud-design';
@@ -29,6 +30,7 @@ class C extends React.Component {
       searchWord: this.props.context.searchWord,
     };
     dispatch(BucketActions.setVisibleBuckets(routerKey, service, filters));
+    dispatch(replace('/buckets'))
   }
 
   constructor(props) {
@@ -39,9 +41,9 @@ class C extends React.Component {
   render() {
     const { t } = this.props;
     const { header } = this.props.context;
-    const { serviceSet } = this.props.consoleheader.serviceSet;
     let switcher = null
     if (this.props.auth.username !== 'u-root') {
+      const { serviceSet } = this.props.consoleheader.serviceSet;
       switcher = (
         <div className="dropdown inline prepend-left-10">
                 <button className="dropdown-toggle btn" data-toggle="dropdown" type="button" style={{marginTop: 16, padding: 2}}>

@@ -2,7 +2,6 @@ import { notifyAlert, extendContext } from '../../redux/actions';
 import Wcs, { ACTION_NAMES } from '../services/wcs';
 
 export function requestGetS3Domain(routerKey, endpoint) {
-  debugger
   return dispatch => {
     return Wcs
       .doAction(endpoint, ACTION_NAMES.gets3domain)

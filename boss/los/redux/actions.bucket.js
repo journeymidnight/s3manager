@@ -90,7 +90,6 @@ export function requestPutCors(routerKey, regionId, bucketName) {
 }
 
 export function requestPutBucketAcl(s3, bucketName, acl) {
-  debugger
   return dispatch => {
     return new Promise((resolve, reject) => {
       const params = {
@@ -195,7 +194,7 @@ export function requestGetStaticsByDay(routerKey, regionId, bucketName, startDat
 export function requestGetUsageByNow(routerKey, regionId, bucketName, projectId) {
   return dispatch => {
     return Wcs
-      .doAction(undefined, ACTION_NAMES.getbucketstats, { bucket: bucketName})
+      .doAction(regionId, ACTION_NAMES.getbucketstats, { bucket: bucketName})
       .promise
       .then((payload) => {
         const usageByNow = JSON.parse(payload).usage.hasOwnProperty('rgw.main') ? JSON.parse(payload).usage['rgw.main'].size_kb : 0;
