@@ -243,7 +243,7 @@ export const call = (method, url, payload, hook, yigapi, projectId) => {
   const options = {
     url,
     method,
-    baseURL: "http://127.0.0.1:8888",
+    baseURL: "http://ceph.com:8888",
   };
 
   if (method === 'post') {
