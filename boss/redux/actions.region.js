@@ -25,8 +25,9 @@ export function requestDescribeRegion(regionId) {
     })
     .promise
     .then((data) => {
+      let regions = data.regionSet.filter(region => region.regionId == regionId)
       dispatch(extendContext({
-        region: data.regionSet[0],
+        region: regions[0],
       }));
     })
     .catch((error) => {
@@ -56,7 +57,7 @@ export function requestModifyRegion(region) {
     .modifyRegion(region)
     .promise
     .then(() => {
-      dispatch(notify(i18n.t('updateSuccessed')));
+      dispatch(notify(i18n.t('updateSuccessed'), 'notice', 1000));
       return dispatch(requestDescribeRegion(region.regionId));
     })
     .catch((error) => {

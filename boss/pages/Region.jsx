@@ -14,17 +14,13 @@ class C extends Page {
 
   refresh() {
     const { params, dispatch } = this.props;
-    this.regionId = params.regionId;
-    dispatch(RegionActions.requestDescribeRegion(this.regionId))
-    .then(() => {
-      this.region = this.props.context.region;
-    });
+    dispatch(RegionActions.requestDescribeRegion(params.regionId))
   }
 
   render() {
     const { t, params } = this.props;
 
-    const region = this.props.context.region || this.region;
+    const region = this.props.context.region;
     if (!region || region.regionId !== params.regionId) {
       this.refresh();
 

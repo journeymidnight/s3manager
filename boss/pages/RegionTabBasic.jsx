@@ -20,14 +20,10 @@ class C extends Page {
   onSave(values, dispatch) {
     return new Promise((resolve, reject) => {
       const name = values.name;
-      const devopsEndpoint = values.devopsEndpoint;
-      const consoleEndpoint = values.consoleEndpoint;
 
       dispatch(RegionActions.requestModifyRegion({
         regionId: this.props.region2.regionId,
         name,
-        devopsEndpoint,
-        consoleEndpoint,
       }))
       .then(() => {
         resolve();
@@ -39,11 +35,14 @@ class C extends Page {
 
   render() {
     const { t, region2 } = this.props;
+    let myregion = {}
+    myregion.regionId = this.props.context.region.regionId;
+    myregion.name = this.props.context.region.regionName;
     return (
       <div className="panel panel-default prepend-top-20">
         <div className="panel-heading">{t('settings')}</div>
         <div className="panel-body">
-          <RegionForm initialValues={region2} onSubmit={this.onSave} isUpdate />
+          <RegionForm initialValues={myregion} onSubmit={this.onSave} isUpdate />
         </div>
       </div>
     );
