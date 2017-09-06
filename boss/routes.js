@@ -15,48 +15,25 @@ import ProjectTabUsers from './pages/ProjectTabUsers.jsx';
 import Users from './pages/Users.jsx';
 import UserCreate from './pages/UserCreate.jsx';
 import User from './pages/User.jsx';
-import Admins from './pages/Admins.jsx';
-import AdminCreate from './pages/AdminCreate.jsx';
 import AccessKeys from './pages/AccessKeys.jsx';
 import AccessKeyCreate from './pages/AccessKeyCreate.jsx';
-import Admin from './pages/Admin.jsx';
 import Services from './pages/Services.jsx';
 import Service from './pages/Service.jsx';
 import ServiceCreate from './pages/ServiceCreate.jsx';
 import ServiceTabBasic from './pages/ServiceTabBasic.jsx';
 import ServiceTabProjects from './pages/ServiceTabProjects.jsx';
-import LOS from './pages/los/LOS.jsx';
-import LCS from './pages/lcs/LCS.jsx';
-import LCSTabImages from './pages/lcs/LCSTabImages.jsx';
-import LCSTabInstanceTypes from './pages/lcs/LCSTabInstanceTypes.jsx';
 import RegionTab from './pages/devops/RegionTab.jsx';
-import DevOpsNodes from './pages/devops/DevOpsNodes.jsx';
-import DevOpsAlerts from './pages/devops/DevOpsAlerts.jsx';
-import Tickets from './pages/Tickets.jsx';
-import Ticket from './pages/Ticket.jsx';
-import DevOpsInstances from './pages/devops/DevOpsInstances.jsx';
-import DevOpsEips from './pages/devops/DevOpsEips.jsx';
-import DevOpsCeph from './pages/devops/DevOpsCeph.jsx';
-import DevOpsOpenStack from './pages/devops/DevOpsOpenStack.jsx';
 import Regions from './pages/Regions.jsx';
 import RegionCreate from './pages/RegionCreate.jsx';
 import Region from './pages/Region.jsx';
 import RegionTabBasic from './pages/RegionTabBasic.jsx';
-import QuotaCreate from './pages/QuotaCreate.jsx';
-import Quota from './pages/Quota.jsx';
-import Profile from './pages/Profile.jsx';
 
 import BucketList from './los/pages/BucketList.jsx';
 import BucketCreate from './los/pages/BucketCreate.jsx';
 import Bucket from './los/pages/Bucket.jsx';
 import BucketDetail from './los/pages/BucketDetail.jsx';
 import ObjectManagement from './los/pages/ObjectManagement.jsx';
-import ResourceMonitorConsole from './los/pages/ResourceMonitorConsole.jsx';
-import UsageMonitor from './los/pages/UsageMonitor.jsx';
-import FlowMonitor from './los/pages/FlowMonitor.jsx';
-import APIMonitor from './los/pages/APIMonitor.jsx';
 
-import Paragraph from './components/Paragraph';
 
 export default function configureRoutes(store) {
   function requireAuth(nextState, replace) {
@@ -82,12 +59,6 @@ export default function configureRoutes(store) {
             <Route path="objects" component={ObjectManagement} />
           </Route>
         </Route>
-        <Route path="profile" component={Profile} />
-        <Route path="admins" >
-          <IndexRoute component={Admins} />
-          <Route path="create" component={AdminCreate} />
-          <Route path=":adminId" component={Admin} />
-        </Route>
         <Route path="access_keys">
           <IndexRoute component={AccessKeys} />
           <Route path="create" component={AccessKeyCreate} />
@@ -100,13 +71,6 @@ export default function configureRoutes(store) {
             <Route path="basic" component={ServiceTabBasic} />
           </Route>
         </Route>
-        <Route path="lcs" >
-          <Route path=":serviceId" component={LCS} >
-            <IndexRoute component={LCSTabImages} />
-            <Route path="images" component={LCSTabImages} />
-            <Route path="instance_types" component={LCSTabInstanceTypes} />
-          </Route>
-        </Route>
         <Route path="regions" >
           <IndexRoute component={Regions} />
           <Route path="create" component={RegionCreate} />
@@ -114,10 +78,6 @@ export default function configureRoutes(store) {
             <IndexRoute component={RegionTabBasic} />
             <Route path="basic" component={RegionTabBasic} />
           </Route>
-        </Route>
-        <Route path="q/:serviceId" >
-          <Route path="create" component={QuotaCreate} />
-          <Route path=":projectId" component={Quota} />
         </Route>
         <Route path="projects" >
           <IndexRoute component={Projects} />
