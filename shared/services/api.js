@@ -11,9 +11,10 @@ export const call = (method, url, payload, hook, yigapi, projectId) => {
   };
 
   const token = cookie.get('plato_token') || store.get('plato_token');
-  if (token) {
-    headers['X-IAM-Token'] = token.token;
-  }
+  //we don't use this header any more, so we comment it out
+  //if (token) {
+  //  headers['X-IAM-Token'] = token.token;
+  //}
 
   const region = store.get('region');
   if (region) {
@@ -242,6 +243,7 @@ export const call = (method, url, payload, hook, yigapi, projectId) => {
   const options = {
     url,
     method,
+    baseURL: "http://127.0.0.1:8888",
   };
 
   if (method === 'post') {
