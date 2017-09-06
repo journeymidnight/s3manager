@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions';
-import Header from '../../shared/components/Header';
 import Notify from '../../shared/components/Notify.jsx';
 import Auth from '../../boss/services/auth';
 import IAM from '../../boss/services/iam';
@@ -112,7 +111,6 @@ class C extends React.Component {
 
     return (
       <div className="login-page">
-        <Header />
         <div className="container navless-container">
           <Notify />
           <div className="content">
